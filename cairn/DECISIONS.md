@@ -8363,3 +8363,27 @@ because the alarm gives the same bound in the one command.
 **Consequences:** The closed stop list gains the bound, a head that
 someone else moved, and a failed read at a wake. D-229's decision and its
 reopening observations stand.
+
+### D-231 (2026-10-31): The merge CI watch has no time bound, and a moved head or a changes-requested review stops the wake before any action — supersedes D-230's one-hour bound and its Monitor sentence (M328 review, user descope)
+
+**Context:** M328's third review pass found that the `perl` alarm D-230
+chose never ends `gh`, which ignores SIGALRM (`gh` under a 2 s alarm
+exited 0, `cat` exited 142), and that a review requesting changes during
+the wait did not stop the merge. That was the third defect return, and at
+the thrash stop the user chose to descope.
+
+**Decision:** The watch runs with no time bound. A check that never
+settles leaves it armed with no wake, recorded as a DESIGN.md Known issue
+where the user types the resume command. At the wake, a head that differs
+from the head the approval covered, or a review decision of
+`CHANGES_REQUESTED`, stops with a close block before any fix, re-arm, or
+merge. D-230's other clauses stand: the read before arming, the branch and
+clean-tree check, skipped checks counted as passed, the stop on a failed
+read, and the `TaskStop` on a typed resume. The smaller review-pass-3
+edge cases go to one parked candidate row.
+
+**Consequences:** The stop list names a moved head and a changes-requested
+review, not a bound. The observation that reopens the bound: a merge watch
+seen armed with no wake on a real PR, which would favor a wrapper that
+sends SIGTERM, or a Monitor once a Monitor event is seen to wake an idle
+session.

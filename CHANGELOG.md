@@ -7,13 +7,14 @@
 - **A merge waits for CI in the background.** After you approve a merge,
   `/milestone-review` and `/hotfix` check the PR's CI. If a check is still
   running, they start `gh pr checks --watch --fail-fast` as a background
-  task, with a one-hour limit, and end the turn. When the watch ends, the
-  task's notification starts the session again with no message from you.
-  This was observed in the desktop app. On green the session merges. On
-  red it fixes the code on the branch. If it cannot fix the code, it stops. If a
-  push you made restarted CI, it waits again. A push that someone else
-  made, the one-hour limit, or a failed GitHub read stops the session and
-  tells you why. Before, a CI run longer than 10 minutes stopped the
+  task and end the turn. When the watch ends, the task's notification
+  starts the session again with no message from you. This was observed in
+  the desktop app. On green the session merges. On red it fixes the code
+  on the branch. If it cannot fix the code, it stops. If a check is still
+  running, it waits again. A PR head that changed after your approval, a
+  review that requests changes, or a failed GitHub read stops the session
+  and tells you why. A check that never finishes leaves the session
+  waiting: check the PR, then type the resume command. Before, a CI run longer than 10 minutes stopped the
   session, and you reran the skill to resume. The turn that starts the
   wait still ends with the resume command, for an app where no wake comes.
   A `/clear` or other work in the session before the wake ends the

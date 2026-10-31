@@ -99,7 +99,15 @@ class TestWaitRuleMergeWait(unittest.TestCase):
         self.assertRegex(
             self.para,
             r"Otherwise\s+arm\s+`gh\s+pr\s+checks\s+<N>\s+--watch\s+--fail-fast`\s+as"
-            r"\s+a\s+Bash\s+`run_in_background`\s+task,\s+under\s+a\s+one-hour\s+bound",
+            r"\s+a\s+Bash\s+`run_in_background`\s+task\.",
+        )
+
+    def test_a_moved_head_or_requested_changes_stops_first(self):
+        self.assertRegex(
+            self.para,
+            r"Before\s+any\s+fix,\s+re-arm,\s+or\s+merge,\s+a\s+head\s+that\s+differs"
+            r"\s+from\s+the\s+head\s+the\s+approval\s+covered,\s+or\s+a\s+review"
+            r"\s+decision\s+of\s+`CHANGES_REQUESTED`,\s+stops",
         )
 
     def test_merge_wait_arms_only_while_a_check_is_pending(self):
@@ -112,7 +120,7 @@ class TestWaitRuleMergeWait(unittest.TestCase):
     def test_a_failed_check_wins_over_a_pending_one(self):
         self.assertRegex(
             self.para,
-            r"If\s+any\s+check\s+failed,\s+take\s+the\s+red-CI\s+path\.\s+Otherwise,"
+            r"if\s+any\s+check\s+failed,\s+take\s+the\s+red-CI\s+path\.\s+Otherwise,"
             r"\s+if\s+a\s+check\s+is\s+pending",
         )
 

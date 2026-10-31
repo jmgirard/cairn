@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M328: Wait for CI without stopping the session
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -38,60 +38,47 @@ guard.
 - `/cairn-release`'s slow local checks keep today's rule, since they are
   local commands and not a PR's CI.
 - Turning on the desktop app's own PR monitor: never done by cairn (AC4).
+- A time bound on the watch: none; a check that never settles is a
+  DESIGN.md Known issue (descoped at the thrash stop, D-231).
+- The smaller merge-wait edge cases from review pass 3: candidate row
+  "Close the merge CI wait's edge cases".
 
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets. -->
 
-- [x] AC1: The wait rule in `skills/shared/tracking-rules.md` ("Waiting on
-      CI and background work") states the merge CI wait in four steps.
-      (a) The session arms `gh pr checks <N> --watch --fail-fast` as a Bash
-      `run_in_background` task. (b) After the watch exits, that task prints
-      one wake line that names the PR number, the exit status of the watch,
-      and the resume command of the invoking skill. (c) The session ends the
-      turn with a close block. Its CI line says that the session resumes by
-      itself when CI ends, and its fenced next command is the resume
-      command, for a host where no wake comes. (d) At the completion
-      notification of that task, the session reads the check state with
-      `gh pr checks <N>` and the merge state with
-      `gh pr view <N> --json state`. If any check failed, it takes the
-      red-CI path. Otherwise, if a check is pending, it arms the watch
-      again. If every check passed, it goes on to the merge. A PR that is no
-      longer open, or one that reports no checks, follows the rule's resume
-      and no-checks clauses. The rule prescribes no foreground
-      `gh pr checks --watch` for a merge wait, and its stop list and timeout
-      clause name no ceiling stop for one.
-- [x] AC2: Two clauses name the armed merge CI watch of AC1 as the one
-      watcher that a turn can end on: the stop-point clause of the wait rule
-      and the early-stop clause in "Question gates and phase closes". The
-      stop-point clause still bars a watcher at a commit. It states that a
-      `/clear` while the merge watch is armed is safe. It also states what a
-      session does with a wake line from a watch that it did not arm: it
-      shows the user the line and its resume command, and it runs nothing.
-- [x] AC3: Each merge wait in `skills/milestone-review/SKILL.md` step 8,
-      the primary merge and the companion arm, and in
-      `skills/hotfix/SKILL.md` step 6 states the wait of AC1 and names its
-      own resume command: `/milestone-review M<NNN>`, or `/hotfix` with the
-      PR reference. No line in those two steps that
+- [x] AC1: The wait rule in `skills/shared/tracking-rules.md` ("Waiting on CI and background work") states the
+      merge CI wait in four steps. (a) The session arms `gh pr checks <N> --watch --fail-fast` as a Bash
+      `run_in_background` task. (b) After the watch exits, that task prints one wake line that names the PR number,
+      the exit status of the watch, and the resume command of the invoking skill. (c) The session ends the turn with
+      a close block. Its CI line says that the session resumes by itself when CI ends, and its fenced next command
+      is the resume command, for a host where no wake comes. (d) At the completion notification of that task, the
+      session reads the check state with `gh pr checks <N>` and the merge state with `gh pr view <N> --json state`.
+      If any check failed, it takes the red-CI path. Otherwise, if a check is pending, it arms the watch again. If
+      every check passed, it goes on to the merge. A PR that is no longer open, or one that reports no checks,
+      follows the rule's resume and no-checks clauses. The rule prescribes no foreground `gh pr checks --watch` for
+      a merge wait, and its stop list and timeout clause name no ceiling stop for one.
+- [x] AC2: Two clauses name the armed merge CI watch of AC1 as the one watcher that a turn can end on: the
+      stop-point clause of the wait rule and the early-stop clause in "Question gates and phase closes". The
+      stop-point clause still bars a watcher at a commit. It states that a `/clear` while the merge watch is armed
+      is safe. It also states what a session does with a wake line from a watch that it did not arm: it shows the
+      user the line and its resume command, and it runs nothing.
+- [x] AC3: Each merge wait in `skills/milestone-review/SKILL.md` step 8, the primary merge and the companion arm,
+      and in `skills/hotfix/SKILL.md` step 6 states the wait of AC1 and names its own resume command:
+      `/milestone-review M<NNN>`, or `/hotfix` with the PR reference. No line in those two steps that
       `git grep -nE "gh pr checks|ceiling|TaskStop|moved to the background" -- skills/milestone-review/SKILL.md skills/hotfix/SKILL.md`
       lists describes a foreground or ceiling-bound merge wait.
-- [x] AC4: The one-watcher clause of the wait rule names one exception: a
-      host app's PR monitor that the user turned on, such as the desktop
-      app's Auto-fix. The rule states that a session never turns such a
-      monitor on for a merge wait, and that a red result for a head commit
-      the session already acted on is not acted on again.
-- [x] AC5: In `jmgirard/cairn-wait-lab`, a Claude Code desktop session arms
-      the watch as AC1 states and ends its turn. When the run ends, the
-      session starts again with no user message and runs step (d) of AC1,
-      taking the branch that matches the run. This occurs once on a green
-      run longer than 600 s and once on a red run whose failure lands after
-      the turn ended. The wait rule cites the rows of
-      `cairn/references/wait-mechanisms.md` that record these wakes, and it
-      names the desktop app as the host observed.
+- [x] AC4: The one-watcher clause of the wait rule names one exception: a host app's PR monitor that the user
+      turned on, such as the desktop app's Auto-fix. The rule states that a session never turns such a monitor on
+      for a merge wait, and that a red result for a head commit the session already acted on is not acted on again.
+- [x] AC5: In `jmgirard/cairn-wait-lab`, a Claude Code desktop session arms the watch as AC1 states and ends its
+      turn. When the run ends, the session starts again with no user message and runs step (d) of AC1, taking the
+      branch that matches the run. This occurs once on a green run longer than 600 s and once on a red run whose
+      failure lands after the turn ended. The wait rule cites the rows of `cairn/references/wait-mechanisms.md`
+      that record these wakes, and it names the desktop app as the host observed.
 - [x] AC6: Each line that
       `git grep -nE "times out|ceiling|TaskStop|gh pr checks|CI wait|waits on CI" -- README.md skills/*/SKILL.md skills/shared/tracking-rules.md cairn/PROFILE.md`
-      lists, and that describes the CI wait of a merge, agrees with AC1 and
-      AC2. The Unreleased section of `CHANGELOG.md` has an entry for the
-      change.
+      lists, and that describes the CI wait of a merge, agrees with AC1 and AC2. The Unreleased section of
+      `CHANGELOG.md` has an entry for the change.
 
 ## Coverage
 <!-- owner: plan · create/amend-via-gate -->
@@ -143,6 +130,10 @@ guard.
       desktop app in the CI line and the armed close's wait note; add the
       two stops to the stop list; fix the W20 wording, docstrings, the
       CHANGELOG line, and the reference page's implications.
+- [x] T9: Descope at the thrash stop: remove the `perl` bound and the 142
+      handling from the rule and both sites; stop at the wake on a moved
+      head or `CHANGES_REQUESTED` before any fix, re-arm, or merge; write
+      D-231; file the edge-case row; propose the known issue; re-pin tests.
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates. -->
@@ -175,6 +166,9 @@ guard.
 - 2026-10-31: T8 added for review return 2 (minor amendment) and done: the merge wait reads `gh pr checks` before arming and arms only while a check is pending; the watch runs under a one-hour `perl` alarm (exit 142 checked live) whose exit stops with fresh state; the wake acts only on the armed branch with no uncommitted tracked change, reads state and head together, stops on a failed read or a foreign head before re-arming, counts skipped checks as passed; a typed resume `TaskStop`s the armed watch; CI line and the armed close's safety line name the desktop app and that `/clear` or other work ends the self-resume; stop list gains the bound, a foreign head, a failed read; W20 wording fixed; both skill sites mirror it (hotfix's typed-resume text moved after the wake handling); D-230 annotates D-229; CHANGELOG, wait-mechanisms implications, test docstrings and comments updated; `test_wait_rule` re-pinned (arm under the bound, arm only while pending); two parked rows filed (diff-bug #14, blame-history #5); baseline 889 lines / 88,073 bytes; skills/tests 983 OK, scripts and hooks suites, both validates exit 0, cairn_validate green.
 - 2026-10-31: correction: the T8 line's "exit 142 checked live" was checked with `sleep`, not `gh`; `gh` ignores SIGALRM, so the alarm bound does not end the watch (pass-3 diff-bug #1).
 - 2026-10-31: review return 3: pass 3 found load-bearing defects in the merge wait (diff-bug #1: the bound never ends `gh`; blame-history #1: a changes-requested review during the wait is merged past; diff-bug #3–#5, #8). Third defect return: thrash rule (a) fires; disposition goes to the user at the descope-or-park chip.
+- 2026-10-31: question set (thrash stop): user chose "Descope and ship": keep the background wait, remove the broken bound, add the moved-head and changes-requested guards, send the edge cases to parked rows and the never-settling check to a known issue, then one short review (diff-bug and ripple lenses over the descope diff) and the merge question.
+- 2026-10-31: substantive amendment: Scope Out gains "A time bound on the watch: none; a check that never settles is a DESIGN.md Known issue (descoped at the thrash stop, D-231)" and "The smaller merge-wait edge cases from review pass 3: candidate row "Close the merge CI wait's edge cases"". No criterion changed.
+- 2026-10-31: T9 done: `perl` bound and 142 handling removed from the rule and both sites; the wake reads `state,headRefOid,reviewDecision` and stops on a head other than the approved one (review: the head step 8 pushed; hotfix: the marker's head oid) or `CHANGES_REQUESTED` before any fix, re-arm, or merge; stop list updated; D-231 supersedes D-230's bound; parked row "Close the merge CI wait's edge cases" filed; known issue proposed in the Review section; CHANGELOG and `wait-mechanisms.md` reworded; `test_wait_rule` re-pinned (no bound, head and review guard) with mutation entries; baseline 889 lines / 88,037 bytes; AC section rewrapped wider (same words) for the 150-line cap; skills/tests 984 OK, scripts and hooks suites, both validates exit 0, cairn_validate green.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
@@ -269,3 +263,5 @@ Pass 3 (2026-10-31), after return 2 (T8, fixed 017b2472 for every pass-2 fix-now
 - ripple #3: DESIGN Known issue's "CI stop" — reject (false: red CI and the bound are CI stops)
 - ripple #4: test names keep "timeout" vocabulary — reject (style: names only)
 - ripple #5: copilot-review's unconditional safety line — reject (false: that skill arms no merge watch)
+- Pass-3 dispositions after the user chose descope at the thrash stop: diff-bug #1 — fix now (bound removed; the never-settling check is the known issue below); diff-bug #2 and #10 — reject (false: no bound and no `perl` wrapper remain); diff-bug #3, #4 and blame-history #1 — fix now (at the wake, a head other than the approved one, or `CHANGES_REQUESTED`, stops before any fix, re-arm, or merge; hotfix compares with the marker's head oid); blame-history #3 and prior-review #1 — fix now (sentence rewritten); diff-bug #11 — fix now (claim marked unobserved); diff-bug #5–#9, #12, blame-history #2, #4–#7, prior-review #2–#4, ripple #1 — follow-up: parked row "Close the merge CI wait's edge cases"
+- known issue: A merge CI watch has no time bound. A check that never settles, such as a required check that a path filter skips or a fork run waiting for approval, keeps the watch armed, and the session never wakes. Look at the PR, then type the resume command that the turn ended with. Accepted at the M328 gate

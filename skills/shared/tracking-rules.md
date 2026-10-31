@@ -401,21 +401,21 @@ head commit the session already acted on is not acted on again.
 **A merge's CI wait** (`/milestone-review` step 8, `/hotfix` step 6) has four steps. (a) Read `gh pr checks <N>`
 first. With no check pending, go straight to (d) and arm nothing, since a watch that exits before the turn ends sends
 no wake (a no-checks PR, CI already done, a red run that fails in seconds). Otherwise arm `gh pr checks <N> --watch
---fail-fast` as a Bash `run_in_background` task, under a one-hour bound (`perl -e 'alarm shift; exec @ARGV' 3600 gh
-pr checks …`). (b) After the watch exits, that task prints one wake line naming the PR number, the watch's exit
-status, and the invoking skill's resume command. The task's own exit code is the `echo`'s, so the status is read
-from the line (W26); 142 means the bound ended the watch. (c) End the turn with a close block whose CI line says
+--fail-fast` as a Bash `run_in_background` task. The watch has no time bound: a check that never settles leaves it
+armed with no wake (DESIGN.md Known issues). (b) After the watch exits, that task prints one wake line naming the PR
+number, the watch's exit status, and the invoking skill's resume command. The task's own exit code is the `echo`'s,
+so the status is read from the line (W26). (c) End the turn with a close block whose CI line says
 that in the Claude Code desktop app the session resumes by itself when CI ends, and that a `/clear` or other work
 in the session before then ends that resume; its fenced next command is that resume command, for a host where no
 wake comes. (d) At that task's completion notification, which starts a new turn in an idle Claude Code desktop
 session (W24, W25 — the host observed), first check that the session is still on the branch it armed from with no
 uncommitted change to a tracked file; if not, show the wake line and its resume command and run nothing. Then read
-the check state with `gh pr checks <N>`, and the merge state and head with `gh pr view <N> --json
-state,headRefOid`; a failed read stops with a close block naming its error. If any check failed, take the red-CI
-path. Otherwise, if a check is pending, arm the watch again while the head is still the one the session pushed; a
-head someone else moved stops with a close block naming it. If every check passed (a skipped check counts as
-passed), go on to the merge under the skill's own head check. A wake line of status 142 stops with a close block
-reporting the fresh check state. Each of these stops fences the resume command. A PR no longer open follows "Resume
+the check state with `gh pr checks <N>`, and the merge state, head, and review decision with `gh pr view <N> --json
+state,headRefOid,reviewDecision`; a failed read stops with a close block naming its error. Before any fix, re-arm,
+or merge, a head that differs from the head the approval covered, or a review decision of `CHANGES_REQUESTED`,
+stops with a close block naming it. Then, if any check failed, take the red-CI path. Otherwise, if a check is
+pending, arm the watch again. If every check passed (a skipped check counts as passed), go on to the merge. Each of
+these stops fences the resume command. A PR no longer open follows "Resume
 is stateless" below, and one that reports no checks follows the no-checks clause. A red run ends the watch at its
 first failed check (W2, W24). A typed resume command while the session still holds an armed watch on the PR stops
 that watch with `TaskStop` first. A companion PR's reads are spelled `cd <abs-path> && …`. **A long-running local
@@ -597,8 +597,8 @@ stop whose choice is the user's is posed as a chip; any other stop ends with the
   sees from the plan included),
 - the repeated review-failure stop (`/milestone-review` step 4's thrash rule, and the second amendment return or the
   second re-audit on one criterion),
-- a local check that times out, a merge CI watch that reaches its one-hour bound, a PR head someone else moved
-  after the approval, a failed `gh` read at a wake, or red CI that the agent cannot fix,
+- a local check that times out, a PR head that moved after the approval, a review requesting changes during a merge
+  CI wait, a failed `gh` read at a wake, or red CI that the agent cannot fix,
 - a guard hook's denial,
 - a stop at a task boundary for context hygiene,
 - the offer to escalate to a Fable review (`/milestone-brief`),

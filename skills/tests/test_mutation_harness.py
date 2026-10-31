@@ -120,7 +120,7 @@ REGISTRY = [
         guard="test_cost_audit_line",
         test="TestCostAuditLine.test_the_rulebook_line_carries_its_seeded_baseline",
         target=MILESTONE,
-        block="889 lines / 88,073 bytes",
+        block="889 lines / 88,037 bytes",
     ),
     Mutation(
         guard="test_cost_audit_line",
@@ -3760,7 +3760,14 @@ REGISTRY += [
         guard="test_wait_rule",
         test="TestWaitRuleMergeWait.test_merge_wait_arms_a_background_watch",
         target=RULES,
-        block="task, under a one-hour bound",
+        block="`run_in_background` task. The watch has no time bound",
+    ),
+    Mutation(
+        guard="test_wait_rule",
+        test="TestWaitRuleMergeWait."
+             "test_a_moved_head_or_requested_changes_stops_first",
+        target=RULES,
+        block="or merge, a head that differs from the head the approval covered",
     ),
     Mutation(
         guard="test_wait_rule",
@@ -3773,7 +3780,7 @@ REGISTRY += [
         guard="test_wait_rule",
         test="TestWaitRuleMergeWait.test_a_failed_check_wins_over_a_pending_one",
         target=RULES,
-        block="If any check failed, take the red-CI",
+        block="if any check failed, take the red-CI",
     ),
     Mutation(
         guard="test_wait_rule",

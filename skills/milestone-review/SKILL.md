@@ -711,10 +711,10 @@ the session, re-enters here, at the step the record shows is next:
    pending, act on that read at once (below) and arm nothing. Otherwise
    arm the watch as a Bash `run_in_background` task:
 
-   `perl -e 'alarm shift; exec @ARGV' 3600 gh pr checks <N> --watch --fail-fast >/dev/null 2>&1; echo "cairn wake: PR #<N> CI watch exited $?. Resume: /milestone-review M<NNN>"`
+   `gh pr checks <N> --watch --fail-fast >/dev/null 2>&1; echo "cairn wake: PR #<N> CI watch exited $?. Resume: /milestone-review M<NNN>"`
 
    The task's own exit code is the `echo`'s, so read the watch's status
-   from that wake line; 142 means the one-hour bound ended it. End the
+   from that wake line. Note the PR head this step pushed. End the
    turn with a close block whose CI line (tracking-rules close-block
    shape) says that in the Claude Code desktop app the session resumes by
    itself when CI ends, that a `/clear` or other work before then ends
@@ -726,14 +726,14 @@ the session, re-enters here, at the step the record shows is next:
    first. At the task's completion notification, first check that the
    session is still on this branch with no uncommitted change to a
    tracked file; if not, show the wake line and run nothing. Then read
-   `gh pr checks <N>` and `gh pr view <N> --json state,headRefOid`; a
-   failed read stops with a close block naming its error. A failed check
-   takes the red-CI path below. A head that moved since the approval, by
-   a push the session did not make, merges and re-arms nothing: stop with
-   a close block naming the new head. Otherwise a pending check arms the
-   watch again, and every check passed (a skipped check counts as passed)
-   goes on to the merge. A wake line of status 142 stops with a close
-   block reporting the fresh check state. Each of these stops fences
+   `gh pr checks <N>` and
+   `gh pr view <N> --json state,headRefOid,reviewDecision`; a failed read
+   stops with a close block naming its error. Before any fix, re-arm, or
+   merge, a head other than the one this step pushed, or a review
+   decision of `CHANGES_REQUESTED`, stops with a close block naming it.
+   Then a failed check takes the red-CI path below, a pending check arms
+   the watch again, and every check passed (a skipped check counts as
+   passed) goes on to the merge. Each of these stops fences
    `/milestone-review M<NNN>`. A PR no longer
    open takes the Session-start routes. Never merge past red or pending CI. A PR that
    reports no checks makes the watch exit 1 at once, and it is mergeable
