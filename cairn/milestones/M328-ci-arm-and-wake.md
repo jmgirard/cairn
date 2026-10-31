@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M328: Wait for CI without stopping the session
 
-- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -135,6 +135,14 @@ guard.
 - [x] T7: Review return 1: make the stop-point clause state that a
       `/clear` while the merge watch is armed is safe, keeping the W20 note
       that its notification's delivery is unobserved.
+- [ ] T8: Review return 2: in the wait rule and both skill sites, read
+      checks first and arm only while one is pending; bound the watch at
+      one hour; check the head before re-arming; count skipped checks as
+      passed and stop on a failed read; stop an armed watch on a typed
+      resume; have a wake off the milestone branch run nothing; name the
+      desktop app in the CI line and the armed close's wait note; add the
+      two stops to the stop list; fix the W20 wording, docstrings, the
+      CHANGELOG line, and the reference page's implications.
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates. -->
@@ -163,6 +171,7 @@ guard.
 - 2026-10-31: claim audit: 52 claims read, 8 corrected — skills/hotfix/SKILL.md (red path defined: fix, then step 1's walk and approval again, or stop; resume wording), README.md (desktop-only wake, resume command elsewhere), CHANGELOG.md (red wording, "to resume", "can get"), skills/shared/tracking-rules.md (red ends at first failed check, W2/W24; `/clear` cites W20 and marks delivery unobserved; moved-head check), skills/milestone-review/SKILL.md (CI line says typing the command re-poses approval; a head moved by someone else since approval merges nothing). Baseline re-seeded to 875 lines / 86,622 bytes; skills/tests 982 OK, scripts and hooks suites, both validates, cairn_validate green; plugin test last run at T6 (no `hooks/` change since).
 - 2026-10-31: review return 1: AC2 — the stop-point clause says a `/clear` while the merge watch is armed "loses nothing", but AC2 requires it to state that such a `/clear` is safe; review ticks were written by a `python3` script against the Write/Edit rule.
 - 2026-10-31: T7 added for review return 1 (minor amendment) and done: the stop-point clause now reads a `/clear` while armed "is safe and loses nothing", W20 note kept; baseline re-seeded to 875 lines / 86,634 bytes; skills/tests 982 OK, scripts and hooks suites, both validates exit 0; status back to review.
+- 2026-10-31: review return 2: load-bearing defects in the merge wait from pass 2's lenses (diff-bug #1–#9, blame-history #1–#3, prior-review #1, ripple #1/#5/#7) — a second watcher on typed resume, no rule for a watch that exits before the turn ends, a wake that can merge mid-other-work, no branch for skipped checks or a failed read, no bound on a watch that never settles, re-arm before the head check, the moved-head stop off the stop list, host-unconditional CI line, overstated W20.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
@@ -184,3 +193,37 @@ Pass 2 (2026-10-31). Default branch unmoved; PR #342 open; Copilot state `none`,
 - AC2: stop-point clause at HEAD now reads "a `/clear` while it is armed is safe and loses nothing (the watch is documented to survive it, W20, and whether its notification then reaches the new session is unobserved)"; the merge watch is still the one turn-end exception, a commit still bars a watcher, an unarmed wake line "runs nothing", and the early-stop clause names the armed turn end (600-602). Pass.
 - AC1, AC3–AC6: the T7 diff (`git diff 75d56fb9..HEAD -- skills`) changes only the stop-point sentence and the baseline figure; their pass-1 evidence stands.
 - Gate: `cairn_validate` exit 0, no FAIL or WARN lines; verify on the review head: skills/tests 982 OK, scripts and hooks suites exit 0, plugin and marketplace validate exit 0, `claude plugin test` 2466 pass; marketplace validate prints no `version` warning; CHANGELOG Unreleased has the entry, with no milestone number; no DESIGN principle changed, so `cairn_impact` skipped.
+- spawned: diff-bug, blame-history, prior-review, ripple
+- diff-bug #1: a typed resume while armed arms a second watch; its stale wake re-enters after the merge (review route (a) reruns hygiene; hotfix's merged-PR re-entry says the bar never ran) — fix now
+- diff-bug #2: a watch that exits before the turn ends (no-checks PR, finished CI, fast red) has no rule, and no wake follows — fix now (read `gh pr checks` first; arm only while a check is pending)
+- diff-bug #3: the armed close block's "adjusting course or `/clear` are both safe" line lets a later wake merge mid-other-work — fix now (armed close says to wait; a wake that finds the session off the milestone branch shows its line and runs nothing)
+- diff-bug #4: step (d) has no branch for skipped or neutral checks or a failed `gh` read — fix now
+- diff-bug #5: no bound for a watch that never settles (fork PR awaiting approval) — fix now (one-hour `perl` alarm, then the old timeout route)
+- diff-bug #6: a foreign push re-arms before the head check — fix now (head check before re-arming)
+- diff-bug #7: the moved-head stop is not on the closed stop list — fix now
+- diff-bug #8: hotfix places the typed-resume sentence between the turn end and the wake handling — fix now
+- diff-bug #9: the companion's wake reads are spelled bare — fix now
+- diff-bug #10: red path on a fork-head PR names no fork remote — reject (false: "red CI the agent cannot fix stops" covers it)
+- diff-bug #11: `test_wait_rule.py` docstring describes the stop point with no exception — fix now
+- diff-bug #12: CHANGELOG "On red it fixes the run" is imprecise — fix now
+- diff-bug #13: compaction can kill the armed watch — reject (false: the close block's fenced resume command covers a wake that never comes)
+- diff-bug #14: a typed resume via route (c) pushes the unpushed header-URL commit and restarts CI — follow-up: parked row "Keep a typed resume from restarting CI" (pre-existing D-138 path)
+- blame-history #1: the watch has no bound; D-133's required check left pending by a path skip hangs it — fix now (same as diff-bug #5)
+- blame-history #2: the CI line promises a self-resume in every host — fix now (desktop app named)
+- blame-history #3: a `/clear` after arming stalls the merge while the CI line promises resumption — fix now (armed close says `/clear` or other work stops the self-resume; type the command then)
+- blame-history #4: D-128's reopening observation now fires by design — reject (planned change: D-229 supersedes that clause)
+- blame-history #5: red-CI "re-request approval if the fix was nontrivial" now runs unattended — follow-up: parked row "Ask again before merging a red-CI fix" (pre-existing rule on main)
+- blame-history #6: a typed resume in a host that keeps the watch makes a second watcher — fix now (same as diff-bug #1)
+- blame-history #7: `/cairn-release` keeps the foreground model — reject (false: its slow local checks follow the local-command clause, which keeps it)
+- prior-review #1: "documented to survive" `/clear` overstates W20 — fix now
+- prior-review #2: the merge watch exempt from the turn-end bar reopens M170's runaway-watcher case — reject (planned change, D-229), its unbounded part fixed with blame-history #1
+- prior-review #3: `/cairn-release` restatement drift — reject (false, as blame-history #7)
+- prior-review #4: the merge-wait close states no fresh check state (M183) — reject (planned change: no timeout stop on a merge wait; the CI line rule is met)
+- prior-review #5: "On timeout" no longer covers merge waits — reject (planned change), the bound's stop restores a timeout route
+- ripple #1: the flat stop-point bar sits before its exception with no marker — fix now
+- ripple #2: "documented to survive" — fix now (same as prior-review #1)
+- ripple #3: `test_wait_rule.py` docstrings — fix now (same as diff-bug #11)
+- ripple #4: `/cairn-release` wording — reject (false, as blame-history #7)
+- ripple #5: `test_resume_routing.py:337` and `test_mutation_harness.py` comments name a hotfix timeout close — fix now
+- ripple #6: DESIGN Known issue's "CI stop" — reject (false: red CI and the new bound are still CI stops)
+- ripple #7: `wait-mechanisms.md` implications paragraph omits W24–W26 — fix now
