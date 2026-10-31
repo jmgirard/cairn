@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M328: Wait for CI without stopping the session
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -132,6 +132,9 @@ guard.
       `test_mutation_harness.py` entries; re-seed the rulebook-mass baseline
       in its three places. Run both gating suites, `claude plugin validate`,
       and the hand-run `skills/tests`.
+- [x] T7: Review return 1: make the stop-point clause state that a
+      `/clear` while the merge watch is armed is safe, keeping the W20 note
+      that its notification's delivery is unobserved.
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates. -->
@@ -159,6 +162,7 @@ guard.
 - 2026-10-31: T6 done: `test_wait_rule.py` gains five pins (merge wait arms in the background, failed before pending, host-monitor exception, armed turn-end exception, unarmed wake line runs nothing), each registered in the mutation table and red when blanked; rulebook baseline re-seeded to 872 lines / 86,398 bytes in `milestone/SKILL.md` and its two pins. verify: scripts 446 OK, hooks 210 OK, plugin and marketplace validate exit 0 (warnings are the untracked `cairn-probe.log`/`tsconfig.json`), plugin test 2466 pass; hand-run skills/tests 982 OK; cairn_validate green.
 - 2026-10-31: claim audit: 52 claims read, 8 corrected — skills/hotfix/SKILL.md (red path defined: fix, then step 1's walk and approval again, or stop; resume wording), README.md (desktop-only wake, resume command elsewhere), CHANGELOG.md (red wording, "to resume", "can get"), skills/shared/tracking-rules.md (red ends at first failed check, W2/W24; `/clear` cites W20 and marks delivery unobserved; moved-head check), skills/milestone-review/SKILL.md (CI line says typing the command re-poses approval; a head moved by someone else since approval merges nothing). Baseline re-seeded to 875 lines / 86,622 bytes; skills/tests 982 OK, scripts and hooks suites, both validates, cairn_validate green; plugin test last run at T6 (no `hooks/` change since).
 - 2026-10-31: review return 1: AC2 — the stop-point clause says a `/clear` while the merge watch is armed "loses nothing", but AC2 requires it to state that such a `/clear` is safe; review ticks were written by a `python3` script against the Write/Edit rule.
+- 2026-10-31: T7 added for review return 1 (minor amendment) and done: the stop-point clause now reads a `/clear` while armed "is safe and loses nothing", W20 note kept; baseline re-seeded to 875 lines / 86,634 bytes; skills/tests 982 OK, scripts and hooks suites, both validates exit 0; status back to review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->

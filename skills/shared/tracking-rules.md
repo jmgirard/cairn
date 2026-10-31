@@ -425,8 +425,8 @@ arrive.
 completion or `TaskStop`, a Monitor at those or its own `timeout_ms`, and no doc states that `/clear` stops either (a
 closed issue reports survival), so the session stops it with `TaskStop` first. The one exception is a merge's armed
 CI watch above, the one watcher a turn can end on: it is armed after the turn's last commit, so a `/clear` while it
-is armed loses nothing (the watch is documented to survive it, W20, and whether its notification then reaches the
-new session is unobserved). A session that gets a wake line from a watch it did not arm, as after a `/clear`, shows
+is armed is safe and loses nothing (the watch is documented to survive it, W20, and whether its notification then
+reaches the new session is unobserved). A session that gets a wake line from a watch it did not arm, as after a `/clear`, shows
 the user the line and its resume command and runs nothing. A `/loop` or scheduled task is not a CI wait. **Resume is
 stateless**: re-derive the check state from `gh pr checks` and the PR's merge state from `gh pr view <N> --json
 state` (PR URL: the milestone header), never a remembered "CI was running" or "not yet merged".
