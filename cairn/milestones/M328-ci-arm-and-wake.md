@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M328: Wait for CI without stopping the session
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** IP1, GP2   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
 - **Surface tier:** user-facing — changes how `/milestone-review` and `/hotfix` wait on CI before a merge in every adopting repo   <!-- owner: plan · create/amend-via-gate; user-facing | internal — <one-clause reason>; skill conduct only — no validate check parses it -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
+- **Branch/PR:** m328-ci-arm-and-wake   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -148,6 +148,9 @@ guard.
 - 2026-10-31: criteria audit (full mode, fresh Opus): 9 findings, all fixed — (d) branch order and closed/no-checks PRs; close block with resume command; `/clear` stated safe; one-watcher exception and head-commit dedupe; probe over 600 s green and late red; woken turn runs (d); rule cites ledger rows; AC3 and AC6 grep patterns widened, PROFILE added.
 - 2026-10-31: plan gate chose always arming over a foreground wait that arms only at the ceiling because one mechanism is simpler to state and to resume; falsified by a wake observed lost or late where a foreground wait would have caught the result.
 - 2026-10-31: plan gate chose Bash `run_in_background` over a Monitor with `timeout_ms` because `gh --watch` exits on its own and a Monitor dies at one hour at most; falsified by an armed watch observed running past an hour on a hung run.
+- 2026-10-31: implement started on branch m328-ci-arm-and-wake; untracked `cairn-probe.log` and `tsconfig.json` left unstaged (not this milestone's).
+- 2026-10-31: question set (implement stop): jmgirard/cairn-wait-lab no longer existed — user granted creating it again as a private repo with one workflow and two draft PRs.
+- 2026-10-31: T1 armed: lab PR #1 (green, 720 s job, run 41215428891) and PR #2 (gate fails after 180 s, run 41215432313), each `gh pr checks <N> --watch --fail-fast` in `run_in_background` with a wake line; turn ended at ~15:34 UTC to observe idle wakes.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
