@@ -228,3 +228,14 @@ Pass 2 (2026-10-31). Default branch unmoved; PR #342 open; Copilot state `none`,
 - ripple #5: `test_resume_routing.py:337` and `test_mutation_harness.py` comments name a hotfix timeout close — fix now
 - ripple #6: DESIGN Known issue's "CI stop" — reject (false: red CI and the new bound are still CI stops)
 - ripple #7: `wait-mechanisms.md` implications paragraph omits W24–W26 — fix now
+
+Pass 3 (2026-10-31), after return 2 (T8, fixed 017b2472 for every pass-2 fix-now line above). Default branch unmoved.
+
+- AC1: wait-rule section, whitespace-collapsed, 1 match each for: "Otherwise arm `gh pr checks <N> --watch --fail-fast` as a Bash `run_in_background` task"; the wake line naming PR number, status, resume command; "End the turn with a close block whose CI line says that in the Claude Code desktop app the session resumes by itself when CI ends"; "its fenced next command is that resume command"; "If any check failed, take the red-CI path. Otherwise, if a check is pending, arm the watch again"; "If every check passed (a skipped check counts as passed), go on to the merge"; closed-PR and no-checks clauses; reads with `gh pr checks <N>` and `gh pr view <N> --json state,headRefOid`; foreground `gh pr checks` in the section: 0; stop list (600) names a one-hour bound, not a harness-ceiling stop; On timeout names local commands and Monitors. Pass.
+- AC2: "The one exception is a merge's armed CI watch above, the one watcher a turn can end on" (1); commit still barred; "is safe and loses nothing" (1); unarmed wake line "shows the user the line and its resume command and runs nothing" (1); early-stop clause names the armed turn end (613-615). Pass.
+- AC3: AC3 grep lists 11 lines in the two skills; each states the background watch (review 710-729, 760; hotfix 504-521, 536) or reads state with no wait (review 743, hotfix 543); none is a foreground or ceiling-bound wait; resume commands `/milestone-review M<NNN>` and `/hotfix <PR reference>` in each wake line. Pass.
+- AC4: "A session never turns such a monitor on for a merge wait" (1) with the head-commit rule. Pass.
+- AC5: W24, W25 unchanged; the rule cites "(W24, W25 — the host observed)" and names the Claude Code desktop session. Pass.
+- AC6: the AC6 grep outside the rewritten blocks lists 23 lines; README 710 (desktop app, resume command elsewhere), hotfix 120/194/208/217/417, review 79, implement 335, tracking-rules 352/600/615/625-627 agree; PROFILE:68 and cairn-release 122-126 are local or no-CI text; CHANGELOG Unreleased entry present. Pass.
+- Gate: `cairn_validate` exit 0, 0 FAIL/WARN lines; verify on the review head: skills/tests 983 OK, scripts and hooks suites exit 0, plugin and marketplace validate exit 0, `claude plugin test` 2466 pass, 0 fail; marketplace validate prints no `version` warning; CHANGELOG entry present with no milestone number; no DESIGN principle changed.
+- spawned: diff-bug, blame-history, prior-review, ripple
