@@ -8,12 +8,13 @@
   `/milestone-review` and `/hotfix` start `gh pr checks --watch
   --fail-fast` as a background task and end the turn. When the watch ends,
   the task's notification starts the session again with no message from
-  you. The session then merges on green, fixes a red run, or waits again if
-  a push restarted CI. Before, a CI run longer than 10 minutes stopped the
-  session, and you reran the skill after checking GitHub. The turn that
-  starts the wait still ends with the resume command, for an app where no
-  wake comes. A wake line that reaches a session that did not start the
-  watch, for example after `/clear`, is shown to you and not acted on.
+  you. On green the session merges, and on red it fixes the run. If a push
+  restarted CI, it waits again. Before, a CI run longer than 10 minutes
+  stopped the session, and you reran the skill after checking GitHub. The
+  turn that starts the wait still ends with the resume command, for an app
+  where no wake comes. After a `/clear`, a new session can get the wake
+  line of a watch that it did not start. It shows you that line and does
+  nothing else.
   cairn never turns on the desktop app's own PR monitor. If you turned it
   on, a red run that both report is handled once.
 
