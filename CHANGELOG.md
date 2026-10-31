@@ -4,6 +4,19 @@
 
 ### Changes that affect existing repos
 
+- **A merge waits for CI in the background.** After you approve a merge,
+  `/milestone-review` and `/hotfix` start `gh pr checks --watch
+  --fail-fast` as a background task and end the turn. When the watch ends,
+  the task's notification starts the session again with no message from
+  you. The session then merges on green, fixes a red run, or waits again if
+  a push restarted CI. Before, a CI run longer than 10 minutes stopped the
+  session, and you reran the skill after checking GitHub. The turn that
+  starts the wait still ends with the resume command, for an app where no
+  wake comes. A wake line that reaches a session that did not start the
+  watch, for example after `/clear`, is shown to you and not acted on.
+  cairn never turns on the desktop app's own PR monitor. If you turned it
+  on, a red run that both report is handled once.
+
 - **Candidate rows move on one ladder.** The rungs are high, normal, low,
   parked, Known issue, and dropped. Whoever writes or updates a row places
   it on a rung with a reason. A move can go up or down any number of

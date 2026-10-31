@@ -124,7 +124,7 @@ guard.
 - [x] T3: `/milestone-review` step 8, primary and companion arm, and its
       session-start resume prose about a stopped CI wait (~line 79, ~750).
 - [x] T4: `/hotfix` step 6 and its resume prose (~lines 120, 208).
-- [ ] T5: README's two stop lists (~709, ~892), the implement-stop CI line
+- [x] T5: README's two stop lists (~709, ~892), the implement-stop CI line
       (`milestone-implement` ~335), `cairn/PROFILE.md:68` and its
       `skills/shared/profiles/` copy, the `/cairn-release` site, and a
       CHANGELOG entry. Run the AC6 grep.

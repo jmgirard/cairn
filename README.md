@@ -706,8 +706,9 @@ The closing message gives `/clear` and the command that starts the next
 milestone of the same plan, so each milestone starts in a fresh context. Between the two
 questions Claude stops only for a short list of reasons: it needs your eyes
 or hands, an action the question set did not cover, a goal found wrong,
-repeated review failures, a CI wait that times out, and a few others that
-the rulebook lists. A run ends the same recognizable way: a short recap, a
+repeated review failures, red CI it cannot fix, and a few others that
+the rulebook lists. A CI wait before a merge is not a stop: Claude ends its
+turn while CI runs and picks up again by itself when CI finishes. A run ends the same recognizable way: a short recap, a
 status table, and the next command in a copyable block. If a run stopped,
 typing `/milestone-implement` or `/milestone-review` with the milestone id
 resumes it. A stop that finds the goal wrong names `/milestone-plan`
@@ -889,8 +890,9 @@ profile.
 - **A run stops only for a listed reason.** It stops when it needs your eyes
   or hands, for an action the question set did not cover, when the goal is
   found wrong or a change would drop something you asked for, after repeated
-  review failures, at a CI wait that times out, and at a few others the
-  rulebook lists. Walking away at a stop is always safe: the last checkpoint
+  review failures, at red CI it cannot fix, and at a few others the
+  rulebook lists. While CI runs before a merge, the session waits in the
+  background and resumes by itself when CI finishes. Walking away at a stop is always safe: the last checkpoint
   commit holds the state, and typing `/milestone-implement` or
   `/milestone-review` with the milestone id resumes the run.
 - **Merges are yours.** Nothing reaches your default branch without your
