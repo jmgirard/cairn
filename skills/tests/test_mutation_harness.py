@@ -120,7 +120,7 @@ REGISTRY = [
         guard="test_cost_audit_line",
         test="TestCostAuditLine.test_the_rulebook_line_carries_its_seeded_baseline",
         target=MILESTONE,
-        block="855 lines / 84,618 bytes",
+        block="872 lines / 86,398 bytes",
     ),
     Mutation(
         guard="test_cost_audit_line",
@@ -3753,6 +3753,39 @@ REGISTRY += [
         target=RULES,
         block="no watcher is left armed at a commit, a turn end, or a "
               "`/clear` point",
+    ),
+    # M328: the merge CI wait, its red-before-pending order, the host
+    # monitor exception, and the armed turn-end exception.
+    Mutation(
+        guard="test_wait_rule",
+        test="TestWaitRuleMergeWait.test_merge_wait_arms_a_background_watch",
+        target=RULES,
+        block="has four steps. (a) Arm `gh",
+    ),
+    Mutation(
+        guard="test_wait_rule",
+        test="TestWaitRuleMergeWait.test_a_failed_check_wins_over_a_pending_one",
+        target=RULES,
+        block="If any check failed, take the red-CI path.",
+    ),
+    Mutation(
+        guard="test_wait_rule",
+        test="TestWaitRuleMergeWait.test_host_monitor_is_the_one_watcher_exception",
+        target=RULES,
+        block="never\nturns such a monitor on for a merge wait",
+    ),
+    Mutation(
+        guard="test_wait_rule",
+        test="TestWaitRuleArmedTurnEnd."
+             "test_the_merge_watch_is_the_one_turn_end_exception",
+        target=RULES,
+        block="The one exception is a merge's armed",
+    ),
+    Mutation(
+        guard="test_wait_rule",
+        test="TestWaitRuleArmedTurnEnd.test_an_unarmed_wake_line_runs_nothing",
+        target=RULES,
+        block="the line and its resume command and runs nothing.",
     ),
 ]
 

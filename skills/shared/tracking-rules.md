@@ -394,11 +394,10 @@ assumes **one operator running these skills** per repo, in owner mode or in gues
 outside contributions come in through intake.
 
 **Waiting on CI and background work** (the observations behind every clause: `cairn/references/wait-mechanisms.md`). One
-watcher per wait: a run, command, or subagent is watched by one mechanism at a time, never two on the same thing.
-One exception: a host app's own PR monitor that the user turned on, such as the desktop app's Auto-fix. A session
-never turns such a monitor on for a merge wait, the
-monitor does not replace the armed watch below, and a red result for a head commit the session already acted on is
-not acted on again. **A merge's CI wait** (`/milestone-review` step 8, `/hotfix` step 6) has four steps. (a) Arm `gh
+watcher per wait: a run, command, or subagent is watched by one mechanism at a time, never two on the same thing. One
+exception: a host app's own PR monitor that the user turned on, such as the desktop app's Auto-fix. A session never
+turns such a monitor on for a merge wait, the monitor does not replace the armed watch below, and a red result for a
+head commit the session already acted on is not acted on again. **A merge's CI wait** (`/milestone-review` step 8, `/hotfix` step 6) has four steps. (a) Arm `gh
 pr checks <N> --watch --fail-fast` as a Bash `run_in_background` task. (b) After the watch exits, that task prints
 one wake line naming the PR number, the watch's exit status, and the invoking skill's resume command. The task's own
 exit code is the `echo`'s, so the status is read from the line (W26). (c) End the turn with a close block whose CI

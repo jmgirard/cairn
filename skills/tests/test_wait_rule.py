@@ -84,6 +84,61 @@ class TestWaitRuleStopPoint(unittest.TestCase):
         )
 
 
+class TestWaitRuleMergeWait(unittest.TestCase):
+    """M328 AC1, AC4: a merge's CI wait arms a background watch, ends the
+    turn, and acts at the notification, red before pending; a host app's
+    PR monitor the user turned on is the one exception to one watcher."""
+
+    def setUp(self):
+        self.para = section(rules(), "**Waiting on CI and background work**",
+                            "## Context hygiene")
+
+    def test_merge_wait_arms_a_background_watch(self):
+        self.assertRegex(
+            self.para,
+            r"\*\*A\s+merge's\s+CI\s+wait\*\*.*?has\s+four\s+steps\.\s+\(a\)\s+Arm"
+            r"\s+`gh\s+pr\s+checks\s+<N>\s+--watch\s+--fail-fast`\s+as\s+a\s+Bash"
+            r"\s+`run_in_background`\s+task\.",
+        )
+
+    def test_a_failed_check_wins_over_a_pending_one(self):
+        self.assertRegex(
+            self.para,
+            r"If\s+any\s+check\s+failed,\s+take\s+the\s+red-CI\s+path\.\s+Otherwise,"
+            r"\s+if\s+a\s+check\s+is\s+pending",
+        )
+
+    def test_host_monitor_is_the_one_watcher_exception(self):
+        self.assertRegex(
+            self.para,
+            r"A\s+session\s+never\s+turns\s+such\s+a\s+monitor\s+on\s+for\s+a\s+merge"
+            r"\s+wait",
+        )
+
+
+class TestWaitRuleArmedTurnEnd(unittest.TestCase):
+    """M328 AC2: the armed merge watch is the one watcher a turn can end
+    on, and a wake line a session did not arm is shown, never acted on."""
+
+    def setUp(self):
+        self.para = section(rules(), "**Waiting on CI and background work**",
+                            "## Context hygiene")
+
+    def test_the_merge_watch_is_the_one_turn_end_exception(self):
+        self.assertRegex(
+            self.para,
+            r"The\s+one\s+exception\s+is\s+a\s+merge's\s+armed\s+CI\s+watch\s+above,"
+            r"\s+the\s+one\s+watcher\s+a\s+turn\s+can\s+end\s+on",
+        )
+
+    def test_an_unarmed_wake_line_runs_nothing(self):
+        self.assertRegex(
+            self.para,
+            r"shows\s+the\s+user\s+the\s+line\s+and\s+its\s+resume\s+command\s+and"
+            r"\s+runs\s+nothing\.",
+        )
+
+
 class TestSupersededWordingIsGone(unittest.TestCase):
     """AC3: the retired spelling no longer appears in the shipped rulebook
     or the three skill sites (spelled by concatenation here so this guard

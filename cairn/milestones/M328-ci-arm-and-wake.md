@@ -128,7 +128,7 @@ guard.
       (`milestone-implement` ~335), `cairn/PROFILE.md:68` and its
       `skills/shared/profiles/` copy, the `/cairn-release` site, and a
       CHANGELOG entry. Run the AC6 grep.
-- [ ] T6: Update `skills/tests/test_wait_rule.py` and its
+- [x] T6: Update `skills/tests/test_wait_rule.py` and its
       `test_mutation_harness.py` entries; re-seed the rulebook-mass baseline
       in its three places. Run both gating suites, `claude plugin validate`,
       and the hand-run `skills/tests`.
@@ -156,6 +156,7 @@ guard.
 - 2026-10-31: T2 done: wait rule gains the four-step merge CI wait, the host-monitor exception to one watcher per wait, the stop-point exception with the `/clear` and unarmed-wake-line handling; the ceiling note moved to the local-command clause; On timeout now names local commands and Monitors; stop list reads "a local check that times out"; early-stop clause names the armed turn end; CI-line site list updated. D-229 written (appended by shell heredoc against the Write/Edit rule; content checked). Removed lines diffed against main: only the foreground CI clause and the old site list went.
 - 2026-10-31: T3, T4 done: `/milestone-review` step 8 (primary and companion arm) and `/hotfix` step 6 arm the watch with a one-line command printing the wake line and its resume command, end the turn with a close block naming it, and act at the notification; the ceiling and TaskStop text left both sites; resume prose names "a CI wait whose wake never came". `test_resume_routing` updated for that wording; two mutation blocks kept on one line; hand-run `skills/tests` green (977).
 - 2026-10-31: T5 done: README's two stop lists now say red CI it cannot fix, and that a merge's CI wait resumes by itself; CHANGELOG Unreleased entry added. AC6 sweep: `cairn/PROFILE.md:68` (no-CI note), `milestone-implement:335` (waits on CI at its merge step), hotfix 194/208/217 (marker resume, step 6's CI wait), `milestone:167` (status read) still agree; `/cairn-release` site is local checks (Out); `skills/shared/profiles/` has no copy of the no-CI line.
+- 2026-10-31: T6 done: `test_wait_rule.py` gains five pins (merge wait arms in the background, failed before pending, host-monitor exception, armed turn-end exception, unarmed wake line runs nothing), each registered in the mutation table and red when blanked; rulebook baseline re-seeded to 872 lines / 86,398 bytes in `milestone/SKILL.md` and its two pins. verify: scripts 446 OK, hooks 210 OK, plugin and marketplace validate exit 0 (warnings are the untracked `cairn-probe.log`/`tsconfig.json`), plugin test 2466 pass; hand-run skills/tests 982 OK; cairn_validate green.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
