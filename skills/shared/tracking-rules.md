@@ -397,7 +397,8 @@ outside contributions come in through intake.
 watcher per wait: a run, command, or subagent is watched by one mechanism at a time, never two on the same thing. One
 exception: a host app's own PR monitor that the user turned on, such as the desktop app's Auto-fix. A session never
 turns such a monitor on for a merge wait, the monitor does not replace the armed watch below, and a red result for a
-head commit the session already acted on is not acted on again. **A merge's CI wait** (`/milestone-review` step 8, `/hotfix` step 6) has four steps. (a) Arm `gh
+head commit the session already acted on is not acted on again.
+**A merge's CI wait** (`/milestone-review` step 8, `/hotfix` step 6) has four steps. (a) Arm `gh
 pr checks <N> --watch --fail-fast` as a Bash `run_in_background` task. (b) After the watch exits, that task prints
 one wake line naming the PR number, the watch's exit status, and the invoking skill's resume command. The task's own
 exit code is the `echo`'s, so the status is read from the line (W26). (c) End the turn with a close block whose CI
@@ -407,7 +408,8 @@ desktop session (W24, W25 — the host observed), read the check state with `gh 
 with `gh pr view <N> --json state`. If any check failed, take the red-CI path. Otherwise, if a check is pending (a
 push moved the head), arm the watch again. If every check passed, go on to the merge. A PR no longer open follows
 "Resume is stateless" below, and one that reports no checks follows the no-checks clause. A red run ends the watch
-in seconds, and a green run of any length ends it with no stop. **A long-running local command** (a suite, a build):
+at its first failed check (W2, W24), and a green run of any length ends it with no stop. A merge after a moved head
+still takes the invoking skill's own head check. **A long-running local command** (a suite, a build):
 foreground with a timeout when it fits; otherwise Bash `run_in_background`, acted on at its completion notification
 — its `timeout` does not end it; at the harness ceiling a foreground command is moved to the background, not killed
 (one starting with `sleep`, containing `git`, or unparseable as a compound is stopped instead). A Monitor is for a
@@ -422,9 +424,10 @@ arrive.
 **Stop points**: no watcher is left armed at a commit, a turn end, or a `/clear` point — a background task ends only at
 completion or `TaskStop`, a Monitor at those or its own `timeout_ms`, and no doc states that `/clear` stops either (a
 closed issue reports survival), so the session stops it with `TaskStop` first. The one exception is a merge's armed
-CI watch above, the one watcher a turn can end on: it is armed after the turn's last commit, and a `/clear` while it
-is armed is safe. A session that gets a wake line from a watch it did not arm, as after a `/clear`, shows the user
-the line and its resume command and runs nothing. A `/loop` or scheduled task is not a CI wait. **Resume is
+CI watch above, the one watcher a turn can end on: it is armed after the turn's last commit, so a `/clear` while it
+is armed loses nothing (the watch is documented to survive it, W20, and whether its notification then reaches the
+new session is unobserved). A session that gets a wake line from a watch it did not arm, as after a `/clear`, shows
+the user the line and its resume command and runs nothing. A `/loop` or scheduled task is not a CI wait. **Resume is
 stateless**: re-derive the check state from `gh pr checks` and the PR's merge state from `gh pr view <N> --json
 state` (PR URL: the milestone header), never a remembered "CI was running" or "not yet merged".
 

@@ -715,14 +715,19 @@ the session, re-enters here, at the step the record shows is next:
    The task's own exit code is the `echo`'s, so read the watch's status
    from that wake line. End the turn with a close block whose CI line
    (tracking-rules close-block shape) says the session resumes by itself
-   when CI ends, and whose fenced next command is
-   `/milestone-review M<NNN>` for a host where no wake comes; the
+   when CI ends, and that typing the fenced command instead re-poses the
+   approval and waits again; the fenced next command is
+   `/milestone-review M<NNN>` for a host where no wake comes, and the
    Session-start resume route re-derives the merge state. At the task's
    completion notification, read `gh pr checks <N>` and
    `gh pr view <N> --json state`: a failed check takes the red-CI path
    below, a pending one (a push moved the head) arms the watch again, and
-   every check passed goes on to the merge. A PR no longer open takes the
-   Session-start routes. Never merge past red or pending CI. A PR that
+   every check passed goes on to the merge once
+   `gh pr view <N> --json headRefOid` still reads the head this step
+   pushed. A head that moved since the approval, by a push the session did
+   not make, merges nothing: stop with a close block naming the new head,
+   whose fenced next command is `/milestone-review M<NNN>`. A PR no longer
+   open takes the Session-start routes. Never merge past red or pending CI. A PR that
    reports no checks makes the watch exit 1 at once, and it is mergeable
    on local green where the profile's consistency-gate says so — but a PR
    created moments ago can report no checks before GitHub registers them,
