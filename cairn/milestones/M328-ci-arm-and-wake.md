@@ -241,3 +241,31 @@ Pass 3 (2026-10-31), after return 2 (T8, fixed 017b2472 for every pass-2 fix-now
 - AC6: the AC6 grep outside the rewritten blocks lists 23 lines; README 710 (desktop app, resume command elsewhere), hotfix 120/194/208/217/417, review 79, implement 335, tracking-rules 352/600/615/625-627 agree; PROFILE:68 and cairn-release 122-126 are local or no-CI text; CHANGELOG Unreleased entry present. Pass.
 - Gate: `cairn_validate` exit 0, 0 FAIL/WARN lines; verify on the review head: skills/tests 983 OK, scripts and hooks suites exit 0, plugin and marketplace validate exit 0, `claude plugin test` 2466 pass, 0 fail; marketplace validate prints no `version` warning; CHANGELOG entry present with no milestone number; no DESIGN principle changed.
 - spawned: diff-bug, blame-history, prior-review, ripple
+- diff-bug #1: the one-hour `perl` alarm never ends `gh` (Go ignores SIGALRM; verified: `gh` under a 2 s alarm exited 0, `cat` exited 142), so a never-settling watch still hangs — load-bearing; held for the thrash-stop choice
+- diff-bug #2: a 142 exit with a pending check reads as re-arm before the 142 stop — held (moot until #1 is fixed)
+- diff-bug #3: no head check before the red path, so a foreign failing head is "fixed" on a stale local branch — held
+- diff-bug #4: "the head the session pushed" never holds for an adopted fork PR — held
+- diff-bug #5: `/milestone-review` has no recorded head (marker has no oid, merge has no `--match-head-commit`) — held; overlaps the existing DESIGN Known issue on bare merges
+- diff-bug #6: neutral and cancelled checks still have no branch — held
+- diff-bug #7: "a failed read" is undefined against `gh pr checks` exit 1 and 8 — held
+- diff-bug #8: a tree already dirty at arm time stalls every wake — held
+- diff-bug #9: the typed-resume `TaskStop` sits in step 8/6, after the routes that run first — held
+- diff-bug #10: a failed `exec` reports exit 0 — held
+- diff-bug #11: `wait-mechanisms.md` states a no-wake-for-early-exit claim with no W row — held
+- diff-bug #12: a wake can merge an hour later with no check that the default branch moved — held (pre-existing, window longer)
+- blame-history #1: the wake merges with no read of `reviewDecision`, so a changes-requested review during the wait is merged past — load-bearing (outward, irreversible); held
+- blame-history #2: as diff-bug #5 — held
+- blame-history #3: review's "merges and re-arms nothing" reads as authorizing a merge — held
+- blame-history #4: the `cancel` bucket has no branch — held (as diff-bug #6)
+- blame-history #5: no observable test for "a watch it did not arm" — held
+- blame-history #6: (a)'s "straight to (d)" names a notification step; companion branch check runs in the primary checkout — held
+- blame-history #7: README's self-resume lacks the `/clear`-or-other-work exception — held
+- prior-review #1: as blame-history #3 — held
+- prior-review #2: "W20 reports the watch surviving" still overstates an unobserved row — held
+- prior-review #3: the rule's no-checks path skips the fresh-PR re-read the skill sites keep — held
+- prior-review #4: as diff-bug #5 — held
+- ripple #1: "loses nothing" is not observed — held (as prior-review #2)
+- ripple #2: `wait-mechanisms.md` implications paragraph still states the foreground conclusion — reject (false: framed as M170's finding, with M328's note above it)
+- ripple #3: DESIGN Known issue's "CI stop" — reject (false: red CI and the bound are CI stops)
+- ripple #4: test names keep "timeout" vocabulary — reject (style: names only)
+- ripple #5: copilot-review's unconditional safety line — reject (false: that skill arms no merge watch)
