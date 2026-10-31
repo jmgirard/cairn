@@ -8,7 +8,7 @@ _Released 1.0.0 (2026-07-16) to 2.1.0 (2026-10-18), each tagged `v<version>`; 1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M328 | Wait for CI without stopping the session | in-progress | — | normal | milestones/M328-ci-arm-and-wake.md |
+| M328 | Wait for CI without stopping the session | review | — | normal | milestones/M328-ci-arm-and-wake.md |
 | M327 | Let triage move a row to any rung | done | — | normal | milestones/archive/M327-candidate-ladder.md |
 | M326 | Let triage settle rows with no condition | done | — | normal | milestones/archive/M326-triage-conditionless-rows.md |
 | M325 | Vet a hotfix on a resumed merge | done | — | normal | milestones/archive/M325-resumed-hotfix-vet.md |
