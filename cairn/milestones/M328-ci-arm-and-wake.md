@@ -121,9 +121,9 @@ guard.
       timeout-stop sites. Write the D-entry that supersedes D-128's
       foreground CI clause and stop-point clause and narrows its one-watcher
       clause, and annotates D-130. Diff every removed sentence against main.
-- [ ] T3: `/milestone-review` step 8, primary and companion arm, and its
+- [x] T3: `/milestone-review` step 8, primary and companion arm, and its
       session-start resume prose about a stopped CI wait (~line 79, ~750).
-- [ ] T4: `/hotfix` step 6 and its resume prose (~lines 120, 208).
+- [x] T4: `/hotfix` step 6 and its resume prose (~lines 120, 208).
 - [ ] T5: README's two stop lists (~709, ~892), the implement-stop CI line
       (`milestone-implement` ~335), `cairn/PROFILE.md:68` and its
       `skills/shared/profiles/` copy, the `/cairn-release` site, and a
@@ -154,6 +154,7 @@ guard.
 - 2026-10-31: T1 red wake: the idle session was started with no user message by PR #2's task notification (task exit 0; wake line "watch exited 1 at 15:36:54"); step (d) read `gate` fail and `long` pending, so the failed check won over the pending one (red path); turn ended again for PR #1.
 - 2026-10-31: T1 done: green wake on PR #1 (run 12 min 5 s, watch exited 0 at 15:45:47, idle session started with no user message, step (d) read both checks pass → merge branch); rows W24–W26 added to `wait-mechanisms.md`, W26 recording that the task's exit code is the `echo`'s, so the rule reads the status from the wake line; hand-run `skills/tests` green (977).
 - 2026-10-31: T2 done: wait rule gains the four-step merge CI wait, the host-monitor exception to one watcher per wait, the stop-point exception with the `/clear` and unarmed-wake-line handling; the ceiling note moved to the local-command clause; On timeout now names local commands and Monitors; stop list reads "a local check that times out"; early-stop clause names the armed turn end; CI-line site list updated. D-229 written (appended by shell heredoc against the Write/Edit rule; content checked). Removed lines diffed against main: only the foreground CI clause and the old site list went.
+- 2026-10-31: T3, T4 done: `/milestone-review` step 8 (primary and companion arm) and `/hotfix` step 6 arm the watch with a one-line command printing the wake line and its resume command, end the turn with a close block naming it, and act at the notification; the ceiling and TaskStop text left both sites; resume prose names "a CI wait whose wake never came". `test_resume_routing` updated for that wording; two mutation blocks kept on one line; hand-run `skills/tests` green (977).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->

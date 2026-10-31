@@ -237,7 +237,8 @@ class TestHotfixMergedPrReentry(unittest.TestCase):
             "A PR-reference argument whose `gh pr view <N> --json "
             "state,headRefName` reports `MERGED` and a head branch not "
             "matching `m<nnn>-*` (a hotfix branch or an adopted PR, merged "
-            "outside the session or after a stopped CI wait) states in chat that "
+            "outside the session or after a CI wait whose wake never came) "
+            "states in chat that "
             "the hotfix bar never ran before this merge, then runs a post-hoc "
             "verification of the merged diff before step 7",
             self.step1,
