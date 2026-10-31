@@ -394,25 +394,40 @@ assumes **one operator running these skills** per repo, in owner mode or in gues
 outside contributions come in through intake.
 
 **Waiting on CI and background work** (the observations behind every clause: `cairn/references/wait-mechanisms.md`). One
-watcher per wait: a run, command, or subagent is watched by one mechanism at a time, never two on the same thing. **CI
-checks**: a foreground Bash `gh pr checks <pr> --watch --fail-fast` with a `timeout` below the harness ceiling — a red
-run ends it in seconds; at the ceiling a foreground command is moved to the background, not killed (one starting with
-`sleep`, containing `git`, or unparseable as a compound is stopped instead) — the stale watcher this rule exists to
-prevent. **A long-running local command** (a suite, a build): foreground with a timeout when it fits; otherwise Bash
-`run_in_background`, acted on at its completion notification — its `timeout` does not end it. A Monitor is for a stream
-of events (each check as it lands), always with `timeout_ms` set — it is killed at that time, says so, and is then gone
-(`TaskStop` finds nothing). **A background subagent**: its own completion notification; nothing polls it. **On timeout**
-(a foreground call moved to the background; a Monitor's timeout event): report the fresh state from `gh pr checks`, log
-one line, `TaskStop` a moved task, and stop with a close block whose fenced next command is the invoking skill's own
-command (`/milestone-review M<NNN>`, `/hotfix`, `/cairn-release`) — the resume door. **No checks** (`gh pr checks`
-prints "no checks reported" and exits 1 at once, `--watch` included): the PR is mergeable on local green where the
-profile's consistency-gate says so (one source: the git model's `cairn/**` bullet); never wait for a check that will
-not arrive.
+watcher per wait: a run, command, or subagent is watched by one mechanism at a time, never two on the same thing.
+One exception: a host app's own PR monitor that the user turned on, such as the desktop app's Auto-fix. A session
+never turns such a monitor on for a merge wait, the
+monitor does not replace the armed watch below, and a red result for a head commit the session already acted on is
+not acted on again. **A merge's CI wait** (`/milestone-review` step 8, `/hotfix` step 6) has four steps. (a) Arm `gh
+pr checks <N> --watch --fail-fast` as a Bash `run_in_background` task. (b) After the watch exits, that task prints
+one wake line naming the PR number, the watch's exit status, and the invoking skill's resume command. The task's own
+exit code is the `echo`'s, so the status is read from the line (W26). (c) End the turn with a close block whose CI
+line says the session resumes by itself when CI ends and whose fenced next command is that resume command, for a
+host where no wake comes. (d) At that task's completion notification, which starts a new turn in an idle Claude Code
+desktop session (W24, W25 — the host observed), read the check state with `gh pr checks <N>` and the merge state
+with `gh pr view <N> --json state`. If any check failed, take the red-CI path. Otherwise, if a check is pending (a
+push moved the head), arm the watch again. If every check passed, go on to the merge. A PR no longer open follows
+"Resume is stateless" below, and one that reports no checks follows the no-checks clause. A red run ends the watch
+in seconds, and a green run of any length ends it with no stop. **A long-running local command** (a suite, a build):
+foreground with a timeout when it fits; otherwise Bash `run_in_background`, acted on at its completion notification
+— its `timeout` does not end it; at the harness ceiling a foreground command is moved to the background, not killed
+(one starting with `sleep`, containing `git`, or unparseable as a compound is stopped instead). A Monitor is for a
+stream of events (each check as it lands), always with `timeout_ms` set — it is killed at that time, says so, and is
+then gone (`TaskStop` finds nothing). **A background subagent**: its own completion notification; nothing polls it.
+**On timeout** (a local command's foreground call moved to the background; a Monitor's timeout event): report the
+fresh state, log one line, `TaskStop` a moved task, and stop with a close block whose fenced next command is the
+invoking skill's own command (`/cairn-release`, say) — the resume door. **No checks** (`gh pr checks` prints "no
+checks reported" and exits 1 at once, `--watch` included): the PR is mergeable on local green where the profile's
+consistency-gate says so (one source: the git model's `cairn/**` bullet); never wait for a check that will not
+arrive.
 **Stop points**: no watcher is left armed at a commit, a turn end, or a `/clear` point — a background task ends only at
 completion or `TaskStop`, a Monitor at those or its own `timeout_ms`, and no doc states that `/clear` stops either (a
-closed issue reports survival), so the session stops it with `TaskStop` first. A `/loop` or scheduled task is not a
-CI wait. **Resume is stateless**: re-derive the check state from `gh pr checks` and the PR's merge state from
-`gh pr view <N> --json state` (PR URL: the milestone header), never a remembered "CI was running" or "not yet merged".
+closed issue reports survival), so the session stops it with `TaskStop` first. The one exception is a merge's armed
+CI watch above, the one watcher a turn can end on: it is armed after the turn's last commit, and a `/clear` while it
+is armed is safe. A session that gets a wake line from a watch it did not arm, as after a `/clear`, shows the user
+the line and its resume command and runs nothing. A `/loop` or scheduled task is not a CI wait. **Resume is
+stateless**: re-derive the check state from `gh pr checks` and the PR's merge state from `gh pr view <N> --json
+state` (PR URL: the milestone header), never a remembered "CI was running" or "not yet merged".
 
 ## Collaboration mode
 
@@ -568,7 +583,7 @@ stop whose choice is the user's is posed as a chip; any other stop ends with the
   sees from the plan included),
 - the repeated review-failure stop (`/milestone-review` step 4's thrash rule, and the second amendment return or the
   second re-audit on one criterion),
-- a CI wait that times out, or red CI that the agent cannot fix,
+- a local check that times out, or red CI that the agent cannot fix,
 - a guard hook's denial,
 - a stop at a task boundary for context hygiene,
 - the offer to escalate to a Fable review (`/milestone-brief`),
@@ -580,7 +595,9 @@ ends the turn, and the work stops there until the user speaks again. Four ending
 record, or a next phase is still owed: a recap that closes by naming the next step instead of taking it; an offer to
 carry on unless the user prefers otherwise, which waits for an answer the user was not going to give; a list of
 decisions for the user when none of them is a stop on the list above; and stopping to report because the turn has been
-long, a task landed, or a phase ended. A phase end inside a run is a Skill-tool call, never a stop. A session that
+long, a task landed, or a phase ended. A phase end inside a run is a Skill-tool call, never a stop. One turn end is
+not an early stop: the turn that arms a merge's CI watch ends on it, and the watch's completion notification resumes
+the run (the wait rule's merge CI wait). A session that
 notices itself inviting the user to redirect it or offering to wait deletes that and does the next thing. An open
 decision that is not on the stop list is decided, recorded in a work-log line, and acted on. Nothing here overrides
 confirmation before a risky or destructive action.
@@ -592,8 +609,9 @@ sentences, plain words); a status table or line (unit of work, status, branch/PR
 where the unit of work has a branch or an open PR, a **CI line**, one plain-language sentence stating whether the
 fenced next command waits on CI itself and what the user does meanwhile. A bare check state ("CI: running") never
 satisfies it, and it is what disposes of the status line's check results. It is restated at four sites
-(`/milestone-implement`'s stop close, and the three timeout stops: `/milestone-review` step 8, `/hotfix` step 6,
-`/cairn-release` step 3), every other such close inheriting it by citation. Then the next command or commands in fenced
+(`/milestone-implement`'s stop close, the merge CI waits of `/milestone-review` step 8 and `/hotfix` step 6, and
+`/cairn-release` step 3's timeout stop), every other such close inheriting it by citation. Then the next command or
+commands in fenced
 blocks, primary first, each with a one-line plain-language label; at a stop inside a run the primary is the typed
 command that resumes it (`/milestone-implement <id>` or `/milestone-review <id>`), unless the stop's step names
 another (the goal-wrong stop's `/milestone-plan`, the guest handoff's `/milestone`). Last, one line noting that adjusting

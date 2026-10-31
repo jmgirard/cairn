@@ -114,7 +114,7 @@ guard.
       "continue". Record rows W24 onward in `wait-mechanisms.md`: run URL,
       wake line, what the woken turn did. No idle wake → goal-wrong stop,
       close block with `/milestone-plan`.
-- [ ] T2: Rewrite the wait rule (`tracking-rules.md:396-415`): the CI-checks
+- [x] T2: Rewrite the wait rule (`tracking-rules.md:396-415`): the CI-checks
       sentence, the one-watcher exception, the stop-point clause, the
       On-timeout clause for merge waits, the stop list's "a CI wait that
       times out", the early-stop clause, and the close block's list of four
@@ -153,6 +153,7 @@ guard.
 - 2026-10-31: T1 armed: lab PR #1 (green, 720 s job, run 41215428891) and PR #2 (gate fails after 180 s, run 41215432313), each `gh pr checks <N> --watch --fail-fast` in `run_in_background` with a wake line; turn ended at ~15:34 UTC to observe idle wakes.
 - 2026-10-31: T1 red wake: the idle session was started with no user message by PR #2's task notification (task exit 0; wake line "watch exited 1 at 15:36:54"); step (d) read `gate` fail and `long` pending, so the failed check won over the pending one (red path); turn ended again for PR #1.
 - 2026-10-31: T1 done: green wake on PR #1 (run 12 min 5 s, watch exited 0 at 15:45:47, idle session started with no user message, step (d) read both checks pass → merge branch); rows W24–W26 added to `wait-mechanisms.md`, W26 recording that the task's exit code is the `echo`'s, so the rule reads the status from the wake line; hand-run `skills/tests` green (977).
+- 2026-10-31: T2 done: wait rule gains the four-step merge CI wait, the host-monitor exception to one watcher per wait, the stop-point exception with the `/clear` and unarmed-wake-line handling; the ceiling note moved to the local-command clause; On timeout now names local commands and Monitors; stop list reads "a local check that times out"; early-stop clause names the armed turn end; CI-line site list updated. D-229 written (appended by shell heredoc against the Write/Edit rule; content checked). Removed lines diffed against main: only the foreground CI clause and the old site list went.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->

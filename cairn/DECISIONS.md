@@ -8303,3 +8303,41 @@ kept row that triage never revisits after a real change.
 **Consequences:** A triage pass can propose more moves, and the gate is
 the only check on each. The kept mark is a second note a row can carry
 beside a started token. Review's post-merge unpark step is unchanged.
+
+### D-229 (2026-10-31): A merge's CI wait arms a background watch and ends the turn, and its notification resumes the run — supersedes D-128's foreground CI-wait clause and its turn-end stop-point bar for that watch, narrows D-128's one-watcher clause, annotates D-130 (M328)
+
+**Context:** Under D-128 a merge's CI wait was a foreground
+`gh pr checks --watch --fail-fast` below the 600 s Bash ceiling. A run
+longer than that stopped the session (D-130's timeout stop), and the user
+watched CI on GitHub and then reran the skill. t3code's PR watcher shows
+the other shape: arm a watch, end the turn, and let the host start the
+agent again on news. M328 observed that a finished `run_in_background`
+task starts a new turn in an idle Claude Code desktop session, on a late
+red run and on a green run past the ceiling
+(`cairn/references/wait-mechanisms.md` W24–W26).
+
+**Decision:** A merge's CI wait arms `gh pr checks <N> --watch
+--fail-fast` in the background with a wake line that carries the PR, the
+watch's status, and the resume command, ends the turn with a close block
+that names that command, and at the notification re-reads check and merge
+state: a failed check takes the red path, a pending one re-arms, all
+passed merges. That watch is the one watcher a turn can end on; a commit
+still ends with no watcher, and a `/clear` while it is armed is safe, since
+a session that gets a wake line it did not arm shows it and runs nothing.
+A host app's PR monitor that the user turned on is the one exception to
+one-watcher-per-wait; a session never turns one on, and a red result for a
+head commit already acted on is not acted on again. Local commands, Monitors,
+subagents, and the no-checks case keep D-128's rule. D-130's resume route
+stays as the path for a host where no wake comes.
+
+Rejected at the plan gate: arming only after a foreground wait reached the
+ceiling (two mechanisms to state and resume), and a Monitor with
+`timeout_ms` (it dies at an hour at most, where `gh --watch` ends on its
+own). Rejected at the question set: deferring to the desktop app's monitor,
+which does not wake on a pass; waking on review comments and conflicts.
+
+**Consequences:** After the merge approval, the session merges on green
+with no rerun by the user. The observation that reopens this entry: a
+merge watch whose notification never arrived in a desktop session that
+followed the rule, or an armed watch found running past an hour on a hung
+run.
