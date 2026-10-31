@@ -151,6 +151,7 @@ guard.
 - 2026-10-31: implement started on branch m328-ci-arm-and-wake; untracked `cairn-probe.log` and `tsconfig.json` left unstaged (not this milestone's).
 - 2026-10-31: question set (implement stop): jmgirard/cairn-wait-lab no longer existed — user granted creating it again as a private repo with one workflow and two draft PRs.
 - 2026-10-31: T1 armed: lab PR #1 (green, 720 s job, run 41215428891) and PR #2 (gate fails after 180 s, run 41215432313), each `gh pr checks <N> --watch --fail-fast` in `run_in_background` with a wake line; turn ended at ~15:34 UTC to observe idle wakes.
+- 2026-10-31: T1 red wake: the idle session was started with no user message by PR #2's task notification (task exit 0; wake line "watch exited 1 at 15:36:54"); step (d) read `gate` fail and `long` pending, so the failed check won over the pending one (red path); turn ended again for PR #1.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
