@@ -60,7 +60,7 @@ guard.
       and no-checks clauses. The rule prescribes no foreground
       `gh pr checks --watch` for a merge wait, and its stop list and timeout
       clause name no ceiling stop for one.
-- [ ] AC2: Two clauses name the armed merge CI watch of AC1 as the one
+- [x] AC2: Two clauses name the armed merge CI watch of AC1 as the one
       watcher that a turn can end on: the stop-point clause of the wait rule
       and the early-stop clause in "Question gates and phase closes". The
       stop-point clause still bars a watcher at a commit. It states that a
@@ -178,3 +178,9 @@ Pass 1 (2026-10-31). PR #342 opened at review start (Copilot arm); Copilot reque
 - AC4: one-watcher clause names the host app's PR monitor exception, "A session never turns such a monitor on for a merge wait", and the head-commit rule (lines 397-400). Pass.
 - AC5: `wait-mechanisms.md` W24 (late red, PR #2 run 41215432313, failure at 15:36:54 after the turn ended ~15:34; woken turn read `gate` fail, `long` pending → red path) and W25 (green, PR #1 run 41215428891, 12 min 5 s; woken turn read both pass → merge branch), each an idle wake with no user message; the rule cites "(W24, W25 — the host observed)" and names the Claude Code desktop session. Pass.
 - AC6: the AC6 grep, outside the rewritten blocks, lists 23 lines; each that describes a merge's CI wait (README 710, hotfix 120/194/208/217/530, review 79, implement 335, tracking-rules 352/588/602/612-614) agrees; PROFILE:68 and cairn-release 122-126 (local checks, Out) do not describe a merge wait in conflict. CHANGELOG Unreleased line 7 entry. Pass.
+
+Pass 2 (2026-10-31). Default branch unmoved; PR #342 open; Copilot state `none`, requested again (exit 0), still `none` after: may not be recorded by GitHub (used-up Copilot credits are one cause).
+
+- AC2: stop-point clause at HEAD now reads "a `/clear` while it is armed is safe and loses nothing (the watch is documented to survive it, W20, and whether its notification then reaches the new session is unobserved)"; the merge watch is still the one turn-end exception, a commit still bars a watcher, an unarmed wake line "runs nothing", and the early-stop clause names the armed turn end (600-602). Pass.
+- AC1, AC3–AC6: the T7 diff (`git diff 75d56fb9..HEAD -- skills`) changes only the stop-point sentence and the baseline figure; their pass-1 evidence stands.
+- Gate: `cairn_validate` exit 0, no FAIL or WARN lines; verify on the review head: skills/tests 982 OK, scripts and hooks suites exit 0, plugin and marketplace validate exit 0, `claude plugin test` 2466 pass; marketplace validate prints no `version` warning; CHANGELOG Unreleased has the entry, with no milestone number; no DESIGN principle changed, so `cairn_impact` skipped.
