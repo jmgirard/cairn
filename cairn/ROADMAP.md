@@ -1,17 +1,16 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-10-30 (triage pass: 11 parked review-finding rows routed to Known issues — Tidy the resumed hotfix vet's stop, Match lesson citations after use marks, Check bare milestone ids in tests, List snapshots changed after a PR opens, Close the last triage title edge cases, Close the last trivial-route issue gaps, Copilot arm edges, Fix cut and odd names on the pane card, Keep a plan button when titles are empty, Match the parked icon blue to its title, Close the guest conflict sync edges; 2 compressed — Add a standalone /explore-sources skill, Send record-binding misses to amendment; no drops, no re-rates, no decision entry; validate green)_
+_Last hygiene check: 2026-10-31 (M328 merged: background merge CI wait; 3 parked rows and 1 Known issue added; 7 lessons marked used, 1 captured (25); M325 row pruned; skills/tests green; validate green)_
 
 ## Milestones
 _Released 1.0.0 (2026-07-16) to 2.1.0 (2026-10-18), each tagged `v<version>`; 1.5.0 was cut retroactively at edb6942._
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M328 | Wait for CI without stopping the session | review | — | normal | milestones/M328-ci-arm-and-wake.md |
+| M328 | Wait for CI without stopping the session | done | — | normal | milestones/archive/M328-ci-arm-and-wake.md |
 | M327 | Let triage move a row to any rung | done | — | normal | milestones/archive/M327-candidate-ladder.md |
 | M326 | Let triage settle rows with no condition | done | — | normal | milestones/archive/M326-triage-conditionless-rows.md |
-| M325 | Vet a hotfix on a resumed merge | done | — | normal | milestones/archive/M325-resumed-hotfix-vet.md |
 ## Candidates
 _Ordered high → normal → low → parked by each row's opening `[high]`/`[low]`/`[parked]` token, untagged = `normal`; `[parked]` = a promotion condition that has not held (tracking-rules "Candidate priority token", D-134, D-184); advisory within a level. Triage: D-027._
 - Let guest maintainers merge their PRs: in easystats/datawizard the operator is a maintainer who merges approved PRs, their own included, but the repo runs guest tracking (cairn/ untracked), and guest mode never merges (D-137). There a minor bug fix needs no review, and a larger change needs another maintainer's approving review first. Plan a guest repo where the operator merges on those terms; superseding D-137's never-merge clause is the decision. Raised by the easystats session at M315 implement — added 2026-10-22

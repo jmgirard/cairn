@@ -1363,3 +1363,8 @@ within each type and are never reused.
   `/hotfix` rebases it (diff-bug #10). If one of these occurs on a real
   guest PR, it becomes a `/hotfix` or a candidate row. Routed from
   candidates 2026-10-30; added 2026-10-21 — M309 review.
+- A merge CI watch has no time bound. A check that never settles, such as
+  a required check that a path filter skips or a fork run waiting for
+  approval, keeps the watch armed, and the session never wakes. Look at
+  the PR, then type the resume command that the turn ended with. Accepted
+  at the M328 gate.
