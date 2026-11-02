@@ -8503,10 +8503,11 @@ When no one asked and the maintainer question covers the work, that question
 says so. Otherwise it is a flaw on D-224's path, recorded in the `idea vet:`
 line, with options to build anyway, to name where someone asked, and not to
 build. If the plan can say what goes wrong for a user, a draft issue that
-the user posts is a further option, by D-155's shape. A named place that
-no read can reach, such as a call, goes on as the user named it, as D-233's
-question does. D-144's list of what the question set asks gains this
-question, and it can stand alone, as D-233's can. A text settles this check only, so D-204's
+the user posts comes first and is the recommended option, by D-155's shape.
+A named place that no read can reach, such as a call, goes on as the user
+named it, as D-233's question does. D-144's list of what the question set
+asks gains this question, and it can stand alone, as D-233's can. A text
+settles this check only, so D-204's
 sentence that an issue's wording answers none of the vet's questions stands
 for those questions. D-233's rejection of a plan-anyway option stands for its
 question, because rule (4) does not cover the work that this option serves.

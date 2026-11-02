@@ -350,9 +350,9 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    outside this work asked for it. A fix for a wrong number, a crash, or
    broken documented behavior is outside this check. For other work, the
    plan runs the maintainer decision's read, needed or not, and also reads
-   each issue or PR in any repo that the request or the row cites. Someone
-   asked when a person other than the operator asks for this change in one
-   of those texts. A report also counts if it describes a problem that the
+   each issue or PR in any repo that the request or the row cites, a PR's
+   body included. Someone asked when a person other than the operator asks
+   for this change in one of those texts. A report also counts if it describes a problem that the
    change fixes and that still occurs at the base head, which the plan
    checks in the code. A maintainer's agreement that the read finds counts
    too, and a maintainer's no is the flaw above. A text by the operator's
@@ -488,7 +488,7 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
      asked, the question says so, with what users lose or see change. For a
      fix outside that check, it says nothing on who asked.
    - the outside-demand flaw that step 2 finds, as one question of its own.
-     It says that "no one in the texts read" asked, and it names a failed
+     It says that "no one in the texts read" asked, and it names any failed
      read. It also says what users lose or see change, so the choice is
      whether to do the work at all. Its options are **build anyway**,
      **someone already asked**, and **do not build**, which it recommends. If
@@ -549,11 +549,12 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    want it changed, and a new parked row says `promote when someone asks for
    it`. Where the user already asked in a thread and no other person has
    answered since, the question names the thread, and **wait for the
-   answer** takes the draft option's place, as above. **Someone already asked** runs step
-   2's read on the place the user names. With a text there that step 2
-   counts, the plan goes on, and the `idea vet:` line names the place. At a
-   place off the host repo that no read can reach, such as a call, the plan
-   goes on, and the line says that the user named it. Otherwise the plan
+   answer** takes the draft option's place, as above. **Someone already
+   asked** runs step 2's read on the place the user names. With a text there
+   that step 2 counts and no maintainer's no, the plan goes on, and the
+   `idea vet:` line names the place. At a place off the host repo that no
+   read can reach, such as a call, the plan goes on, and the line says that
+   the user named it. Otherwise the plan
    writes no file for that work and ends with the close block, as **a
    maintainer already agreed** does. **Build anyway** goes on, and the line
    names the flaw and that answer.

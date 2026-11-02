@@ -1161,8 +1161,8 @@ recommend one) and writes `# Collaboration mode: guest` into
   person asks for the change, reports a problem that it fixes and that still
   occurs, or a maintainer agrees with it. If no one asked, the plan says so
   and says what users lose or see change, and you choose whether to do the
-  work. A fix for a wrong
-  number, a crash, or broken documented behavior needs no such asking.
+  work. A fix for a wrong number, a crash, or broken documented behavior
+  needs no such asking.
 - **Branches go to your fork unless you ask for the upstream repo.** By
   default, `/milestone-review` and `/hotfix` push the branch to your fork
   and open the PR from it. If you can push to the upstream repo and want
