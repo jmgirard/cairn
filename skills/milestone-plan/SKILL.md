@@ -548,8 +548,8 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    the draft says what goes wrong for a user and asks whether the maintainers
    want it changed, and a new parked row says `promote when someone asks for
    it`. Where the user already asked in a thread and no other person has
-   answered since, the question names the thread, and **wait for the answer** takes
-   the draft option's place, as above. **Someone already asked** runs step
+   answered since, the question names the thread, and **wait for the
+   answer** takes the draft option's place, as above. **Someone already asked** runs step
    2's read on the place the user names. With a text there that step 2
    counts, the plan goes on, and the `idea vet:` line names the place. At a
    place off the host repo that no read can reach, such as a call, the plan

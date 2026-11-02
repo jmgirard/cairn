@@ -1159,8 +1159,9 @@ recommend one) and writes `# Collaboration mode: guest` into
   behavior with no design choice needs no such agreement. `/milestone-plan`
   also asks who outside the work asked for it. Someone asked when another
   person asks for the change, reports a problem that it fixes and that still
-  occurs, or a maintainer agrees with it. If no one asked, the plan says so and says what users lose
-  or see change, and you choose whether to do the work. A fix for a wrong
+  occurs, or a maintainer agrees with it. If no one asked, the plan says so
+  and says what users lose or see change, and you choose whether to do the
+  work. A fix for a wrong
   number, a crash, or broken documented behavior needs no such asking.
 - **Branches go to your fork unless you ask for the upstream repo.** By
   default, `/milestone-review` and `/hotfix` push the branch to your fork
