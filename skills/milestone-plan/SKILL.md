@@ -483,8 +483,9 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
      the close block (step 7). A thread that someone else opened, with no
      question of the user's in it, keeps the draft option. The question counts
      among the questions that matter most, and a set of this question alone
-     is allowed. When step 2 found that no one outside asked, the question
-     says so, with what users lose or see change.
+     is allowed. When step 2's outside-demand check ran and found that no one
+     asked, the question says so, with what users lose or see change. For a
+     fix outside that check, it says nothing on who asked.
    - the outside-demand flaw that step 2 finds, as one question of its own.
      It says who asked, or "no one in the texts read", and names a failed
      read. It also says what users lose or see change, so the choice is

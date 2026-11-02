@@ -62,7 +62,7 @@ Reader runs. A reader run is one fresh-context subagent that has not seen this p
 - [x] T1: Edit `/milestone-plan`. Step 2 gains the outside-demand paragraph after "Maintainer decision". Step 3's maintainer question text, its flaw bullet, and "The maintainer question" gain the who-asked wording, the options, and the draft's parked row.
 - [x] T2: Edit the rulebook's sentence "A guest plan's maintainer question can stand alone". Re-seed the rulebook mass in the `/milestone` skill line and the two hand-run pins.
 - [ ] T3: Run the reader runs at the head. Give each case the record it rests on, in neutral words. If a reader disagrees with a criterion, read the sentence it quotes, then change the text or record why not before a new reader runs. Run AC1's first case and AC2 once at the plan commit as a baseline.
-- [ ] T4: Write the D-entry, README, and CHANGELOG. Search the repo for text that the change makes stale.
+- [x] T4: Write the D-entry, README, and CHANGELOG. Search the repo for text that the change makes stale.
 - [ ] T5: Run `verify`, `cairn_validate`, and the hand-run `skills/tests`. List added diff lines over 80 characters before the commit.
 
 ## Work log
@@ -83,6 +83,9 @@ Reader runs. A reader run is one fresh-context subagent that has not seen this p
 - 2026-11-02: implement started: branch m330-outside-demand-flag cut from main at c6584d1c, in a worktree in the session's scratch directory, because `~/.claude/skills/cairn` links to the main checkout and a branch switch there changes the plugin that running sessions read. Untracked `cairn-probe.log` and `tsconfig.json` in the main checkout stay unstaged.
 - 2026-11-02: reader runs use Haiku first, one reader per case as the criteria say, and any disagreement runs again on Opus, because no role names a model for them and about 20 readers on Opus is out of proportion to one skill paragraph.
 - 2026-11-02: T1, T2: step 2 gains the outside-demand paragraph, step 3 gains its bullet and options paragraph, the rulebook sentence allows the question alone, and the mass is re-seeded at 892 lines / 88,366 bytes in the `/milestone` line and the two pins. The file-wide style hook's hits on these skill and rulebook files are older text, left alone as out of scope.
+- 2026-11-02: T4: D-234, README (two sites), and CHANGELOG written. A search for "maintainer question can stand alone" and "a maintainer decision that step 2" outside `cairn/` finds no stale restatement.
+- 2026-11-02: T3 baseline at the plan commit, on Haiku: the rename case gets no question ("the text requires none"), and the M015 case gets the maintainer question with no statement on who asked. Both fall short of AC1 and AC2, as expected.
+- 2026-11-02: T3 first head pass: the crash-fix reader required the maintainer question to say that no one asked, against AC3, because "When step 2 found that no one outside asked" did not exclude a fix outside the check. The sentence now reads "When step 2's outside-demand check ran and found that no one asked" and adds "For a fix outside that check, it says nothing on who asked."
 
 ## Decisions
 

@@ -8479,3 +8479,60 @@ waved through. The `planned removal` ground is falsified by a run of guest
 reviews in which the plan had already flagged each planned removal. The
 render rule is falsified by renders that showed nothing the snapshots in CI
 did not show. The rulebook's rule (4) sentence and the seed follow.
+
+### D-234 (2026-11-02): In guest mode `/milestone-plan` asks who outside the work asked for it, and a no-one answer is a question before any file — annotates D-204 and D-233; D-108's door excepted by name at the user's decision (M330)
+
+**Context:** easystats/see PR 487 closed unmerged. Its row came from the
+operator's own earlier plan, and see M015's archive says that no user or
+maintainer reported the axis growth. The PR cited easystats/performance#894,
+but a LOESS change had settled that report. M329 stops such work when it
+needs a maintainer's decision, but the question is about the design, and
+work with no design choice gets no question. The user approved a flag and
+a question on 2026-11-02: "No one asked for this, and the contour lines
+disappear for most well-fitting models", so the choice is whether to do the
+work at all.
+
+**Decision:** In guest mode, `/milestone-plan` step 2 asks who outside the
+work asked for it. Someone asked when a person other than the operator asks
+for this change in a text the plan reads. A report also counts if it
+describes a problem that the change fixes and that still occurs at the base
+head. A maintainer's agreement counts. A text by the operator or a bot does
+not, and a link to an issue that does none of these does not. A fix for a
+wrong number, a crash, or broken documented behavior is outside the check.
+When no one asked and the maintainer question covers the work, that question
+says so. Otherwise it is a flaw on D-224's path, recorded in the `idea vet:`
+line, with options to build anyway, to name where someone asked, and not to
+build. If the plan can say what goes wrong for a user, a draft issue that
+the user posts is a further option, by D-155's shape. That question can
+stand alone, as D-233's can. A text settles this check only, so D-204's
+sentence that an issue's wording answers none of the vet's questions stands
+for those questions. D-233's rejection of a plan-anyway option stands for its
+question, because rule (4) does not cover the work that this option serves.
+
+**Door:** D-108 applies to a rule about records, and this adds no record
+line. As D-204 ruled for the vet, the check still sits close to that door.
+No shipped rule failed, because M015 was planned before the idea vet shipped,
+so the check is excepted by name at the user's decision, as D-233 did. The
+door stands for all other work. D-057 closes size work only.
+
+**Rejected:** A new `outside demand:` work-log line, a header slot, and a
+validator failure, because the flaw path and its line already carry the
+answer and the user asked for the flag and question. Falsified by a resumed
+run or a review that cannot find the answer in that line. A rule of its own
+that a found row leads only to an issue, because the draft option carries
+it and the user's approval replaced its demand part. Guest `cairn_next`
+withholding its `/milestone-plan` recommendation unless a row meets the test,
+because a script cannot judge that prose, and a `(#N)` title cannot show who
+opened an issue. Falsified by a run of idle guest sessions whose recommended
+plans the user keeps answering do not build. Review follow-ups staying in the
+milestone file until the merge, because that is a new rule about records with
+no defect in shipped behavior behind it, so D-108 bars it. Falsified by rows
+for code that never merged being picked as work, or by a shipped defect they
+cause. Owner mode and `/hotfix`, because the user asked for guest mode and an
+owner's repo has no maintainer to spend. Falsified by an owner or a hotfix
+that ships work whose users later show that no one wanted it.
+
+**Consequences:** A guest plan of a refactor or a speedup that no one asked
+for stops at a question. The check is falsified by a run of guest plans in
+which every question is answered build anyway. The measurements behind the
+rejections are in M330's work log.

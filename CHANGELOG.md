@@ -4,6 +4,16 @@
 
 ### Changes that affect existing repos
 
+- **A guest plan asks who wanted the work.** In guest mode,
+  `/milestone-plan` looks for another person who asked for the change, or
+  who reports a problem that it fixes and that still occurs. If it finds no
+  one, it says so and says what users lose or see change, before it writes a
+  milestone for that work. You can build anyway, name where someone asked, or
+  not build. If the plan can say what goes wrong for a user, you can also
+  have it draft an issue, which you post. A fix for a wrong number, a crash,
+  or broken documented behavior needs no asking. When the plan already asks
+  about a maintainer's decision, that question says who asked.
+
 - **A guest plan asks before it builds a maintainer's decision.** In guest
   mode, `/milestone-plan` flags work that needs a maintainer's decision: a
   feature, a change of behavior, output that users lose, or a design choice
