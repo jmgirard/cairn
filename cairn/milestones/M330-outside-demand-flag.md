@@ -1,6 +1,6 @@
 # M330: Ask who wanted the work in guest plans
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -49,7 +49,7 @@ Reader runs. A reader run is one fresh-context subagent that has not seen this p
 ## Coverage
 
 - AC1 → T1, T2, T3
-- AC2 → T1, T3
+- AC2 → T1, T3, T6
 - AC3 → T1, T3
 - AC4 → T1, T3
 - AC5 → T1, T3
@@ -64,6 +64,7 @@ Reader runs. A reader run is one fresh-context subagent that has not seen this p
 - [x] T3: Run the reader runs at the head. Give each case the record it rests on, in neutral words. If a reader disagrees with a criterion, read the sentence it quotes, then change the text or record why not before a new reader runs. Run AC1's first case and AC2 once at the plan commit as a baseline.
 - [x] T4: Write the D-entry, README, and CHANGELOG. Search the repo for text that the change makes stale.
 - [x] T5: Run `verify`, `cairn_validate`, and the hand-run `skills/tests`. List added diff lines over 80 characters before the commit.
+- [x] T6: Fix review return 1: step 2's sentence bars a separate question, and the pass's fix-now findings land in the skill, D-234, and README.
 
 ## Work log
 
@@ -91,6 +92,7 @@ Reader runs. A reader run is one fresh-context subagent that has not seen this p
 - 2026-11-02: correction to the T3 line: the wrong pointer was in the session's own reader brief, and several readers reported it, not each.
 - 2026-11-02: claim audit: 51 claims read, 3 corrected — CHANGELOG.md, skills/milestone-plan/SKILL.md
 - 2026-11-02: review return 1: AC2's reader required a separate outside-demand question beside the maintainer question, because step 2's "says so if it covers the work" does not bar a second question. Fix that sentence and the pass's other fix-now findings, listed in the Review section.
+- 2026-11-02: T6: added as a minor amendment for return 1. Step 2 now says "and no separate question is posed" and reads a cited PR. Step 3 has one recommendation at a time. Waiting turns on "no other person". D-234's heading names D-144 and its Decision names the call path. README counts a maintainer's agreement. The claim audit is not owed again for these six wording fixes, which correct findings against the lines it read, and review's lenses read them next.
 
 ## Decisions
 
