@@ -8406,3 +8406,76 @@ otherwise.
 **Consequences:** The guard works on repos with no required reviews. A
 later comment by the same reviewer can still mask their change request in
 `latestReviews`, as the existing DESIGN Known issue on that field says.
+
+### D-233 (2026-11-02): In guest mode `/milestone-plan` flags a needed maintainer decision and poses the question before it goes on, and `/milestone-review` shows a planned removal and a render when snapshots cannot be compared — supersedes D-214's rejection of a plan-step check and its "runs no check of its own" clause; annotates D-108, D-144, D-155, D-206, D-207, and D-208; the door passed on its trigger for the review rules and excepted by name at the user's decision for the plan check (M329)
+
+**Context:** On easystats/see PR 487, a maintainer asked for changes: "In
+summary: Contour lines should not be removed from plots". The PR removed
+those lines for most well-fitting models. The review had a finding that
+said so, and it closed that finding as a planned change, so no person saw
+it. No snapshot could be compared on the machine, and the only render in
+the work log was a fixture that keeps its lines. The PR body named six
+snapshots as showing cut contour lines, but three show none. The plan
+predates guest rule (4), so the case broke no rule then in force. Asked
+whether the plan should check that rule, the user answered: "a better
+approach is to flag during PLANNING when a maintainer decision is needed
+and then pose the question before continuing". The PR then closed unmerged,
+because a change to the LOESS line had already fixed the reported problem.
+
+**Decision:** (1) In guest mode `/milestone-plan` step 2 asks whether the
+work needs a maintainer's decision. It does for a feature, a change of
+behavior, a removal or hiding of output that users see, and a design
+choice, which changes what users see and has more than one fitting
+reading. A fix that restores documented behavior with no design choice
+does not. With no agreement from a maintainer other than the operator, step
+3 poses one question before any file is written for that work. Its options
+are to draft a question for the maintainers, to name an agreement, and not
+to build. A typed override goes on, and the work log records it. That
+question can be a set of its own, below the rulebook's 2–5. The draft goes to the system temp directory and the close block,
+and the user posts it, by D-155's shape. M248's retirement of a comment the
+plan posted stands: the plan runs no comment command. A maintainer's no is a
+flaw, and a build past it says so in the PR. D-214's rejection of a plan-step
+check and its clause that the plan "runs no check of its own" are
+superseded. D-144's list of what the question set asks gains this question.
+(2) In guest mode, `/milestone-review` step 5 gains a fifth reject ground,
+`planned removal`, for a finding that a change the plan called for removes
+or hides output that users see. Its reason says what users no longer see
+and how often. Step 7 shows it verbatim, and the chip names it. D-144's
+list of reject grounds and D-206's gain it. (3) In guest mode, when a
+user-facing change alters what a surface draws or prints and that surface's
+snapshot tests fail or skip at both the head and the base, step 7 requires
+a before and after render of the default case with what the reader sees.
+Step 8 lets a body line say what a snapshot will show only from a render of
+that snapshot's own case, and it says the render was local. D-208's
+changed-file list stays, and D-207's body shape gains these lines and a
+sentence when a design has no agreement.
+
+**Door:** D-108 applies to the review rules and to the `maintainer decision:`
+line, as D-204 ruled for `idea vet:`. The review rules pass on the retained
+trigger: shipped `/milestone-review` let a guest PR remove output and
+misdescribe its snapshots, with no person seeing either. The plan check has
+no such trigger, because the rule was not broken after it shipped, so it and
+its `maintainer decision:` line are excepted by name at the user's decision,
+as D-189 did. The door stands for
+all other work. D-057 closes size work only, and it raises no bar here.
+
+**Rejected:** The plan posting the question, because the rulebook says
+nothing cairn writes reaches the maintainers, and `/milestone` §4 already
+has the user post. Falsified by users who ask the plan to post. A
+plan-anyway option, because rule (4) says to wait, and a typed override
+still works and is logged. Falsified by users who keep typing that
+override. Owner mode, because no owner-mode defect triggers these rules and
+the user did not choose it. Falsified by a candidate row's condition, the
+row "Widen the render rule past its trigger". A new disposition beside
+reject, for D-205's reason. A PR body line for an approved removal, because
+the plan flags that work first. Falsified by a removal first found at
+review that a maintainer objects to.
+
+**Consequences:** A guest plan of a feature with no agreement stops at a
+question, and a design that a maintainer agreed with in part asks about the
+part left open. Each rule has a falsifier. The plan check is falsified by a
+run of guest plans in which every question was about work the maintainers
+waved through. The `planned removal` ground is falsified by a run of guest
+reviews in which the plan had already flagged each planned removal. The
+render rule is falsified by renders that showed nothing the snapshots in CI
+did not show. The rulebook's rule (4) sentence and the seed follow.

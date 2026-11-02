@@ -4,6 +4,31 @@
 
 ### Changes that affect existing repos
 
+- **A guest plan asks before it builds a maintainer's decision.** In guest
+  mode, `/milestone-plan` flags work that needs a maintainer's decision: a
+  feature, a change of behavior, output that users lose, or a design choice
+  no maintainer settled. If it finds no agreement from a maintainer, it asks
+  you before it writes a milestone for that work. You can have it draft a
+  question for the maintainers, name an agreement it missed, or not build.
+  You post the draft yourself, then rerun the plan after they answer. If you
+  plan anyway, the PR says that no maintainer agreed with the design yet. If
+  you go on past a maintainer's no, the PR links that no and says that you
+  chose to go on.
+
+- **A guest review shows output that a planned change takes away.** In
+  guest mode, `/milestone-review` no longer closes such a finding as a
+  planned change. It tells you at the handoff question what users no longer
+  see and how often. Where it cannot count, it gives the condition instead
+  and says so.
+
+- **A guest review renders output that it cannot compare.** In guest mode,
+  a user-facing change can alter what a surface draws or prints. Its
+  snapshot tests can also fail or skip on your machine at both the branch
+  and the base. Then `/milestone-review` renders the default case before and
+  after and tells you what the reader sees, or that no one looked. A PR says
+  what a snapshot will show only from a render of that snapshot's own case,
+  and says the render was local.
+
 - **A merge waits for CI in the background.** After you approve a merge,
   `/milestone-review` and `/hotfix` check the PR's CI. If a check is still
   running, they start `gh pr checks --watch --fail-fast` as a background
@@ -124,8 +149,8 @@
   a feature or a change of behavior, it looks for a maintainer's agreement
   with the design in an issue, or a maintainer's request for it in a
   review of your PR. Without either, it tells you in chat and plans nothing
-  until a maintainer agrees. A fix that restores documented behavior needs
-  no such agreement.
+  until a maintainer agrees or you tell it to go on. A fix that restores
+  documented behavior with no design choice needs no such agreement.
 
 - **Sessions add fewer and plainer tests.** Tests now cover the behavior a
   change adds or alters. A new export gets the full test floor, and a bug

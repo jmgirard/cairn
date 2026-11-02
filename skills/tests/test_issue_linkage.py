@@ -121,13 +121,11 @@ class TestPlanGateAssignment(unittest.TestCase):
 
     def test_option_posts_no_comment(self):
         self.assertIn("The option posts no comment.", plan())
-        # The retired comment offer: no comment command or body survives in
-        # the plan skill, and no body in the README that describes it (the
-        # README keeps `gh issue comment` for the /milestone reply draft).
+        # No body of the retired comment offer survives in the plan skill or
+        # the README that describes it.
         readme = SKILLS.parent.joinpath("README.md").read_text()
-        for retired in ("gh issue " + "comment", "Queued " + "as", "Working on " + "this"):
-            self.assertNotIn(retired, plan())
         for retired in ("Queued " + "as", "Working on " + "this"):
+            self.assertNotIn(retired, plan())
             self.assertNotIn(retired, readme)
 
     def test_access_read_gates_the_option(self):

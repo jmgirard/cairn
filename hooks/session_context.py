@@ -320,8 +320,9 @@ HOST_RULES_AFTER_LIMIT = (
     "maintainer (an author whose association is OWNER, MEMBER, or "
     "COLLABORATOR) agreed with its design in an issue on the host repo, or "
     "asked for it in a review of your PR; with neither, tell the user in "
-    "chat and plan nothing until a maintainer agrees. A fix that restores "
-    "documented behavior is outside this rule."
+    "chat and plan nothing until a maintainer agrees or the user overrides. "
+    "A fix that restores documented behavior with no design choice is "
+    "outside this rule."
 )
 
 

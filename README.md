@@ -756,7 +756,15 @@ work does not need is fixed in the code or sent to a candidate row
 before the merge question. In guest mode,
 the PR lists the `edge` findings in plain words and asks the maintainers
 whether they want them handled. It also says what changed in each
-snapshot file and why. Then it
+snapshot file and why. Also in guest mode, a finding that a planned change
+takes output from users is shown to you in plain words with how often it
+happens, or the condition when it cannot count. In guest mode too, when a
+user-facing change alters what a surface draws or prints and its snapshot
+tests fail or skip on your machine at both the branch and the base, review
+renders the default case before and after and tells you what the reader
+sees, or that no one looked. The guest PR
+says what a snapshot will show only from a render of that snapshot's own
+case, and it says that the render was local. Then it
 asks *you* to merge, with the evidence and each finding's outcome in front
 of you, and opens the PR after your yes (at the start of review, in owner
 mode with the opt-in Copilot round described below).
@@ -883,8 +891,9 @@ profile.
   with the requested behavior itself, a concern that the fitting reading
   the agent takes cannot avoid. A gap, where the request is only vague, the
   agent settles without a question by that reading. It asks you only
-  when another fitting reading gives you different behavior. The
-  merge question comes at the end of review.
+  when another fitting reading gives you different behavior. In guest
+  mode it also asks when work needs a maintainer's decision and it finds no
+  agreement. The merge question comes at the end of review.
   Between the question set and the merge question, expect the agent to
   decide and log the rest. When the plan finds that a hotfix or a direct
   edit fits, one more question about that route comes before the run.
@@ -1142,8 +1151,11 @@ recommend one) and writes `# Collaboration mode: guest` into
   plans a feature or a change of behavior, it looks for a maintainer's
   agreement with the design in an issue, or a maintainer's request for it
   in a review of your PR. Without either, it tells you in chat and plans
-  nothing until a maintainer agrees. A fix that restores documented
-  behavior needs no such agreement.
+  nothing until a maintainer agrees, unless you tell it to go on.
+  `/milestone-plan` checks this itself: it flags the work and asks you
+  whether to draft a question for the maintainers, which you post, to name
+  an agreement it missed, or not to build. A fix that restores documented
+  behavior with no design choice needs no such agreement.
 - **Branches go to your fork unless you ask for the upstream repo.** By
   default, `/milestone-review` and `/hotfix` push the branch to your fork
   and open the PR from it. If you can push to the upstream repo and want

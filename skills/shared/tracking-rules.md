@@ -502,8 +502,9 @@ reasoning over local files, and nothing cairn writes reaches the repo's maintain
   post nothing. A close the user picks at a cairn chip is the user's act and is outside rule (3). (4) Before you plan
   a feature or a change of behavior, find where a maintainer (an author whose association is OWNER, MEMBER, or
   COLLABORATOR) agreed with its design in an issue on the host repo, or asked for it in a review of your PR. With
-  neither, tell the user in chat and plan nothing until a maintainer agrees. A fix that restores documented behavior is
-  outside rule (4). `/milestone-plan` runs no check of its own for rule (4).
+  neither, tell the user in chat and plan nothing until a maintainer agrees or the user overrides, which is logged. A
+  fix that restores documented behavior with no design choice is outside rule (4). `/milestone-plan` step 2 checks for
+  rule (4), and step 3 poses the question before the plan goes on.
 - **`/cairn-release` stops** at session start with a close block whose status line names the mode as the reason: a
   release is the maintainers' act. **`/cairn-triage` runs** with its accepted edits written to `cairn/` on disk, never
   committed or pushed, and skips its git preconditions. Its stamp is longer than "one short line", since it names
@@ -578,7 +579,8 @@ is posed in the same turn as its presentation (the Mandated-substance rule below
 - **The plan question set.** One batched AskUserQuestion round of 2–5 concrete decision questions, each with a
   recommendation and brief pros and cons. It asks only what the user alone can settle and foresees what implement and
   review will need from the user; `/milestone-plan` step 3 names its questions. When more are open than one round
-  holds, ask the 3 that matter most. The agent decides the rest with a work-log line, unless one is a stop below.
+  holds, ask the 3 that matter most. A guest plan's maintainer question can stand alone. The agent decides the rest with
+  a work-log line, unless one is a stop below.
 - **The merge question.** One AskUserQuestion chip with one approve-or-decline question, a decline option always
   present, never a prose yes/no.
 

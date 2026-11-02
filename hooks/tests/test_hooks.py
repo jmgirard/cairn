@@ -564,8 +564,15 @@ class TestSessionContext(RepoFixture):
         self.assertIn("Before you plan a feature or a change of behavior", part)
         self.assertIn("OWNER, MEMBER, or COLLABORATOR", part)
         self.assertIn("or asked for it in a review of your PR", part)
-        self.assertIn("plan nothing until a maintainer agrees", part)
-        self.assertIn("A fix that restores documented behavior is outside", part)
+        self.assertIn(
+            "plan nothing until a maintainer agrees or the user overrides",
+            part,
+        )
+        self.assertIn(
+            "A fix that restores documented behavior with no design choice is "
+            "outside this rule",
+            part,
+        )
 
     def test_the_close_limit_follows_the_issue_close_cap_line(self):
         # M319: the limit in force, from `# Issue close cap:`.
