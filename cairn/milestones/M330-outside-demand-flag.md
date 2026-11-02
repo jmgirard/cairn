@@ -1,6 +1,6 @@
 # M330: Ask who wanted the work in guest plans
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -90,7 +90,51 @@ Reader runs. A reader run is one fresh-context subagent that has not seen this p
 - 2026-11-02: T5: at the T4 head, the five `verify` commands, `cairn_validate`, and the hand-run `skills/tests` exit 0, with 2466 mod tests passing. Added diff lines hold nothing over 80 characters.
 - 2026-11-02: correction to the T3 line: the wrong pointer was in the session's own reader brief, and several readers reported it, not each.
 - 2026-11-02: claim audit: 51 claims read, 3 corrected — CHANGELOG.md, skills/milestone-plan/SKILL.md
+- 2026-11-02: review return 1: AC2's reader required a separate outside-demand question beside the maintainer question, because step 2's "says so if it covers the work" does not bar a second question. Fix that sentence and the pass's other fix-now findings, listed in the Review section.
 
 ## Decisions
 
 ## Review
+
+Pass 1, at 4f45dea3. Readers on Haiku, one per case.
+
+- AC1 (pass 1): the rename case requires the question before any file, saying "no one in the texts read" asked and what users lose or see change, with build anyway, someone already asked, and do not build, no draft, and the question alone allowed. The same row chosen at the set requires a close block and a fenced `/milestone-plan` with the short title. Met; the recommended-option fix below touches this sentence, so it reruns.
+- AC2 (pass 1): NOT MET. The reader required two questions, the maintainer question and a separate outside-demand question, reading "says so if it covers the work" as no bar on the second.
+- AC3 (pass 1): formula fix, crash fix, documented fix, a helper rename another person's comment asks for, and owner mode each require no outside-demand question. A fix's maintainer question says nothing on who asked. Met.
+- AC4 (pass 1): the other-cause issue, the operator's own issue, the bot's note, and the failed PR read each require the question, and the failed read's question names the read. Met.
+- AC5 (pass 1): build anyway writes the file and the line names the flaw and answer. Do not build writes no file and leaves the row. A place that asks goes on and names the place. A call goes on and says the user named it. A place that does not ask writes no file and ends with a close block. A maintainer's agreement means no question. A maintainer's no is a flaw that cites the no. Met.
+- AC6 (pass 1): the speedup requires the outside-demand question, not the maintainer question, with the draft option. The draft goes to the temp file, says what goes wrong for a user, posts nothing, writes no milestone file, and writes the parked row. A rerun with the operator's open issue offers waiting. Met; the "no other person" fix touches this sentence, so it reruns.
+
+spawned: diff-bug, blame-history, prior-review, ripple
+
+- diff-bug #1: the sweep's `gh issue list` returns 30 open issues, so an older request goes unread with no failed read named — follow-up: parked row "Tighten the outside-demand check edges".
+- diff-bug #2: "asks for this change" has no still-occurs test, while a report does — follow-up: same row.
+- diff-bug #3: a cited PR or Discussion goes unread, so the question says no one asked — fix now for a cited PR; a Discussion goes to the same row.
+- diff-bug #4: "base head" names no ref, and a static read cannot show that a behavior occurs — reject (false): "base head" names the ref, and step 2's guest reads fetch first.
+- diff-bug #5: the read recipes hard-code `<base-repo>`, and `author_association` is relative to the other repo — reject (false): any person other than the operator counts as asking, so the association changes no result.
+- diff-bug #6: waiting has nothing to replace when no draft is offered — follow-up: same row.
+- diff-bug #7: "no one else has answered" includes a bot — fix now: "no other person".
+- diff-bug #8: the flaw is "one question of its own" while the flaw bullet allows combining past the cap — follow-up: same row.
+- diff-bug #9: a maintainer question that carries no-one-asked leaves the `idea vet:` line without it — reject (false): that path has its own `maintainer decision:` line.
+- diff-bug #10: build anyway leaves maintainers no sign that no one asked — follow-up: same row, since no plan or user text asks for a PR line.
+- diff-bug #11: the exempt list omits security fixes, hangs, and data loss — follow-up: same row, since the user approved the list as written.
+- diff-bug #12: the draft is recommended where a host has issues turned off — follow-up: same row; M329's question has the same shape.
+- diff-bug #13: D-234's heading omits D-144, whose question list grows — fix now.
+- diff-bug #14: T5 and the reader pass predate the claim audit's rewording — reject (false): this review reruns the readers and `verify`.
+- diff-bug #15: README's "someone asked" leaves out a maintainer's agreement — fix now.
+- diff-bug #16: the CHANGELOG entry has no test — reject (false): `cairn/PROFILE.md` exempts new skill rules from prose guards, and the reader runs check the behavior.
+- blame-history #1: the call path counts where D-234 says "in a text the plan reads" — fix now: D-234 names the path.
+- blame-history #2: one question marks two options as recommended — fix now.
+- blame-history #3: D-234 says the check adds no record line, but the flaw and answer go in the `idea vet:` line — reject (false): that line already exists, and D-234 excepts the check by name either way.
+- blame-history #4: "so this flaw is the question it gets" is ambiguous — reject (planned change): Scope states that reach.
+- blame-history #5: the exempt list is wider than D-233's — reject (planned change): Scope and the user's approval state it.
+- prior-review #1: a maintainer's agreement counts without M329's design-coverage test — reject (false): this check asks about demand, and M329's test still governs the design question.
+- prior-review #2: a failed read gives the same "no one asked" sentence — reject (planned change): the question names the read, as Scope states.
+- prior-review #3: a call that no read can reach settles the check on the user's word — reject (planned change): Scope states it, and the user picks it.
+- ripple #1: rule (4) does not name the new check — reject (false): rule (4) governs a maintainer's agreement and is unchanged.
+- ripple #2: the session-start text does not name the check — reject (false): same reason.
+- ripple #3: README's rule (4) sentence and the new sentence give two standards for "asked" — reject (false): one is agreement and one is demand.
+- ripple #4: "Work chosen at the set" does not list the outside-demand question — reject (false): "If it finds a flaw" covers it.
+- ripple #5: the candidate row still lists the declined changes — reject (false): the row graduates at hygiene.
+- ripple #6: the PR-body rule has no line for build anyway — follow-up: same as diff-bug #10.
+- ripple #7: README's `/milestone-plan` row does not name the question — reject (style): the row summarizes the set.
