@@ -340,7 +340,8 @@
   repo and in `/copilot-review`, Claude shows you each draft first, and you
   can post it, type your own version, or hold it. A hold posts nothing and
   leaves that review's threads open. A guest close then gives you the
-  `/copilot-review` command that finishes it. In your own repos the round
+  `/copilot-review` command that finishes it while the PR is open. In your
+  own repos the round
   posts with no question. The comment never thanks Copilot. After it,
   Claude resolves that review's open threads. A
   review that one of your comments already links gets no second comment,

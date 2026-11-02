@@ -261,7 +261,7 @@ class TestOneComment(unittest.TestCase):
 class TestDraftChip(unittest.TestCase):
     """M331 AC6: a guest-mode round and `/copilot-review` show each draft
     before it posts, a hold posts nothing, and an owner-mode round asks
-    nothing. One test per clause."""
+    nothing."""
 
     def setUp(self):
         self.module = read("shared", "copilot-review.md")
@@ -355,12 +355,12 @@ class TestDraftChip(unittest.TestCase):
 
     def test_guest_closes_add_only_the_fence_on_a_hold(self):
         self.assertIn("A hold at the module's draft chip (§5) adds §6's "
-                      "`/copilot-review <N>` fence after this close's next "
+                      "`/copilot-review <N>` fence before this close's next "
                       "command, and it changes neither the `blocked` status "
                       "below nor the rest of this close.",
                       flat(read("milestone-review", "SKILL.md")))
         self.assertIn("A hold at the module's draft chip (§5) adds §6's "
-                      "`/copilot-review <N>` fence after this close's next "
+                      "`/copilot-review <N>` fence before this close's next "
                       "command, and it changes nothing else here.",
                       flat(read("hotfix", "SKILL.md")))
 

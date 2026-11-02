@@ -80,9 +80,9 @@ numbered step below (session start implicit).
    That note's review gets no comment until the user answers.
    Never post a question for the user to GitHub.
 
-   A rerun after a hold first reads that review's temp file (module §5),
-   and `git log` on the head branch. A note that a pushed commit already
-   fixes keeps that commit as its outcome and gets no second fix.
+   Read `git log` on the checked-out head first. A note that a pushed
+   commit already fixes keeps that commit as its outcome and gets no second
+   fix.
 
 5. **Fix.** Make each fix-now change. Run the active profile's `verify`
    slot until it is green. The profile is in `cairn/PROFILE.md`, or else
