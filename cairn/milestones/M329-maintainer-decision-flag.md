@@ -101,6 +101,8 @@ Reader runs. A reader run is one fresh-context subagent that has not seen this p
 - 2026-11-02: T8 added for review return 2 (minor amendment) and done. No criterion or scope changed. The wait option now needs the user's own unanswered question, a text that is no agreement at a named place ends with a close, a close as not planned needs a person other than the author, and the PR says the author chose to go on past a no, with no reason invented. The rulebook's text did not change, so its mass seed stays.
 - 2026-11-02: claim audit: 50 claims read, 4 corrected — skills/milestone-plan/SKILL.md (close as not planned, the 100 limit), skills/milestone-review/SKILL.md and CHANGELOG.md (going on past a no), README.md (guest scope of the render); commit 6f75dead. It covers the lines 7dc08c0f and 48e3959e added, and the same reader re-read the four.
 - 2026-11-02: T8 verify: `scripts/tests` 446 pass, `hooks/tests` 210 pass, both `claude plugin validate` commands pass, `claude plugin test` 2466 pass, `cairn_validate` passes, hand-run `skills/tests` 984 pass. Status review.
+- 2026-11-02: step-7 approval: m329-maintainer-decision-flag approved for merge
+- 2026-11-02: Copilot comment posted in a colleague's wording, as the user saw it at the merge question, in place of §5's template, and the three threads resolved.
 
 ## Decisions
 
