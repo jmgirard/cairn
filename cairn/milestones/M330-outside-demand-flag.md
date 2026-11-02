@@ -7,7 +7,7 @@
 - **Principles touched:** IP3
 - **Resolves:** —
 - **Surface tier:** user-facing — `/milestone-plan` text that every guest repo runs
-- **Branch/PR:** m330-outside-demand-flag
+- **Branch/PR:** m330-outside-demand-flag, https://github.com/jmgirard/cairn/pull/344
 
 ## Goal
 
