@@ -15,7 +15,7 @@ In guest mode, a plan poses a needed maintainer decision before it goes on, and 
 
 ## Scope
 
-**In:** three changes from easystats/see PR 487, guest mode only. The case record is `/Users/jmgirard/github/easystats/see/cairn/milestones/M015-outliers-panel-y-axis.md`.
+**In:** three changes from easystats/see PR 487, guest mode only. The case record is `/Users/jmgirard/Library/Application Support/Claude/side-session-notes/local_95d534cd-aebf-45b4-80c3-073b576fd59f/M015-full-record.md`, a copy of see's M015 file from before it was archived.
 
 (1) `/milestone-plan` step 2 flags work that needs a maintainer's decision, and step 3 poses the question before any file is written for that work. The options are to draft a question for the maintainers, to name an agreement the read missed, and not to build. A draft goes to the system temp directory and the close block, and the user posts it, as in `/milestone` §4. A logged user override remains possible. Step 4 writes a `maintainer decision:` line. Guest rule (4)'s last sentence in `skills/shared/tracking-rules.md` and the README's text on that rule change to match. `/milestone-review` step 8's guest body says when a design has no agreement.
 
@@ -80,6 +80,10 @@ Reader runs. A reader run is one fresh-context subagent that has not seen this p
 - 2026-11-02: plan gate chose no plan-anyway option over offering one, because rule (4) and the easystats instructions say to wait, and a typed override still works and is logged; falsified by users who keep typing that override.
 - 2026-11-02: plan gate kept the review chip beside the plan flag because a plan can miss a removal and only the branch can count it; falsified by a run of guest reviews in which the plan had flagged every planned removal.
 - 2026-11-02: criteria audit (full mode, two fresh Opus readers): 26 and 27 findings, all taken or answered. Second-round fixes: the operator's login is left out of agreement, the agreement read covers issue bodies and all of the operator's PRs for the work, a fix that `/hotfix` sent over is not exempt, design choices are limited to user-visible ones with more than one fitting reading, a maintainer's no goes to the flaw question, the draft is composed after the set's answers, criteria name what the skill text requires, cases are cut before their dispositions, the reader retry moved to T4, and route (b) skips the render. Answered with no change: the audit's cost on a stopped plan is accepted, and the PR 487 replay stays a task because a render in another repo is not a property of this deliverable. Its limit stands: the default case can show less loss than other inputs, and the count in `planned removal` covers those.
+- 2026-11-02: implement started: branch m329-maintainer-decision-flag cut from main at 068c08a2, in a worktree in the session's scratch directory, because `~/.claude/skills/cairn` links to the main checkout and a branch switch there would change the plugin that running sessions read.
+- 2026-11-02: substantive amendment: Scope's case record path changed to a copy, because M015 was dropped and its live file archived after PR 487 closed unmerged. Scope's three changes and the criteria are unchanged. The maintainer's closing comment says the change was not needed, because the LOESS changes fixed easystats/performance#894.
+- 2026-11-02: T4 replay: `git archive` of `outliers-panel-y-axis` and its merge base b797ddba, rendered with `lm(mpg ~ wt + hp, mtcars)` through `check_model(check = "outliers")`. Before: two curved dashed contour lines across the panel, y axis about -8 to 8. After: a short stub of the upper line at the right edge, no lower line, y axis about -1.6 to 2.5. So the default case shows the loss that the maintainer objected to.
+- 2026-11-02: the session that sent this work passed on five prevention changes as a follow-up to plan after this merge, with no widening here: candidate row "Ask for outside demand in guest plans".
 
 ## Decisions
 

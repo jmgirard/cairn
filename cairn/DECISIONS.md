@@ -8419,7 +8419,8 @@ snapshots as showing cut contour lines, but three show none. The plan
 predates guest rule (4), so the case broke no rule then in force. Asked
 whether the plan should check that rule, the user answered: "a better
 approach is to flag during PLANNING when a maintainer decision is needed
-and then pose the question before continuing".
+and then pose the question before continuing". The PR then closed unmerged,
+because a change to the LOESS line had already fixed the reported problem.
 
 **Decision:** (1) In guest mode `/milestone-plan` step 2 asks whether the
 work needs a maintainer's decision. It does for a feature, a change of

@@ -332,7 +332,7 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    Otherwise step 3's set poses the question, and no file is written for
    that work first. A failed read counts as no agreement, and the question
    names that read. A maintainer's no is a flaw under the guest scope above,
-   and the idea vet cites its comment.
+   in place of this question, and the idea vet cites its comment.
 
    **Collision check (mandatory).** Sweep the ROADMAP (all statuses), the
    archive, and DECISIONS.md for overlap with what the user described.
