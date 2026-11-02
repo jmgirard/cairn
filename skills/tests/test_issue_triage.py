@@ -191,7 +191,7 @@ class TestPlanSweepRepo(unittest.TestCase):
         # An empty match would pass the check below for the wrong reason. The
         # exact count is deliberate: a third read added later must be checked
         # here on purpose, not pass unseen.
-        self.assertEqual(len(self.inbox_lines()), 2)
+        self.assertEqual(len(self.inbox_lines()), 3)
 
     def test_every_inbox_read_names_the_base_repo(self):
         for line in self.inbox_lines():
