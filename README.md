@@ -756,7 +756,13 @@ work does not need is fixed in the code or sent to a candidate row
 before the merge question. In guest mode,
 the PR lists the `edge` findings in plain words and asks the maintainers
 whether they want them handled. It also says what changed in each
-snapshot file and why. Then it
+snapshot file and why. Also in guest mode, a finding that a planned change
+takes output from users is shown to you in plain words with how often it
+happens. When a change alters what a surface draws or prints and its
+snapshot tests fail or skip on your machine at both the branch and the
+base, review renders the default case before and after and tells you what
+the reader sees. The PR says what a snapshot will show only from such a
+render. Then it
 asks *you* to merge, with the evidence and each finding's outcome in front
 of you, and opens the PR after your yes (at the start of review, in owner
 mode with the opt-in Copilot round described below).
@@ -1142,8 +1148,11 @@ recommend one) and writes `# Collaboration mode: guest` into
   plans a feature or a change of behavior, it looks for a maintainer's
   agreement with the design in an issue, or a maintainer's request for it
   in a review of your PR. Without either, it tells you in chat and plans
-  nothing until a maintainer agrees. A fix that restores documented
-  behavior needs no such agreement.
+  nothing until a maintainer agrees. `/milestone-plan` checks this itself:
+  it flags the work and asks you whether to draft a question for the
+  maintainers, which you post, to name an agreement it missed, or not to
+  build. A fix that restores documented behavior with no design choice
+  needs no such agreement.
 - **Branches go to your fork unless you ask for the upstream repo.** By
   default, `/milestone-review` and `/hotfix` push the branch to your fork
   and open the PR from it. If you can push to the upstream repo and want

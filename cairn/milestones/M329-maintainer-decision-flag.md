@@ -1,13 +1,13 @@
 # M329: Flag maintainer decisions at the plan
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP3
 - **Resolves:** —
 - **Surface tier:** user-facing — `/milestone-plan` and `/milestone-review` text that every guest repo runs
-- **Branch/PR:** —
+- **Branch/PR:** m329-maintainer-decision-flag
 
 ## Goal
 

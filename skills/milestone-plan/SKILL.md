@@ -312,6 +312,28 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    work-log line `maintainer approach: <approach> — not taken: <reason>`.
    `/milestone-review` step 8 reads that line for the PR body.
 
+   **Maintainer decision** (tracking-rules "Collaboration mode", rule (4)).
+   In guest mode, the plan asks with the idea vet whether the work needs a
+   maintainer's decision. It does when the work adds a feature, changes
+   behavior, or removes or hides output that users see. A fix that restores
+   documented behavior with no design choice does not. A design choice is
+   one that changes what users see and has more than one fitting reading.
+   The plan looks for a maintainer's agreement in the body and comments of
+   each issue, open or closed, that the request or a candidate row's title
+   names or the inbox sweep matches. It also looks in the reviews and
+   comments of each PR of yours for this work. `gh api` on
+   `repos/<base-repo>/issues/<N>`, its `/comments`, and
+   `repos/<base-repo>/pulls/<N>/reviews` gives each author's
+   `author_association`. A text by the login that `gh api user --jq .login`
+   returns is never agreement. The agreement must cover the design the
+   plan will build, so agreeing with the idea leaves open each design
+   choice that it does not settle. With agreement, step 4 writes the
+   work-log line `maintainer decision: <URL> — <what was agreed>`.
+   Otherwise step 3's set poses the question, and no file is written for
+   that work first. A failed read counts as no agreement, and the question
+   names that read. A maintainer's no is a flaw under the guest scope above,
+   and the idea vet cites its comment.
+
    **Collision check (mandatory).** Sweep the ROADMAP (all statuses), the
    archive, and DECISIONS.md for overlap with what the user described.
    Sweep DECISIONS.md per the tracking-rules **bounded `DECISIONS.md` read**:
@@ -418,10 +440,51 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
      questions that matter most, so the agent never decides a flaw. A
      gap's question that step 2 sends counts among them too, and gap
      questions past the cap combine into one question the same way.
+   - a maintainer decision that step 2 flags, as one question of its own.
+     It says in plain words what the maintainers must decide and that the
+     plan found no agreement. Its options are **draft a question for the
+     maintainers** (recommended), **a maintainer already agreed**, where the
+     user names where, and **do not build**. It counts among the questions
+     that matter most, and a set of this question alone is allowed.
+
+   **The maintainer question.** The session writes a draft after the set's
+   answers, so a gap's answer shapes it, and a do-not-build answer to a
+   flaw means no draft. The draft says what the change does for users, what
+   they would lose, and what the maintainers must decide. It follows the
+   rulebook's host-text bullet with no cairn vocabulary, and it asks as a
+   question. The session writes it to
+   `cairn-question-<owner>-<repo>-<slug>.md` in the system temp directory
+   with the Write tool, as `/milestone` §4 does. The plan writes no
+   milestone file for that work, and it keeps no other answer about that
+   work, so a rerun poses those questions again. If no candidate row holds
+   the work, it writes a parked row, search-first, with `promote when a
+   maintainer agrees with its design`. A row that holds the work stays as
+   it is. Other work of the plan goes on. When no milestone is left to
+   write, the turn ends with the close block. The close block gives the
+   draft, any new row, and the command below, with the file's absolute path
+   and the issue's number. The user can edit the file first:
+
+   ```bash
+   gh issue comment <N> --repo <base-repo> --body-file "<path>"
+   ```
+
+   Where no issue holds the work, the command is `gh issue create --repo
+   <base-repo> --title "<title>" --body-file "<path>"`. The plan shows the
+   command and never runs it, because the user posts the question. The
+   close block's next fenced command is `/milestone-plan` with the request,
+   or a row by its short title, to run after the maintainers answer. A
+   rerun runs step 2's read again. With no maintainer's answer, the
+   question says so and names the thread. **A maintainer already agreed**
+   goes on, and step 4 writes `maintainer decision: <where the user named>
+   — named by the user`. A user who types an override goes on, and step 4
+   writes `maintainer decision: none — planned at the user's choice`, which
+   `/milestone-review` step 8 reads. **Do not build** writes no file for
+   that work and leaves any source row in place.
 
    **Work chosen at the set.** For a request that names no work, the idea
    vet runs on the work chosen at the question set, before step 4 writes a
-   file. If it finds a flaw, or a gap that step 2's rule sends to the set, the
+   file. If it finds a flaw, a gap that step 2's rule sends to the set, or
+   a maintainer question that step 2 poses, the
    plan writes nothing and ends with a close block. The close block names
    the concern, and its fenced command is `/milestone-plan` with the chosen
    work named (a candidate row by its short title), so that the rerun's
@@ -655,6 +718,9 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    - **Maintainer-approach line.** In guest mode, write the
      `maintainer approach:` work-log line that step 2's guest scope names,
      one for each maintainer approach the plan does not take.
+   - **Maintainer-decision line.** In guest mode, write the
+     `maintainer decision:` work-log line that step 2 or step 3 names, in
+     each milestone it serves. A fix outside step 2's check writes none.
    - **Draft against the cap, not against the gate.** The plan-owned body
      must land under `cairn_validate`'s 150-line cap; count while writing
      rather than discovering the overrun at gate time, when the only remedy
