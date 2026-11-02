@@ -66,6 +66,7 @@ Reader runs. A reader run is one fresh-context subagent that has not seen this p
 - [x] T5: Write the D-entry, README, CHANGELOG, and the candidate row. Run the AC10 search.
 - [x] T6: Run `verify`, `cairn_validate`, and the hand-run `skills/tests`.
 - [x] T7: Review return 1: settle the Review section's fix-now items in `/milestone-plan`, `/milestone-review`, the rule (4) text, the hook, README, CHANGELOG, and D-233, and re-seed the rulebook mass.
+- [x] T8: Review return 2: settle the Review section's pass 2 fix-now items in `/milestone-plan`, `/milestone-review`, README, CHANGELOG, D-233, and the two test files.
 
 ## Work log
 
@@ -97,6 +98,7 @@ Reader runs. A reader run is one fresh-context subagent that has not seen this p
 - 2026-11-02: moved at the user's request: the worktree goes to `/Users/jmgirard/github/cairn-m329` and a new session there runs review pass 2, because the session that started this work sits in the see folder with see's guest context. The Copilot comment that pass owes reads as a colleague writes, as on easystats/datawizard#738, and not from the §5 template the user disliked (candidate row "Write Copilot comments like a colleague").
 - 2026-11-02: handed to the idle cairn session at the user's request; the session that held pass 2 stopped and wrote nothing.
 - 2026-11-02: review return 2: the plan's wait option replaces the draft for any thread with no maintainer's answer, and "a maintainer already agreed" goes on for anything but a no (diff-bug #1, #2). AC5 and AC8 are not met on the text (reader lines of pass 2). The Review section's other fix-now items go with them, the reader runs repeat on the fixed text, and Copilot's comment and resolves stay on hold. Second defect return on this milestone.
+- 2026-11-02: T8 added for review return 2 (minor amendment) and done. No criterion or scope changed. The wait option now needs the user's own unanswered question, a text that is no agreement at a named place ends with a close, a close as not planned needs a person other than the author, and the PR says the author chose to go on past a no, with no reason invented. The rulebook's text did not change, so its mass seed stays.
 
 ## Decisions
 

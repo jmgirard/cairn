@@ -315,15 +315,17 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    **Maintainer decision** (tracking-rules "Collaboration mode", rule (4)).
    In guest mode, the plan asks with the idea vet whether the work needs a
    maintainer's decision. It does when the work adds a feature, changes
-   behavior, or removes or hides output that users see. A fix that restores
-   documented behavior with no design choice does not. A design choice is
+   behavior, removes or hides output that users see, or holds a design
+   choice. A fix that restores documented behavior with no design choice
+   does not. A design choice is
    one that changes what users see and has more than one fitting reading.
    The plan looks for a maintainer's agreement in each issue, open or
    closed, that the request or a candidate row's title names or the inbox
    sweep matches, and in each PR of yours for this work, open or closed.
    `gh pr list --repo <base-repo> --author @me --state all --limit 100
-   --json number,title,headRefName,url` lists those PRs, and the plan judges
-   which are for this work. With `gh api --paginate`, it reads
+   --json number,title,headRefName,url` lists up to 100 of those PRs, and
+   the plan judges which are for this work. A list of 100 counts as a failed
+   read. With `gh api --paginate`, it reads
    `repos/<base-repo>/issues/<N>` and its `/comments` for an issue, and
    `repos/<base-repo>/issues/<N>/comments`,
    `repos/<base-repo>/pulls/<N>/reviews`, and
@@ -336,9 +338,11 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    Otherwise step 3's set poses the question, and no file is written for
    that work first. A gap that the question covers is not asked apart. A
    failed read counts as no agreement, and the question names that read. A
-   maintainer's no, in a comment, in a review, or by closing the issue as
-   not planned, is a flaw, in place of this question, and the idea vet
-   cites it. A user who builds past that flaw gets the line
+   maintainer's no, in a comment or a review, is a flaw, in place of this
+   question, and the idea vet cites it. So is a close as not planned: the
+   issue's `state_reason` reads `not_planned`, and its `closed_by` is neither
+   a bot nor the issue's author. A user who builds past that flaw gets the
+   line
    `maintainer decision: declined <URL> — planned at the user's choice`.
 
    **Collision check (mandatory).** Sweep the ROADMAP (all statuses), the
@@ -452,11 +456,14 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
      plan found no agreement, or which choice an agreement leaves open. Its
      options are **draft a question for the maintainers** (recommended), **a
      maintainer already agreed**, and **do not build**. The user names the
-     place of an agreement in the option's notes or by typing it. With a
-     thread that has no maintainer's answer yet, the question names the
-     thread, and **wait for the answer**, which writes nothing, takes the
-     draft option's place. It counts among the questions that matter most,
-     and a set of this question alone is allowed.
+     place of an agreement in the option's notes or by typing it. Where the
+     user already asked in a thread and no maintainer has answered since,
+     the question names the thread, and **wait for the answer** takes the
+     draft option's place. Waiting writes no file for that work and ends with
+     the close block (step 7). A thread that someone else opened, with no
+     question of the user's in it, keeps the draft option. The question counts
+     among the questions that matter most, and a set of this question alone
+     is allowed.
 
    **The maintainer question.** The session writes a draft after the set's
    answers, so a gap's answer shapes it, and a do-not-build answer to a
@@ -482,16 +489,22 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    ```
 
    Where no issue holds the work, the command is `gh issue create --repo
-   <base-repo> --title "<title>" --body-file "<path>"`. The plan shows the
+   <base-repo> --title "<title>" --body-file "<path>"`. The title is the
+   session's own plain words, under the same bullet, with no double quote in
+   it. The plan shows the
    command and never runs it, because the user posts the question. The
    close block's next fenced command is `/milestone-plan` with the request,
    or a row by its short title, to run after the maintainers answer. It
    tells the user to add a new issue's URL to that command, so that the
    rerun's read finds the thread. **A maintainer already agreed** runs step
-   2's read on the place the user names, where it can. A no there is a
-   flaw, and otherwise the plan goes on, and step 4 writes
-   `maintainer decision: <the place> — named by the user`. A user who types
-   an override goes on, and step 4 writes
+   2's read on the place the user names. With agreement there, or at a place
+   the read cannot reach, the plan goes on, and step 4 writes
+   `maintainer decision: <the place> — named by the user`. With no place
+   named, a no there, or a text that step 2 does not count as agreement, the
+   plan writes no file for that work and ends with the close block. The
+   close block says what the read found, and its fenced `/milestone-plan`
+   names that place, so the rerun poses the flaw or the question. A user who
+   types an override goes on, and step 4 writes
    `maintainer decision: none — planned at the user's choice`.
    `/milestone-review` step 8 reads the `none` and `declined` lines.
    **Do not build** writes no file for that work and leaves any source row
@@ -793,8 +806,8 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    the merge question. The merge ends the run, and each later milestone of
    the plan starts from its typed command after a `/clear`.
    **Close block instead** when another milestone is `in-progress`, when the
-   user asked for a plan alone, when step 3 drafted a maintainer question,
-   or when no milestone of the plan is workable
+   user asked for a plan alone, when step 3's maintainer question left the
+   work unwritten, or when no milestone of the plan is workable
    (a release parked as `blocked`, an unmet dependency): recap (the plan
    summary and remainder ledger live here), status table (new milestone(s),
    status, priority), fenced next command(s) with plain labels, such as

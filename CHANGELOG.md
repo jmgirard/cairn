@@ -12,7 +12,8 @@
   question for the maintainers, name an agreement it missed, or not build.
   You post the draft yourself, then rerun the plan after they answer. If you
   plan anyway, the PR says that no maintainer agreed with the design yet. If
-  you go on past a maintainer's no, the PR links that no and says why.
+  you go on past a maintainer's no, the PR links that no and says that you
+  chose to go on.
 
 - **A guest review shows output that a planned change takes away.** In
   guest mode, `/milestone-review` no longer closes such a finding as a

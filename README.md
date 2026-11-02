@@ -758,10 +758,11 @@ the PR lists the `edge` findings in plain words and asks the maintainers
 whether they want them handled. It also says what changed in each
 snapshot file and why. Also in guest mode, a finding that a planned change
 takes output from users is shown to you in plain words with how often it
-happens, or the condition when it cannot count. When a change alters what a
-surface draws or prints and its snapshot tests fail or skip on your machine
-at both the branch and the base, review renders the default case before and
-after and tells you what the reader sees, or that no one looked. The PR
+happens, or the condition when it cannot count. In guest mode too, when a
+user-facing change alters what a surface draws or prints and its snapshot
+tests fail or skip on your machine at both the branch and the base, review
+renders the default case before and after and tells you what the reader
+sees, or that no one looked. The guest PR
 says what a snapshot will show only from a render of that snapshot's own
 case, and it says that the render was local. Then it
 asks *you* to merge, with the evidence and each finding's outcome in front

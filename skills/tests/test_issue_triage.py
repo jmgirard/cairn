@@ -179,7 +179,7 @@ def plan():
 class TestPlanSweepRepo(unittest.TestCase):
     # M233: `/milestone-plan` step 2's inbox reads name the base repo, so a
     # guest-mode plan reads the upstream inboxes, not the fork's. The domain
-    # is every line of the plan skill that holds an inbox list command.
+    # is every line of the plan skill that holds an issue or PR list command.
 
     def inbox_lines(self):
         return [
@@ -187,9 +187,9 @@ class TestPlanSweepRepo(unittest.TestCase):
             if "gh issue list" in l or "gh pr list" in l
         ]
 
-    def test_domain_holds_both_inbox_reads(self):
+    def test_domain_holds_the_three_list_reads(self):
         # An empty match would pass the check below for the wrong reason. The
-        # exact count is deliberate: a third read added later must be checked
+        # exact count is deliberate: a fourth read added later must be checked
         # here on purpose, not pass unseen.
         self.assertEqual(len(self.inbox_lines()), 3)
 

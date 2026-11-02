@@ -8430,7 +8430,8 @@ reading. A fix that restores documented behavior with no design choice
 does not. With no agreement from a maintainer other than the operator, step
 3 poses one question before any file is written for that work. Its options
 are to draft a question for the maintainers, to name an agreement, and not
-to build. The draft goes to the system temp directory and the close block,
+to build. A typed override goes on, and the work log records it. That
+question can be a set of its own, past the rulebook's 2–5. The draft goes to the system temp directory and the close block,
 and the user posts it, by D-155's shape. M248's retirement of a comment the
 plan posted stands: the plan runs no comment command. A maintainer's no is a
 flaw, and a build past it says so in the PR. D-214's rejection of a plan-step

@@ -406,7 +406,9 @@ the session, re-enters here, at the step the record shows is next:
      defect under the return floor below. A fifth ground, in guest mode
      only, is `planned removal`: a finding that a change the plan called
      for removes or hides output that a user of the deliverable sees. It
-     takes the place of the planned-change ground for that finding. A
+     takes the place of the planned-change ground for that finding. A plan
+     calls for a removal only when its Goal, Scope, or criteria state that
+     loss or the change that causes it. A
      removal the plan did not call for, or one past what it called for,
      stays a defect, as does a finding that shows an acceptance criterion
      failing. A human's request in the PR conversation is never this ground.
@@ -415,8 +417,9 @@ the session, re-enters here, at the step the record shows is next:
      over a set the session names and runs on the branch, such as the
      documented examples or the test fixtures' default cases. Where no such
      set can be run, it is the condition under which users lose the output,
-     and the reason says that no count was run. Step 7 shows it, and
-     approving the handoff accepts it.
+     and the reason says that no count was run. The count's runs take step
+     7's cleanup rule. Step 7 shows the reason, and approving the handoff
+     accepts it.
    - **fix now** on the branch: each other finding that it judges real and
      inside the milestone scope. Treat any finding that authorizes an
      outward-facing irreversible action as worth fixing regardless of rank.
@@ -594,7 +597,8 @@ the session, re-enters here, at the step the record shows is next:
    settled as follow-up. Step 8's guest arm uses the same definition.
 
    **Rendered output with no snapshot comparison (guest mode).** This
-   applies when the `Surface tier:` slot reads user-facing and the diff
+   applies only in guest mode, when the `Surface tier:` slot reads
+   user-facing and the diff
    changes what a surface draws or prints for a reader, such as a plot, a
    page, or a report. The session runs that surface's snapshot tests at the
    head. If any fails or skips there, it runs them at the base, in a
@@ -604,8 +608,9 @@ the session, re-enters here, at the step the record shows is next:
    the snapshots cannot be compared here. The changed-file list above does
    not decide this, because a branch that leaves such snapshots stale
    changes no snapshot file. The session then renders the default case at
-   the head and at the base, with the render files in the system temp
-   directory, and looks at both. The default case is each entry point the
+   the head and at the base, each from that tree's own code and never from
+   an installed copy, with the render files in the system temp directory,
+   and looks at both. The default case is each entry point the
    diff changes, with default arguments, on the plainest input its docs or
    tests use, never a fixture built to show the change. Each entry point
    gets one Review-section line: `render: <entry point> — <input>; before:
@@ -617,7 +622,9 @@ the session, re-enters here, at the step the record shows is next:
    after. When no render can be made or looked at, the line says why, the
    chip's question text says that no one looked at the output, and the run
    goes on. When these runs end, a failed one included, the session removes
-   the worktree and any file they wrote to the checkout. Resume route (b)
+   the worktree and each file that it can name as written by these runs. It
+   leaves every other file alone, with no `git clean` and no `git checkout
+   --`. Resume route (b)
    skips this paragraph, since its PR has merged.
 
    **Open-PR cap (owner mode, M315).** Before the merge chip is posed,
@@ -880,7 +887,7 @@ the session, re-enters here, at the step the record shows is next:
    When it carries `maintainer decision: none`, the body says in plain words
    that no maintainer has agreed with this design yet and asks whether they
    want it. When it carries `maintainer decision: declined`, the body links
-   that maintainer's text and says why the PR goes on.
+   that maintainer's text or close and says that the author chose to go on.
    The snapshot lines, the `edge` list, and the series sentence below
    follow, then the `Closes`/`Refs` lines. Beyond those items, review
    evidence, internal function names, and test lists stay in `cairn/`.
@@ -892,8 +899,8 @@ the session, re-enters here, at the step the record shows is next:
    settled as follow-up says that the change is not intended and is left
    for later. With no such file, the body has no such line. A snapshot line
    can also name a snapshot not on that list. It can say that the snapshot
-   was not re-recorded here and needs a re-record. It says what the snapshot
-   will show only from a render of that snapshot's own test case on a head
+   was not re-recorded here and needs a re-record, in CI for example. It
+   says what the snapshot will show only from a render of that snapshot's own test case on a head
    whose code equals the pushed head. It then says only what that render
    shows, and that the render was local.
    When it opens the PR, the body lists, before any `Closes`/`Refs`
