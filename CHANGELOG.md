@@ -503,6 +503,11 @@
 
 ### Fixes
 
+- **Guest cleanup no longer stops at the merge guard.** In guest mode,
+  `/milestone-review` and `/hotfix` bring the default branch up to date with
+  `git pull --ff-only`. They used `git merge --ff-only`, which the merge guard
+  denied, so a cleanup stopped or used up an approval marker.
+
 - **`/cairn-triage` weighs every item on each pass.** A pass could keep
   every row because nothing changed since the last pass, even after the
   triage rules themselves changed. The pass now weighs each item on what
