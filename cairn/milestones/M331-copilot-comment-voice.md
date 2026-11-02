@@ -1,13 +1,13 @@
 # M331: Write Copilot comments like a colleague
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — the skills post this comment on PRs that other people read
-- **Branch/PR:** —
+- **Branch/PR:** m331-copilot-comment-voice
 
 ## Goal
 
@@ -41,11 +41,11 @@ Each Copilot review's PR comment reads as a colleague wrote it, with a draft sho
 
 ## Tasks
 
-- [ ] T1: Update the guards first. In `skills/tests/test_copilot_review_round.py`, change the `TestOneComment` pins for the old first-line and "comment names" sentences, and add tests for `--body-file`, the markdown link, the guest and `/copilot-review` draft chip, and the hold. Change the matching `Mutation` entries in `skills/tests/test_mutation_harness.py` (lines 4281 and 4287) and add entries for the new tests. See them red.
-- [ ] T2: Rewrite §5's comment paragraph with one short example of the new form. Allow prose up to three notes and a short list of full sentences for four or more. Give a note settled on an earlier pass the outcome its `copilot:` line records. Post from a temp file under the system temp directory with `--body-file`. State the resolve by the review tie. Add the draft chip, the edit rule, and the hold to §5, narrow §1's opt-in sentence, and add a hold to §6's held parenthetical and the `/copilot-review <N>` fence to its report.
-- [ ] T3: Update `skills/copilot-review/SKILL.md`: the description, the permission sentence, step 6 with the chip and the hold, step 7's resolve, and step 8's close for a held review, including that a rerun disposes of the open threads again and finds pushed fixes from the branch.
-- [ ] T4: Update the guest round text in `skills/milestone-review/SKILL.md` step 8 and `skills/hotfix/SKILL.md`'s guest close to name the chip and the hold, and to say that a hold changes neither the `blocked` status nor the rest of the close. Check that step 7's owner read still reads true.
-- [ ] T5: Update the two README passages (the command table row and the Copilot bullet) and edit the two Unreleased CHANGELOG entries in place, since neither has shipped in a release.
+- [x] T1: Update the guards first. In `skills/tests/test_copilot_review_round.py`, change the `TestOneComment` pins for the old first-line and "comment names" sentences, and add tests for `--body-file`, the markdown link, the guest and `/copilot-review` draft chip, and the hold. Change the matching `Mutation` entries in `skills/tests/test_mutation_harness.py` (lines 4281 and 4287) and add entries for the new tests. See them red.
+- [x] T2: Rewrite §5's comment paragraph with one short example of the new form. Allow prose up to three notes and a short list of full sentences for four or more. Give a note settled on an earlier pass the outcome its `copilot:` line records. Post from a temp file under the system temp directory with `--body-file`. State the resolve by the review tie. Add the draft chip, the edit rule, and the hold to §5, narrow §1's opt-in sentence, and add a hold to §6's held parenthetical and the `/copilot-review <N>` fence to its report.
+- [x] T3: Update `skills/copilot-review/SKILL.md`: the description, the permission sentence, step 6 with the chip and the hold, step 7's resolve, and step 8's close for a held review, including that a rerun disposes of the open threads again and finds pushed fixes from the branch.
+- [x] T4: Update the guest round text in `skills/milestone-review/SKILL.md` step 8 and `skills/hotfix/SKILL.md`'s guest close to name the chip and the hold, and to say that a hold changes neither the `blocked` status nor the rest of the close. Check that step 7's owner read still reads true.
+- [x] T5: Update the two README passages (the command table row and the Copilot bullet) and edit the two Unreleased CHANGELOG entries in place, since neither has shipped in a release.
 - [ ] T6: Append the D-entry, superseding D-212's "the review's URL, then one line per note", D-187's "first line" clause, and the opt-in's "with no question" in D-152's guest and module terms. Reset the module's header budget in that entry at the new size plus stated headroom, as D-188 did, with no rule dropped. Run the reader passes from fresh subagents with these cases, and rerun a case after any later edit to a sentence it relies on.
   Dedupe cases (AC3), for review `R` = `https://github.com/o/r/pull/9#pullrequestreview-100`: (a) operator comment `On [Copilot's review](R): fixed in abc1234.`; (b) operator comment with `R` alone on its first line; (c) operator comment `See R for the notes.`; (d) operator comment that holds `R` followed by `7`; (e) another author's comment that holds `R`.
   Note set 1 (PR 735): one thread at `R/utils_standardize_center.R:319`, fixed in 09b1c08e, a single `TRUE` or `FALSE` now applies to every column.
@@ -64,6 +64,7 @@ Each Copilot review's PR comment reads as a colleague wrote it, with a draft sho
 - 2026-11-02: plan gate chose a chip in guest rounds and `/copilot-review` over a chip in every round because owner-mode runs would gain a stop before the merge question for a comment only the user reads; falsified by a user reporting a badly worded owner-mode comment that a person other than the user had to read.
 - 2026-11-02: plan gate chose resetting the module budget over compressing it because M282 and M287 lost rules that way (D-188); falsified by a compression that fits with no rule lost.
 - 2026-11-02: plan gate chose a temp file with `--body-file` over `--body` with escaping because ordinary sentences hold apostrophes and a failed quote posts a wrong comment; falsified by no such failure when `--body` is tried on sentences with apostrophes, double quotes, and backticks.
+- 2026-11-02: T1 to T5 done and D-235 appended: guards red with 24 failures, then green after the module, skill, guest-close, README, and CHANGELOG edits; the module is 185 lines and 11,029 bytes, under the new budget; T6's reader passes are next. The unrelated `cairn-probe.log` and `tsconfig.json` stay unstaged. The simple-english lint hook flags hundreds of older sentences in README, CHANGELOG, and the skills; only new sentences were fixed, because rewriting the rest is outside this scope.
 - 2026-11-02: an edit typed at the chip posts as typed, with only a dropped review link restored, because the user may drop a note on purpose and the link keeps a rerun from posting twice; `/copilot-review` still reports each note's `copilot:` line.
 
 ## Decisions

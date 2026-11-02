@@ -1,6 +1,6 @@
 ---
 name: copilot-review
-description: Handle a GitHub Copilot review on one pull request. Read each Copilot note and the review summary, and fix, reject, or defer each note. Post one PR comment for each review that has a note, one line per note, then resolve the notes' threads. Never reply on a thread, and never thank Copilot. Ask the user in chat, never on GitHub, about a note the agent cannot decide alone. Use when the user wants to address, answer, handle, or work through Copilot's review comments or notes on a PR.
+description: Handle a GitHub Copilot review on one pull request. Read each Copilot note and the review summary, and fix, reject, or defer each note. Show a draft of one PR comment for each review that has a note. The comment uses ordinary sentences that give each note's outcome. Post it, then resolve the notes' threads. Never reply on a thread, and never thank Copilot. Ask the user in chat, never on GitHub, about a note the agent cannot decide alone. Use when the user wants to address, answer, handle, or work through Copilot's review comments or notes on a PR.
 argument-hint: "[PR number or URL]"
 ---
 
@@ -21,8 +21,9 @@ module's procedures on one PR: the state query (§3), the wait and thread
 read (§4), the comment and resolves (§5), and the report lines (§6).
 
 The module's opt-in line does not apply to this skill. The user's request
-gives this skill permission for its pushes, its comments, and its
-resolves. This skill never requests a Copilot review. The request stays with
+gives this skill permission for its pushes and its resolves, and for each
+comment the user approves at its draft chip. This skill never requests a
+Copilot review. The request stays with
 `/hotfix` and `/milestone-review` (module §2). This skill runs outside a
 milestone run. It works in a repo with or without `cairn/`. Without
 `cairn/`, owner mode applies. In that case, with an `upstream` remote,
@@ -95,15 +96,18 @@ numbered step below (session start implicit).
    If the push fails, end with a close block that names the local commits.
 
 6. **Comment.** For each Copilot review that has a note and that no
-   comment by the operator links yet, post the module's one comment (§5):
-   the review's URL, then one line per note. A fix's line names the pushed
-   commit. Another line gives the reason the note is not a problem, or
-   says it is left for a later change. The comment states facts only and
-   never thanks Copilot. Post no reply on a thread.
+   comment by the operator links yet, write the module's one comment (§5)
+   in ordinary sentences: a markdown link to the review, then every note's
+   outcome. For a fix, the outcome names the pushed commit. For another
+   note, it gives the reason the note is not a problem, or says it is left
+   for a later change. The comment states facts only and never thanks Copilot. Show each draft in
+   the module's draft chip (§5), then post each one the user approves.
+   Post no reply on a thread.
 
-7. **Resolve.** Resolve each Copilot thread that a posted comment names,
-   and each unresolved Copilot thread of a review that an earlier comment
-   by the operator already links (module §5).
+7. **Resolve.** Resolve each unresolved Copilot thread tied to a review
+   whose comment posted, and each unresolved Copilot thread of a review
+   that an earlier comment by the operator already links (module §5). A
+   held review's threads stay open.
 
 8. **Close.** End with a close block. It holds these parts:
    - One or two sentences on what changed.
@@ -112,5 +116,7 @@ numbered step below (session start implicit).
    - The module's `copilot:` lines and level line (§6).
    - A CI line that says whether the pushed fixes started checks.
    - The fenced next command, where one exists. For a milestone branch in
-     `review`, it is `/milestone-review M<NNN>`.
+     `review`, it is `/milestone-review M<NNN>`. For a held review, it is
+     `/copilot-review <N>`. That rerun gives the review's open notes new
+     dispositions and finds the pushed fixes on the branch.
    - A line that says adjusting course or `/clear` are both safe here.

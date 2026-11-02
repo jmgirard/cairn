@@ -202,16 +202,47 @@ class TestOneComment(unittest.TestCase):
         self.assertIn("once every note of the review has a disposition and "
                       "each fix is pushed", self.comment)
 
-    def test_comment_links_the_review_and_lists_each_note(self):
-        self.assertIn("Its first line is the review's `url`, then one line "
-                      "per note", self.comment)
+    def test_comment_opens_with_a_markdown_link(self):
+        self.assertIn("Open with the review's `url` as a markdown link.",
+                      self.comment)
+
+    def test_comment_is_ordinary_sentences(self):
+        self.assertIn("Write it as ordinary sentences, as the PR's author "
+                      "would write to a reviewer.", self.comment)
+
+    def test_comment_gives_every_note_its_outcome(self):
+        self.assertIn("Give every note's outcome, thread or body item: the "
+                      "fix's short sha, why the note is not a problem, or "
+                      "that it is left for a later change.", self.comment)
+
+    def test_host_matching_governs_guest_tone(self):
+        self.assertIn("In guest mode host matching still governs tone and "
+                      "length.", self.comment)
+
+    def test_old_template_is_gone(self):
+        for old in ("first line", "one line per note", "Each line"):
+            with self.subTest(old=old):
+                self.assertNotIn(old, self.comment)
+
+    def test_comment_posts_from_a_file(self):
+        self.assertIn('gh pr comment <N> --body-file "<path>"', self.comment)
+        self.assertNotIn("--body '", self.comment)
 
     def test_resolves_follow_the_comment(self):
-        self.assertIn("Then resolve each Copilot thread the comment names.",
-                      self.comment)
+        self.assertIn("Then resolve each unresolved Copilot thread tied to "
+                      "that review.", self.comment)
+
+    def test_resolves_do_not_depend_on_what_the_comment_names(self):
+        for parts in (("shared", "copilot-review.md"),
+                      ("copilot-review", "SKILL.md")):
+            with self.subTest(file="/".join(parts)):
+                self.assertNotIn("comment names", flat(read(*parts)))
 
     def test_a_linked_review_gets_no_second_comment(self):
         self.assertIn("already carries gets no second comment", self.comment)
+
+    def test_a_link_counts_wherever_it_sits(self):
+        self.assertIn("wherever the `url` sits in that comment", self.comment)
 
     def test_a_linked_review_is_finished_not_redisposed(self):
         self.assertIn("Its notes get no disposition, its open Copilot threads "
@@ -225,6 +256,77 @@ class TestOneComment(unittest.TestCase):
         module = read("shared", "copilot-review.md")
         self.assertNotRegex(
             module, r"/replies|addPullRequestReviewThreadReply|in_reply_to")
+
+
+class TestDraftChip(unittest.TestCase):
+    """M331 AC6: a guest-mode round and `/copilot-review` show each draft
+    before it posts, a hold posts nothing, and an owner-mode round asks
+    nothing. One test per clause."""
+
+    def setUp(self):
+        self.module = read("shared", "copilot-review.md")
+        self.draft = flat(section(self.module, "**The draft.**",
+                                  "**The post.**"))
+        self.skill = read("copilot-review", "SKILL.md")
+
+    def test_guest_round_and_skill_show_the_draft_first(self):
+        self.assertIn("In a guest-mode round and in `/copilot-review`, show "
+                      "each draft in an `AskUserQuestion` chip before it "
+                      "posts: one question per draft, four per chip, and "
+                      "more chips for more drafts.", self.draft)
+
+    def test_a_long_draft_is_cited_by_path(self):
+        self.assertIn("A draft of at most 800 characters sits in the question "
+                      "text, and a longer one is cited by the path of its "
+                      "temp file.", self.draft)
+
+    def test_options_are_post_and_hold(self):
+        self.assertIn("The options are to post it and to hold it.",
+                      self.draft)
+
+    def test_a_typed_edit_keeps_the_link(self):
+        self.assertIn("A typed edit posts as typed, once the session restores "
+                      "a dropped review link.", self.draft)
+
+    def test_a_hold_posts_nothing(self):
+        self.assertIn("A hold posts no comment and resolves no thread of that "
+                      "review.", self.draft)
+
+    def test_owner_round_asks_nothing(self):
+        self.assertIn("An owner-mode round posts with no question.",
+                      self.draft)
+
+    def test_opt_in_states_both_arms(self):
+        opt_in = flat(section(self.module, "## 1. Opt-in",
+                              "**Off but present"))
+        self.assertIn("with no question (M231), except that a guest-mode "
+                      "round shows each draft first (§5).", opt_in)
+
+    def test_report_names_a_hold_and_its_resume(self):
+        report = flat(section(self.module, "## 6.", "`/milestone-review` "
+                              "writes the lines"))
+        self.assertIn("a hold at the draft chip", report)
+        self.assertIn("fences `/copilot-review <N>`", report)
+
+    def test_skill_step_six_shows_the_chip(self):
+        step = flat(section(self.skill, "6. **Comment.**", "7. **Resolve.**"))
+        self.assertIn("Show each draft in the module's draft chip (§5), then "
+                      "post each one", step)
+
+    def test_skill_permission_leaves_the_comment_to_the_chip(self):
+        self.assertIn("and for each comment the user approves at its draft "
+                      "chip", flat(self.skill))
+
+    def test_skill_close_names_the_rerun(self):
+        step = flat(section(self.skill, "8. **Close.**", "A line that says"))
+        self.assertIn("For a held review, it is `/copilot-review <N>`", step)
+
+    def test_guest_closes_keep_their_shape_on_a_hold(self):
+        self.assertIn("A hold at the module's draft chip (§5) changes neither "
+                      "the `blocked` status below nor the rest of this close.",
+                      flat(read("milestone-review", "SKILL.md")))
+        self.assertIn("A hold at the module's draft chip (§5) changes nothing "
+                      "else in this close.", flat(read("hotfix", "SKILL.md")))
 
 
 class TestUnsettledNoteInTheRound(unittest.TestCase):

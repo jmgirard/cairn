@@ -944,7 +944,9 @@ the session, re-enters here, at the step the record shows is next:
    pending line, or its reason line for a missing review (§6), are written
    on disk and ride in the close
    block below, which also says that a Copilot review arriving after the
-   wait is the operator's to handle by hand.
+   wait is the operator's to handle by hand. A hold at the module's draft
+   chip (§5) changes neither the `blocked` status below nor the rest of
+   this close.
    Then set status `blocked` in ROADMAP and the header
    mirror; append the work-log line `blocked: PR #<N> awaits the
    maintainers of <base-repo>` — the blocker the status vocabulary requires

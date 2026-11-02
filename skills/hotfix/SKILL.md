@@ -606,7 +606,8 @@ can resolve against the fork instead of the base repo.
    PR's head. Its `copilot:` lines and the module's level or pending line,
    or its reason line for a missing review (§6), ride in the close block,
    which also says that a Copilot review
-   arriving after the wait is the operator's to handle by hand. Then
+   arriving after the wait is the operator's to handle by hand. A hold at
+   the module's draft chip (§5) changes nothing else in this close. Then
    stop with the close block: the recap says the fix is in the maintainers'
    hands; the CI line says their CI on the PR is the check that counts and
    nothing waits on it here; the fenced next command is `/hotfix` with the
