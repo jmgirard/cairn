@@ -145,20 +145,22 @@ check is back in c58706e4, because `sep = c("a", "b")` gave a wrong label.
 I'm leaving duplicate column names for a later change.`` A note settled
 on an earlier `/milestone-review` pass takes the outcome its `copilot:`
 line records. The comment never thanks Copilot, asks no question, and in
-guest mode carries no cairn vocabulary.
+guest mode carries no cairn vocabulary. Write the draft with the Write tool
+to `cairn-copilot-comment-<owner>-<name>-<N>-<review id>.md` in the system
+temp directory, reading an existing file first. The review id is the digits
+after `#pullrequestreview-` in the review's `url`.
 
 **The draft.** In a guest-mode round and in `/copilot-review`, show each
 draft in an `AskUserQuestion` chip before it posts: one question per
 draft, four per chip, and more chips for more drafts. A draft of at most
 800 characters sits in the question text, and a longer one is cited by the
 path of its temp file. The options are to post it and to hold it. A typed
-edit posts as typed, once the session restores a dropped review link. A
+edit posts as typed, once the session restores a dropped review link. The
+session rewrites the temp file with that text. A
 hold posts no comment and resolves no thread of that review. An owner-mode
 round posts with no question.
 
-**The post.** Write the comment with the Write tool to
-`cairn-copilot-comment-<owner>-<name>-<N>-<review id>.md` in the system
-temp directory, reading an existing file first, and post it with
+**The post.** Post the temp file with
 `gh pr comment <N> --body-file "<path>"` (guest mode: add `--repo
 <base-repo>`). Then resolve each unresolved Copilot thread tied to that
 review. The resolve is the PR's only "handled" mark, so a later read skips

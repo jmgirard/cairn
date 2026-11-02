@@ -945,8 +945,9 @@ the session, re-enters here, at the step the record shows is next:
    on disk and ride in the close
    block below, which also says that a Copilot review arriving after the
    wait is the operator's to handle by hand. A hold at the module's draft
-   chip (§5) changes neither the `blocked` status below nor the rest of
-   this close.
+   chip (§5) adds §6's `/copilot-review <N>` fence after this close's next
+   command, and it changes neither the `blocked` status below nor the rest
+   of this close.
    Then set status `blocked` in ROADMAP and the header
    mirror; append the work-log line `blocked: PR #<N> awaits the
    maintainers of <base-repo>` — the blocker the status vocabulary requires

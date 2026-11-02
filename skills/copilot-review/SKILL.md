@@ -116,7 +116,7 @@ numbered step below (session start implicit).
    - The module's `copilot:` lines and level line (§6).
    - A CI line that says whether the pushed fixes started checks.
    - The fenced next command, where one exists. For a milestone branch in
-     `review`, it is `/milestone-review M<NNN>`. For a held review, it is
-     `/copilot-review <N>`. That rerun gives the review's open notes new
+     `review`, it is `/milestone-review M<NNN>`. For a held review, the
+     first is `/copilot-review <N>`. That rerun gives the review's open notes new
      dispositions and finds the pushed fixes on the branch.
    - A line that says adjusting course or `/clear` are both safe here.

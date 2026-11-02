@@ -319,14 +319,27 @@ class TestDraftChip(unittest.TestCase):
 
     def test_skill_close_names_the_rerun(self):
         step = flat(section(self.skill, "8. **Close.**", "A line that says"))
-        self.assertIn("For a held review, it is `/copilot-review <N>`", step)
+        self.assertIn("For a held review, the first is `/copilot-review <N>`",
+                      step)
 
-    def test_guest_closes_keep_their_shape_on_a_hold(self):
-        self.assertIn("A hold at the module's draft chip (§5) changes neither "
-                      "the `blocked` status below nor the rest of this close.",
+    def test_guest_closes_add_only_the_fence_on_a_hold(self):
+        self.assertIn("A hold at the module's draft chip (§5) adds §6's "
+                      "`/copilot-review <N>` fence after this close's next "
+                      "command, and it changes neither the `blocked` status "
+                      "below nor the rest of this close.",
                       flat(read("milestone-review", "SKILL.md")))
-        self.assertIn("A hold at the module's draft chip (§5) changes nothing "
-                      "else in this close.", flat(read("hotfix", "SKILL.md")))
+        self.assertIn("A hold at the module's draft chip (§5) adds §6's "
+                      "`/copilot-review <N>` fence after this close's next "
+                      "command, and it changes nothing else here.",
+                      flat(read("hotfix", "SKILL.md")))
+
+    def test_the_temp_file_is_written_before_the_chip(self):
+        before_chip = flat(section(self.module, "**The comment.**",
+                                   "**The draft.**"))
+        self.assertIn("Write the draft with the Write tool", before_chip)
+        self.assertIn("The review id is the digits after "
+                      "`#pullrequestreview-`", before_chip)
+        self.assertIn("rewrites the temp file with that text.", self.draft)
 
 
 class TestUnsettledNoteInTheRound(unittest.TestCase):
