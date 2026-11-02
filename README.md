@@ -793,7 +793,7 @@ run in a fresh session. The end of a run is the natural point to `/clear`.
 | Get a stronger model's judgment on a hard question | `/milestone-brief M<NNN> <topic>`: writes a self-contained brief; you approve (or run) the Fable review. Its report advises by default — it only binds the milestone if you asked it to |
 | Fix a reported bug quickly | `/hotfix`, or just describe the bug: regression test, fix, PR, your approval. It asks the same three questions of the behavior the fix produces, documented behavior included. It settles a gap without a question unless another fitting reading changes what you get, and then it stops, unless its PR is already merged, so that a plan can ask you. A flaw in what the fix changes leaves a candidate row or a `/milestone-plan` next command that names it, and stops the hotfix unless its PR is already merged. A flaw in a name or behavior the fix leaves as it was does not stop the hotfix: it becomes a candidate row after the merge, or is named in the close block when the hotfix stops before then. After the merge it removes the candidate row it fixed, or narrows it to the part left. Its approval gate lists each test snapshot file the fix changes, and a change the fix does not need moves the recommendation to fixing it first. Escalates to a milestone if it's bigger than it looked |
 | Take in an outside pull request | `/hotfix` again: it adopts the contributor's PR (`gh pr checkout`), holds it to the same bar, the three questions included, and merges on your approval |
-| Work through Copilot's review on a pull request | `/copilot-review`, or `/copilot-review 12`: reads each Copilot note and the review summary. It fixes, rejects, or defers each note. Then each Copilot review with an open note gets one PR comment, one line per note, and the notes' threads are resolved. The lines cover notes in the review body too. It replies on no thread and never thanks Copilot, and it asks you in chat about a note it cannot settle alone. It does not request a review. |
+| Work through Copilot's review on a pull request | `/copilot-review`, or `/copilot-review 12`: reads each Copilot note and the review summary. It fixes, rejects, or defers each note. Then each Copilot review with an open note gets one PR comment, in ordinary sentences that give each note's outcome, notes in the review body included. It shows you each draft first, and you can post it, type your own version, or hold it. Once a comment posts, that review's threads are resolved. It replies on no thread and never thanks Copilot, and it asks you in chat about a note it cannot settle alone. It does not request a review. |
 | Fix a typo or tweak docs | Just ask: trivial edits commit directly to the default branch, no tracking (in guest mode, only `cairn/` edits, left on disk). Through `/milestone-plan`, the edit also removes the candidate row it fixes, such as a row you pressed in the cairn pane. It leaves a row that an open pull request names for that PR. If the check of the PRs fails, its option says so. A row it removes can end with an issue number, such as `(#12)`. In owner mode the edit then closes that open issue after the push, once its option names the close. It leaves a pull request's number alone. It also leaves alone an issue that a row it keeps names anywhere in its text, and an issue that an open milestone's `Resolves:` slot names. If its read of the open pull requests fails or stops at 100 PRs, it closes no issue |
 | Prune the backlog | `/cairn-triage`: one proposal per candidate row and known issue, one gate, one docs-only commit on your say-so (in guest mode, edits on disk with no commit). The pass can propose any rung for a row, up or down any number of rungs, with a reason: high, normal, low, parked with a drafted condition, a Known issues entry, or a drop, including a drop as not worth keeping. A started token or a live milestone still holds a row in place, and a row that an open PR names keeps its short title. A pass that drops a row as not worth keeping writes a decision entry that lists it. When you keep a row it proposed to move, the row gets a ` — kept YYYY-MM-DD` mark, and the pass proposes no move for it again until something dated after the mark gives a reason. Rungs and kept marks apply to candidate rows only. `/cairn-triage lessons` does the same for each lesson in `cairn/LESSONS.md`, and can drop a false or obsolete lesson or correct one. It shortens or splits each lesson over 450 bytes and proposes dropping the lowest-ranked lessons (rank is the newest milestone in a lesson's provenance, not counting `trimmed` or `corrected` marks) down to 20 |
 | Prepare a release | `/cairn-release`: follows your repo's profile (a CRAN walk, a registry walk, or a version bump and tag); you run the final submit or tag step yourself. In a quarto-extension repo it reads the `version:` line in `_extension.yml` first. A version at the tip of the default branch with no `v<version>` tag gets tagged on the commit that started it, with no bump. You confirm it first. With a changelog file, the file needs a section headed with that version. Otherwise it raises the version at release time. A merge can raise the version to one with no tag. Then the `/milestone-review` or `/hotfix` close gives you the tag and push commands for the merge commit. A GitHub repo also gets `gh release create`. cairn does not run them |
@@ -1036,17 +1036,24 @@ actually reach.
   a follow-up row. A thread Claude cannot settle without you becomes a
   follow-up row, named at the merge question or the approval chip. Any
   question goes to chat, never to GitHub. Claude replies on no thread.
-  Each Copilot review with an open note gets one PR comment. It gives the
-  review's link, then one line for each note. A line names the fix's
-  commit, gives the reason the note is not a problem, or says it is left
-  for later. It never thanks Copilot. After the comment Claude resolves
-  the threads the comment names. A thread that `/milestone-review` returns
-  to implement holds back its review's comment, and its threads stay open
-  for a later pass. A review your comment already links gets no second
-  comment, and its open threads are resolved.
-  The line is your permission for these pushes, comments, and resolves.
+  Each Copilot review with an open note gets one PR comment, written in
+  ordinary sentences as you would write to a reviewer. It opens with a link
+  to the review and gives each note's outcome: the fix's commit, the reason
+  the note is not a problem, or that it is left for later. It never thanks
+  Copilot. After the comment Claude resolves that review's open threads. A
+  thread that `/milestone-review` returns to implement holds back its
+  review's comment, and its threads stay open for a later pass. A review
+  your comment already links gets no second comment, and its open threads
+  are resolved.
+  The line is your permission for these pushes and resolves, and for the
+  comments in your own repo. In guest mode Claude shows you each draft
+  first, because the maintainers read it. You can post it, type your own
+  version, or hold it. A hold posts nothing and leaves that review's
+  threads open, and `/copilot-review` finishes the review while the PR is
+  open.
   `/copilot-review` runs the same read, comments, and resolves on one PR
-  without the line. It never requests a review. A `pull_request`-triggered CI suite also runs on the early
+  without the line, and it always shows each draft first. It never requests
+  a review. A `pull_request`-triggered CI suite also runs on the early
   push and the fix pushes. A hotfix opens its PR before its approval chip;
   a decline there closes the PR and keeps the branch. In guest mode the
   round runs after the handoff opens the PR. With the round on, the

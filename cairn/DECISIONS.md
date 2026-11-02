@@ -8539,3 +8539,40 @@ that ships work whose users later show that no one wanted it.
 for stops at a question. The check is falsified by a run of guest plans in
 which every question is answered build anyway. The measurements behind the
 rejections are in M330's work log.
+
+### D-235 (2026-11-02): Each Copilot review's comment reads as a colleague wrote it, posts from a file, and shows a draft first in a guest round and in `/copilot-review` — supersedes D-212's "the review's URL, then one line per note" and "the threads it names", and D-187's "first line"; D-212's one comment and no thread reply stand; narrows the round's opt-in "with no question" and D-187's permission by request; resets D-188's budget for this scope (M331)
+
+**Context:** The user called two comments in the D-212 form "worded
+terribly" on easystats/datawizard (PR 735 shows the form: a bare URL, then
+`path:line: fixed in <sha>`). A later comment on PR 738, in ordinary
+sentences, is the form the user wants. Comments in sentences hold
+apostrophes, which break `gh pr comment --body '<comment>'`, and they can
+name a note by its subject, so "resolve each thread the comment names" no
+longer picks the threads.
+
+**Decision:** The comment is written in ordinary sentences, as the PR's
+author would write to a reviewer. In guest mode host matching still governs
+tone and length (D-207). It opens with the review's URL as a markdown link,
+and it gives every note's outcome. Up to three notes take a paragraph, and
+four or more take a short list of full sentences. It posts with
+`--body-file` from a temp file. After it posts, each unresolved Copilot
+thread tied to that review is resolved, by the review tie D-212 states. At
+the user's answers, a guest-mode round and `/copilot-review` show each draft
+in a chip before it posts, with post and hold as options and a typed edit
+posted as typed once the session restores a dropped review link. A hold
+posts no comment, resolves no thread, and reports the review as held, and a
+guest close then fences `/copilot-review <N>`. An owner-mode round posts with
+no question. The module's budget is reset for this scope. Rejected: a chip in
+every round (owner-mode runs would gain a stop before the merge question for
+a comment that only the user reads; falsified by a badly worded owner-mode
+comment that another person had to read), no chip anywhere (a bad comment on
+a maintainer's PR cannot be unsent), and compressing the module to its old
+budget (M282 and M287 lost rules that way, D-188).
+
+**Consequences:** A guest round can wait at the chip after its handoff, and
+the stop list's outward-action stop covers that wait. A held review's threads
+stay open, and the rerun gives its open notes new dispositions, since the
+round keeps no record (D-153). The trigger is shipped behavior, the comments
+the round posted, so D-108's door does not bar this rule. Falsified by a
+guest round's draft that the user always posts unchanged across many reviews,
+which would show the chip costs more than it saves.

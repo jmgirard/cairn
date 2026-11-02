@@ -6,7 +6,8 @@ off, they read §1 and §3 at the closes §1 names. `/copilot-review` runs §3
 to §6 on one PR. It is a module of `tracking-rules.md`, read only then.
 
 Budget (M231, plus headroom, reset at M287 for the summary reply and the
-unsettled-note rule, D-188): **under 165 lines and under 9,600 bytes**,
+unsettled-note rule, D-188, and at M331 for the comment's wording and the
+draft chip, D-235): **under 200 lines and under 12,000 bytes**,
 hand-read with `wc -l -c` at hygiene passes, covered by no
 validator. Over either figure, compress or retire content here, never "let
 it grow".
@@ -20,7 +21,8 @@ after the merge approval (D-138), and the skill writes nothing to the PR,
 but its recap can carry the note below. The opt-in line also
 permits the round's outward writes (the request, fix pushes, the comment
 on each review, resolves) and its thread dispositions, with no question
-(M231). The round keeps no record that it ran. The PR's signals (§2)
+(M231), except that a guest-mode round shows each draft first (§5). The
+round keeps no record that it ran. The PR's signals (§2)
 decide each step (RR17).
 
 **Off but present (M244).** With the round off, `/hotfix` (step 7, step
@@ -127,20 +129,47 @@ review) or its body has a finding with no anchor. Read each review's
 and the operator's comments with
 `gh api --paginate repos/<owner>/<name>/issues/<N>/comments`. A review
 whose `url` an operator comment already carries gets no second comment
-(no digit after the `url`). Its notes get no disposition, its open
-Copilot threads are resolved, and that comment is logged as noted.
-Otherwise the comment goes once every note of the review has a
-disposition and each fix is pushed. Post it with
-`gh pr comment <N> --body '<comment>'` (guest mode: add `--repo
-<base-repo>`). Its first line is the review's `url`, then one line per
-note: each thread by its path and line (`originalLine` when outdated),
-and each body item. Each line is one sentence: `fixed in <short-sha>`,
-why the note is not a problem, or left for a later change. A note
-settled on an earlier `/milestone-review` pass takes its `copilot:` line.
-The comment never thanks Copilot,
-asks no question, and in guest mode carries no cairn vocabulary. Then
-resolve each Copilot thread the comment names. The resolve is the PR's
-only "handled" mark, so a later read skips the thread.
+(no digit after the `url`), wherever the `url` sits in that comment. Its
+notes get no disposition, its open Copilot threads are resolved, and that
+comment is logged as noted. Otherwise the comment goes once every note of
+the review has a disposition and each fix is pushed.
+
+Write it as ordinary sentences, as the PR's author would write to a
+reviewer. In guest mode host matching still governs tone and length. Open
+with the review's `url` as a markdown link. Give every note's outcome,
+thread or body item: the fix's short sha, why the note is not a problem,
+or that it is left for a later change. Name a note by what it is about.
+Up to three notes take a paragraph, and four or more take a short list of
+full sentences. For example: ``On [Copilot's review](<url>): the `sep`
+check is back in c58706e4, because `sep = c("a", "b")` gave a wrong label.
+I'm leaving duplicate column names for a later change.`` A note settled
+on an earlier `/milestone-review` pass takes the outcome its `copilot:`
+line records. The comment never thanks Copilot, asks no question, and in
+guest mode carries no cairn vocabulary. Write the draft with the Write tool
+to `cairn-copilot-comment-<owner>-<name>-<N>-<review id>.md` in the system
+temp directory (Python's `tempfile.gettempdir()`), by its absolute path,
+reading an existing file first. The review id is the digits
+after `#pullrequestreview-` in the review's `url`.
+
+**The draft.** In a guest-mode round and in `/copilot-review`, show each
+draft in an `AskUserQuestion` chip before it posts: one question per
+draft, four per chip, and more chips for more drafts. A draft of at most
+800 characters sits in the question text, and a longer one is cited by the
+path of its temp file. The options are to post it and to hold it. A typed
+edit posts as typed, once the session restores a dropped review link. The
+session rewrites the temp file with that text. Typed text that asks for a
+change and is not a comment, such as "shorten it", changes the draft, and
+the chip shows it again. A
+hold posts no comment and resolves no thread of that review. An owner-mode
+round posts with no question.
+
+**The post.** Read the operator's comments again, and post nothing for a
+review that one of them now carries. Post the temp file with
+`gh pr comment <N> --body-file "<path>"` (guest mode: add `--repo
+<base-repo>`). A failed post resolves no thread.
+Then resolve each unresolved Copilot thread tied to that
+review. The resolve is the PR's only "handled" mark, so a later read skips
+the thread.
 
 ```
 gh api graphql -f id=<thread id> -f query='mutation($id:ID!){resolveReviewThread(input:{threadId:$id}){thread{isResolved}}}'
@@ -155,8 +184,10 @@ GitHub's settings)`, or says the review is pending, or says why no review
 exists, such as §2's not-recorded line in the same pass. When the read's
 own state query still prints `none`, that line is the reason. On `pending`
 or `reviewed`, the report gives the pending or level line.
-A review held back (a return-floor item, a failed push) reports
-`copilot: <url> — held`.
+A review held back (a return-floor item, a failed push, a failed post, a
+hold at the draft chip) reports `copilot: <url> — held`. After a hold at
+the chip, the close block fences `/copilot-review <N>`, which finishes that
+review while the PR is open.
 `/milestone-review` writes the lines to the Review section and lists them
 at the merge question. `/hotfix` states them in chat at its approval chip.
 In guest mode they ride in the close block.
