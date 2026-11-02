@@ -73,6 +73,7 @@ Each Copilot review's PR comment reads as a colleague wrote it, with a draft sho
 - 2026-11-02: verify: the two Python suites and both manifest validates ran after the corrections; `claude plugin test` passed 2466 tests on the commit before them, which changed no file under `hooks/`.
 - 2026-11-02: review return 1: AC7 fails because the `/copilot-review` description and step 6 do not describe the hold (diff-bug #12); the return also fixes each other fix-now finding in the Review section's pass 1.
 - 2026-11-02: T7 done: the description and step 6 name the hold; a typed instruction changes the draft; the post re-reads operator comments and a failed post resolves nothing; a rerun reads the temp file and `git log` and makes no second fix; the temp path names `tempfile.gettempdir()`; README says the rerun works while the PR is open; guards and mutation entries added. The fixes passed D-235's figures, so the header budget is under 200 lines and 12,000 bytes, a figure D-235 does not state.
+- 2026-11-02: step-7 approval: m331-copilot-comment-voice approved for merge
 
 ## Decisions
 
