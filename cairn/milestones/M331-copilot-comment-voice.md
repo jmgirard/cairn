@@ -1,6 +1,6 @@
 # M331: Write Copilot comments like a colleague
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -69,7 +69,51 @@ Each Copilot review's PR comment reads as a colleague wrote it, with a draft sho
 - 2026-11-02: T6 reader passes on 7d282f6d (fresh Opus, §5 only): dedupe, 5 of 5 answered as expected with the deciding sentence quoted and none unsettled; drafting, 3 of 3 note sets hold the markdown link, no URL-only line, no line opening with a path, and each outcome in a full sentence, with the six-note set as a list of sentences. Claim audit and `claude plugin test` are running at this checkpoint.
 - 2026-11-02: claim audit: 31 claims read, 6 corrected — skills/shared/copilot-review.md, skills/copilot-review/SKILL.md, skills/hotfix/SKILL.md, skills/milestone-review/SKILL.md (a hold's close adds a fence, the temp file comes before the chip, the review id is defined, and a held review's command comes first); all six re-read ok. The reader cases were not rerun, because the corrections left the dedupe sentence and the drafting rule unchanged.
 - 2026-11-02: verify: the two Python suites and both manifest validates ran after the corrections; `claude plugin test` passed 2466 tests on the commit before them, which changed no file under `hooks/`.
+- 2026-11-02: review return 1: AC7 fails because the `/copilot-review` description and step 6 do not describe the hold (diff-bug #12); the return also fixes each other fix-now finding in the Review section's pass 1.
 
 ## Decisions
 
 ## Review
+
+### Pass 1 (head 744a948f)
+
+- AC1 evidence: flattened search of §5's comment paragraph finds none of `first line`, `one line per note`, `Each line`, and finds the ordinary-sentences, host-matching, and markdown-link sentences.
+- AC2 evidence: the same search finds the every-note outcome sentence and the no-thanks, no-question, no-cairn-vocabulary sentence.
+- AC3 evidence: a fresh Opus reader given §5 and the five cases answered no second comment for (a), (b), (c) and comment posts for (d), (e), quoting the deciding sentence, with none unsettled.
+- AC4 evidence: a fresh Opus reader drafted three comments from §5 alone. Each holds the markdown link, has no URL-only line and no line opening with a path and line number, and gives each outcome in a sentence with a subject and verb.
+- AC5 evidence: flattened search of the module, the skill, and README finds no `comment names` and no `--body '`; §5 holds `gh pr comment <N> --body-file "<path>"` and the review-tie resolve, and step 7 holds the same tie.
+- AC6 evidence: flattened search finds each draft-chip sentence in §5, the hold in §6 with the `/copilot-review <N>` fence, both arms in §1, the chip in step 6, and the hold sentence in `/milestone-review` step 8 and `/hotfix`'s guest close.
+- AC7: not met. The search passes, with 32 files scanned and no old-form hit, but the `/copilot-review` description and step 6 do not describe the hold (diff-bug #12).
+- Gate: `cairn_validate` green on 486fb134; rerun at the next pass.
+- spawned: diff-bug, blame-history, prior-review, ripple
+- diff-bug #1: "a typed edit posts as typed" cannot tell a replacement from an instruction such as "shorten it" — fix now.
+- diff-bug #2: nothing re-reads operator comments at the post, so a comment posted by hand during the chip's wait gets a second comment — fix now.
+- diff-bug #3: "Then resolve" has no arm for a failed `gh pr comment`, and §6's held list omits it — fix now.
+- diff-bug #4: §5's earlier-pass sentence and the rerun's "new dispositions" disagree after a guest hold — fix now, with #5.
+- diff-bug #5: "finds the pushed fixes" sits only in step 8, while steps 4 to 6 run first and tell a rerun to make each fix — fix now.
+- diff-bug #6: a typed edit that drops a note still resolves its thread — reject, planned change: the work log records this choice, and the user's text is the user's act.
+- diff-bug #7: README's "finishes the review later" overclaims once the PR merged while held — fix now.
+- diff-bug #8: a dirty tree on another branch stops a rerun that only needs to post — follow-up, "Tighten the Copilot draft step edges", parked: pre-existing step 2 behavior that stops with its cause named.
+- diff-bug #9: a hand-edited long draft gets no link check, and a rerun overwrites it — follow-up, same row, parked: no documented use edits the file by hand.
+- diff-bug #10: two new positive tests have no `Mutation` entry, though T1 asks for entries — fix now.
+- diff-bug #11: the `TestOneComment` docstring is stale — fix now.
+- diff-bug #12: step 6 and the description never mention the hold, and AC7 requires it — fix now, floor return.
+- diff-bug #13: D-235's heading does not name D-152 — reject, false: D-152 holds no "with no question" text, and the heading names the sentence it narrows.
+- diff-bug #14: the temp path omits `tempfile.gettempdir()` and the absolute path that `/milestone` §4 states — fix now.
+- diff-bug #15: four 800-character drafts in one chip strain "never the dump" — reject, planned change: AC6 sets the limit.
+- diff-bug #16: uneven line wraps — reject, style.
+- blame-history #1: the rerun has no way to find pushed fixes — fix now, the same defect as diff-bug #5.
+- blame-history #2: chip order against the guest close — reject, false: step 8 runs the round before the close block.
+- blame-history #3: a typed edit skips the comment rules with no clause naming that — reject, planned change: D-235 records it.
+- blame-history #4: second budget reset — reject, planned change: D-235 records it with the reason.
+- blame-history #5: predictable temp file name — follow-up, "Tighten the Copilot draft step edges", parked: per-user temp directories on macOS, and D-155 allows the same shape for `/milestone`.
+- blame-history #6: the comment shape supersedes D-212 and M314 — reject, planned change: D-235 names both.
+- prior-review #1: "resolves on hold" reads as resolving — reject, false: the same sentence says the next pass finds those threads open, and the diff did not change it.
+- prior-review #2: the module grows about 15 percent — reject, planned change: D-235.
+- prior-review #3: a guest round now stops at a chip — reject, planned change: the user's answer, D-235.
+- prior-review #4: markdown link and paragraphs replace D-212's form — reject, planned change: AC1 and D-235.
+- prior-review #5: mutation entries reverse a PR #297 rejection — reject, planned change: T1 asks for them, and the registry already carries this guard.
+- ripple #1: `/milestone-review` step 7 names no chip — reject, false: it cites §5, which holds the chip.
+- ripple #2: the candidate row states the old form — reject, planned change: step 9 graduates it at the merge.
+- ripple #3: DESIGN's "answers each review in one PR comment" — reject, false: the summary holds, and one comment posts for each review that is not held.
+- ripple #4: "the first" has no clear referent in step 8 — fix now.
