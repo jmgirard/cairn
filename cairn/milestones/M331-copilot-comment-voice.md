@@ -7,7 +7,7 @@
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — the skills post this comment on PRs that other people read
-- **Branch/PR:** m331-copilot-comment-voice
+- **Branch/PR:** m331-copilot-comment-voice https://github.com/jmgirard/cairn/pull/346
 
 ## Goal
 
