@@ -1888,6 +1888,7 @@ class TestMergeGuard(RepoFixture):
                 cmd = " ".join(spelled.split()).replace("<base>", "upstream").replace("<default-branch>", "main")
                 with self.subTest(skill=skill, cmd=cmd):
                     proc = run_hook("merge_guard.py", self.merge_payload(cmd))
+                    self.assertEqual(proc.returncode, 0, cmd)
                     self.assertEqual(proc.stdout.strip(), "", cmd)
 
     def test_ignores_non_merge_and_lookalike_commands(self):
