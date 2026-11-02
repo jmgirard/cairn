@@ -359,8 +359,8 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    login or by a bot does not count, and neither does a link to an issue
    whose text does none of these. A text settles this check only, never the
    idea vet's three questions. A failed read counts as no one asking from
-   that source, and the question names that read. When no one asked and step
-   3's maintainer question covers the work, that question says so. Otherwise
+   that source, and the question names that read. When no one asked, step
+   3's maintainer question says so if it covers the work. If it does not,
    this is a flaw, and step 3 poses it. A refactor or a speedup that changes
    no result or output that users see does not change behavior for the
    maintainer decision, so this flaw is the question it gets.
@@ -487,7 +487,7 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
      asked, the question says so, with what users lose or see change. For a
      fix outside that check, it says nothing on who asked.
    - the outside-demand flaw that step 2 finds, as one question of its own.
-     It says who asked, or "no one in the texts read", and names a failed
+     It says that "no one in the texts read" asked, and it names a failed
      read. It also says what users lose or see change, so the choice is
      whether to do the work at all. Its options are **build anyway**,
      **someone already asked**, and **do not build** (recommended). If the

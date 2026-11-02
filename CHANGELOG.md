@@ -12,7 +12,7 @@
   not build. If the plan can say what goes wrong for a user, you can also
   have it draft an issue, which you post. A fix for a wrong number, a crash,
   or broken documented behavior needs no asking. When the plan already asks
-  about a maintainer's decision, that question says who asked.
+  about a maintainer's decision, that question says when no one asked.
 
 - **A guest plan asks before it builds a maintainer's decision.** In guest
   mode, `/milestone-plan` flags work that needs a maintainer's decision: a
