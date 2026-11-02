@@ -1,6 +1,6 @@
 # M331: Write Copilot comments like a colleague
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -67,6 +67,8 @@ Each Copilot review's PR comment reads as a colleague wrote it, with a draft sho
 - 2026-11-02: T1 to T5 done and D-235 appended: guards red with 24 failures, then green after the module, skill, guest-close, README, and CHANGELOG edits; the module is 185 lines and 11,029 bytes, under the new budget; T6's reader passes are next. The unrelated `cairn-probe.log` and `tsconfig.json` stay unstaged. The simple-english lint hook flags hundreds of older sentences in README, CHANGELOG, and the skills; only new sentences were fixed, because rewriting the rest is outside this scope.
 - 2026-11-02: an edit typed at the chip posts as typed, with only a dropped review link restored, because the user may drop a note on purpose and the link keeps a rerun from posting twice; `/copilot-review` still reports each note's `copilot:` line.
 - 2026-11-02: T6 reader passes on 7d282f6d (fresh Opus, §5 only): dedupe, 5 of 5 answered as expected with the deciding sentence quoted and none unsettled; drafting, 3 of 3 note sets hold the markdown link, no URL-only line, no line opening with a path, and each outcome in a full sentence, with the six-note set as a list of sentences. Claim audit and `claude plugin test` are running at this checkpoint.
+- 2026-11-02: claim audit: 31 claims read, 6 corrected — skills/shared/copilot-review.md, skills/copilot-review/SKILL.md, skills/hotfix/SKILL.md, skills/milestone-review/SKILL.md (a hold's close adds a fence, the temp file comes before the chip, the review id is defined, and a held review's command comes first); all six re-read ok. The reader cases were not rerun, because the corrections left the dedupe sentence and the drafting rule unchanged.
+- 2026-11-02: verify: the two Python suites and both manifest validates ran after the corrections; `claude plugin test` passed 2466 tests on the commit before them, which changed no file under `hooks/`.
 
 ## Decisions
 
