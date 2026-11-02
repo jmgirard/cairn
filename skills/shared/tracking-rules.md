@@ -579,8 +579,8 @@ is posed in the same turn as its presentation (the Mandated-substance rule below
 - **The plan question set.** One batched AskUserQuestion round of 2–5 concrete decision questions, each with a
   recommendation and brief pros and cons. It asks only what the user alone can settle and foresees what implement and
   review will need from the user; `/milestone-plan` step 3 names its questions. When more are open than one round
-  holds, ask the 3 that matter most. A guest plan's maintainer question can stand alone. The agent decides the rest with
-  a work-log line, unless one is a stop below.
+  holds, ask the 3 that matter most. A guest plan's maintainer question or outside-demand question can stand alone. The
+  agent decides the rest with a work-log line, unless one is a stop below.
 - **The merge question.** One AskUserQuestion chip with one approve-or-decline question, a decline option always
   present, never a prose yes/no.
 

@@ -893,7 +893,8 @@ profile.
   agent settles without a question by that reading. It asks you only
   when another fitting reading gives you different behavior. In guest
   mode it also asks when work needs a maintainer's decision and it finds no
-  agreement. The merge question comes at the end of review.
+  agreement, and when no one outside the work asked for it. The merge
+  question comes at the end of review.
   Between the question set and the merge question, expect the agent to
   decide and log the rest. When the plan finds that a hotfix or a direct
   edit fits, one more question about that route comes before the run.
@@ -1155,7 +1156,13 @@ recommend one) and writes `# Collaboration mode: guest` into
   `/milestone-plan` checks this itself: it flags the work and asks you
   whether to draft a question for the maintainers, which you post, to name
   an agreement it missed, or not to build. A fix that restores documented
-  behavior with no design choice needs no such agreement.
+  behavior with no design choice needs no such agreement. `/milestone-plan`
+  also asks who outside the work asked for it. Someone asked when another
+  person asks for the change, reports a problem that it fixes and that still
+  occurs, or a maintainer agrees with it. If no one asked, the plan says so
+  and says what users lose or see change, and you choose whether to do the
+  work. A fix for a wrong number, a crash, or broken documented behavior
+  needs no such asking.
 - **Branches go to your fork unless you ask for the upstream repo.** By
   default, `/milestone-review` and `/hotfix` push the branch to your fork
   and open the PR from it. If you can push to the upstream repo and want
