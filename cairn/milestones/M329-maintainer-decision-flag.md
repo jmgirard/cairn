@@ -7,7 +7,7 @@
 - **Principles touched:** IP3
 - **Resolves:** —
 - **Surface tier:** user-facing — `/milestone-plan` and `/milestone-review` text that every guest repo runs
-- **Branch/PR:** m329-maintainer-decision-flag
+- **Branch/PR:** m329-maintainer-decision-flag; https://github.com/jmgirard/cairn/pull/343
 
 ## Goal
 
