@@ -969,8 +969,8 @@ the session, re-enters here, at the step the record shows is next:
    first — after a squash-merge, the local default branch is behind `<base>`
    and any leftover local
    commits mean divergence to resolve before committing. Guest arm: `git
-   fetch <base>`, check the default branch out, and `git merge --ff-only
-   <base>/<default-branch>`; every write below lands on disk under
+   fetch <base>`, check the default branch out, and `git pull --ff-only
+   <base> <default-branch>`; every write below lands on disk under
    `cairn/`, the docs-only commit and push at the end of this step do not
    exist, and the issue writes are the maintainers' — the `Closes` keyword
    closes the issue at their merge, so the close-if-open is skipped and only

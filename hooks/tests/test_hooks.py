@@ -23,6 +23,7 @@ import atexit
 import json
 import os
 import pathlib
+import re
 import shutil
 import subprocess
 import sys
@@ -1876,6 +1877,18 @@ class TestMergeGuard(RepoFixture):
     def test_allows_merge_housekeeping(self):
         proc = run_hook("merge_guard.py", self.merge_payload("git merge --abort"))
         self.assertEqual(proc.stdout.strip(), "")
+
+    def test_guest_cleanup_fast_forward_passes_the_guard(self):
+        # The two skills run this on the default branch with no marker.
+        for skill in ("milestone-review", "hotfix"):
+            text = (HOOKS_DIR.parent / "skills" / skill / "SKILL.md").read_text(encoding="utf-8")
+            found = re.findall(r"git\s+(?:merge|pull)\s+--ff-only\s+<base>[^`]*", text)
+            self.assertTrue(found, skill)
+            for spelled in found:
+                cmd = " ".join(spelled.split()).replace("<base>", "upstream").replace("<default-branch>", "main")
+                with self.subTest(skill=skill, cmd=cmd):
+                    proc = run_hook("merge_guard.py", self.merge_payload(cmd))
+                    self.assertEqual(proc.stdout.strip(), "", cmd)
 
     def test_ignores_non_merge_and_lookalike_commands(self):
         for cmd in ("git status", "git merge-base main HEAD", "echo git merge"):

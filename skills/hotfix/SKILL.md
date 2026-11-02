@@ -138,7 +138,7 @@ can resolve against the fork instead of the base repo.
    - *Regression test*, per step 3's adopting sequence: a test the merged
      diff carries is run on the default branch, checked out and brought up
      to date (fetch, pull ff-only; guest arm: `git fetch <base>` then
-     `git merge --ff-only <base>/<default-branch>` — the merged fix is on
+     `git pull --ff-only <base> <default-branch>` — the merged fix is on
      the base repo, not the fork), and in a throwaway worktree of the
      baseline created outside the repo (`git worktree add --detach /tmp/<repo>-verify <baseRefOid>`)
      with only the test file copied in; it must pass on the default branch
