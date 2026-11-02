@@ -8,7 +8,7 @@ _Released 1.0.0 (2026-07-16) to 2.1.0 (2026-10-18), each tagged `v<version>`; 1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M330 | Ask who wanted the work in guest plans | in-progress | — | normal | milestones/M330-outside-demand-flag.md |
+| M330 | Ask who wanted the work in guest plans | review | — | normal | milestones/M330-outside-demand-flag.md |
 | M329 | Flag maintainer decisions at the plan | done | — | normal | milestones/archive/M329-maintainer-decision-flag.md |
 | M328 | Wait for CI without stopping the session | done | — | normal | milestones/archive/M328-ci-arm-and-wake.md |
 | M327 | Let triage move a row to any rung | done | — | normal | milestones/archive/M327-candidate-ladder.md |

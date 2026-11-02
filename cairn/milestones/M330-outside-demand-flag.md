@@ -1,6 +1,6 @@
 # M330: Ask who wanted the work in guest plans
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -89,6 +89,7 @@ Reader runs. A reader run is one fresh-context subagent that has not seen this p
 - 2026-11-02: T3 head pass: 20 cases on Haiku across AC1 to AC6, plus a rerun of the crash fix with a maintainer question after the fix above. No reader disagreed with a criterion after that fix, so no Opus rerun was needed. Each reader's pointer to the question-set bullet named the wrong section of the rulebook, which changed no answer. The AC6 reader led to one more edit: step 7's close-block list now names the outside-demand question.
 - 2026-11-02: T5: at the T4 head, the five `verify` commands, `cairn_validate`, and the hand-run `skills/tests` exit 0, with 2466 mod tests passing. Added diff lines hold nothing over 80 characters.
 - 2026-11-02: correction to the T3 line: the wrong pointer was in the session's own reader brief, and several readers reported it, not each.
+- 2026-11-02: claim audit: 51 claims read, 3 corrected — CHANGELOG.md, skills/milestone-plan/SKILL.md
 
 ## Decisions
 
