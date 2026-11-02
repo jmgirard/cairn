@@ -21,13 +21,13 @@ Each Copilot review's PR comment reads as a colleague wrote it, with a draft sho
 
 ## Acceptance criteria
 
-- [ ] AC1: `skills/shared/copilot-review.md` §5 tells the session to write the comment as ordinary sentences, as the PR's author would write to a reviewer, opening with the review's `url` as a markdown link. It says that in guest mode host matching still governs tone and length. A search of the "**The comment.**" paragraph, with its line breaks removed, for `first line`, `one line per note`, and `Each line` returns no match.
-- [ ] AC2: §5 still requires the comment to give the outcome of every note of the review, thread or body item: the fix's short sha, why the note is not a problem, or that it is left for a later change. It still says that the comment never thanks Copilot, asks no question, and in guest mode carries no cairn vocabulary.
-- [ ] AC3: §5 decides whether a review already has a comment by the operator comments that carry its `url`, in any position. A fresh reader given §5 and the five cases in T6 gives the expected answer for each and quotes the deciding sentence: the `url` in a markdown link, alone on a line, or mid-sentence in an operator comment means no second comment; the `url` followed by a digit, or the `url` in another author's comment, means the comment posts.
-- [ ] AC4: A fresh reader given only §5 and the three note sets in T6 drafts one comment for each. Each draft holds the review's `url` in a markdown link, has no line that holds only a URL, has no line that opens with a path and line number, and gives every note's outcome in a sentence with a subject and a verb.
-- [ ] AC5: §5 posts the comment with `gh pr comment --body-file`, so an apostrophe in a sentence cannot break the command. §5 and `skills/copilot-review/SKILL.md` step 7 resolve each unresolved Copilot thread tied to that review by §5's review tie, once its comment posts. A search of `skills/shared/copilot-review.md`, `skills/copilot-review/SKILL.md`, and `README.md`, with line breaks removed, for `--body '` and `comment names` returns no match.
-- [ ] AC6: In a guest-mode round and in `/copilot-review`, the session shows each draft comment in a chip before it posts, with one question per draft and four per chip. A draft of at most 800 characters sits in the question text, and a longer one is cited by the path of its temp file. The options are to post it and to hold it, and the user can type an edit, which posts as typed once the session restores a dropped review link. A hold posts no comment and resolves no thread of that review, §6 reports `copilot: <url> — held`, and the close block fences `/copilot-review <N>`. In `/milestone-review` step 8 and `/hotfix`'s guest close, the status and close stay the same on a hold. An owner-mode round posts with no question, and §1's opt-in sentence states both arms.
-- [ ] AC7: The `/copilot-review` description and step 6, the README's two passages on the comment, and the Unreleased section of `CHANGELOG.md` describe the new comment, the draft chip, and the hold. The sentences "The user's request gives this skill permission for its pushes, its comments, and its resolves" and "The line is your permission for these pushes, comments, and resolves" no longer claim that a comment needs no question. A search of `README.md`, the Unreleased section of `CHANGELOG.md`, and each file under `skills` outside `skills/tests`, with line breaks removed, for `one line per note`, `one line for each note`, `A fix's line`, `A line names`, and `The lines cover` returns no match.
+- [x] AC1: `skills/shared/copilot-review.md` §5 tells the session to write the comment as ordinary sentences, as the PR's author would write to a reviewer, opening with the review's `url` as a markdown link. It says that in guest mode host matching still governs tone and length. A search of the "**The comment.**" paragraph, with its line breaks removed, for `first line`, `one line per note`, and `Each line` returns no match.
+- [x] AC2: §5 still requires the comment to give the outcome of every note of the review, thread or body item: the fix's short sha, why the note is not a problem, or that it is left for a later change. It still says that the comment never thanks Copilot, asks no question, and in guest mode carries no cairn vocabulary.
+- [x] AC3: §5 decides whether a review already has a comment by the operator comments that carry its `url`, in any position. A fresh reader given §5 and the five cases in T6 gives the expected answer for each and quotes the deciding sentence: the `url` in a markdown link, alone on a line, or mid-sentence in an operator comment means no second comment; the `url` followed by a digit, or the `url` in another author's comment, means the comment posts.
+- [x] AC4: A fresh reader given only §5 and the three note sets in T6 drafts one comment for each. Each draft holds the review's `url` in a markdown link, has no line that holds only a URL, has no line that opens with a path and line number, and gives every note's outcome in a sentence with a subject and a verb.
+- [x] AC5: §5 posts the comment with `gh pr comment --body-file`, so an apostrophe in a sentence cannot break the command. §5 and `skills/copilot-review/SKILL.md` step 7 resolve each unresolved Copilot thread tied to that review by §5's review tie, once its comment posts. A search of `skills/shared/copilot-review.md`, `skills/copilot-review/SKILL.md`, and `README.md`, with line breaks removed, for `--body '` and `comment names` returns no match.
+- [x] AC6: In a guest-mode round and in `/copilot-review`, the session shows each draft comment in a chip before it posts, with one question per draft and four per chip. A draft of at most 800 characters sits in the question text, and a longer one is cited by the path of its temp file. The options are to post it and to hold it, and the user can type an edit, which posts as typed once the session restores a dropped review link. A hold posts no comment and resolves no thread of that review, §6 reports `copilot: <url> — held`, and the close block fences `/copilot-review <N>`. In `/milestone-review` step 8 and `/hotfix`'s guest close, the status and close stay the same on a hold. An owner-mode round posts with no question, and §1's opt-in sentence states both arms.
+- [x] AC7: The `/copilot-review` description and step 6, the README's two passages on the comment, and the Unreleased section of `CHANGELOG.md` describe the new comment, the draft chip, and the hold. The sentences "The user's request gives this skill permission for its pushes, its comments, and its resolves" and "The line is your permission for these pushes, comments, and resolves" no longer claim that a comment needs no question. A search of `README.md`, the Unreleased section of `CHANGELOG.md`, and each file under `skills` outside `skills/tests`, with line breaks removed, for `one line per note`, `one line for each note`, `A fix's line`, `A line names`, and `The lines cover` returns no match.
 
 ## Coverage
 
@@ -120,3 +120,45 @@ Each Copilot review's PR comment reads as a colleague wrote it, with a draft sho
 - ripple #2: the candidate row states the old form — reject, planned change: step 9 graduates it at the merge.
 - ripple #3: DESIGN's "answers each review in one PR comment" — reject, false: the summary holds, and one comment posts for each review that is not held.
 - ripple #4: "the first" has no clear referent in step 8 — fix now.
+- Pass 1's fix-now findings: fixed c6eb86b1, except diff-bug #4 and #5 and blame-history #1, which pass 2 reworked in c90f79f2.
+
+### Pass 2 (fixes c6eb86b1 and c90f79f2)
+
+- AC1 evidence: on c90f79f2, flattened search of §5's comment paragraph finds none of `first line`, `one line per note`, `Each line`, and finds the ordinary-sentences, host-matching, and markdown-link sentences.
+- AC2 evidence: on c90f79f2, the same search finds the every-note outcome sentence and the no-thanks, no-question, no-cairn-vocabulary sentence.
+- AC3 evidence: on c6eb86b1, a fresh Opus reader given §5 and the five cases answered no second comment for (a), (b), (c) and comment posts for (d), (e), quoting the deciding sentence, with none unsettled. Later commits did not change §5.
+- AC4 evidence: on c6eb86b1, a fresh Opus reader drafted three comments from §5 alone. Each holds the markdown link, has no URL-only line and no line opening with a path and line number, and gives each outcome in a sentence with a subject and verb. Later commits did not change §5.
+- AC5 evidence: on c90f79f2, flattened search of the module, the skill, and README finds no `comment names` and no `--body '`; §5 holds `gh pr comment <N> --body-file "<path>"` and the review-tie resolve, and step 7 holds the same tie.
+- AC6 evidence: on c90f79f2, flattened search finds each draft-chip sentence in §5, the hold in §6 with the `/copilot-review <N>` fence, both arms in §1, the chip in step 6, and the hold sentence in `/milestone-review` step 8 and `/hotfix`'s guest close.
+- AC7 evidence: on c90f79f2, the description and step 6 each describe the new comment, the draft chip, and the hold; both README passages and the Unreleased CHANGELOG section do too; both old permission sentences are gone; the search over 32 files and the Unreleased section finds no old-form phrase.
+- Gate: on c90f79f2, `cairn_validate` green, both Python suites exit 0, both manifest validates exit 0 with no `plugins[N].version` warning, and the CHANGELOG has the Unreleased entries. `claude plugin test` passed 2466 tests on c6eb86b1, and no later commit changes `hooks/`. Guard file and mutation harness exit 0 on the review head. Module size 193 lines and 11,513 bytes, under its header budget. No changed snapshot file.
+- spawned: diff-bug, blame-history, prior-review, ripple
+- diff-bug #1: a PR closed or a thread answered during the chip's wait is not re-read — follow-up, "Tighten the Copilot draft step edges", parked: the wait is short in documented use, and the result is an extra comment.
+- diff-bug #2: "a rerun after a hold" is unobservable, so a failed post or an abandoned chip can make a second fix — fix now, fixed c90f79f2: every run reads `git log` first.
+- diff-bug #3: D-235 says a rerun gives "new dispositions" — reject, false: a note kept with its pushed commit still takes a disposition.
+- diff-bug #4: the temp-file read has no arm for a missing file and acts as a record — fix now, fixed c90f79f2: the read is gone.
+- diff-bug #5: the guest closes put the fence after the next command, while the skill puts it first — fix now, fixed c90f79f2: first in all three.
+- diff-bug #6: a Write outside the checkout can prompt, and a denied Write leaves an older file — follow-up, same row, parked: unobserved, and `/milestone` §4 has the same shape.
+- diff-bug #7: a failed post reports `held` with no next command — follow-up, same row, parked: the failure is named in the report.
+- diff-bug #8: a failed re-read has no arm — follow-up, same row, parked: the read is the same one §5 already ran.
+- diff-bug #9: CHANGELOG's "finishes it" keeps the overclaim — fix now, fixed c90f79f2.
+- diff-bug #10: D-235 states no budget figure — reject, false: the rulebook keeps derived measurements out of D-entries, and the module's header states the figure.
+- diff-bug #11: the `/copilot-review` CHANGELOG entry never names the hold — reject, false: AC7 binds the section, and the Copilot round's entry names it.
+- diff-bug #12: no guard pins `tempfile.gettempdir()`, the paragraph-or-list rule, or README's "while the PR is open" — follow-up, same row, parked: AC4's reader covers the rule.
+- diff-bug #13: the `TestDraftChip` docstring's "one test per clause" is false — fix now, fixed c90f79f2.
+- diff-bug #14: a fork head's local branch name can differ from "the head branch" — fix now, fixed c90f79f2: "the checked-out head".
+- blame-history #1: the temp-file read is a stored record that D-153 rejects — fix now, fixed c90f79f2.
+- blame-history #2: the temp directory can be cleared with no fallback — fix now, fixed c90f79f2: the read is gone.
+- prior-review #1: the `/copilot-review <N>` fence has no `--repo` — reject, false: the skill reads `<base-repo>` itself, and other slash-command fences do the same.
+- prior-review #2: "The post" names the resolve only in general terms for a review already carried — reject, false: the dedupe paragraph resolves those threads.
+- ripple #1: the fence order conflict — fix now, fixed c90f79f2, the same defect as diff-bug #5.
+- ripple #2: `/milestone-review` step 7 and `/hotfix`'s round name no chip — reject, false: pass 1's ripple #1 reason, since both cite §5.
+- ripple #3: the candidate row states the old form — reject, planned change: step 9 graduates it at the merge.
+
+### Copilot
+
+- copilot: skills/tests/test_mutation_harness.py:4383 — fix now, fixed c6eb86b1
+- copilot: review body — fix now, fixed c90f79f2: the `/copilot-review` command comes first after a hold
+- copilot: review body — reject: §5 already limits the duplicate check to an operator comment
+- Copilot level: Lite (set by GitHub's settings)
+- conversation: PR comment 6584884419 by the operator answers that review in the new form; thread resolved.

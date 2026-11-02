@@ -4416,7 +4416,7 @@ REGISTRY += [
         guard="test_copilot_review_round",
         test="TestDraftChip.test_a_rerun_makes_no_second_fix",
         target=COPILOT_SKILL,
-        block="gets no second fix.",
+        block="commit as its outcome and gets no second",
     ),
     Mutation(
         guard="test_copilot_review_round",
