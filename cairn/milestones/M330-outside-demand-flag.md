@@ -92,6 +92,7 @@ Reader runs. A reader run is one fresh-context subagent that has not seen this p
 - 2026-11-02: correction to the T3 line: the wrong pointer was in the session's own reader brief, and several readers reported it, not each.
 - 2026-11-02: claim audit: 51 claims read, 3 corrected — CHANGELOG.md, skills/milestone-plan/SKILL.md
 - 2026-11-02: review return 1: AC2's reader required a separate outside-demand question beside the maintainer question, because step 2's "says so if it covers the work" does not bar a second question. Fix that sentence and the pass's other fix-now findings, listed in the Review section.
+- 2026-11-02: step-7 approval: m330-outside-demand-flag approved for merge
 - 2026-11-02: T6: added as a minor amendment for return 1. Step 2 now says "and no separate question is posed" and reads a cited PR. Step 3 has one recommendation at a time. Waiting turns on "no other person". D-234's heading names D-144 and its Decision names the call path. README counts a maintainer's agreement. The claim audit is not owed again for these six wording fixes, which correct findings against the lines it read, and review's lenses read them next.
 
 ## Decisions
