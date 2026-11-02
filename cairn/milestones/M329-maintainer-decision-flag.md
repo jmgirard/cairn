@@ -1,6 +1,6 @@
 # M329: Flag maintainer decisions at the plan
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -99,6 +99,8 @@ Reader runs. A reader run is one fresh-context subagent that has not seen this p
 - 2026-11-02: handed to the idle cairn session at the user's request; the session that held pass 2 stopped and wrote nothing.
 - 2026-11-02: review return 2: the plan's wait option replaces the draft for any thread with no maintainer's answer, and "a maintainer already agreed" goes on for anything but a no (diff-bug #1, #2). AC5 and AC8 are not met on the text (reader lines of pass 2). The Review section's other fix-now items go with them, the reader runs repeat on the fixed text, and Copilot's comment and resolves stay on hold. Second defect return on this milestone.
 - 2026-11-02: T8 added for review return 2 (minor amendment) and done. No criterion or scope changed. The wait option now needs the user's own unanswered question, a text that is no agreement at a named place ends with a close, a close as not planned needs a person other than the author, and the PR says the author chose to go on past a no, with no reason invented. The rulebook's text did not change, so its mass seed stays.
+- 2026-11-02: claim audit: 50 claims read, 4 corrected — skills/milestone-plan/SKILL.md (close as not planned, the 100 limit), skills/milestone-review/SKILL.md and CHANGELOG.md (going on past a no), README.md (guest scope of the render); commit 6f75dead. It covers the lines 7dc08c0f and 48e3959e added, and the same reader re-read the four.
+- 2026-11-02: T8 verify: `scripts/tests` 446 pass, `hooks/tests` 210 pass, both `claude plugin validate` commands pass, `claude plugin test` 2466 pass, `cairn_validate` passes, hand-run `skills/tests` 984 pass. Status review.
 
 ## Decisions
 
