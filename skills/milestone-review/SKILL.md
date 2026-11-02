@@ -407,8 +407,10 @@ the session, re-enters here, at the step the record shows is next:
      only, is `planned removal`: a finding that a change the plan called
      for removes or hides output that a user of the deliverable sees. It
      takes the place of the planned-change ground for that finding. A
-     removal the plan did not call for stays a defect, and a human's request
-     in the PR conversation is never this ground. The reason says in plain
+     removal the plan did not call for, or one past what it called for,
+     stays a defect, as does a finding that shows an acceptance criterion
+     failing. A human's request in the PR conversation is never this ground.
+     The reason says in plain
      words what users no longer see and how often. How often is a count
      over a set the session names and runs on the branch, such as the
      documented examples or the test fixtures' default cases. Where no such
@@ -595,23 +597,28 @@ the session, re-enters here, at the step the record shows is next:
    applies when the `Surface tier:` slot reads user-facing and the diff
    changes what a surface draws or prints for a reader, such as a plot, a
    page, or a report. The session runs that surface's snapshot tests at the
-   head. If any fails or skips there, it runs them at the base that the
-   paragraph above names, in a detached scratch worktree in the system temp
-   directory. If any fails or skips at both, the snapshots cannot be
-   compared here. The changed-file list above does not decide this, because
-   a branch that leaves such snapshots stale changes no snapshot file. The
-   session then renders the default case at the head and at the base, looks
-   at both, and removes the worktree. The default case is each entry point
-   the diff changes, with default arguments, on the plainest input its docs
-   or tests use, never a fixture built to show the change. Each entry point
+   head. If any fails or skips there, it runs them at the base, in a
+   detached scratch worktree in the system temp directory. The base is the
+   commit `git merge-base HEAD <ref>` prints, after `git fetch <base>`, with
+   the ref that the paragraph above names. If any fails or skips at both,
+   the snapshots cannot be compared here. The changed-file list above does
+   not decide this, because a branch that leaves such snapshots stale
+   changes no snapshot file. The session then renders the default case at
+   the head and at the base, with the render files in the system temp
+   directory, and looks at both. The default case is each entry point the
+   diff changes, with default arguments, on the plainest input its docs or
+   tests use, never a fixture built to show the change. Each entry point
    gets one Review-section line: `render: <entry point> — <input>; before:
-   <what the reader sees>; after: <what the reader sees>`. The session
-   renders again when a later fix changes that surface. This presentation
-   shows each line and the render file paths, and the chip's question text
-   says in plain words what the reader sees before and after. When no
-   render can be made or looked at, the line says why, the chip's question
-   text says that no one looked at the output, and the run goes on. Resume
-   route (b) skips this paragraph, since its PR has merged.
+   <what the reader sees>; after: <what the reader sees>`. A loss or change
+   in a render that the plan did not call for is a finding under step 5's
+   rule. The session renders again when a later fix changes that surface.
+   This presentation shows each line and the render file paths, and the
+   chip's question text says in plain words what the reader sees before and
+   after. When no render can be made or looked at, the line says why, the
+   chip's question text says that no one looked at the output, and the run
+   goes on. When these runs end, a failed one included, the session removes
+   the worktree and any file they wrote to the checkout. Resume route (b)
+   skips this paragraph, since its PR has merged.
 
    **Open-PR cap (owner mode, M315).** Before the merge chip is posed,
    when the header names no open PR and the review is not on resume route
@@ -872,7 +879,8 @@ the session, re-enters here, at the step the record shows is next:
    which approach the maintainer proposed and why the PR takes another.
    When it carries `maintainer decision: none`, the body says in plain words
    that no maintainer has agreed with this design yet and asks whether they
-   want it.
+   want it. When it carries `maintainer decision: declined`, the body links
+   that maintainer's text and says why the PR goes on.
    The snapshot lines, the `edge` list, and the series sentence below
    follow, then the `Closes`/`Refs` lines. Beyond those items, review
    evidence, internal function names, and test lists stay in `cairn/`.
@@ -882,12 +890,12 @@ the session, re-enters here, at the step the record shows is next:
    and base, on the head that it pushes. Each file gets one plain line in
    the host's style on what changed in it and why. The line for a change
    settled as follow-up says that the change is not intended and is left
-   for later. With no such file, the body has no such line. A line about a
-   snapshot not on that list can say that named snapshots are stale and
-   need a re-record. It says what a snapshot will show only from a render
-   of that snapshot's own test case on a head whose code equals the pushed
-   head. It then says only what that render shows, and that the render was
-   local.
+   for later. With no such file, the body has no such line. A snapshot line
+   can also name a snapshot not on that list. It can say that the snapshot
+   was not re-recorded here and needs a re-record. It says what the snapshot
+   will show only from a render of that snapshot's own test case on a head
+   whose code equals the pushed head. It then says only what that render
+   shows, and that the render was local.
    When it opens the PR, the body lists, before any `Closes`/`Refs`
    lines, each Review-section reject whose ground is `edge` (the reviewer
    lines, which name their ground), one short line each in plain words

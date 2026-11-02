@@ -318,22 +318,28 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    behavior, or removes or hides output that users see. A fix that restores
    documented behavior with no design choice does not. A design choice is
    one that changes what users see and has more than one fitting reading.
-   The plan looks for a maintainer's agreement in the body and comments of
-   each issue, open or closed, that the request or a candidate row's title
-   names or the inbox sweep matches. It also looks in the reviews and
-   comments of each PR of yours for this work. `gh api --paginate` on
-   `repos/<base-repo>/issues/<N>`, its `/comments`,
-   `repos/<base-repo>/pulls/<N>/reviews`, and that PR's `/comments` gives
-   each author's `author_association`. A text by the login that `gh api user --jq .login`
+   The plan looks for a maintainer's agreement in each issue, open or
+   closed, that the request or a candidate row's title names or the inbox
+   sweep matches, and in each PR of yours for this work, open or closed.
+   `gh pr list --repo <base-repo> --author @me --state all --limit 100
+   --json number,title,headRefName,url` lists those PRs, and the plan judges
+   which are for this work. With `gh api --paginate`, it reads
+   `repos/<base-repo>/issues/<N>` and its `/comments` for an issue, and
+   `repos/<base-repo>/issues/<N>/comments`,
+   `repos/<base-repo>/pulls/<N>/reviews`, and
+   `repos/<base-repo>/pulls/<N>/comments` for a PR. Each gives its author's
+   `author_association`. A text by the login that `gh api user --jq .login`
    returns is never agreement. The agreement must cover the design the
    plan will build, so agreeing with the idea leaves open each design
    choice that it does not settle. With agreement, step 4 writes the
    work-log line `maintainer decision: <URL> — <what was agreed>`.
    Otherwise step 3's set poses the question, and no file is written for
-   that work first. A failed read counts as no agreement, and the question
-   names that read. A maintainer's no is a flaw, in place of this question,
-   and the idea vet cites its comment. A user who builds past that flaw
-   gets the `maintainer decision: none` line that step 3 names.
+   that work first. A gap that the question covers is not asked apart. A
+   failed read counts as no agreement, and the question names that read. A
+   maintainer's no, in a comment, in a review, or by closing the issue as
+   not planned, is a flaw, in place of this question, and the idea vet
+   cites it. A user who builds past that flaw gets the line
+   `maintainer decision: declined <URL> — planned at the user's choice`.
 
    **Collision check (mandatory).** Sweep the ROADMAP (all statuses), the
    archive, and DECISIONS.md for overlap with what the user described.
@@ -443,10 +449,14 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
      questions past the cap combine into one question the same way.
    - a maintainer decision that step 2 flags, as one question of its own.
      It says in plain words what the maintainers must decide and that the
-     plan found no agreement. Its options are **draft a question for the
-     maintainers** (recommended), **a maintainer already agreed**, where the
-     user names where, and **do not build**. It counts among the questions
-     that matter most, and a set of this question alone is allowed.
+     plan found no agreement, or which choice an agreement leaves open. Its
+     options are **draft a question for the maintainers** (recommended), **a
+     maintainer already agreed**, and **do not build**. The user names the
+     place of an agreement in the option's notes or by typing it. With a
+     thread that has no maintainer's answer yet, the question names the
+     thread, and **wait for the answer**, which writes nothing, takes the
+     draft option's place. It counts among the questions that matter most,
+     and a set of this question alone is allowed.
 
    **The maintainer question.** The session writes a draft after the set's
    answers, so a gap's answer shapes it, and a do-not-build answer to a
@@ -455,13 +465,15 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    rulebook's host-text bullet with no cairn vocabulary, and it asks as a
    question. The session writes it to
    `cairn-question-<owner>-<repo>-<slug>.md` in the system temp directory
-   with the Write tool, as `/milestone` §4 does. The plan writes no
+   with the Write tool, as `/milestone` §4 does. `<slug>` is a kebab-case
+   short name for the work. If that file already exists, Read it first, so
+   that the Write tool replaces it. The plan writes no
    milestone file for that work, and it keeps no other answer about that
    work, so a rerun poses those questions again. If no candidate row holds
    the work, it writes a parked row, search-first, with `promote when a
    maintainer agrees with its design`. A row that holds the work stays as
-   it is. Other work of the plan goes on. When no milestone is left to
-   write, the turn ends with the close block. The close block gives the
+   it is. Other work of the plan is still written. The plan then ends with
+   the close block, not the run (step 7). The close block gives the
    draft, any new row, and the command below, with the file's absolute path
    and the issue's number. The user can edit the file first:
 
@@ -473,19 +485,22 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    <base-repo> --title "<title>" --body-file "<path>"`. The plan shows the
    command and never runs it, because the user posts the question. The
    close block's next fenced command is `/milestone-plan` with the request,
-   or a row by its short title, to run after the maintainers answer. A
-   rerun runs step 2's read again. With no maintainer's answer, the
-   question says so and names the thread. **A maintainer already agreed**
-   goes on, and step 4 writes `maintainer decision: <where the user named>
-   — named by the user`. A user who types an override goes on, and step 4
-   writes `maintainer decision: none — planned at the user's choice`, which
-   `/milestone-review` step 8 reads. **Do not build** writes no file for
-   that work and leaves any source row in place.
+   or a row by its short title, to run after the maintainers answer. It
+   tells the user to add a new issue's URL to that command, so that the
+   rerun's read finds the thread. **A maintainer already agreed** runs step
+   2's read on the place the user names, where it can. A no there is a
+   flaw, and otherwise the plan goes on, and step 4 writes
+   `maintainer decision: <the place> — named by the user`. A user who types
+   an override goes on, and step 4 writes
+   `maintainer decision: none — planned at the user's choice`.
+   `/milestone-review` step 8 reads the `none` and `declined` lines.
+   **Do not build** writes no file for that work and leaves any source row
+   in place.
 
    **Work chosen at the set.** For a request that names no work, the idea
    vet runs on the work chosen at the question set, before step 4 writes a
    file. If it finds a flaw, a gap that step 2's rule sends to the set, or
-   a maintainer question that step 2 poses, the
+   a maintainer question that step 2 flags, the
    plan writes nothing and ends with a close block. The close block names
    the concern, and its fenced command is `/milestone-plan` with the chosen
    work named (a candidate row by its short title), so that the rerun's
@@ -778,7 +793,8 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    the merge question. The merge ends the run, and each later milestone of
    the plan starts from its typed command after a `/clear`.
    **Close block instead** when another milestone is `in-progress`, when the
-   user asked for a plan alone, or when no milestone of the plan is workable
+   user asked for a plan alone, when step 3 drafted a maintainer question,
+   or when no milestone of the plan is workable
    (a release parked as `blocked`, an unmet dependency): recap (the plan
    summary and remainder ledger live here), status table (new milestone(s),
    status, priority), fenced next command(s) with plain labels, such as

@@ -28,7 +28,6 @@ patch the read (M100, M61).
 """
 
 import pathlib
-import re
 import unittest
 
 SKILLS = pathlib.Path(__file__).resolve().parent.parent
@@ -122,19 +121,12 @@ class TestPlanGateAssignment(unittest.TestCase):
 
     def test_option_posts_no_comment(self):
         self.assertIn("The option posts no comment.", plan())
-        # The retired comment offer: no comment body survives in the plan
-        # skill or in the README that describes it. The plan's only comment
-        # command is the maintainer question, which the user runs (M329).
+        # No body of the retired comment offer survives in the plan skill or
+        # the README that describes it.
         readme = SKILLS.parent.joinpath("README.md").read_text()
         for retired in ("Queued " + "as", "Working on " + "this"):
             self.assertNotIn(retired, plan())
             self.assertNotIn(retired, readme)
-        commands = re.findall(r"^.*gh issue " + "comment.*$", plan(), re.M)
-        self.assertEqual(
-            [c.strip() for c in commands],
-            ['gh issue comment <N> --repo <base-repo> --body-file "<path>"'],
-        )
-        self.assertIn("The plan shows the\n   command and never runs it", plan())
 
     def test_access_read_gates_the_option(self):
         self.assertIn("`gh repo view <base-repo> --json viewerPermission`", plan())

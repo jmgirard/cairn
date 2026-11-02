@@ -8431,7 +8431,9 @@ does not. With no agreement from a maintainer other than the operator, step
 3 poses one question before any file is written for that work. Its options
 are to draft a question for the maintainers, to name an agreement, and not
 to build. The draft goes to the system temp directory and the close block,
-and the user posts it, by D-155's shape. D-214's rejection of a plan-step
+and the user posts it, by D-155's shape. M248's retirement of a comment the
+plan posted stands: the plan runs no comment command. A maintainer's no is a
+flaw, and a build past it says so in the PR. D-214's rejection of a plan-step
 check and its clause that the plan "runs no check of its own" are
 superseded. D-144's list of what the question set asks gains this question.
 (2) In guest mode, `/milestone-review` step 5 gains a fifth reject ground,
@@ -8451,8 +8453,9 @@ sentence when a design has no agreement.
 line, as D-204 ruled for `idea vet:`. The review rules pass on the retained
 trigger: shipped `/milestone-review` let a guest PR remove output and
 misdescribe its snapshots, with no person seeing either. The plan check has
-no such trigger, because the rule was not broken after it shipped, so it is
-excepted by name at the user's decision, as D-189 did. The door stands for
+no such trigger, because the rule was not broken after it shipped, so it and
+its `maintainer decision:` line are excepted by name at the user's decision,
+as D-189 did. The door stands for
 all other work. D-057 closes size work only, and it raises no bar here.
 
 **Rejected:** The plan posting the question, because the rulebook says

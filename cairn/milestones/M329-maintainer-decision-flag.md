@@ -65,6 +65,7 @@ Reader runs. A reader run is one fresh-context subagent that has not seen this p
 - [x] T4: Run the reader runs at the head. If a reader disagrees with a criterion, read the sentence it quotes, then change the text or record why not before a new reader runs. Run the AC1, AC4, and AC6 cases once at the plan commit as a baseline. Replay the render rule on PR 487's branch and base from `git archive` copies in a temporary directory, and record what each render shows.
 - [x] T5: Write the D-entry, README, CHANGELOG, and the candidate row. Run the AC10 search.
 - [x] T6: Run `verify`, `cairn_validate`, and the hand-run `skills/tests`.
+- [x] T7: Review return 1: settle the Review section's fix-now items in `/milestone-plan`, `/milestone-review`, the rule (4) text, the hook, README, CHANGELOG, and D-233, and re-seed the rulebook mass.
 
 ## Work log
 
@@ -90,6 +91,82 @@ Reader runs. A reader run is one fresh-context subagent that has not seen this p
 - 2026-11-02: T6: `python3 -m unittest` on `scripts/tests`, `hooks/tests` (210 tests), and `skills/tests` (984 tests) pass. Both `claude plugin validate` commands pass. `claude plugin test` 2466 pass, 0 fail. `cairn_validate` passes. `test_mutation_harness.py` fails one test, `test_every_prose_guard_is_registered_or_exempt`, and it fails the same way on main.
 - 2026-11-02: the session that sent this work passed on five prevention changes as a follow-up to plan after this merge, with no widening here: candidate row "Ask for outside demand in guest plans".
 
+- 2026-11-02: review return 1: `/milestone-plan`'s agreement read misses a closed PR and the PR conversation, a new issue has no link to the rerun, a mixed plan never delivers the draft, and building past a maintainer's no gives a false PR sentence (diff-bug #1, #2, #3, #4, #8). The Review section's other fix-now items go with them, the hook's rule (4) text and a re-seed included, and the reader runs repeat on the fixed text. Copilot's comment and resolves are on hold until the next pass.
+- 2026-11-02: correction to the amendment line above: the comment that closed PR 487 is the operator's, not a maintainer's. The maintainer's request for changes came first. The "five prevention changes" are four for cairn and one that the other session does in see, so the row says four. The mutation-harness failure in the T6 line reproduces only when the file runs as a script; `python3 -m unittest test_mutation_harness.TestRegistryCompleteness` from `skills/tests` passes.
+- 2026-11-02: T7 added for review return 1 (minor amendment) and done. `hooks/session_context.py` and its test join the changed files, because the session-start text states rule (4) too. AC1 to AC8's reader runs repeat at the review pass.
+
 ## Decisions
 
 ## Review
+
+Pass 1, 2026-11-02, at 65b1135a (origin/main 068c08a2, not moved). No criterion ticked this pass: a floor return sends the text back, and the reader runs repeat on the fixed text.
+
+- spawned: diff-bug, blame-history, prior-review, ripple
+- diff-bug #1: no command finds "each PR of yours for this work", and the sweep drops the operator's and closed PRs, so PR 487's case is missed — fix now, floor return (load-bearing: the check misses the case it exists for)
+- diff-bug #2: "that PR's /comments" reads inline comments only, not the PR conversation at issues/<N>/comments — fix now, floor return (same)
+- diff-bug #3: after `gh issue create` the rerun has no link to the new issue, and a maintainer who closes it is not found — fix now, floor return (load-bearing)
+- diff-bug #4: in a mixed plan the draft is never delivered, because step 7 calls implement — fix now, floor return (load-bearing)
+- diff-bug #5: the render's base is the tip of the ref, not the merge base, and no fetch is named — fix now
+- diff-bug #6: the worktree is removed only on the render branch — fix now
+- diff-bug #7: render file location unstated, and a base render in the worktree dies with it — fix now
+- diff-bug #8: building past a maintainer's no gets a PR sentence that says none agreed "yet" — fix now, floor return (load-bearing: a false statement to maintainers)
+- diff-bug #9: hook, rulebook, and plan state different rule (4) texts — fix now
+- diff-bug #10: "the user names where" has no chip mechanism, and the named place is never read — fix now
+- diff-bug #11: a rerun with an open thread still recommends drafting, overwrites a draft, and `<slug>` is undefined — fix now
+- diff-bug #12: with `gh` missing in guest mode, the file name and command have no values — reject (edge: `gh` missing is outside common use of a guest repo, whose handoff needs `gh`; the effect is an error)
+- diff-bug #13: the head run writes `.new` snapshot files into the checkout — fix now; a dirty tree itself cannot occur, since step 6's checkpoint comes first
+- diff-bug #14: an unplanned loss seen in a render has no link to step 5 — fix now
+- diff-bug #15: "named snapshots are stale" claims what the session cannot tell — fix now
+- diff-bug #16: the question's text has no arm for partial agreement — fix now
+- diff-bug #17: a one-question set conflicts with "2–5" — fix now
+- diff-bug #18: "changes behavior" catches a crash fix where the docs are silent — follow-up, row "Ask for outside demand in guest plans", which already names that exception
+- diff-bug #19: "any fails or skips at both" can over-trigger on an unrelated test, and a new passing snapshot under-triggers — reject (false as a defect for over-trigger, which only adds a render) and follow-up for under-trigger, row "Widen the render rule past its trigger"
+- diff-bug #20: renders go stale after a step 8 fix — follow-up, row "Widen the render rule past its trigger"
+- diff-bug #21: "build under another name" after a no, and a yes beside a no, are unstated — reject (false as a defect: the flaw question puts both to the user)
+- diff-bug #22: "a maintainer question that step 2 poses" against step 3 posing it — fix now
+- diff-bug #23: `author_association` can read lower for a viewer outside the org — follow-up, row "Check maintainer roles seen by outsiders", which already covers this rule
+- diff-bug #24: D-233's door does not rule on the `maintainer decision:` line — fix now
+- diff-bug #25: record slips: the closing comment is the operator's, "five" against "four", and the mutation test fails only as a script — fixed by the work-log correction above
+- diff-bug #26: one overlong README line — fix now
+- diff-bug #27: the new wrap-pinning assertion breaks on a reflow — fix now, removed
+- diff-bug #28: the new `assertEqual` prose pin is not owed (PROFILE: a new rule owes no prose guard) — fix now, removed
+- diff-bug #29: the test comment holds history — fix now
+- diff-bug #30: other test edits are mechanical — noted
+- blame-history #1: `planned removal` drops the carved-out flaw in how a change was carried out — fix now
+- blame-history #2: as diff-bug #8 — fix now
+- blame-history #3: as diff-bug #9 — fix now
+- blame-history #4: the draft write drops "Read it first" — fix now
+- blame-history #5: the guard narrowing reverses M248's retirement with no record — fix now, D-233 names it
+- blame-history #6: D-214's rejection is superseded — noted (D-233 records it)
+- blame-history #7: the paragraph relies on the maintainer definition one paragraph up — reject (false: defined in the same step)
+- blame-history #8: as diff-bug #10 — fix now
+- blame-history #9: no guard pins the new rules — reject (false: PROFILE says a new rule owes none, D-109)
+- blame-history #10: guest only leaves owner mode open — reject (planned change, Scope Out)
+- blame-history #11: a worktree writes an admin entry in guest mode — reject (false: `/hotfix` uses the same recipe, and tracking-rules bars it for subagents only)
+- blame-history #12: as diff-bug #15 — fix now
+- prior-review #1: as diff-bug #9 — fix now
+- prior-review #2: as blame-history #1 — fix now
+- prior-review #3: README and CHANGELOG leave out the fallbacks, as PR 240's thread asked of README — fix now
+- prior-review #4: a design choice is also a gap, with no precedence — fix now
+- prior-review #5: the set's cap — reject (false: one question)
+- prior-review #6: as diff-bug #15 — fix now
+- prior-review #7: M306 says agreement answers none of the vet's questions — reject (false: the vet still runs on its own)
+- prior-review #8: as diff-bug #10 — fix now
+- ripple #1: `hooks/session_context.py:320` — fix now
+- ripple #2: `tracking-rules.md:505` — fix now
+- ripple #3: `CHANGELOG.md:145` — fix now
+- ripple #4: `milestone-plan:417`, `tracking-rules:579` "2–5" — fix now
+- ripple #5: README "Answer two questions" omits the question — fix now
+- ripple #6: README table row — reject (false: it already omits the flaw close that also ends a run)
+- ripple #7: "writes nothing" on the work-chosen path — reject (false: that first pass writes nothing, and the rerun poses it)
+- ripple #8: `idea vet:` "found none" — reject (false: the decision has its own line)
+- ripple #9: DESIGN run shape — reject (false: as ripple #6)
+- ripple #10: CLAUDE.md and template run shape — reject (false: as ripple #6)
+- ripple #11: "the one exception for test files" — fix now
+- ripple #12: "short" body — reject (style)
+- ripple #13: `/hotfix` body rule — reject (planned change, Scope Out, row "Widen the render rule past its trigger")
+- ripple #14: README "rejects a false one" — reject (false: the sentences after it state the exceptions)
+- ripple #15: "fourth ground" text — reject (false: still true)
+- ripple #16: "design decision" against "design choice" — reject (style)
+- copilot: https://github.com/jmgirard/cairn/pull/343#pullrequestreview-5738901464 — held
+- Copilot level: Lite (set by GitHub's settings)
