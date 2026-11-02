@@ -61,9 +61,9 @@ Reader runs. A reader run is one fresh-context subagent that has not seen this p
 
 - [x] T1: Edit `/milestone-plan`. Step 2 gains the outside-demand paragraph after "Maintainer decision". Step 3's maintainer question text, its flaw bullet, and "The maintainer question" gain the who-asked wording, the options, and the draft's parked row.
 - [x] T2: Edit the rulebook's sentence "A guest plan's maintainer question can stand alone". Re-seed the rulebook mass in the `/milestone` skill line and the two hand-run pins.
-- [ ] T3: Run the reader runs at the head. Give each case the record it rests on, in neutral words. If a reader disagrees with a criterion, read the sentence it quotes, then change the text or record why not before a new reader runs. Run AC1's first case and AC2 once at the plan commit as a baseline.
+- [x] T3: Run the reader runs at the head. Give each case the record it rests on, in neutral words. If a reader disagrees with a criterion, read the sentence it quotes, then change the text or record why not before a new reader runs. Run AC1's first case and AC2 once at the plan commit as a baseline.
 - [x] T4: Write the D-entry, README, and CHANGELOG. Search the repo for text that the change makes stale.
-- [ ] T5: Run `verify`, `cairn_validate`, and the hand-run `skills/tests`. List added diff lines over 80 characters before the commit.
+- [x] T5: Run `verify`, `cairn_validate`, and the hand-run `skills/tests`. List added diff lines over 80 characters before the commit.
 
 ## Work log
 
@@ -86,6 +86,8 @@ Reader runs. A reader run is one fresh-context subagent that has not seen this p
 - 2026-11-02: T4: D-234, README (two sites), and CHANGELOG written. A search for "maintainer question can stand alone" and "a maintainer decision that step 2" outside `cairn/` finds no stale restatement.
 - 2026-11-02: T3 baseline at the plan commit, on Haiku: the rename case gets no question ("the text requires none"), and the M015 case gets the maintainer question with no statement on who asked. Both fall short of AC1 and AC2, as expected.
 - 2026-11-02: T3 first head pass: the crash-fix reader required the maintainer question to say that no one asked, against AC3, because "When step 2 found that no one outside asked" did not exclude a fix outside the check. The sentence now reads "When step 2's outside-demand check ran and found that no one asked" and adds "For a fix outside that check, it says nothing on who asked."
+- 2026-11-02: T3 head pass: 20 cases on Haiku across AC1 to AC6, plus a rerun of the crash fix with a maintainer question after the fix above. No reader disagreed with a criterion after that fix, so no Opus rerun was needed. Each reader's pointer to the question-set bullet named the wrong section of the rulebook, which changed no answer. The AC6 reader led to one more edit: step 7's close-block list now names the outside-demand question.
+- 2026-11-02: T5: at the T4 head, the five `verify` commands, `cairn_validate`, and the hand-run `skills/tests` exit 0, with 2466 mod tests passing. Added diff lines hold nothing over 80 characters.
 
 ## Decisions
 

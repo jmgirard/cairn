@@ -853,8 +853,9 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    the merge question. The merge ends the run, and each later milestone of
    the plan starts from its typed command after a `/clear`.
    **Close block instead** when another milestone is `in-progress`, when the
-   user asked for a plan alone, when step 3's maintainer question left the
-   work unwritten, or when no milestone of the plan is workable
+   user asked for a plan alone, when step 3's maintainer question or
+   outside-demand question left the work unwritten, or when no milestone of
+   the plan is workable
    (a release parked as `blocked`, an unmet dependency): recap (the plan
    summary and remainder ledger live here), status table (new milestone(s),
    status, priority), fenced next command(s) with plain labels, such as
