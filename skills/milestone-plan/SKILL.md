@@ -337,8 +337,9 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    work-log line `maintainer decision: <URL> — <what was agreed>`.
    Otherwise step 3's set poses the question, and no file is written for
    that work first. A gap that the question covers is not asked apart. A
-   failed read counts as no agreement, and the question names that read. A
-   maintainer's no, in a comment or a review, is a flaw, in place of this
+   failed read counts as no agreement from that source, and the question
+   names that read. A maintainer's no, in a comment or a review, outranks
+   any agreement that does not answer it. It is a flaw, in place of this
    question, and the idea vet cites it. So is a close as not planned: the
    issue's `state_reason` reads `not_planned`, and its `closed_by` is neither
    a bot nor the issue's author. A user who builds past that flaw gets the
@@ -498,12 +499,14 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    tells the user to add a new issue's URL to that command, so that the
    rerun's read finds the thread. **A maintainer already agreed** runs step
    2's read on the place the user names. With agreement there, or at a place
-   the read cannot reach, the plan goes on, and step 4 writes
+   off the host repo that no read can reach, such as a call, the plan goes
+   on, and step 4 writes
    `maintainer decision: <the place> — named by the user`. With no place
-   named, a no there, or a text that step 2 does not count as agreement, the
-   plan writes no file for that work and ends with the close block. The
-   close block says what the read found, and its fenced `/milestone-plan`
-   names that place, so the rerun poses the flaw or the question. A user who
+   named, a no there, a failed read, or a text that step 2 does not count as
+   agreement, the plan writes no file for that work and ends with the close
+   block. The close block says what the read found, and its fenced
+   `/milestone-plan` names that place, or tells the user to add it, so the
+   rerun poses the flaw or the question. A user who
    types an override goes on, and step 4 writes
    `maintainer decision: none — planned at the user's choice`.
    `/milestone-review` step 8 reads the `none` and `declined` lines.

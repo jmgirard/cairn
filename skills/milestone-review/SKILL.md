@@ -622,9 +622,10 @@ the session, re-enters here, at the step the record shows is next:
    after. When no render can be made or looked at, the line says why, the
    chip's question text says that no one looked at the output, and the run
    goes on. When these runs end, a failed one included, the session removes
-   the worktree and each file that it can name as written by these runs. It
-   leaves every other file alone, with no `git clean` and no `git checkout
-   --`. Resume route (b)
+   the worktree and each untracked file that it can name as written by
+   these runs. It restores by path, with `git restore <path>`, each tracked
+   file that was clean before these runs and that they changed. It leaves
+   every other file alone, with no `git clean`. Resume route (b)
    skips this paragraph, since its PR has merged.
 
    **Open-PR cap (owner mode, M315).** Before the merge chip is posed,
