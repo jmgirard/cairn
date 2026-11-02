@@ -346,6 +346,25 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    line
    `maintainer decision: declined <URL> — planned at the user's choice`.
 
+   **Outside demand** (guest mode). The plan asks with the idea vet who
+   outside this work asked for it. A fix for a wrong number, a crash, or
+   broken documented behavior is outside this check. For other work, the
+   plan runs the maintainer decision's read, needed or not, and also reads
+   each issue in any repo that the request or the row cites. Someone asked
+   when a person other than the operator asks for this change in one of
+   those texts. A report also counts if it describes a problem that the
+   change fixes and that still occurs at the base head, which the plan
+   checks in the code. A maintainer's agreement that the read finds counts
+   too, and a maintainer's no is the flaw above. A text by the operator's
+   login or by a bot does not count, and neither does a link to an issue
+   whose text does none of these. A text settles this check only, never the
+   idea vet's three questions. A failed read counts as no one asking from
+   that source, and the question names that read. When no one asked and step
+   3's maintainer question covers the work, that question says so. Otherwise
+   this is a flaw, and step 3 poses it. A refactor or a speedup that changes
+   no result or output that users see does not change behavior for the
+   maintainer decision, so this flaw is the question it gets.
+
    **Collision check (mandatory).** Sweep the ROADMAP (all statuses), the
    archive, and DECISIONS.md for overlap with what the user described.
    Sweep DECISIONS.md per the tracking-rules **bounded `DECISIONS.md` read**:
@@ -464,7 +483,16 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
      the close block (step 7). A thread that someone else opened, with no
      question of the user's in it, keeps the draft option. The question counts
      among the questions that matter most, and a set of this question alone
-     is allowed.
+     is allowed. When step 2 found that no one outside asked, the question
+     says so, with what users lose or see change.
+   - the outside-demand flaw that step 2 finds, as one question of its own.
+     It says who asked, or "no one in the texts read", and names a failed
+     read. It also says what users lose or see change, so the choice is
+     whether to do the work at all. Its options are **build anyway**,
+     **someone already asked**, and **do not build** (recommended). If the
+     plan can say what goes wrong for a user, **draft an issue** comes first
+     and is the recommended option. The question counts among the questions
+     that matter most, and a set of this question alone is allowed.
 
    **The maintainer question.** The session writes a draft after the set's
    answers, so a gap's answer shapes it, and a do-not-build answer to a
@@ -512,6 +540,21 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    `/milestone-review` step 8 reads the `none` and `declined` lines.
    **Do not build** writes no file for that work and leaves any source row
    in place.
+
+   **The outside-demand options.** **Draft an issue** runs the maintainer
+   question's draft, file, command, and close block, with two differences:
+   the draft says what goes wrong for a user and asks whether the maintainers
+   want it changed, and a new parked row says `promote when someone asks for
+   it`. Where the user already asked in a thread and no one else has answered
+   since, the question names the thread, and **wait for the answer** takes
+   the draft option's place, as above. **Someone already asked** runs step
+   2's read on the place the user names. With a text there that step 2
+   counts, the plan goes on, and the `idea vet:` line names the place. At a
+   place off the host repo that no read can reach, such as a call, the plan
+   goes on, and the line says that the user named it. Otherwise the plan
+   writes no file for that work and ends with the close block, as **a
+   maintainer already agreed** does. **Build anyway** goes on, and the line
+   names the flaw and that answer.
 
    **Work chosen at the set.** For a request that names no work, the idea
    vet runs on the work chosen at the question set, before step 4 writes a

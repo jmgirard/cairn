@@ -1,13 +1,13 @@
 # M330: Ask who wanted the work in guest plans
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP3
 - **Resolves:** —
 - **Surface tier:** user-facing — `/milestone-plan` text that every guest repo runs
-- **Branch/PR:** —
+- **Branch/PR:** m330-outside-demand-flag
 
 ## Goal
 
@@ -59,8 +59,8 @@ Reader runs. A reader run is one fresh-context subagent that has not seen this p
 
 ## Tasks
 
-- [ ] T1: Edit `/milestone-plan`. Step 2 gains the outside-demand paragraph after "Maintainer decision". Step 3's maintainer question text, its flaw bullet, and "The maintainer question" gain the who-asked wording, the options, and the draft's parked row.
-- [ ] T2: Edit the rulebook's sentence "A guest plan's maintainer question can stand alone". Re-seed the rulebook mass in the `/milestone` skill line and the two hand-run pins.
+- [x] T1: Edit `/milestone-plan`. Step 2 gains the outside-demand paragraph after "Maintainer decision". Step 3's maintainer question text, its flaw bullet, and "The maintainer question" gain the who-asked wording, the options, and the draft's parked row.
+- [x] T2: Edit the rulebook's sentence "A guest plan's maintainer question can stand alone". Re-seed the rulebook mass in the `/milestone` skill line and the two hand-run pins.
 - [ ] T3: Run the reader runs at the head. Give each case the record it rests on, in neutral words. If a reader disagrees with a criterion, read the sentence it quotes, then change the text or record why not before a new reader runs. Run AC1's first case and AC2 once at the plan commit as a baseline.
 - [ ] T4: Write the D-entry, README, and CHANGELOG. Search the repo for text that the change makes stale.
 - [ ] T5: Run `verify`, `cairn_validate`, and the hand-run `skills/tests`. List added diff lines over 80 characters before the commit.
@@ -80,6 +80,9 @@ Reader runs. A reader run is one fresh-context subagent that has not seen this p
 - 2026-11-02: plan gate declined keeping review follow-ups in the milestone file over filing rows because D-108 bars the new record rule; falsified by rows for code that never merged being picked as work, or by a shipped defect they cause.
 - 2026-11-02: criteria audit (full mode, one fresh Opus reader): 10 findings, all fixed in the criteria and Scope. Fixes: a report counts only if the problem still occurs at the base head, cited issues in other repos are read, AC2 gets #894's text, agreement counts as asking and a no stays a flaw, AC6 names the no-output-change case and the parked row and wait option, the rulebook clause changes so the question can stand alone, AC2 narrows to no separate question, the question says "no one in the texts read" and names a failed read, a place no read can reach goes on as named by the user, AC1 gains the request that names no work, AC7 gains the owner-mode falsifier and the D-204 annotation, and AC3 covers a maintainer question on a fix. AC8 had no finding.
 - 2026-11-02: sizing: 8 criteria pass the advisory tripwire of 7, kept as one milestone because six are reader cases over one skill paragraph and no part ships alone.
+- 2026-11-02: implement started: branch m330-outside-demand-flag cut from main at c6584d1c, in a worktree in the session's scratch directory, because `~/.claude/skills/cairn` links to the main checkout and a branch switch there changes the plugin that running sessions read. Untracked `cairn-probe.log` and `tsconfig.json` in the main checkout stay unstaged.
+- 2026-11-02: reader runs use Haiku first, one reader per case as the criteria say, and any disagreement runs again on Opus, because no role names a model for them and about 20 readers on Opus is out of proportion to one skill paragraph.
+- 2026-11-02: T1, T2: step 2 gains the outside-demand paragraph, step 3 gains its bullet and options paragraph, the rulebook sentence allows the question alone, and the mass is re-seeded at 892 lines / 88,366 bytes in the `/milestone` line and the two pins. The file-wide style hook's hits on these skill and rulebook files are older text, left alone as out of scope.
 
 ## Decisions
 
