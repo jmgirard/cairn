@@ -1049,7 +1049,8 @@ actually reach.
   comments in your own repo. In guest mode Claude shows you each draft
   first, because the maintainers read it. You can post it, type your own
   version, or hold it. A hold posts nothing and leaves that review's
-  threads open, and `/copilot-review` finishes the review later.
+  threads open, and `/copilot-review` finishes the review while the PR is
+  open.
   `/copilot-review` runs the same read, comments, and resolves on one PR
   without the line, and it always shows each draft first. It never requests
   a review. A `pull_request`-triggered CI suite also runs on the early

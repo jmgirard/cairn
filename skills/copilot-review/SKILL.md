@@ -1,6 +1,6 @@
 ---
 name: copilot-review
-description: Handle a GitHub Copilot review on one pull request. Read each Copilot note and the review summary, and fix, reject, or defer each note. Show a draft of one PR comment for each review that has a note. The comment uses ordinary sentences that give each note's outcome. Post it, then resolve the notes' threads. Never reply on a thread, and never thank Copilot. Ask the user in chat, never on GitHub, about a note the agent cannot decide alone. Use when the user wants to address, answer, handle, or work through Copilot's review comments or notes on a PR.
+description: Handle a GitHub Copilot review on one pull request. Read each Copilot note and the review summary, and fix, reject, or defer each note. Show a draft of one PR comment for each review that has a note. The comment uses ordinary sentences that give each note's outcome. The user can post it, type an edit, or hold it. After a post, resolve the notes' threads. Never reply on a thread, and never thank Copilot. Ask the user in chat, never on GitHub, about a note the agent cannot decide alone. Use when the user wants to address, answer, handle, or work through Copilot's review comments or notes on a PR.
 argument-hint: "[PR number or URL]"
 ---
 
@@ -80,6 +80,10 @@ numbered step below (session start implicit).
    That note's review gets no comment until the user answers.
    Never post a question for the user to GitHub.
 
+   A rerun after a hold first reads that review's temp file (module §5),
+   and `git log` on the head branch. A note that a pushed commit already
+   fixes keeps that commit as its outcome and gets no second fix.
+
 5. **Fix.** Make each fix-now change. Run the active profile's `verify`
    slot until it is green. The profile is in `cairn/PROFILE.md`, or else
    the one that tracking-rules "Toolchain profiles" infers. Commit on the
@@ -101,8 +105,8 @@ numbered step below (session start implicit).
    outcome. For a fix, the outcome names the pushed commit. For another
    note, it gives the reason the note is not a problem, or says it is left
    for a later change. The comment states facts only and never thanks Copilot. Show each draft in
-   the module's draft chip (§5), then post each one the user approves.
-   Post no reply on a thread.
+   the module's draft chip (§5), then post each one the user approves. A
+   hold posts no comment for that review. Post no reply on a thread.
 
 7. **Resolve.** Resolve each unresolved Copilot thread tied to a review
    whose comment posted, and each unresolved Copilot thread of a review
@@ -116,7 +120,7 @@ numbered step below (session start implicit).
    - The module's `copilot:` lines and level line (§6).
    - A CI line that says whether the pushed fixes started checks.
    - The fenced next command, where one exists. For a milestone branch in
-     `review`, it is `/milestone-review M<NNN>`. For a held review, the
-     first is `/copilot-review <N>`. That rerun gives the review's open notes new
-     dispositions and finds the pushed fixes on the branch.
+     `review`, it is `/milestone-review M<NNN>`. For a held review,
+     `/copilot-review <N>` comes first, and it finishes the review while
+     the PR is open.
    - A line that says adjusting course or `/clear` are both safe here.

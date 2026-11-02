@@ -1,6 +1,6 @@
 # M331: Write Copilot comments like a colleague
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -37,7 +37,7 @@ Each Copilot review's PR comment reads as a colleague wrote it, with a draft sho
 - AC4 → T2, T6
 - AC5 → T1, T2, T3
 - AC6 → T1, T2, T3, T4
-- AC7 → T3, T5
+- AC7 → T3, T5, T7
 
 ## Tasks
 
@@ -51,6 +51,8 @@ Each Copilot review's PR comment reads as a colleague wrote it, with a draft sho
   Note set 1 (PR 735): one thread at `R/utils_standardize_center.R:319`, fixed in 09b1c08e, a single `TRUE` or `FALSE` now applies to every column.
   Note set 2 (PR 729): zero-length results from a function in `center`, kept as designed, the help now says so, fixed in e6dae14b; all-missing groups, the same on main, left for a later change.
   Note set 3 (made up): six notes on one review: three threads fixed in abc1234, one rejected because the caller already checks the type, one outdated thread left for a later change, and one body note with no anchor rejected because the file is generated.
+
+- [x] T7: Fix review return 1: describe the hold in the `/copilot-review` description and step 6, then fix each other fix-now finding of the Review section's pass 1, with guards.
 
 ## Work log
 
@@ -70,6 +72,7 @@ Each Copilot review's PR comment reads as a colleague wrote it, with a draft sho
 - 2026-11-02: claim audit: 31 claims read, 6 corrected — skills/shared/copilot-review.md, skills/copilot-review/SKILL.md, skills/hotfix/SKILL.md, skills/milestone-review/SKILL.md (a hold's close adds a fence, the temp file comes before the chip, the review id is defined, and a held review's command comes first); all six re-read ok. The reader cases were not rerun, because the corrections left the dedupe sentence and the drafting rule unchanged.
 - 2026-11-02: verify: the two Python suites and both manifest validates ran after the corrections; `claude plugin test` passed 2466 tests on the commit before them, which changed no file under `hooks/`.
 - 2026-11-02: review return 1: AC7 fails because the `/copilot-review` description and step 6 do not describe the hold (diff-bug #12); the return also fixes each other fix-now finding in the Review section's pass 1.
+- 2026-11-02: T7 done: the description and step 6 name the hold; a typed instruction changes the draft; the post re-reads operator comments and a failed post resolves nothing; a rerun reads the temp file and `git log` and makes no second fix; the temp path names `tempfile.gettempdir()`; README says the rerun works while the PR is open; guards and mutation entries added. The fixes passed D-235's figures, so the header budget is under 200 lines and 12,000 bytes, a figure D-235 does not state.
 
 ## Decisions
 

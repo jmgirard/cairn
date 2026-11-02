@@ -183,11 +183,11 @@ class TestNoThanks(unittest.TestCase):
 
 
 class TestOneComment(unittest.TestCase):
-    """M314 AC1: the module answers each Copilot review with one comment
-    and no thread reply, after every note has a disposition and each fix
-    is pushed, links the review, lists each note, resolves after it, and
-    posts no second comment for a review an operator comment links. One
-    test per clause, except the link and the note lines, which share one."""
+    """M314 AC1, M331 AC1 and AC5: the module answers each Copilot review
+    with one comment and no thread reply, after every note has a disposition
+    and each fix is pushed, links the review, gives each note's outcome,
+    resolves after it, and posts no second comment for a review an operator
+    comment links. One test per clause."""
 
     def setUp(self):
         module = read("shared", "copilot-review.md")
@@ -319,8 +319,39 @@ class TestDraftChip(unittest.TestCase):
 
     def test_skill_close_names_the_rerun(self):
         step = flat(section(self.skill, "8. **Close.**", "A line that says"))
-        self.assertIn("For a held review, the first is `/copilot-review <N>`",
+        self.assertIn("For a held review, `/copilot-review <N>` comes first",
                       step)
+
+    def test_skill_step_six_names_the_hold(self):
+        step = flat(section(self.skill, "6. **Comment.**", "7. **Resolve.**"))
+        self.assertIn("A hold posts no comment for that review.", step)
+
+    def test_skill_description_names_the_hold(self):
+        description = section(self.skill, "description:", "argument-hint:")
+        self.assertIn("The user can post it, type an edit, or hold it.",
+                      description)
+
+    def test_a_typed_instruction_changes_the_draft(self):
+        self.assertIn('Typed text that asks for a change and is not a comment, '
+                      'such as "shorten it", changes the draft, and the chip '
+                      'shows it again.', self.draft)
+
+    def test_the_post_rereads_the_operator_comments(self):
+        post = flat(section(self.module, "**The post.**", "## 6."))
+        self.assertIn("Read the operator's comments again, and post nothing "
+                      "for a review that one of them now carries.", post)
+
+    def test_a_failed_post_resolves_nothing(self):
+        post = flat(section(self.module, "**The post.**", "## 6."))
+        self.assertIn("A failed post resolves no thread.", post)
+        report = flat(section(self.module, "## 6.", "`/milestone-review` "
+                              "writes the lines"))
+        self.assertIn("a failed post,", report)
+
+    def test_a_rerun_makes_no_second_fix(self):
+        decide = flat(section(self.skill, "4. **Decide.**", "5. **Fix.**"))
+        self.assertIn("A note that a pushed commit already fixes keeps that "
+                      "commit as its outcome and gets no second fix.", decide)
 
     def test_guest_closes_add_only_the_fence_on_a_hold(self):
         self.assertIn("A hold at the module's draft chip (§5) adds §6's "
