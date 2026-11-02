@@ -1,6 +1,6 @@
 # M329: Flag maintainer decisions at the plan
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -59,12 +59,12 @@ Reader runs. A reader run is one fresh-context subagent that has not seen this p
 
 ## Tasks
 
-- [ ] T1: Edit `/milestone-plan` steps 2, 3, and 4, the rule (4) sentence in tracking-rules, and the `maintainer decision: none` sentence in `/milestone-review` step 8. Re-seed the rulebook mass in the `/milestone` skill line and the two hand-run pins.
-- [ ] T2: Edit `/milestone-review` steps 5 and 7 for `planned removal`.
-- [ ] T3: Add step 7's render paragraph and edit step 8's snapshot sentences. Resume route (b) skips the paragraph, since its PR has merged. The session removes the scratch worktree right after each render.
-- [ ] T4: Run the reader runs at the head. If a reader disagrees with a criterion, read the sentence it quotes, then change the text or record why not before a new reader runs. Run the AC1, AC4, and AC6 cases once at the plan commit as a baseline. Replay the render rule on PR 487's branch and base from `git archive` copies in a temporary directory, and record what each render shows.
-- [ ] T5: Write the D-entry, README, CHANGELOG, and the candidate row. Run the AC10 search.
-- [ ] T6: Run `verify`, `cairn_validate`, and the hand-run `skills/tests`.
+- [x] T1: Edit `/milestone-plan` steps 2, 3, and 4, the rule (4) sentence in tracking-rules, and the `maintainer decision: none` sentence in `/milestone-review` step 8. Re-seed the rulebook mass in the `/milestone` skill line and the two hand-run pins.
+- [x] T2: Edit `/milestone-review` steps 5 and 7 for `planned removal`.
+- [x] T3: Add step 7's render paragraph and edit step 8's snapshot sentences. Resume route (b) skips the paragraph, since its PR has merged. The session removes the scratch worktree right after each render.
+- [x] T4: Run the reader runs at the head. If a reader disagrees with a criterion, read the sentence it quotes, then change the text or record why not before a new reader runs. Run the AC1, AC4, and AC6 cases once at the plan commit as a baseline. Replay the render rule on PR 487's branch and base from `git archive` copies in a temporary directory, and record what each render shows.
+- [x] T5: Write the D-entry, README, CHANGELOG, and the candidate row. Run the AC10 search.
+- [x] T6: Run `verify`, `cairn_validate`, and the hand-run `skills/tests`.
 
 ## Work log
 
@@ -83,6 +83,11 @@ Reader runs. A reader run is one fresh-context subagent that has not seen this p
 - 2026-11-02: implement started: branch m329-maintainer-decision-flag cut from main at 068c08a2, in a worktree in the session's scratch directory, because `~/.claude/skills/cairn` links to the main checkout and a branch switch there would change the plugin that running sessions read.
 - 2026-11-02: substantive amendment: Scope's case record path changed to a copy, because M015 was dropped and its live file archived after PR 487 closed unmerged. Scope's three changes and the criteria are unchanged. The maintainer's closing comment says the change was not needed, because the LOESS changes fixed easystats/performance#894.
 - 2026-11-02: T4 replay: `git archive` of `outliers-panel-y-axis` and its merge base b797ddba, rendered with `lm(mpg ~ wt + hp, mtcars)` through `check_model(check = "outliers")`. Before: two curved dashed contour lines across the panel, y axis about -8 to 8. After: a short stub of the upper line at the right edge, no lower line, y axis about -1.6 to 2.5. So the default case shows the loss that the maintainer objected to.
+- 2026-11-02: T1 to T3 minor edits: a maintainer's no replaces the question, and building past it writes the same `none` line. The agreement read adds a PR's inline comments and `--paginate`. T1 also re-pinned two hand-run guards: `test_idea_vet.py` for the new sentence, and `test_issue_linkage.py`, whose ban on `gh issue comment` in the plan skill now allows only the command the user runs.
+- 2026-11-02: T4 reader runs at the head: 14 Haiku readers, AC1 to AC8, each answer as the criterion states. Readers named three gaps: whether a no takes both questions (fixed by the edit above), the close block's contents on do not build, and rule (4) against an override (one sentence added to the rule). The close block after do not build stays with the rulebook's close-block shape.
+- 2026-11-02: T4 baseline at plan commit 068c08a2: no maintainer question required, finding B takes the plain planned-change ground with no chip text naming it, no render required. So each AC1, AC4, and AC6 case changes behavior.
+- 2026-11-02: claim audit: 44 claims read, 5 corrected — CHANGELOG (the `none` line on a maintainer's no, by a skill edit), README (render wording, override), skills/milestone-plan/SKILL.md (inline PR comments, the flaw cross-reference); commit follows. The same reader re-read the five.
+- 2026-11-02: T6: `python3 -m unittest` on `scripts/tests`, `hooks/tests` (210 tests), and `skills/tests` (984 tests) pass. Both `claude plugin validate` commands pass. `claude plugin test` 2466 pass, 0 fail. `cairn_validate` passes. `test_mutation_harness.py` fails one test, `test_every_prose_guard_is_registered_or_exempt`, and it fails the same way on main.
 - 2026-11-02: the session that sent this work passed on five prevention changes as a follow-up to plan after this merge, with no widening here: candidate row "Ask for outside demand in guest plans".
 
 ## Decisions

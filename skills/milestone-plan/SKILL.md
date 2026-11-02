@@ -321,18 +321,19 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    The plan looks for a maintainer's agreement in the body and comments of
    each issue, open or closed, that the request or a candidate row's title
    names or the inbox sweep matches. It also looks in the reviews and
-   comments of each PR of yours for this work. `gh api` on
-   `repos/<base-repo>/issues/<N>`, its `/comments`, and
-   `repos/<base-repo>/pulls/<N>/reviews` gives each author's
-   `author_association`. A text by the login that `gh api user --jq .login`
+   comments of each PR of yours for this work. `gh api --paginate` on
+   `repos/<base-repo>/issues/<N>`, its `/comments`,
+   `repos/<base-repo>/pulls/<N>/reviews`, and that PR's `/comments` gives
+   each author's `author_association`. A text by the login that `gh api user --jq .login`
    returns is never agreement. The agreement must cover the design the
    plan will build, so agreeing with the idea leaves open each design
    choice that it does not settle. With agreement, step 4 writes the
    work-log line `maintainer decision: <URL> — <what was agreed>`.
    Otherwise step 3's set poses the question, and no file is written for
    that work first. A failed read counts as no agreement, and the question
-   names that read. A maintainer's no is a flaw under the guest scope above,
-   in place of this question, and the idea vet cites its comment.
+   names that read. A maintainer's no is a flaw, in place of this question,
+   and the idea vet cites its comment. A user who builds past that flaw
+   gets the `maintainer decision: none` line that step 3 names.
 
    **Collision check (mandatory).** Sweep the ROADMAP (all statuses), the
    archive, and DECISIONS.md for overlap with what the user described.

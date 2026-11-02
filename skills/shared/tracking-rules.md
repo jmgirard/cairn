@@ -504,6 +504,7 @@ reasoning over local files, and nothing cairn writes reaches the repo's maintain
   COLLABORATOR) agreed with its design in an issue on the host repo, or asked for it in a review of your PR. With
   neither, tell the user in chat and plan nothing until a maintainer agrees. A fix that restores documented behavior is
   outside rule (4). `/milestone-plan` step 2 checks for rule (4), and step 3 poses the question before the plan goes on.
+  A user override goes on and is logged.
 - **`/cairn-release` stops** at session start with a close block whose status line names the mode as the reason: a
   release is the maintainers' act. **`/cairn-triage` runs** with its accepted edits written to `cairn/` on disk, never
   committed or pushed, and skips its git preconditions. Its stamp is longer than "one short line", since it names
