@@ -76,6 +76,7 @@ Text a session writes for another person reads clearly on one read, because the 
 - 2026-11-02: T1-T7 done in one checkpoint, since the guards, the baseline, and the wording move together: clarity check in the bullet and session-start text, §5 rewritten, surfaces followed, D-236 written, baseline re-seeded to 894 lines / 88,613 bytes. The simple-english hook flagged older text across the edited files; those hits stay as M331 left them. Unrelated untracked cairn-probe.log and tsconfig.json stay unstaged.
 - 2026-11-02: claim audit: 45 claims read, 1 corrected — CHANGELOG.md (an older Unreleased line still said a guest PR body is short); re-read by the same reader.
 - 2026-11-02: T8: suites green (mod test 2466 pass); a fresh subagent wrote drafts of a Copilot comment (bayestestR#800), a maintainer question (#431), and a PR body (#801), held in the session scratchpad for the merge question; nothing was posted.
+- 2026-11-02: step-7 approval: m332-clear-host-text approved for merge
 
 ## Decisions
 
