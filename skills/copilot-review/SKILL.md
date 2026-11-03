@@ -1,6 +1,6 @@
 ---
 name: copilot-review
-description: Handle a GitHub Copilot review on one pull request. Read each Copilot note and the review summary, and fix, reject, or defer each note. Show a draft of one PR comment for each review that has a note. The comment uses ordinary sentences that give each note's outcome. The user can post it, type an edit, or hold it. After a post, resolve the notes' threads. Never reply on a thread, and never thank Copilot. Ask the user in chat, never on GitHub, about a note the agent cannot decide alone. Use when the user wants to address, answer, handle, or work through Copilot's review comments or notes on a PR.
+description: Handle a GitHub Copilot review on one pull request. Read each Copilot note and the review summary, and fix, reject, or defer each note. Show a draft of one PR comment for each review that has a note. The comment uses ordinary sentences that a person reading the PR can follow. The user can post it, type an edit, or hold it. After a post, resolve the notes' threads. Never reply on a thread, and never thank Copilot. Ask the user in chat, never on GitHub, about a note the agent cannot decide alone. Use when the user wants to address, answer, handle, or work through Copilot's review comments or notes on a PR.
 argument-hint: "[PR number or URL]"
 ---
 
@@ -101,10 +101,9 @@ numbered step below (session start implicit).
 
 6. **Comment.** For each Copilot review that has a note and that no
    comment by the operator links yet, write the module's one comment (§5)
-   in ordinary sentences: a markdown link to the review, then every note's
-   outcome. For a fix, the outcome names the pushed commit. For another
-   note, it gives the reason the note is not a problem, or says it is left
-   for a later change. The comment states facts only and never thanks Copilot. Show each draft in
+   in ordinary sentences with a markdown link to the review. Someone who
+   has not seen this session can follow it on one read.
+   It never thanks Copilot. Show each draft in
    the module's draft chip (§5), then post each one the user approves. A
    hold posts no comment for that review. Post no reply on a thread.
 

@@ -185,8 +185,8 @@ class TestNoThanks(unittest.TestCase):
 class TestOneComment(unittest.TestCase):
     """M314 AC1, M331 AC1 and AC5: the module answers each Copilot review
     with one comment and no thread reply, after every note has a disposition
-    and each fix is pushed, links the review, gives each note's outcome,
-    resolves after it, and posts no second comment for a review an operator
+    and each fix is pushed, links the review, names what a reader could ask
+    about, resolves after it, and posts no second comment for a review an operator
     comment links. One test per clause."""
 
     def setUp(self):
@@ -202,22 +202,21 @@ class TestOneComment(unittest.TestCase):
         self.assertIn("once every note of the review has a disposition and "
                       "each fix is pushed", self.comment)
 
-    def test_comment_opens_with_a_markdown_link(self):
-        self.assertIn("Open with the review's `url` as a markdown link.",
+    def test_comment_links_the_review(self):
+        self.assertIn("Put the review's `url` in it as a markdown link",
                       self.comment)
 
     def test_comment_is_ordinary_sentences(self):
         self.assertIn("Write it as ordinary sentences, as the PR's author "
                       "would write to a reviewer.", self.comment)
 
-    def test_comment_gives_every_note_its_outcome(self):
-        self.assertIn("Give every note's outcome, thread or body item: the "
-                      "fix's short sha, why the note is not a problem, or "
-                      "that it is left for a later change.", self.comment)
+    def test_comment_names_what_a_reader_could_ask_about(self):
+        self.assertIn("Name any note that a person reading the PR could ask "
+                      "about", self.comment)
 
     def test_host_matching_governs_guest_tone(self):
-        self.assertIn("In guest mode host matching still governs tone and "
-                      "length.", self.comment)
+        self.assertIn("mode, host matching governs tone and length.",
+                      self.comment)
 
     def test_old_template_is_gone(self):
         for old in ("first line", "one line per note", "Each line"):

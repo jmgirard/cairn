@@ -1,13 +1,13 @@
 # M332: Write host text so a maintainer follows it
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — the skills' instructions decide what adopters' sessions post under their accounts
-- **Branch/PR:** —
+- **Branch/PR:** m332-clear-host-text
 
 ## Goal
 
@@ -53,13 +53,13 @@ Text a session writes for another person reads clearly on one read, because the 
 
 ## Tasks
 
-- [ ] T1: Add the clarity test to the host-text bullet in `skills/shared/tracking-rules.md`. Re-seed the rulebook's mass baseline at all three sites.
-- [ ] T2: Add the sentence to the guest session-start text, with its test in `hooks/tests/test_hooks.py`.
-- [ ] T3: Rewrite §5's comment rule, its body-item line, and its line on a note settled on an earlier pass in `skills/shared/copilot-review.md`. Write D-236: it supersedes D-235's opening and every-note clauses and its paragraph-or-list rule, narrows D-187's "answers its summary" and D-212's record clause, and annotates D-207.
-- [ ] T4: Follow §5 in `skills/copilot-review/SKILL.md` (description and step 6), `README.md` (the two Copilot sites and the host-text line near :1133), and `CHANGELOG.md` (the two Unreleased Copilot entries).
-- [ ] T5: Remove the three-part shape from "The maintainer question".
-- [ ] T6: Tie "short" to clarity in `/milestone-review` step 8 and `/hotfix`'s guest handoff.
-- [ ] T7: Update the guards in `skills/tests/test_copilot_review_round.py` and `skills/tests/test_mutation_harness.py` that pin removed wording. Add no new guard for the clarity test's wording beyond the one in AC2.
+- [x] T1: Add the clarity test to the host-text bullet in `skills/shared/tracking-rules.md`. Re-seed the rulebook's mass baseline at all three sites.
+- [x] T2: Add the sentence to the guest session-start text, with its test in `hooks/tests/test_hooks.py`.
+- [x] T3: Rewrite §5's comment rule, its body-item line, and its line on a note settled on an earlier pass in `skills/shared/copilot-review.md`. Write D-236: it supersedes D-235's opening and every-note clauses and its paragraph-or-list rule, narrows D-187's "answers its summary" and D-212's record clause, and annotates D-207.
+- [x] T4: Follow §5 in `skills/copilot-review/SKILL.md` (description and step 6), `README.md` (the two Copilot sites and the host-text line near :1133), and `CHANGELOG.md` (the two Unreleased Copilot entries).
+- [x] T5: Remove the three-part shape from "The maintainer question".
+- [x] T6: Tie "short" to clarity in `/milestone-review` step 8 and `/hotfix`'s guest handoff.
+- [x] T7: Update the guards in `skills/tests/test_copilot_review_round.py` and `skills/tests/test_mutation_harness.py` that pin removed wording. Add no new guard for the clarity test's wording beyond the one in AC2.
 - [ ] T8: Run the suites. Give a fresh subagent the new rules and the facts of three real cases, then put its drafts in the merge question so the user can judge them: a Copilot comment (bayestestR#800), a maintainer question (bayestestR#431), and a guest PR body (bayestestR#801).
 
 ## Work log
@@ -73,6 +73,7 @@ Text a session writes for another person reads clearly on one read, because the 
 - 2026-11-02: approach: no prose checker. Rejected: a lint for stock phrases, because the checker spiral costs more than it catches, and clarity is a judgment. Falsified by the same stock phrase recurring across many drafts after this ships.
 - 2026-11-02: checkpoint: the plan is committed with its full criteria audit still running; the audit's findings and dispositions land in a later line, and implement does not start before them.
 - 2026-11-02: criteria audit (full): 10 findings. Taken: owner rounds lost the shape rules with no test (AC3); AC4's grep missed wrapped text; AC3 required nothing positive; AC1's wording placed no duty; AC4's CHANGELOG clause was uncheckable; AC1's diff could not tell a rewrap from a removal; AC5 passed a reorder; README's host-text line and T3's D-212 clause. Rejected: a new AC8 for the merge-question drafts, because showing them binds an instrument, so T8 stays a task, widened to a PR body. Kept out with a reason: the guest PR body's content rules (Scope Out). The baseline re-seed stays in T1 with no AC. The row edit landed in the plan commit.
+- 2026-11-02: T1-T7 done in one checkpoint, since the guards, the baseline, and the wording move together: clarity check in the bullet and session-start text, §5 rewritten, surfaces followed, D-236 written, baseline re-seeded to 894 lines / 88,613 bytes. The simple-english hook flagged older text across the edited files; those hits stay as M331 left them. Unrelated untracked cairn-probe.log and tsconfig.json stay unstaged.
 
 ## Decisions
 

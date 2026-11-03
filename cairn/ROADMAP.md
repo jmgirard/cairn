@@ -8,7 +8,7 @@ _Released 1.0.0 (2026-07-16) to 2.1.0 (2026-10-18), each tagged `v<version>`; 1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M332 | Write host text so a maintainer follows it | planned | — | high | milestones/M332-clear-host-text.md |
+| M332 | Write host text so a maintainer follows it | in-progress | — | high | milestones/M332-clear-host-text.md |
 | M331 | Write Copilot comments like a colleague | done | — | normal | milestones/archive/M331-copilot-comment-voice.md |
 | M330 | Ask who wanted the work in guest plans | done | — | normal | milestones/archive/M330-outside-demand-flag.md |
 | M329 | Flag maintainer decisions at the plan | done | — | normal | milestones/archive/M329-maintainer-decision-flag.md |

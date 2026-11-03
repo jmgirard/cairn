@@ -864,7 +864,9 @@ the session, re-enters here, at the step the record shows is next:
    — its title and body carrying no cairn
    vocabulary (the `Closes`/`Refs` lines above are GitHub's, not cairn's,
    and stay, but the `Candidate row:` lines are cairn's and are left out); record the PR URL in the header on disk, never committed.
-   The guest body is short and reads like the maintainers' own. Before
+   The guest body reads like the maintainers' own, in the host's style,
+   and is short only where that leaves it clear (the rulebook's host-text
+   bullet). Before
    the create, read recent PR bodies that the host's maintainers wrote:
    those whose author's association is OWNER, MEMBER, or COLLABORATOR,
    never the operator's own PRs (`gh api

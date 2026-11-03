@@ -4,6 +4,14 @@
 
 ### Changes that affect existing repos
 
+- **Text for maintainers has to read clearly first.** In guest mode, before
+  a session commits, shows, or posts text for the host repo, it checks that
+  a maintainer who has not seen the session can tell on one read what the
+  text says and anything it asks. This check comes before matching the
+  host's length, tone, and level of detail. A guest PR body is short only
+  where that leaves it clear. The maintainer question that `/milestone-plan`
+  drafts no longer has a set list of points.
+
 - **A guest plan asks who wanted the work.** In guest mode,
   `/milestone-plan` looks for another person who asked for the change, who
   reports a problem that it fixes and that still occurs, or a maintainer who
@@ -333,9 +341,9 @@
   the round in `/hotfix` and `/milestone-review` and `/copilot-review` no
   longer reply on each Copilot thread. For each Copilot review with an
   open note they post one PR comment, in place of a reply on each note. It
-  reads as you would write to a reviewer, in ordinary sentences. It opens
-  with a link to the review and gives each note's outcome: the fix's commit,
-  the reason the note is not a problem, or that it is left for later. It
+  reads as you would write to a reviewer, in ordinary sentences, and someone
+  who has not seen the session can follow it on one read. It links the
+  review and names any note that a person reading the PR could ask about. It
   goes once every note has an outcome and each fix is pushed. In a guest
   repo and in `/copilot-review`, Claude shows you each draft first, and you
   can post it, type your own version, or hold it. A hold posts nothing and
@@ -502,7 +510,8 @@
   It reads each unresolved Copilot note and each review summary. It fixes,
   rejects, or defers each note, and pushes the fixes to the PR's branch.
   Then it shows you a draft of one comment for each Copilot review with an
-  open note, in ordinary sentences that cover body notes too. It posts each
+  open note. The draft links the review, in ordinary sentences that someone
+  who has not seen the session can follow on one read. It posts each
   comment you approve and resolves that review's threads. It asks you in
   chat about a note it cannot settle alone, and it never posts
   a question to GitHub or thanks Copilot. It does not request a review: on

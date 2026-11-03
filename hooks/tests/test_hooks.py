@@ -453,6 +453,9 @@ class TestSessionContext(RepoFixture):
         self.assertNotIn("where no other writing-style instruction", tail)
         # the other instruction keeps what host matching leaves open
         self.assertIn("only what host matching leaves open", tail)
+        # the clarity check (M332) comes before matching the host
+        self.assertIn("can tell on one read what the text says", tail)
+        self.assertIn("This check comes before matching length", tail)
 
     def test_guest_mode_names_an_unreadable_template_instead_of_an_empty_body(self):
         # In guest mode this part is the session's only copy of the routing

@@ -451,7 +451,11 @@ def build_context(root):
             "own length, tone, and level of technical detail, read from text "
             "the host's maintainers wrote, and that matching wins over any "
             "other writing-style instruction in the session for that text; "
-            "the other instruction governs only what host matching leaves open."
+            "the other instruction governs only what host matching leaves open. "
+            "Before it commits, shows, or posts such text, the session checks "
+            "that a maintainer who has not seen this session can tell on one "
+            "read what the text says and anything it asks. This check comes "
+            "before matching length, tone, and level of detail."
             + host_rules(root)
         )
     try:

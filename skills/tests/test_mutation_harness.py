@@ -120,7 +120,7 @@ REGISTRY = [
         guard="test_cost_audit_line",
         test="TestCostAuditLine.test_the_rulebook_line_carries_its_seeded_baseline",
         target=MILESTONE,
-        block="892 lines / 88,366 bytes",
+        block="894 lines / 88,613 bytes",
     ),
     Mutation(
         guard="test_cost_audit_line",
@@ -4275,9 +4275,9 @@ REGISTRY += [
     ),
     Mutation(
         guard="test_copilot_review_round",
-        test="TestOneComment.test_comment_opens_with_a_markdown_link",
+        test="TestOneComment.test_comment_links_the_review",
         target=COPILOT_MODULE,
-        block="with the review's `url` as a markdown link.",
+        block="Put the review's `url` in it as a markdown link",
     ),
     Mutation(
         guard="test_copilot_review_round",
@@ -4287,15 +4287,15 @@ REGISTRY += [
     ),
     Mutation(
         guard="test_copilot_review_round",
-        test="TestOneComment.test_comment_gives_every_note_its_outcome",
+        test="TestOneComment.test_comment_names_what_a_reader_could_ask_about",
         target=COPILOT_MODULE,
-        block="Give every note's outcome,",
+        block="Name any note that a person reading the PR could ask about",
     ),
     Mutation(
         guard="test_copilot_review_round",
         test="TestOneComment.test_host_matching_governs_guest_tone",
         target=COPILOT_MODULE,
-        block="In guest mode host matching still governs tone and length.",
+        block="mode, host matching governs tone and length.",
     ),
     Mutation(
         guard="test_copilot_review_round",
