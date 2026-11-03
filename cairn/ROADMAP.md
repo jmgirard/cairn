@@ -1,17 +1,16 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-11-02 (M331 merged: Copilot comments read as a colleague wrote them; 1 row graduated, 1 added; 6 lessons marked used, 1 captured, 1 evicted (25); M328 row pruned; skills/tests green; validate green)_
+_Last hygiene check: 2026-11-02 (M332 merged: host text must read clearly before it matches the host; 1 row extended; 7 lessons marked used, 1 captured, 1 evicted (25); M329 row pruned; skills/tests green; validate green)_
 
 ## Milestones
 _Released 1.0.0 (2026-07-16) to 2.1.0 (2026-10-18), each tagged `v<version>`; 1.5.0 was cut retroactively at edb6942._
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M332 | Write host text so a maintainer follows it | review | — | high | milestones/M332-clear-host-text.md |
+| M332 | Write host text so a maintainer follows it | done | — | high | milestones/archive/M332-clear-host-text.md |
 | M331 | Write Copilot comments like a colleague | done | — | normal | milestones/archive/M331-copilot-comment-voice.md |
 | M330 | Ask who wanted the work in guest plans | done | — | normal | milestones/archive/M330-outside-demand-flag.md |
-| M329 | Flag maintainer decisions at the plan | done | — | normal | milestones/archive/M329-maintainer-decision-flag.md |
 ## Candidates
 _Ordered high → normal → low → parked by each row's opening `[high]`/`[low]`/`[parked]` token, untagged = `normal`; `[parked]` = a promotion condition that has not held (tracking-rules "Candidate priority token", D-134, D-184); advisory within a level. Triage: D-027._
 - Let guest maintainers merge their PRs: in easystats/datawizard the operator is a maintainer who merges approved PRs, their own included, but the repo runs guest tracking (cairn/ untracked), and guest mode never merges (D-137). There a minor bug fix needs no review, and a larger change needs another maintainer's approving review first. Plan a guest repo where the operator merges on those terms; superseding D-137's never-merge clause is the decision. Raised by the easystats session at M315 implement — added 2026-10-22
