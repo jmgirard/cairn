@@ -1,0 +1,77 @@
+# M332: Write host text so a maintainer follows it
+
+- **Status:** planned
+- **Priority:** high
+- **Depends on:** —
+- **Driving RR:** —
+- **Principles touched:** —
+- **Resolves:** —
+- **Surface tier:** user-facing — the skills' instructions decide what adopters' sessions post under their accounts
+- **Branch/PR:** —
+
+## Goal
+
+Text a session writes for another person reads clearly on one read, because the rules ask for that and stop prescribing a shape for it.
+
+## Scope
+
+**In:**
+- `skills/shared/tracking-rules.md`, the guest host-text bullet, and the guest session-start text in `hooks/session_context.py`: add one clarity test that comes before matching the host's length.
+- `skills/shared/copilot-review.md` §5: remove the fixed opening, the outcome for every note and body item, the paragraph-or-list rule, and the example comment. Keep the review link, which later runs read.
+- `skills/copilot-review/SKILL.md`, `README.md`, and `CHANGELOG.md`: follow §5.
+- `skills/milestone-plan/SKILL.md`, "The maintainer question": remove the three-part draft shape.
+- `skills/milestone-review/SKILL.md` step 8 and `skills/hotfix/SKILL.md` guest handoff: "short" holds only where the text stays clear.
+- The hand-run guards in `skills/tests` that pin the removed wording.
+
+**Out:**
+- A checker, lint, or scored test of prose quality: none, because clarity is a judgment for the writer and the user at the draft chip.
+- The simple-english lint hook: the user's `SIMPLE_ENGLISH_LINT_EXCLUDE` setting now skips these drafts, a change outside this repo made on 2026-11-02.
+- The workspace `CLAUDE.md` in the easystats folder: the user's own file.
+- The edges in the parked row "Tighten the Copilot draft step edges": they stay there.
+- Owner-mode PR bodies: no rule prescribes their shape, and no complaint names one.
+
+## Acceptance criteria
+
+- [ ] AC1: The host-text bullet in `skills/shared/tracking-rules.md` states that, before the session shows or posts such text, a maintainer who has not seen the session can tell on one read what the text says and what it asks, and that this comes before matching the host's length. The bullet keeps its other clauses, shown by `git diff main -- skills/shared/tracking-rules.md` removing no line of the bullet except those a rewrap moves.
+- [ ] AC2: The guest session-start text from `hooks/session_context.py` states the same test, and a test in `hooks/tests/test_hooks.py` fails without that sentence.
+- [ ] AC3: `skills/shared/copilot-review.md` §5 requires the review's `url` as a markdown link in the comment and no longer states a position for it, an opening phrase, an outcome for every note, a paragraph-or-list rule, or an example comment. It keeps "never thanks Copilot", "asks no question", and no cairn vocabulary in guest mode. Its line on a body item no longer says the comment answers that item. §6 still reports each note's disposition to the user.
+- [ ] AC4: `git grep -n -E "every note's outcome|each note's outcome|On \[Copilot's review\]|opens with a link|states facts only|answered in the review's comment" -- skills/shared skills/copilot-review README.md` returns no match, and `CHANGELOG.md`'s Unreleased section states the new comment rule and holds no entry that says the comment gives every note's outcome.
+- [ ] AC5: "The maintainer question" in `skills/milestone-plan/SKILL.md` no longer lists what the draft says about users and losses in a set order. It still says that the draft asks as a question, follows the rulebook's host-text bullet, and carries no cairn vocabulary.
+- [ ] AC6: `skills/milestone-review/SKILL.md` step 8's guest body sentence and `skills/hotfix/SKILL.md`'s guest body sentence each tie "short" to the text staying clear, and each still requires the host's style.
+- [ ] AC7: The profile's `verify` slot passes on the branch head, and `python3 -m unittest discover -s skills/tests` exits 0.
+
+## Coverage
+
+- AC1 → T1
+- AC2 → T2
+- AC3 → T3
+- AC4 → T3, T4
+- AC5 → T5
+- AC6 → T6
+- AC7 → T7, T8
+
+## Tasks
+
+- [ ] T1: Add the clarity test to the host-text bullet in `skills/shared/tracking-rules.md`. Re-seed the rulebook's mass baseline at all three sites.
+- [ ] T2: Add the sentence to the guest session-start text, with its test in `hooks/tests/test_hooks.py`.
+- [ ] T3: Rewrite §5's comment rule and body-item line in `skills/shared/copilot-review.md`. Write D-236: it supersedes D-235's opening and every-note clauses and its paragraph-or-list rule, narrows D-187's "answers its summary", and annotates D-207.
+- [ ] T4: Follow §5 in `skills/copilot-review/SKILL.md` (description and step 6), `README.md` (both sites), and `CHANGELOG.md`.
+- [ ] T5: Remove the three-part shape from "The maintainer question".
+- [ ] T6: Tie "short" to clarity in `/milestone-review` step 8 and `/hotfix`'s guest handoff.
+- [ ] T7: Update the guards in `skills/tests/test_copilot_review_round.py` and `skills/tests/test_mutation_harness.py` that pin removed wording. Add no new guard for the clarity test's wording beyond the one in AC2.
+- [ ] T8: Run the suites. Give a fresh subagent the new rules and the facts of datawizard#738's Copilot review and of the #431 mediation question, and put its two drafts in the merge question so the user can judge them.
+
+## Work log
+
+- 2026-11-02: tier check: milestone — changes what the skills tell sessions to write, with a choice about which rules to remove.
+- 2026-11-02: idea vet: gap — a resolved thread with no mention could puzzle a reader; reading taken: the comment names a note someone reading the PR could ask about, and the user asked to remove the every-note rule. No flaw.
+- 2026-11-02: lessons used: 2026-07-24 (M112) grep the old phrasing across the surface; 2026-08-17 (M149) re-seed the rulebook baseline; 2026-08-17 (M148) guards near edited prose; 2026-08-22 (M152) a repair that changes a decision owes a D-entry; 2026-11-02 (M331) write checks from the criterion's words.
+- 2026-11-02: question set: none posed — the user chose the scope ("Yes, fix both") after the diagnosis, and no open choice is the user's alone.
+- 2026-11-02: collision: M331 done today and D-235 set the form this removes; the plan supersedes those clauses at the user's request. D-207 stands, annotated. The row "Tighten the Copilot draft step edges" narrows, because the paragraph-or-list rule it names goes away.
+- 2026-11-02: approach: remove shape rules and add one clarity test. Rejected: a new example comment, because M331's example became the opening of every later comment (see bayestestR#800, parameters#1292, datawizard#738). Falsified by drafts that the user still calls unclear after this ships, which would point at the model's habits and not at the rules.
+- 2026-11-02: approach: no prose checker. Rejected: a lint for stock phrases, because the checker spiral costs more than it catches, and clarity is a judgment. Falsified by the same stock phrase recurring across many drafts after this ships.
+- 2026-11-02: checkpoint: the plan is committed with its full criteria audit still running; the audit's findings and dispositions land in a later line, and implement does not start before them.
+
+## Decisions
+
+## Review
