@@ -1038,9 +1038,10 @@ actually reach.
   question goes to chat, never to GitHub. Claude replies on no thread.
   Each Copilot review with an open note gets one PR comment, written in
   ordinary sentences as you would write to a reviewer. Someone who has not
-  seen the session can follow it on one read. It links the review and names
-  any note that a person reading the PR could ask about. It never thanks
-  Copilot. After the comment Claude resolves that review's open threads. A
+  seen the session can follow it on one read. It links the review, names
+  each fix, and names any other note that a person reading the PR could ask
+  about. A note that needs no action can go unmentioned, and its thread
+  still resolves. It never thanks Copilot. After the comment Claude resolves that review's open threads. A
   thread that `/milestone-review` returns to implement holds back its
   review's comment, and its threads stay open for a later pass. A review
   your comment already links gets no second comment, and its open threads

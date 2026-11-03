@@ -455,7 +455,8 @@ def build_context(root):
             "Before it commits, shows, or posts such text, the session checks "
             "that a maintainer who has not seen this session can tell on one "
             "read what the text says and anything it asks. This check comes "
-            "before matching length, tone, and level of detail."
+            "before matching length, tone, and level of detail. The session "
+            "rewrites text that fails it."
             + host_rules(root)
         )
     try:

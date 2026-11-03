@@ -140,13 +140,14 @@ one read what it says. That comes first in every mode. After it, in guest
 mode, host matching governs tone and length.
 Put the review's `url` in it as a markdown link, wherever the link reads
 naturally, with no set opening.
-Name any note that a person reading the PR could ask about, by what it is
-about. A note that needs no action and that no one would ask about can go
-unnamed. A named fix gets its short sha. A named note left alone gets its
-reason, or says it is left for a later change. A note settled on an
-earlier `/milestone-review` pass uses the outcome its `copilot:` line
-records. The comment never thanks Copilot, asks no question, and in guest
-mode carries no cairn vocabulary. Write the draft with the Write tool
+Name each fix, and any other note that a person reading the PR could ask
+about, by what it is about. A note that needs no action and that no one
+would ask about can go unnamed. A named fix gets its short sha. A named
+note left alone gets its reason, or says it is left for a later change. A
+named note settled on an earlier `/milestone-review` pass uses the outcome
+its `copilot:` line records. When no note needs naming, one sentence saying
+that none needed a change is enough. The comment never thanks Copilot, asks
+no question, and in guest mode carries no cairn vocabulary. Write the draft with the Write tool
 to `cairn-copilot-comment-<owner>-<name>-<N>-<review id>.md` in the system
 temp directory (Python's `tempfile.gettempdir()`), by its absolute path,
 reading an existing file first. The review id is the digits

@@ -89,3 +89,37 @@ Text a session writes for another person reads clearly on one read, because the 
 - AC6: `/milestone-review` step 8 and `/hotfix` each say "short only where that leaves it clear" and name the host's style.
 - AC7: scripts, hooks, and skills suites exit 0; both plugin validates exit 0 with no version warning; `claude plugin test` 2466 pass, 0 fail; `cairn_validate` exit 0. The changelog has an entry with no milestone number.
 - spawned: diff-bug, blame-history, prior-review, ripple
+- diff-bug #1: "short only where clear" dropped the duty to be short — fix now (also blame-history #1, prior-review #3), now "short unless that costs clarity"; D-236 names the narrowing.
+- diff-bug #2: fixes had no naming rule, and a review with no named note had no content — fix now, §5 names each fix and allows one sentence when none needs naming.
+- diff-bug #3: the check had no action on failure — fix now, "rewrites text that fails it" in the bullet and session-start text.
+- diff-bug #4: D-236 did not address D-108's door — fix now (also blame-history #3).
+- diff-bug #5: the check against a host's written style was undecided — fix now, D-236 ranks the check first.
+- diff-bug #6: the one-line close comment is unranked — reject, false: rule (3)'s one line is its own rule, not host matching, and a one-line comment can pass the check.
+- diff-bug #7: a typed edit posts unchecked — reject, false: typed text is the user's own act.
+- diff-bug #8: the restored link has no stated place — reject, style (also prior-review #5): the detection reads it anywhere.
+- diff-bug #9: README and CHANGELOG did not say a thread can resolve with no mention — fix now.
+- diff-bug #10: the guest-tone test no longer pinned "guest" — fix now (also blame-history #6).
+- diff-bug #11: most changelog claims have no guard — reject, planned change (also prior-review #4): T7 adds none, per the hand-run guards decision (D-109).
+- diff-bug #12: D-236 narrowed a clause already gone — fix now (also blame-history #2), the heading names the live clauses.
+- diff-bug #13: the settled-note sentence lacked "named" — fix now.
+- diff-bug #14: D-236 was looser than §5 — fix now.
+- diff-bug #15: an unnamed note's reason lives only in the report — reject, planned change (also prior-review #1): D-236 accepts it at the user's request.
+- diff-bug #16: a comment citing another review's URL marks it answered — follow-up, pre-existing, parked row "Tighten the Copilot draft step edges", because no documented use reaches it.
+- diff-bug #17: the hook's "any other instruction" could cover the check — reject, false: the next sentence ranks the check first.
+- diff-bug #18: D-236's title overstated the scope — fix now.
+- diff-bug #19: the bullet did not cite D-236 — fix now, cited at the new sentence.
+- diff-bug #20: "can follow" against "tell" — reject, style.
+- diff-bug #21: "tone and length" against the rulebook's wording — reject, style.
+- diff-bug #22: T8's drafts not yet in the merge question — reject, false: they go in this review's merge question.
+- diff-bug #23: test comment and docstring nits — fix now for the docstring (also blame-history #5); reject the comment, style.
+- diff-bug #24: cosmetic wrapping — fix now for the long CHANGELOG line (also blame-history #8, prior-review #6, ripple); reject the rest, style.
+- blame-history #4: D-233 not named for the removed points — reject, false: D-233 did not set those points.
+- blame-history #7: D-161's "Owner mode is unchanged" — reject, false: that clause covers host matching, and the owner-mode Copilot comment is not host text.
+- prior-review #2: the question loses its content list — reject, planned change (AC5).
+- prior-review #7: the baseline re-seed — reject, false: the rule allows one after a deliberate change.
+- ripple #1: an older Unreleased entry omits the check — reject, false: the new top entry states it.
+- ripple #2: the module's budget header credits D-235 — reject, false: a dated record of the reset.
+- ripple #3: "once every note has an outcome" — fix now, now "is settled".
+- ripple (inside diff): the top CHANGELOG entry said guest mode only, while §5 binds every mode — fix now.
+- copilot: review body — rejected, not a problem: the clarity bullet sits in the rulebook's guest-mode list.
+- Copilot level: Balanced was asked; the review body names none in the part read, GitHub's settings choose it.

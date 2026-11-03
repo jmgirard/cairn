@@ -183,7 +183,7 @@ class TestNoThanks(unittest.TestCase):
 
 
 class TestOneComment(unittest.TestCase):
-    """M314 AC1, M331 AC1 and AC5: the module answers each Copilot review
+    """M314 AC1, M331 AC1 and AC5, M332 AC3: the module answers each Copilot review
     with one comment and no thread reply, after every note has a disposition
     and each fix is pushed, links the review, names what a reader could ask
     about, resolves after it, and posts no second comment for a review an operator
@@ -211,11 +211,11 @@ class TestOneComment(unittest.TestCase):
                       "would write to a reviewer.", self.comment)
 
     def test_comment_names_what_a_reader_could_ask_about(self):
-        self.assertIn("Name any note that a person reading the PR could ask "
-                      "about", self.comment)
+        self.assertIn("Name each fix, and any other note that a person "
+                      "reading the PR could ask about", self.comment)
 
     def test_host_matching_governs_guest_tone(self):
-        self.assertIn("mode, host matching governs tone and length.",
+        self.assertIn("in guest mode, host matching governs tone and length.",
                       self.comment)
 
     def test_old_template_is_gone(self):

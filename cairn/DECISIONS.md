@@ -8577,7 +8577,7 @@ the round posted, so D-108's door does not bar this rule. Falsified by a
 guest round's draft that the user always posts unchanged across many reviews,
 which would show the chip costs more than it saves.
 
-### D-236 (2026-11-02): Text for another person must read clearly on one read before it matches the host, and the Copilot comment has no set shape — supersedes D-235's opening link and every-note clauses and its paragraph-or-list rule; narrows D-187's "answers its summary" and D-212's "one line per note"; annotates D-207 (M332)
+### D-236 (2026-11-02): Text for a maintainer must read clearly on one read before it matches the host, and the Copilot comment has no set shape — supersedes D-235's opening link and every-note clauses and its paragraph-or-list rule; narrows D-187's "answers its summary", D-212's "one public record" and "its outcome lives in the review's comment", and D-207's short guest PR body; annotates D-207's order; D-108's door does not bar this rule (M332)
 
 **Context:** On 2026-11-02 the user called about a dozen drafts in easystats
 sessions badly worded or hard to follow, after M331's form had shipped. The
@@ -8592,13 +8592,17 @@ user called not human.
 **Decision:** At the user's request, in guest mode, the session checks before
 it commits, shows, or posts text for the host that a maintainer who has not
 seen the session can tell on one read what the text says and anything it
-asks. The check comes before matching length, tone, and level of detail. The
-Copilot comment takes the same test in every mode, keeps ordinary sentences,
-and carries the review's URL as a markdown link at no set place, which is all
-that a later run reads. It names any note a person reading the PR could ask
-about, and a note that needs no action can go unnamed. The maintainer question
-states no list of points. A guest PR body is short only where that leaves it
-clear. Rejected: a new example comment, because M331's example became a
+asks. The check comes before matching length, tone, and level of detail, and
+before a style the host states in writing, since it asks only that the text
+can be followed. The session rewrites text that fails it. The Copilot comment
+takes the same test in every mode, keeps ordinary sentences, and carries the
+review's URL as a markdown link at no set place, which is all that a later run
+reads. It names each fix and any other note a person reading the PR could ask
+about. A note that needs no action and that no one would ask about can go
+unnamed. The maintainer question states no list of points. A guest PR body is
+short unless that costs clarity. The trigger is shipped behavior, the text the
+sessions posted, so D-108's door does not bar this rule. Rejected: a new
+example comment, because M331's example became a
 template, and a prose checker, because clarity is a judgment for the writer
 and for the user at the draft. The guest PR body's content rules stay, since
 maintainers' complaints set them (D-207).

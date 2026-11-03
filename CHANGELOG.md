@@ -8,9 +8,10 @@
   a session commits, shows, or posts text for the host repo, it checks that
   a maintainer who has not seen the session can tell on one read what the
   text says and anything it asks. This check comes before matching the
-  host's length, tone, and level of detail. A guest PR body is short only
-  where that leaves it clear. The maintainer question that `/milestone-plan`
-  drafts no longer has a set list of points.
+  host's length, tone, and level of detail. The Copilot comment takes the
+  same check in every mode. A guest PR body is short unless that costs
+  clarity. The maintainer question that `/milestone-plan` drafts no longer
+  has a set list of points.
 
 - **A guest plan asks who wanted the work.** In guest mode,
   `/milestone-plan` looks for another person who asked for the change, who
@@ -221,7 +222,7 @@
   comments and the code's git history. It looks for behavior that a
   maintainer chose on purpose. It takes an approach that a maintainer
   proposed, or it records why not. A guest milestone's PR body is short
-  only where that leaves it clear. It leads with what changed, at most one usage example, and the points
+  unless that costs clarity. It leads with what changed, at most one usage example, and the points
   a maintainer must decide. It also says why the PR does not take a
   maintainer's proposed approach. Some issues that a guest PR closes
   report several failing calls. For such an issue, the body of a
@@ -343,8 +344,10 @@
   open note they post one PR comment, in place of a reply on each note. It
   reads as you would write to a reviewer, in ordinary sentences, and someone
   who has not seen the session can follow it on one read. It links the
-  review and names any note that a person reading the PR could ask about. It
-  goes once every note has an outcome and each fix is pushed. In a guest
+  review, names each fix, and names any other note that a person reading the
+  PR could ask about. A note that needs no action can go unmentioned, and
+  its thread still resolves. It goes once every note is settled and each
+  fix is pushed. In a guest
   repo and in `/copilot-review`, Claude shows you each draft first, and you
   can post it, type your own version, or hold it. A hold posts nothing and
   leaves that review's threads open. A guest close then gives you the

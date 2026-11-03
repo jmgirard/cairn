@@ -120,7 +120,7 @@ REGISTRY = [
         guard="test_cost_audit_line",
         test="TestCostAuditLine.test_the_rulebook_line_carries_its_seeded_baseline",
         target=MILESTONE,
-        block="894 lines / 88,613 bytes",
+        block="894 lines / 88,662 bytes",
     ),
     Mutation(
         guard="test_cost_audit_line",
@@ -4289,7 +4289,7 @@ REGISTRY += [
         guard="test_copilot_review_round",
         test="TestOneComment.test_comment_names_what_a_reader_could_ask_about",
         target=COPILOT_MODULE,
-        block="Name any note that a person reading the PR could ask about",
+        block="Name each fix, and any other note that a person reading the PR could ask",
     ),
     Mutation(
         guard="test_copilot_review_round",
