@@ -7,7 +7,7 @@
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — the skills' instructions decide what adopters' sessions post under their accounts
-- **Branch/PR:** m332-clear-host-text
+- **Branch/PR:** m332-clear-host-text https://github.com/jmgirard/cairn/pull/347
 
 ## Goal
 
