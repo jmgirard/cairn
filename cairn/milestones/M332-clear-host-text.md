@@ -1,6 +1,6 @@
 # M332: Write host text so a maintainer follows it
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
@@ -60,7 +60,7 @@ Text a session writes for another person reads clearly on one read, because the 
 - [x] T5: Remove the three-part shape from "The maintainer question".
 - [x] T6: Tie "short" to clarity in `/milestone-review` step 8 and `/hotfix`'s guest handoff.
 - [x] T7: Update the guards in `skills/tests/test_copilot_review_round.py` and `skills/tests/test_mutation_harness.py` that pin removed wording. Add no new guard for the clarity test's wording beyond the one in AC2.
-- [ ] T8: Run the suites. Give a fresh subagent the new rules and the facts of three real cases, then put its drafts in the merge question so the user can judge them: a Copilot comment (bayestestR#800), a maintainer question (bayestestR#431), and a guest PR body (bayestestR#801).
+- [x] T8: Run the suites. Give a fresh subagent the new rules and the facts of three real cases, then put its drafts in the merge question so the user can judge them: a Copilot comment (bayestestR#800), a maintainer question (bayestestR#431), and a guest PR body (bayestestR#801).
 
 ## Work log
 
@@ -74,6 +74,8 @@ Text a session writes for another person reads clearly on one read, because the 
 - 2026-11-02: checkpoint: the plan is committed with its full criteria audit still running; the audit's findings and dispositions land in a later line, and implement does not start before them.
 - 2026-11-02: criteria audit (full): 10 findings. Taken: owner rounds lost the shape rules with no test (AC3); AC4's grep missed wrapped text; AC3 required nothing positive; AC1's wording placed no duty; AC4's CHANGELOG clause was uncheckable; AC1's diff could not tell a rewrap from a removal; AC5 passed a reorder; README's host-text line and T3's D-212 clause. Rejected: a new AC8 for the merge-question drafts, because showing them binds an instrument, so T8 stays a task, widened to a PR body. Kept out with a reason: the guest PR body's content rules (Scope Out). The baseline re-seed stays in T1 with no AC. The row edit landed in the plan commit.
 - 2026-11-02: T1-T7 done in one checkpoint, since the guards, the baseline, and the wording move together: clarity check in the bullet and session-start text, §5 rewritten, surfaces followed, D-236 written, baseline re-seeded to 894 lines / 88,613 bytes. The simple-english hook flagged older text across the edited files; those hits stay as M331 left them. Unrelated untracked cairn-probe.log and tsconfig.json stay unstaged.
+- 2026-11-02: claim audit: 45 claims read, 1 corrected — CHANGELOG.md (an older Unreleased line still said a guest PR body is short); re-read by the same reader.
+- 2026-11-02: T8: suites green (mod test 2466 pass); a fresh subagent wrote drafts of a Copilot comment (bayestestR#800), a maintainer question (#431), and a PR body (#801), held in the session scratchpad for the merge question; nothing was posted.
 
 ## Decisions
 

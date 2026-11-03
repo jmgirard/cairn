@@ -220,8 +220,8 @@
   for, and other finds become candidate rows. The plan reads the issue's
   comments and the code's git history. It looks for behavior that a
   maintainer chose on purpose. It takes an approach that a maintainer
-  proposed, or it records why not. A guest milestone's PR body is short:
-  it leads with what changed, at most one usage example, and the points
+  proposed, or it records why not. A guest milestone's PR body is short
+  only where that leaves it clear. It leads with what changed, at most one usage example, and the points
   a maintainer must decide. It also says why the PR does not take a
   maintainer's proposed approach. Some issues that a guest PR closes
   report several failing calls. For such an issue, the body of a
