@@ -981,9 +981,8 @@ within each type and are never reused.
   removes it (M266). `latestReviews` keeps each reviewer's latest review,
   so a later comment can mask their change request, both for the resume
   and for the M266 guest change route's trigger
-  (`latestOpinionatedReviews` would not). Step 6 states no stop for red
-  CI, and the marker stays. A resume reads no comment posted since the
-  approval. A resumed follow-up PR of the merged-PR re-entry may never
+  (`latestOpinionatedReviews` would not). A resume reads no comment posted
+  since the approval. A resumed follow-up PR of the merged-PR re-entry may never
   close the merged PR's `Fixes #N` issue. The guest arm's report-and-stop
   takes any open `hotfix-` PR outside the change route, whoever opened
   it (narrowed M266). A
@@ -998,7 +997,7 @@ within each type and are never reused.
   same way and shares both edges (M265 review, prior-review #5). If a gap shows in a real session, it becomes a `/hotfix` or a
   candidate row. Routed from candidates 2026-10-16; added 2026-10-12 —
   M249 review; added 2026-10-16 — M262 review (pass 1 diff-bug #6, #10,
-  blame-history #6; pass 2 diff-bug #2, #3, #4, #6).
+  blame-history #6; pass 2 diff-bug #2, #3, #4, #6); corrected 2026-11-02.
 - Started tokens have small gaps in the cairn pane and in `/cairn-triage`,
   found at the M252 to M259 reviews with no fix planned. Since M261 the
   pane hides a started row instead of marking it, so each edge shows or
@@ -1267,16 +1266,6 @@ within each type and are never reused.
   milestone named is evicted or proposed for drop because its citation no
   longer matched, it becomes a `/hotfix` or a candidate row. Routed from
   candidates 2026-10-30; added 2026-10-24 — M320 review (diff-bug #16).
-- Some test comments cite a bare milestone id for a point, found at the
-  M322 and M323 reviews with no fix planned. Examples are "(M23)" for the
-  newline trap and "(M53 discipline)", and the M023, M026, M053, and M054
-  archives do not record those points. D-222 lets a comment cite a
-  milestone only where its file records the point, but these predate it.
-  `test_budget_first_drafting.py`'s live-file docstring also narrates bug
-  history ("M99 review F4"). If a reader cannot follow such a comment from
-  its own words, it becomes a `/hotfix` or a candidate row. Routed from
-  candidates 2026-10-30; added 2026-10-25 — M322 review (diff-bug #1);
-  extended by M323 review (diff-bug #12).
 - The changed-snapshot lists (M310) miss changes made after a PR opens,
   found at the M310 plan criteria audit and review with no fix planned.
   M310 lists changed snapshot files at the review and hotfix gates and in
@@ -1342,14 +1331,6 @@ within each type and are never reused.
   titled row, it becomes a `/hotfix` or a candidate row. Routed from
   candidates 2026-10-30; added 2026-10-20 — M305 review (prior-review #1,
   blame-history #1).
-- A parked row's title and its desktop icon use two blues, found at the
-  M305 review with no fix planned. The title draws in the theme's
-  `permission` key and the icon in a fixed `#7f93c4` (M305, D-203), chosen
-  from browser mockups rather than the docked pane, so the two can differ
-  by theme, and the planning `planMode` blue is near. If a desktop look
-  shows them clash, it becomes a `/hotfix` or a candidate row. Routed from
-  candidates 2026-10-30; added 2026-10-20 — M305 review (diff-bug #1,
-  prior-review #3, #4).
 - The guest sync's conflict route (M309) has five small gaps, found at the
   M309 review with no fix planned. (1) A resume that only syncs runs a
   full second review pass and handoff (diff-bug #4). (2) A dirty tree
@@ -1368,3 +1349,75 @@ within each type and are never reused.
   approval, keeps the watch armed, and the session never wakes. Look at
   the PR, then type the resume command that the turn ended with. Accepted
   at the M328 gate.
+- The render rule (M329) has gaps, found at the M329 plan and review with
+  no fix planned. Its `planned removal` ground and its render rule at
+  review bind guest mode only, so owner mode, `/hotfix`'s gate, and a
+  surface with no snapshot tests stay out. The `planned removal` count has
+  no base run and no re-run after a fix, a fresh worktree can fail the base
+  run for setup reasons, and the snapshot trigger is not rechecked after a
+  fix. An uncommitted edit shows in the "after" render, a first-time
+  snapshot write reads as a pass, a render finding has no record line of
+  its own, routes (c) and (d) render again with no code change, and the
+  open-PR comment does not say whether a line on an unlisted snapshot
+  counts. If one of these lets a change that hides or misdescribes rendered
+  output reach a merge or a PR, it becomes a `/hotfix` or a candidate row.
+  Routed from candidates 2026-11-02; added 2026-11-02 — M329 plan.
+- The guest maintainer question (M329) has small gaps, found at the M329
+  review with no fix planned. Step 8 trusts a plan-time read at handoff, so
+  a thread can move before the PR says no maintainer agreed. A failed read
+  plus an override gives the same sentence. A closed no is found only if
+  the request names it. Another shape past a no gets no question and no
+  line. The read misses a cross-repo reference and a row's detail. A rerun
+  replaces an edited draft at a fixed path, as PR 243 flagged for
+  `/milestone` §4. The inbox sweep's `gh issue list` stops at its default
+  30, and a PR is read only if its title or branch looks like this work. If
+  a user reports one, it becomes a `/hotfix` or a candidate row. Routed
+  from candidates 2026-11-02; added 2026-11-02 — M329 review pass 2.
+- The outside-demand check (M330) has small gaps, found at the M330 review
+  with no fix planned. An older request past the sweep's 30 issues goes
+  unread. A cited Discussion goes unread. A literal request has no
+  still-occurs test. Waiting has nothing to replace with no draft. The
+  flaw's own question and the flaw bullet's combining differ. A PR built
+  anyway does not say that no one asked. Security fixes, hangs, and data
+  loss are not exempt, and the draft can be public. The draft is
+  recommended where a host has issues off. A rerun overwrites an edited
+  draft. A closed issue or PR that nothing cites goes unread. Prep work
+  split from an asked-for change draws the question. The maintainer
+  question has no option to name a person who asked. A maintainer's no can
+  read as two flaws. If a user reports one, it becomes a `/hotfix` or a
+  candidate row. Routed from candidates 2026-11-02; added 2026-11-02 — M330
+  review pass 1.
+- The Copilot draft step (M331) has small gaps, found at the M331 and M332
+  reviews with no fix planned. A dirty tree on another branch stops a
+  `/copilot-review` rerun that only needs to post. A long draft's temp file
+  edited by hand gets no link check, and a rerun overwrites it. The temp
+  file has a predictable name and nothing removes it. A PR closed or a
+  thread answered during the chip's wait is not re-read. A denied Write can
+  leave an older file to post. A failed post reports `held` with no next
+  command, and a failed re-read has no arm. No guard pins
+  `tempfile.gettempdir()` or README's "while the PR is open". A comment
+  that also cites another review's URL marks that review answered (M332
+  review, diff-bug #16). If a user reports one, it becomes a `/hotfix` or a
+  candidate row. Routed from candidates 2026-11-02; added 2026-11-02 — M331
+  review pass 1.
+- The background merge CI wait has small gaps, found at the M328 review and
+  descoped by the user, with no fix planned (rule in tracking-rules
+  "Waiting on CI", sites in `/milestone-review` step 8 and `/hotfix` step
+  6). Neutral and cancelled checks have no branch. "A failed read" is
+  undefined against `gh pr checks` exits 1 and 8. A tree already dirty at
+  arm time stalls every wake. The typed-resume `TaskStop` sits after the
+  routes that run first. No observable test covers a wake line the session
+  did not arm. A no-pending read goes to (d), written for a notification.
+  The companion branch check runs in the primary checkout. The rule's
+  no-checks path skips the fresh-PR re-read. README's self-resume lacks the
+  `/clear` exception. "W20 reports" overstates an unobserved row. A wake
+  can merge after the default branch moved. `/milestone-review`'s merge
+  carries no `--match-head-commit`, so its wake head read is check-then-act.
+  If a user reports one, it becomes a `/hotfix` or a candidate row. Routed
+  from candidates 2026-11-02; added 2026-10-31 — M328 review pass 3.
+- A typed resume can restart CI. `/milestone-review` route (c) pushes the
+  branch, which carries step 8's unpushed header-URL commit, so typing the
+  resume command during a merge CI wait moves the PR head and restarts CI
+  (D-138's unpushed record). If a user reports it, it becomes a `/hotfix`
+  or a candidate row. Routed from candidates 2026-11-02; added 2026-10-31 —
+  M328 review pass 2 (diff-bug #14).

@@ -8613,3 +8613,21 @@ still reports its disposition to the user. D-207's order stands below the
 check, and an owner round gains the test with no chip (D-235). Falsified by
 drafts the user still calls unclear after this ships, or by a maintainer who
 asks why a resolved Copilot thread was never explained.
+
+### D-237 (2026-11-02): A triage pass drops the BC coverage message, the design-interview nudge, and the bare-id and two-blues Known issues as not worth keeping
+
+**Context:** A `/cairn-triage` pass weighed every ROADMAP candidate row and
+every DESIGN.md Known issues entry, and the user accepted its proposals at the
+gate.
+**Decision:** Drop as not worth keeping: (1) **Name the BC in the coverage
+message** would make a binding criterion's missing Coverage line report its BC
+id, which its row called "message clarity only"; no archived milestone holds
+that criterion form. (2) **Suggest a design interview in triage** would have
+triage's close name `/design-interview` so a *rejected on principle* drop can
+fire; D-228 lets the user drop any row at the gate with no principle, so the
+row's condition cannot come up. (3) The Known issues entry on **test comments
+that cite a bare milestone id** would reword old comments, which changes no
+output. (4) The Known issues entry on **a parked row's title and desktop icon
+using two blues** would match a color that nobody saw clash.
+**Consequences:** Search-first finds these here if a review files one again.
+Each removal is re-openable by superseding this entry.
