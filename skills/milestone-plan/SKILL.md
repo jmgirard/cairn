@@ -499,10 +499,9 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
 
    **The maintainer question.** The session writes a draft after the set's
    answers, so a gap's answer shapes it, and a do-not-build answer to a
-   flaw means no draft. The draft says what the change does for users, what
-   they would lose, and what the maintainers must decide. It follows the
-   rulebook's host-text bullet with no cairn vocabulary, and it asks as a
-   question. The session writes it to
+   flaw means no draft. The draft follows the rulebook's host-text bullet
+   with no cairn vocabulary, and it asks as a question. The session writes
+   it to
    `cairn-question-<owner>-<repo>-<slug>.md` in the system temp directory
    with the Write tool, as `/milestone` §4 does. `<slug>` is a kebab-case
    short name for the work. If that file already exists, Read it first, so

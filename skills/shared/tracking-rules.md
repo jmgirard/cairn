@@ -479,7 +479,9 @@ reasoning over local files, and nothing cairn writes reaches the repo's maintain
   claims. Where another writing-style instruction in the session (another plugin's, or the user's own) also governs that
   text, host matching wins for that text, and the other instruction governs only what host matching leaves open. This
   file's Plain style rule binds chat output and its record-prose rule binds `cairn/` records, so neither governs that
-  text.
+  text. Before it commits, shows, or posts such text, the session checks that a maintainer who has not seen this
+  session can tell on one read what the text says and anything it asks. This check comes before matching length, tone,
+  and level of detail (D-236). The session rewrites text that fails it.
 - **New names in host code reuse the host's names.** A new name the session adds to host code (an argument, a
   function, or a file) reuses the name that the host already uses for the same thing. The session reads the host's code
   for that name before it chooses one, and it coins a name only where the host has none for that thing.
