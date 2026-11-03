@@ -33,13 +33,13 @@ Text a session writes for another person reads clearly on one read, because the 
 
 ## Acceptance criteria
 
-- [ ] AC1: The host-text bullet in `skills/shared/tracking-rules.md` requires the session to check, before it commits, shows, or posts such text, that a maintainer who has not seen the session can tell on one read what the text says and anything it asks, and it says this comes before matching length, tone, and level of detail. `git diff --word-diff=porcelain main -- skills/shared/tracking-rules.md` shows no removed word in the bullet.
-- [ ] AC2: The guest session-start text from `hooks/session_context.py` states the same test, and a test in `hooks/tests/test_hooks.py` fails without that sentence.
-- [ ] AC3: `skills/shared/copilot-review.md` §5 states, in every mode and before host matching, that someone who has not seen the session can tell on one read what the comment says. It keeps "ordinary sentences", requires the review's `url` as a markdown link in the comment, and requires the comment to name any note a person reading the PR could ask about. It states no position for the link, no opening phrase, no outcome for every note, no paragraph-or-list rule, and no example comment. It keeps "never thanks Copilot", "asks no question", and no cairn vocabulary in guest mode. Its line on a body item no longer says the comment answers that item. §6 still reports each note's disposition to the user.
-- [ ] AC4: `git ls-files skills/shared skills/copilot-review README.md | xargs cat | tr -s ' \n' ' ' | grep -E "every note's outcome|each note's outcome|On \[Copilot's review\]|opens with a link|states facts only|answered in the review's comment"` finds nothing. The two Unreleased Copilot entries in `CHANGELOG.md` state the review link and the clarity test, and neither says that the comment covers every note or body note.
-- [ ] AC5: "The maintainer question" in `skills/milestone-plan/SKILL.md` no longer says which points the draft must contain. It still says that the draft asks as a question, follows the rulebook's host-text bullet, and carries no cairn vocabulary.
-- [ ] AC6: `skills/milestone-review/SKILL.md` step 8's guest body sentence and `skills/hotfix/SKILL.md`'s guest body sentence each tie "short" to the text staying clear, and each still requires the host's style.
-- [ ] AC7: The profile's `verify` slot passes on the branch head, and `python3 -m unittest discover -s skills/tests` exits 0.
+- [x] AC1: The host-text bullet in `skills/shared/tracking-rules.md` requires the session to check, before it commits, shows, or posts such text, that a maintainer who has not seen the session can tell on one read what the text says and anything it asks, and it says this comes before matching length, tone, and level of detail. `git diff --word-diff=porcelain main -- skills/shared/tracking-rules.md` shows no removed word in the bullet.
+- [x] AC2: The guest session-start text from `hooks/session_context.py` states the same test, and a test in `hooks/tests/test_hooks.py` fails without that sentence.
+- [x] AC3: `skills/shared/copilot-review.md` §5 states, in every mode and before host matching, that someone who has not seen the session can tell on one read what the comment says. It keeps "ordinary sentences", requires the review's `url` as a markdown link in the comment, and requires the comment to name any note a person reading the PR could ask about. It states no position for the link, no opening phrase, no outcome for every note, no paragraph-or-list rule, and no example comment. It keeps "never thanks Copilot", "asks no question", and no cairn vocabulary in guest mode. Its line on a body item no longer says the comment answers that item. §6 still reports each note's disposition to the user.
+- [x] AC4: `git ls-files skills/shared skills/copilot-review README.md | xargs cat | tr -s ' \n' ' ' | grep -E "every note's outcome|each note's outcome|On \[Copilot's review\]|opens with a link|states facts only|answered in the review's comment"` finds nothing. The two Unreleased Copilot entries in `CHANGELOG.md` state the review link and the clarity test, and neither says that the comment covers every note or body note.
+- [x] AC5: "The maintainer question" in `skills/milestone-plan/SKILL.md` no longer says which points the draft must contain. It still says that the draft asks as a question, follows the rulebook's host-text bullet, and carries no cairn vocabulary.
+- [x] AC6: `skills/milestone-review/SKILL.md` step 8's guest body sentence and `skills/hotfix/SKILL.md`'s guest body sentence each tie "short" to the text staying clear, and each still requires the host's style.
+- [x] AC7: The profile's `verify` slot passes on the branch head, and `python3 -m unittest discover -s skills/tests` exits 0.
 
 ## Coverage
 
@@ -80,3 +80,12 @@ Text a session writes for another person reads clearly on one read, because the 
 ## Decisions
 
 ## Review
+
+- AC1: the flattened bullet holds the sentence once; `git diff --word-diff=porcelain main...HEAD` on the file shows 0 removed words.
+- AC2: `test_guest_mode` passes, and fails with the sentence removed from `hooks/session_context.py` (restored, tree clean).
+- AC3: §5 holds the clarity sentence, "first in every mode", ordinary sentences, the link, "Name any note", no thanks, no question, no cairn vocabulary; holds none of "Open with", "Up to three", "four or more", "For example", "Give every". The body-item line reads "takes a disposition". §6 keeps its `copilot:` report line.
+- AC4: the flattened grep over the named paths counts 0. Both Unreleased Copilot entries state the link and the on-one-read test, and "gives each note's outcome" and "cover body notes" count 0 in the Unreleased section.
+- AC5: the paragraph states no list of points, and keeps the host-text bullet, no cairn vocabulary, and "asks as a question".
+- AC6: `/milestone-review` step 8 and `/hotfix` each say "short only where that leaves it clear" and name the host's style.
+- AC7: scripts, hooks, and skills suites exit 0; both plugin validates exit 0 with no version warning; `claude plugin test` 2466 pass, 0 fail; `cairn_validate` exit 0. The changelog has an entry with no milestone number.
+- spawned: diff-bug, blame-history, prior-review, ripple
