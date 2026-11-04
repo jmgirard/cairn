@@ -64,6 +64,7 @@ A session in a cairn repo says so when no route or rule covers its task, instead
 - 2026-11-04: T5: a fresh Opus reader given the text and the router answered (a) yes, (b) no, (c) no. It called (a) and (b) close: "unsure which tier" could count as a route for (a), and the text does not exempt questions for (b). No stop; the merge question names both.
 - 2026-11-04: claim audit: 13 claims read, 4 corrected — `hooks/session_context.py`, `README.md`, `CHANGELOG.md`. The docs said what the session does where the hook only instructs it, and that the hook does not send the text after `/clear` or compaction, where it does and Claude Code ignores it per the hook's own notes (not observed live).
 - 2026-11-04: implement done: all five verify checks green before the last doc-only edits; the hand-run positioning guard green; validate green. Review reruns them fresh.
+- 2026-11-04: step-7 approval: m333-no-rule-covers approved for merge
 
 ## Decisions
 
