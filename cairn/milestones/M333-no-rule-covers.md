@@ -97,3 +97,6 @@ spawned: diff-bug, blame-history, prior-review, ripple
 - prior-review #2: no test re-checks the entry floor with the new part — reject, false: the floor tests build their context through the same code, so they run with the part present, and all 212 pass.
 - prior-review #3: nothing measures the part against the length cut in guest mode — reject, false: the same case as diff-bug #7.
 - ripple #1: `PREAMBLE` does not name the new part — reject, false: it names only the optional shelf part and leaves out the Open-PR caps part too, so nothing disagrees.
+- copilot: review body — noted; 0 threads, no finding, so the review has no note and takes no comment.
+- Copilot level: Lite (set by GitHub's settings)
+- conversation: no human review, comment, or thread on PR #348.
