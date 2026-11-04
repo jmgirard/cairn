@@ -1,17 +1,16 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-11-02 (triage: routed to Known issues Widen the render rule past its trigger, Tighten guest maintainer question edges, Tighten the outside-demand check edges, Tighten the Copilot draft step edges, Close the merge CI wait's edge cases, Keep a typed resume from restarting CI; dropped as not worth keeping Name the BC in the coverage message, Suggest a design interview in triage, and the Known issues on bare milestone ids in test comments and the two blues; re-rated Ask again before merging a red-CI fix to normal and State the close count in guest text to parked, with the condition promote when a user reports it; compressed the /hotfix rerun Known issue, removing a false red-CI sentence, and 14 rows, removing repeated old titles; decision entry D-237; validate green)_
+_Last hygiene check: 2026-11-04 (M333 merged: session-hook text for work no rule covers; skills/tests green; validate green)_
 
 ## Milestones
 _Released 1.0.0 (2026-07-16) to 2.1.0 (2026-10-18), each tagged `v<version>`; 1.5.0 was cut retroactively at edb6942._
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M333 | Say so when no rule covers a task | review | — | normal | milestones/M333-no-rule-covers.md |
+| M333 | Say so when no rule covers a task | done | — | normal | milestones/archive/M333-no-rule-covers.md |
 | M332 | Write host text so a maintainer follows it | done | — | high | milestones/archive/M332-clear-host-text.md |
 | M331 | Write Copilot comments like a colleague | done | — | normal | milestones/archive/M331-copilot-comment-voice.md |
-| M330 | Ask who wanted the work in guest plans | done | — | normal | milestones/archive/M330-outside-demand-flag.md |
 ## Candidates
 _Ordered high → normal → low → parked by each row's opening `[high]`/`[low]`/`[parked]` token, untagged = `normal`; `[parked]` = a promotion condition that has not held (tracking-rules "Candidate priority token", D-134, D-184); advisory within a level. Triage: D-027._
 - Let guest maintainers merge their PRs: in easystats/datawizard the operator is a maintainer who merges approved PRs, their own included, but the repo runs guest tracking (cairn/ untracked), and guest mode never merges (D-137). There a minor bug fix needs no review, and a larger change needs another maintainer's approving review first. Plan a guest repo where the operator merges on those terms; superseding D-137's never-merge clause is the decision. Raised by the easystats session at M315 implement — added 2026-10-22

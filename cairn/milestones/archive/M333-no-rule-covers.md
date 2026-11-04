@@ -1,0 +1,11 @@
+# M333: Say so when no rule covers a task
+
+**Status:** done (2026-11-04, PR #348 https://github.com/jmgirard/cairn/pull/348)
+
+**Goal:** A session in a cairn repo says so when no route or rule covers its task, instead of fitting the task to the nearest rule.
+
+**Outcome:** `hooks/session_context.py` gains `NO_RULE_PART`, a fixed `## Work no rule covers` part appended to `parts` after the guest block, ahead of the shelf and ROADMAP parts, in owner and guest mode. It is charged against `MAX_CHARS`. One test in `hooks/tests/test_hooks.py` checks the text in both modes, its place, and that it survives a ROADMAP truncation. README, DESIGN, and CHANGELOG state it. The CLAUDE.md template and the rulebook are unchanged. Source: the easystats orchestrator's finding on modelbased#701. Placement evidence at plan: 17 of 24 repos under `~/github` with the CLAUDE.md section lacked M232's route line, the section is 29 lines against a limit of under 30, and the modelbased injection was 29,802 of 30,000 characters.
+
+**Decisions:** D-238 narrows D-009's clause that conduct stays in the rulebook. Its falsifier: a session that still fits the nearest rule with the text in its context.
+
+**Review:** Four lenses and Copilot (Lite). 17 lens findings: 9 fixed (D-238 gained the budget cost and its position on D-094 and D-108, a README "Then" left after the wrong step, a long README line, an overclaiming hook comment) and 8 rejected (AC6's narrow pass, narrowing D-009, the untested `/clear` claim, the tail slice, the floor test, `PREAMBLE`, the literal 30000). No follow-ups. Copilot raised nothing. Two fresh readers answered AC6 as required, at implement and at review, and both called two cases close: "unsure which tier" could count as a route for a PR review, and the text does not exempt a plain question; the user merged with both on record. The fix if the second shows up: add "Answering a question is not a task here." Claim audit: 13 claims, 4 corrected. Lessons: none captured; `used M333` on M112, M325 (its joined-line trap recurred in the README), M329, M330. Hand-run `skills/tests` green. Candidates filed at plan: "Extend the idea vet past plans and fixes", "Add a skill for reviewing others' PRs"; "Detect drift in scaffold file content" gained the placement evidence.
