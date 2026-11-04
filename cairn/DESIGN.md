@@ -75,7 +75,8 @@ transitions, human-gated merges, and a domain verification doctrine.
   (SessionStart context injection; an active milestone's cap-exempt sections
   are read-bounded to their newest content, D-063; in both modes it states
   the two open-PR caps, read from their header lines by
-  `cairn_common.open_pr_caps`, D-214; in guest mode it adds the routing
+  `cairn_common.open_pr_caps`, D-214, and the text for a task that no cairn
+  route or rule covers, D-238; in guest mode it adds the routing
   section, the host-style rule, and the four guest rules on the host repo,
   D-213, D-214); `stop_guard` (Stop-guard on uncommitted
   `cairn/` tracking); five PreToolUse guards — `merge_guard` (single-use

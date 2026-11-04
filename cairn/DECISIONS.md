@@ -8631,3 +8631,32 @@ output. (4) The Known issues entry on **a parked row's title and desktop icon
 using two blues** would match a color that nobody saw clash.
 **Consequences:** Search-first finds these here if a review files one again.
 Each removal is re-openable by superseding this entry.
+
+### D-238 (2026-11-04): The session hook tells a session what to do when no route or rule covers its task — narrows D-009's clause that conduct stays in the rulebook (M333)
+
+**Context:** A session in the easystats modelbased clone reviewed another
+person's PR (modelbased#701), with no skill running and no cairn route or rule
+for that work. It applied rules meant for the user's own PRs and presented the
+results as settled. cairn had no rule for this case, and D-009 accepts that
+plain conversation gets no conduct rules. M333's work log holds the placement
+evidence.
+
+**Decision:** In owner and guest mode, the session hook injects one fixed
+text: "If no cairn route or rule covers a task, say so before you start, and
+name what you are guessing. Look at how this repo already does that work, or
+ask the user. Do not apply the nearest rule and present the result as the
+normal way." This conduct lives in the session hook rather than the rulebook.
+D-009's other clause stands: the CLAUDE.md router carries routing only.
+
+**Rejected:** The CLAUDE.md template with the repair path, because repair
+restores missing pieces and does not rewrite an existing section, so existing
+owner repos would never get the text, and the section has no free line under
+its cap. The rulebook, because it loads only once a skill fires, and this text
+is for a session that runs no skill.
+
+**Reach:** The text reaches a repo at its next session after a plugin update.
+It does not reach a session after `/clear` or compaction, because Claude Code
+ignores the hook's text at those points.
+
+**Falsifier:** A session that still fits the nearest rule with the text in its
+context. Then this text is not doing its job, and the fix is not a longer text.

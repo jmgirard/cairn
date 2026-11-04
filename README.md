@@ -65,6 +65,13 @@ files, and when a commit on your default branch reaches outside `cairn/`.
 The hooks activate at the next session start and are no-ops in repos that
 aren't cairn-tracked.
 
+In owner and guest mode, if no cairn route or rule covers a task, the
+session-start text tells the session to say so before it starts. The session
+also names what it is guessing, and it looks at how the repo already does that
+work or asks you. After a plugin update, this text reaches a repo at its next
+session, with no repair step. After `/clear` or compaction, the hook does not
+inject it again.
+
 Then, in your package repo, run `/cairn-init`. Fresh repos get scaffolding;
 repos with an older tracking system get an interactive, PR-based migration.
 Run `/milestone` any time you're unsure where things stand.
