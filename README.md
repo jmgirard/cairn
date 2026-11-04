@@ -65,8 +65,8 @@ files, and when a commit on your default branch reaches outside `cairn/`.
 The hooks activate at the next session start and are no-ops in repos that
 aren't cairn-tracked.
 
-This rule applies in owner and guest mode. If no cairn route or rule covers a
-task, the session-start text tells the session to say so before it starts. The
+The session-start text also has a rule for work that no rule covers, in owner
+and guest mode. If no cairn route or rule covers a task, the session-start text tells the session to say so before it starts. The
 text also tells it to name what it is guessing, and to look at how the repo
 already does that work or ask you. After a plugin update, this text reaches a
 repo at its next session, with no repair step. After `/clear` or compaction,
