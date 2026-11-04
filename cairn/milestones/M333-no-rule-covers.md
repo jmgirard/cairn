@@ -7,7 +7,7 @@
 - **Principles touched:** GP1, GP4
 - **Resolves:** —
 - **Surface tier:** user-facing — every adopting repo's sessions get the new text
-- **Branch/PR:** m333-no-rule-covers
+- **Branch/PR:** m333-no-rule-covers https://github.com/jmgirard/cairn/pull/348
 
 ## Goal
 
