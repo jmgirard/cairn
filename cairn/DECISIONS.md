@@ -8656,7 +8656,14 @@ is for a session that runs no skill.
 
 **Reach:** The text reaches a repo at its next session after a plugin update.
 It does not reach a session after `/clear` or compaction, because Claude Code
-ignores the hook's text at those points.
+ignores the hook's text at those points. Its characters count against the
+hook's budget, so a repo near the budget sees less milestone or ROADMAP text,
+and the hook says what it cut.
+
+**Other records:** D-108's door does not apply, because the text is about
+neither verification nor records. D-094's reason for leaving the hook's
+`PREAMBLE` out of the always-read frame also holds here: this is a fixed string
+that no repo writes to.
 
 **Falsifier:** A session that still fits the nearest rule with the text in its
 context. Then this text is not doing its job, and the fix is not a longer text.

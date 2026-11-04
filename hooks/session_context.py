@@ -108,7 +108,7 @@ PREAMBLE = (
 )
 
 # In the hook, not the CLAUDE.md section or the rulebook, so it reaches a
-# session that runs no skill in every cairn repo, with no repair step (D-238).
+# session that runs no skill, in both modes, with no repair step (D-238).
 NO_RULE_PART = (
     "## Work no rule covers\n\n"
     "If no cairn route or rule covers a task, say so before you start, and "
