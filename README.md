@@ -67,11 +67,10 @@ aren't cairn-tracked.
 
 This rule applies in owner and guest mode. If no cairn route or rule covers a
 task, the session-start text tells the session to say so before it starts. The
-session
-also names what it is guessing, and it looks at how the repo already does that
-work or asks you. After a plugin update, this text reaches a repo at its next
-session, with no repair step. After `/clear` or compaction, the hook does not
-inject it again.
+text also tells it to name what it is guessing, and to look at how the repo
+already does that work or ask you. After a plugin update, this text reaches a
+repo at its next session, with no repair step. After `/clear` or compaction,
+Claude Code ignores what the hook sends, so the text is not injected again.
 
 Then, in your package repo, run `/cairn-init`. Fresh repos get scaffolding;
 repos with an older tracking system get an interactive, PR-based migration.

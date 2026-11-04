@@ -4,13 +4,14 @@
 
 ### Changes that affect existing repos
 
-- **A session names work that no rule covers.** In owner and guest mode, if
-  no cairn route or rule covers a task, the session-start text tells the
-  session to say so before it starts. The session also names what it is
-  guessing, and it looks at how the repo already does that work or asks you.
-  It does not apply the nearest rule and present the result as the normal way.
-  After a plugin update, this text reaches a repo at its next session, with no
-  repair step. After `/clear` or compaction, the hook does not inject it again.
+- **The session-start text covers work that no rule covers.** In owner and
+  guest mode, if no cairn route or rule covers a task, the text tells the
+  session to say so before it starts. The text also tells it to name what it
+  is guessing, and to look at how the repo already does that work or ask you.
+  It tells the session not to apply the nearest rule and present the result as
+  the normal way. After a plugin update, this text reaches a repo at its next
+  session, with no repair step. After `/clear` or compaction, Claude Code
+  ignores what the hook sends, so the text is not injected again.
 
 - **Text for maintainers has to read clearly first.** In guest mode, before
   a session commits, shows, or posts text for the host repo, it checks that
