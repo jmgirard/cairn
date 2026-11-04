@@ -1,13 +1,13 @@
 # M333: Say so when no rule covers a task
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP1, GP4
 - **Resolves:** —
 - **Surface tier:** user-facing — every adopting repo's sessions get the new text
-- **Branch/PR:** —
+- **Branch/PR:** m333-no-rule-covers
 
 ## Goal
 
@@ -39,8 +39,8 @@ A session in a cairn repo says so when no route or rule covers its task, instead
 
 ## Tasks
 
-- [ ] T1: In `hooks/session_context.py`, add a fixed constant holding a `## Work no rule covers` heading and the AC1 text as one line. Append it to `parts` in `build_context` after the guest block, before the shelf part, so it is charged against `MAX_CHARS` and comes before the ROADMAP part. It needs the `## ` heading: without one, two guest tests that read the mode part fail. Update the module docstring's list of parts.
-- [ ] T2: In `hooks/tests/test_hooks.py`, add one test with a subtest per mode. It checks the AC1 literal, written out in the test, and its place ahead of the ROADMAP part. It then writes an oversized ROADMAP and checks that the literal is still whole and the length is at most `MAX_CHARS`.
+- [x] T1: In `hooks/session_context.py`, add a fixed constant holding a `## Work no rule covers` heading and the AC1 text as one line. Append it to `parts` in `build_context` after the guest block, before the shelf part, so it is charged against `MAX_CHARS` and comes before the ROADMAP part. It needs the `## ` heading: without one, two guest tests that read the mode part fail. Update the module docstring's list of parts.
+- [x] T2: In `hooks/tests/test_hooks.py`, add one test with a subtest per mode. It checks the AC1 literal, written out in the test, and its place ahead of the ROADMAP part. It then writes an oversized ROADMAP and checks that the literal is still whole and the length is at most `MAX_CHARS`.
 - [ ] T3: Append the decision entry (D-238) to `cairn/DECISIONS.md` per AC4.
 - [ ] T4: Write the README, DESIGN, and CHANGELOG lines per AC5, the README's near its other notes on session-start text. Grep the repo for other text that lists what the hook injects.
 - [ ] T5: Spawn a fresh reader for AC6 with neutral case wording and no hint of the answers. Ask it to quote the deciding words. If it answers (b) yes, the text is too broad: that is an amendment the user sees, since the text is the user's wording, so stop and ask. If it answers (a) no, the text's condition does not fire on the case that caused this work: stop the same way.
@@ -59,6 +59,7 @@ A session in a cairn repo says so when no route or rule covers its task, instead
 - 2026-11-04: question set: none posed; the user's request settled the wording and placement, and nothing foreseen needs the user before the merge question.
 - 2026-11-04: criteria audit (full): an Opus reader ran the text in a scratch extract; tests and budget held with a `## ` heading. Fixed: AC1 and AC2 dropped their test clauses, instrument properties, moved to T2; AC2 names both modes; AC3 uses `main...HEAD`; AC4 says narrowed, not annotates; AC6 gives the reader the router, drops the stipulation in case (a), and moves the quote and record acts to T5 and review. Rejected: adding "Answering a question is not a task here" to the text, because the user approved the wording; T5 stops and asks if case (b) fails.
 - 2026-11-04: cut: the user asked for "one hook test", T2 is one test with a subtest per mode. The two other items the session weighed are candidate rows, and the drift row gains the placement evidence.
+- 2026-11-04: T1, T2: the test failed on the missing text in both modes, then passed with `NO_RULE_PART`; hook suite green, 212 tests. The part sits after the guest block, as the plan's T1 says.
 
 ## Decisions
 

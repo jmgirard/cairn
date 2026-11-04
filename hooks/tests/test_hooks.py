@@ -491,6 +491,33 @@ class TestSessionContext(RepoFixture):
         self.assertLess(ctx.index("## Open-PR caps"), ctx.index("## cairn/ROADMAP.md"))
         return ctx.split("## Open-PR caps", 1)[1].split("\n## ", 1)[0]
 
+    def test_no_rule_text_reaches_both_modes_and_survives_the_length_cut(self):
+        text = (
+            "If no cairn route or rule covers a task, say so before you start, "
+            "and name what you are guessing. Look at how this repo already does "
+            "that work, or ask the user. Do not apply the nearest rule and "
+            "present the result as the normal way."
+        )
+        fat = "\n".join(
+            f"| M{i:03d} | {'t' * 2000} | done | — | high | milestones/archive/x.md |"
+            for i in range(56)
+        )
+        for mode, header in (("guest", self.GUEST_HEADER), ("owner", self.OWNER_HEADER)):
+            with self.subTest(mode=mode):
+                (self.root / "cairn" / "PROFILE.md").write_text(header + self.BODY)
+                (self.root / "cairn" / "ROADMAP.md").write_text("# Roadmap\n")
+                ctx = self._session()
+                self.assertIn(f"\n{text}\n", ctx)
+                self.assertLess(ctx.index(text), ctx.index("## cairn/ROADMAP.md"))
+                (self.root / "cairn" / "ROADMAP.md").write_text(
+                    "# Roadmap\n\n| ID | Title | Status | Depends on | Priority | File/Archive |\n"
+                    "|---|---|---|---|---|---|\n" + fat + "\n"
+                )
+                ctx = self._session()
+                self.assertIn("ROADMAP truncated", ctx)
+                self.assertIn(text, ctx)
+                self.assertLessEqual(len(ctx), 30000)
+
     def _assert_caps(self, part, fixes, features):
         self.assertIn(f"at most {fixes} of your open PRs from `hotfix-` branches", part)
         self.assertIn(f"at most {features} of your other open PRs", part)

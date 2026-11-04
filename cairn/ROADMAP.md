@@ -8,7 +8,7 @@ _Released 1.0.0 (2026-07-16) to 2.1.0 (2026-10-18), each tagged `v<version>`; 1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M333 | Say so when no rule covers a task | planned | — | normal | milestones/M333-no-rule-covers.md |
+| M333 | Say so when no rule covers a task | in-progress | — | normal | milestones/M333-no-rule-covers.md |
 | M332 | Write host text so a maintainer follows it | done | — | high | milestones/archive/M332-clear-host-text.md |
 | M331 | Write Copilot comments like a colleague | done | — | normal | milestones/archive/M331-copilot-comment-voice.md |
 | M330 | Ask who wanted the work in guest plans | done | — | normal | milestones/archive/M330-outside-demand-flag.md |
