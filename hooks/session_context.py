@@ -7,8 +7,9 @@ oriented without relying on the skill remembering to read the files.
 When cairn/references/ holds source pages or shelf entries, a short
 `## Source shelf` part comes before the ROADMAP and says to read them
 before searching the web (M288). An `## Open-PR caps` part, after the
-profile part, states the two open-PR caps (M315). No-op outside cairn
-repos.
+profile part, states the two open-PR caps (M315). A `## Work no rule covers`
+part, in both modes, says what to do when no route or rule fits (M333).
+No-op outside cairn repos.
 
 Wired to SessionStart only. Claude Code honors additionalContext on
 `source` startup/resume and ignores it on clear/compact — there is no
@@ -104,6 +105,16 @@ PREAMBLE = (
     "are re-read from disk at injection time. Obey the repo's CLAUDE.md\n"
     "cairn section; start milestone work via the cairn skills. A Source\n"
     "shelf part, when present, lists what is in cairn/references/.\n"
+)
+
+# In the hook, not the CLAUDE.md section or the rulebook, so it reaches a
+# session that runs no skill, in both modes, with no repair step (D-238).
+NO_RULE_PART = (
+    "## Work no rule covers\n\n"
+    "If no cairn route or rule covers a task, say so before you start, and "
+    "name what you are guessing. Look at how this repo already does that "
+    "work, or ask the user. Do not apply the nearest rule and present the "
+    "result as the normal way."
 )
 
 
@@ -459,6 +470,9 @@ def build_context(root):
             "rewrites text that fails it."
             + host_rules(root)
         )
+    # Ahead of the ROADMAP part, so the shedding below never reaches it; it is
+    # charged against MAX_CHARS like the parts above.
+    parts.append(NO_RULE_PART)
     try:
         with open(os.path.join(cairn_dir, "ROADMAP.md"), encoding="utf-8") as f:
             roadmap = f.read()
