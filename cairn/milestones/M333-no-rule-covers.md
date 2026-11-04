@@ -43,7 +43,7 @@ A session in a cairn repo says so when no route or rule covers its task, instead
 - [x] T2: In `hooks/tests/test_hooks.py`, add one test with a subtest per mode. It checks the AC1 literal, written out in the test, and its place ahead of the ROADMAP part. It then writes an oversized ROADMAP and checks that the literal is still whole and the length is at most `MAX_CHARS`.
 - [x] T3: Append the decision entry (D-238) to `cairn/DECISIONS.md` per AC4.
 - [x] T4: Write the README, DESIGN, and CHANGELOG lines per AC5, the README's near its other notes on session-start text. Grep the repo for other text that lists what the hook injects.
-- [ ] T5: Spawn a fresh reader for AC6 with neutral case wording and no hint of the answers. Ask it to quote the deciding words. If it answers (b) yes, the text is too broad: that is an amendment the user sees, since the text is the user's wording, so stop and ask. If it answers (a) no, the text's condition does not fire on the case that caused this work: stop the same way.
+- [x] T5: Spawn a fresh reader for AC6 with neutral case wording and no hint of the answers. Ask it to quote the deciding words. If it answers (b) yes, the text is too broad: that is an amendment the user sees, since the text is the user's wording, so stop and ask. If it answers (a) no, the text's condition does not fire on the case that caused this work: stop the same way.
 
 ## Work log
 
@@ -61,6 +61,7 @@ A session in a cairn repo says so when no route or rule covers its task, instead
 - 2026-11-04: cut: the user asked for "one hook test", T2 is one test with a subtest per mode. The two other items the session weighed are candidate rows, and the drift row gains the placement evidence.
 - 2026-11-04: T1, T2: the test failed on the missing text in both modes, then passed with `NO_RULE_PART`; hook suite green, 212 tests. The part sits after the guest block, as the plan's T1 says.
 - 2026-11-04: T3, T4: D-238 written, README, DESIGN, and CHANGELOG lines added; the sweep found no other list of what the hook injects. The simple-english lint hook flagged hundreds of existing README and CHANGELOG lines; the milestone reworded only its own lines and left the rest, which are out of scope.
+- 2026-11-04: T5: a fresh Opus reader given the text and the router answered (a) yes, (b) no, (c) no. It called (a) and (b) close: "unsure which tier" could count as a route for (a), and the text does not exempt questions for (b). No stop; the merge question names both.
 
 ## Decisions
 
