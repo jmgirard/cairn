@@ -4,9 +4,9 @@
 
 ### Changes that affect existing repos
 
-- **The session-start text covers work that no rule covers.** In owner and
-  guest mode, if no cairn route or rule covers a task, the text tells the
-  session to say so before it starts. The text also tells it to name what it
+- **The session-start text covers work that no rule covers.** This rule
+  applies in owner and guest mode. If no cairn route or rule covers a task, the
+  text tells the session to say so before it starts. It also tells it to name what it
   is guessing, and to look at how the repo already does that work or ask you.
   It tells the session not to apply the nearest rule and present the result as
   the normal way. After a plugin update, this text reaches a repo at its next
