@@ -417,8 +417,9 @@ gives the reason, and a move can go up or down any number of rungs. Only
 a parked row needs a condition, so a row with no condition is fine at
 high, normal, or low. `/cairn-triage` adds or removes `[parked]` as it re-rates a row, and a
 promote replaces it with `[high]`. When a parked row's condition has
-held, `/cairn-triage` moves the row off parked to the rung it judges
-right, usually normal. The held condition alone does not bring
+held, `/cairn-triage` proposes moving the row off parked to the rung it
+judges right, usually normal. It can instead propose keeping the row
+parked with a new condition. The held condition alone does not bring
 `[high]`. A promote does. If something the pass read shows that the
 work is wanted now, it proposes one. After a merge, `/milestone-review`
 removes it from each parked row whose short title the milestone file

@@ -577,7 +577,9 @@ re-examines a lesson.
      can also carry a condition change (step 2's Rung class). The
      reason cell states it with its move to parked, as in
      `condition: + promote when a user reports it; priority: normal →
-     parked`. A `keep` with no priority, token, or condition change sits
+     parked`. A parked row whose condition has held and that stays parked
+     states its condition change alone, with no priority change. A `keep`
+     with no priority, token, or condition change sits
      last so the changes read first.
      On a `keep`, `compress`, or `retitle` row, a priority change can name
      any rung of the ladder, up or down by any number of rungs (step 2's
@@ -697,7 +699,8 @@ re-examines a lesson.
      alone. A promoted row's change to `high` is a fourth. It touches the
      row's opening token and the row's place in the order alone. An
      accepted condition change is a fifth. It adds the condition text
-     alone, with its move to parked as a priority change. A kept mark set
+     alone, with its move to parked as a priority change. On a row that
+     stays parked, it replaces the held condition text alone. A kept mark set
      at *Amend* is a sixth. It adds or replaces the mark text alone.
 
 4. **Apply.** When no accepted disposition changes a file — every item
@@ -751,8 +754,11 @@ re-examines a lesson.
    ` — `. The lineage clause, and any trigger it takes from the absorbed
    row, hold no `: `, each one written as `; `. The absorbed row's subject
    in the lineage clause leaves out any started-token text. An accepted
-   condition change writes `promote when <condition>` into the row. The
-   condition holds no `: ` and quotes no other row's short title in
+   condition change writes `promote when <condition>` into the row. On a
+   parked row whose condition has held, it replaces the held
+   `promote when` text in place, keeping its position and separator. The
+   placement rules below are for a condition the row does not yet hold.
+   The condition holds no `: ` and quotes no other row's short title in
    double quotes. If the row holds a ` — added ` text and no `: ` comes
    after that text's start, the condition goes right before it. It
    opens with `; ` when a `: ` comes before it, and with ` — ` when the

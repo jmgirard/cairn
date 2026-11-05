@@ -1,6 +1,6 @@
 # M337: Re-rate a row whose trigger fired
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -67,3 +67,5 @@ When `/cairn-triage` finds that a candidate row's promotion trigger has fired, i
 - 2026-11-05: P4's held-condition gap on a normal or low row filed as the parked candidate "Drop a held condition from a row"; widening AC3 to non-parked rows was not taken.
 - 2026-11-05: T5 ROADMAP dry run (fresh Opus, step 2 to the table, open-PR read empty): 35 rows, no trigger judged fired, so neither changed class is reached on this repo; proposals were one retitle, one compress, rest keep. Its five notes on unclear text (drift "bites", a trigger waiting on unplanned work, one clause with two arms, §7 and Out deferrals, split by title or row) concern unchanged wording and are left.
 - 2026-11-05: T6 done: scripts/tests, hooks/tests, both plugin validates, and `claude plugin test` (2466 pass) exit 0; after the AC3 amendment the two suites, both validates, and skills/tests (1026 OK) reran green; the branch changes nothing under `hooks/`.
+- 2026-11-05: claim audit: 16 claims read, 3 corrected — CHANGELOG.md, README.md, skills/cairn-triage/SKILL.md (the old behavior overstated as every fired row; README stated a proposal as an action and left out the stay-parked option; the stay-parked option had no apply text, so steps 3 and 4 now say the new condition replaces the held one in place). The re-read found all three hold and asked that the replacement keep its position, taken.
+- 2026-11-05: implement done; skills/tests 1026 OK, scripts/tests and hooks/tests exit 0 after the last edits; lint counts on the three changed docs equal or below main's.

@@ -5,11 +5,12 @@
 ### Changes that affect existing repos
 
 - **A row whose trigger fired is re-rated, not always promoted.**
-  `/cairn-triage` used to propose `promote` for every candidate row whose
-  promotion trigger had fired, and every promote marks a row `[high]`. Now a
-  fired trigger only ends the row's wait. The pass moves a parked row whose
-  condition has held to the rung it judges right, usually normal. It can
-  instead keep the row parked with a new condition. If something the pass
+  `/cairn-triage` used to treat a fired promotion trigger as enough to propose
+  `promote`, and every promote marks a candidate row `[high]`. Now a fired
+  trigger only ends the row's wait. For a parked row whose condition has held,
+  the pass proposes a move to the rung it judges right, usually normal. It can
+  instead propose keeping the row parked with a new condition, which replaces
+  the held one. If something the pass
   read shows that the work is wanted now, it proposes `promote`, and the
   reason names that.
 
