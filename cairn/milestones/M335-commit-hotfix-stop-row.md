@@ -1,6 +1,6 @@
 # M335: Commit the row a hotfix stop writes
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -52,8 +52,8 @@ In owner mode, a candidate row that a `/hotfix` step 1 stop writes reaches the d
 - [x] T2: Reword the merged-PR re-entry's over-the-bar bullet (lines 124-130) and step 7's docs-only commit sentence (lines 648-650) for AC4.
 - [x] T3: Run AC5's seven cases in throwaway repos with the commands as the skill now states them, and record the results in one work-log line.
 - [x] T4: Add the CHANGELOG entry. Grep `README.md` and `skills/` for text about a hotfix stop's row and fix what the change makes stale. Append a D-entry that annotates D-042 and D-225 (the close block can be a stop's only record of a row) and records that the work passes D-108's door on its retained trigger.
-- [ ] T5: Give a fresh Opus reader `skills/hotfix/SKILL.md`, the rulebook, and AC6's cases, each with its facts in neutral words, and have each answer quote its deciding sentence. Fix any case the text leaves open. After any later edit to a quoted sentence, rerun that case.
-- [ ] T6: Run the five `verify` commands, each with its own exit code. Hand-run the `skills/tests` guards that pin this text (`test_hotfix_candidate_graduation`, `test_resume_routing`, `test_external_pr_intake`, `test_idea_vet`), and re-pin what T1 and T2 moved.
+- [x] T5: Give a fresh Opus reader `skills/hotfix/SKILL.md`, the rulebook, and AC6's cases, each with its facts in neutral words, and have each answer quote its deciding sentence. Fix any case the text leaves open. After any later edit to a quoted sentence, rerun that case.
+- [x] T6: Run the five `verify` commands, each with its own exit code. Hand-run the `skills/tests` guards that pin this text (`test_hotfix_candidate_graduation`, `test_resume_routing`, `test_external_pr_intake`, `test_idea_vet`), and re-pin what T1 and T2 moved.
 
 ## Work log
 
@@ -75,6 +75,9 @@ In owner mode, a candidate row that a `/hotfix` step 1 stop writes reaches the d
 - 2026-11-05: T4 done: CHANGELOG entry; D-240; the sweep of `README.md` and `skills/` found nothing stale, since README's `/hotfix` row names the candidate row and no commit.
 - 2026-11-05: substantive amendment: Scope In gains "The open-PR cap stop says it pushes no branch, in step 1 and in the rulebook, since its row now takes a docs-only push." The T5 reader found that the cap stop's "push nothing" conflicts with the row's push; no criterion changes; the rulebook baseline is re-seeded in its three places.
 - 2026-11-05: T5 first reader pass: all cases decided in the row's handling. Fixed: the cap stop's push conflict; a fence for each stop (`/milestone-plan` with the row's short title unless the stop names its own, `/hotfix` after a rejected push and undo); other uncommitted paths on the success route; a row that needs no edit. Left as they were, since they predate this work and the row does not touch them: the re-entry's gate-lite and changelog wording, its "no regression test demanded" against a vet flaw, and a sweep rerun after the pull. Left because the rulebook settles them: docs-only commits need no approval chip, and a preview adds no stop.
+- 2026-11-05: T5 second reader pass (cases a, d, f, g, i, k, plus an unrelated dirty file and a row that needs no edit): no case open. The rulebook's "dirty tree means ask" against step 1's "with no question" stays, since `/milestone-plan`'s trivial route commits past other paths the same way and step 1's sentence is explicit.
+- 2026-11-05: claim audit: 29 claims read, 4 corrected — CHANGELOG.md, skills/hotfix/SKILL.md (the cap's failed read, a push-only failure, the guest fence, a failed restore); the loose "pushes no branch" also became "pushes no work branch" (Scope In follows; rulebook baseline re-seeded to 894 lines / 88,669 bytes); the one re-read found all corrected claims true, and case (g) has no conflict.
+- 2026-11-05: T6 done: `skills/tests` hand-run green after two re-pins and the baseline re-seed; verify run on the final text.
 
 ## Decisions
 
