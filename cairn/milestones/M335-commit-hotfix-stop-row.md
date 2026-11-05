@@ -7,7 +7,7 @@
 - **Principles touched:** IP1, GP2
 - **Resolves:** —
 - **Surface tier:** user-facing — changes what `/hotfix` does in every adopting repo
-- **Branch/PR:** m335-commit-hotfix-stop-row
+- **Branch/PR:** m335-commit-hotfix-stop-row, https://github.com/jmgirard/cairn/pull/350
 
 ## Goal
 
