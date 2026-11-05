@@ -416,7 +416,11 @@ Whoever writes or updates a row, you or a skill, places it on a rung and
 gives the reason, and a move can go up or down any number of rungs. Only
 a parked row needs a condition, so a row with no condition is fine at
 high, normal, or low. `/cairn-triage` adds or removes `[parked]` as it re-rates a row, and a
-promote replaces it with `[high]`. After a merge, `/milestone-review`
+promote replaces it with `[high]`. When a parked row's condition has
+held, `/cairn-triage` moves the row off parked to the rung it judges
+right, usually normal. The held condition alone does not bring
+`[high]`. A promote does. If something the pass read shows that the
+work is wanted now, it proposes one. After a merge, `/milestone-review`
 removes it from each parked row whose short title the milestone file
 quotes, or whose text names the milestone, where the merge made its
 condition hold. A row whose condition is not written down gets no

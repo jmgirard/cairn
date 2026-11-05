@@ -8707,3 +8707,15 @@ context. Then this text is not doing its job, and the fix is not a longer text.
 **Context:** M336's first review pass found that a `gh pr merge` failing on a late red required check restores the marker, and that step 8's retry clause and the guard's note let a fix merge with no new approval. It also found that step 6 pushes after each fix-now commit on a PR from step 2's Copilot arm, which D-241 does not name.
 
 **Decision:** A fix after a failed merge takes the Red CI rule, whatever the guard's restore note says. A fix-now push from step 7's read on a Copilot-arm PR can carry the fix before the chip. The merge still waits for the new approval. The guard's note stays unchanged, as at `/hotfix`, whose skill text also overrides it.
+
+### D-243 (2026-11-05): In `/cairn-triage` a fired trigger ends a row's wait and re-rates the row; a promote needs a reason beyond the trigger — supersedes D-228's clause that a fired trigger goes to Readiness; D-179 stands; outside D-108's door (M337)
+
+**Context:** D-228 says that "a fired trigger whose work is still undone now goes to Readiness instead". Readiness proposes `promote`, and D-179 makes every promote of a candidate row write `[high]`. The user saw that every parked row whose trigger fired came out `[high]`, when normal or low often fit. A parked row waits on a condition. A held condition ends the wait but does not say how much the work matters. `/milestone-review`'s post-merge unpark step already moves such a row to normal.
+
+**Decision:** At the user's request, that D-228 clause is superseded. In `/cairn-triage` step 2, Staleness does not fire on a row whose trigger fired and whose work is still undone, and the row goes on to the later classes. Readiness no longer counts a fired trigger alone as a reason to promote. A proposed `promote` names what the pass read that shows the work is wanted now, beyond the trigger firing. A promote the user sets at Amend is not bound by that. A parked row whose condition has held takes one of two Rung class changes: a move off parked to the rung the pass judges right, usually normal, or staying parked with a new condition that has not held. D-179's rule that a promote writes `[high]` stands, and so does D-228's rule that a fired trigger is not a drop.
+
+**Door:** The change narrows a conduct rule. It removes a forced route from Staleness to Readiness, so it is outside D-108's door by its carve-out, as D-228's gate removal was.
+
+**Rejected:** Keeping the route to Readiness and letting a promote carry a rung other than `high`, because D-179 ties a promote to `high` and the user asked that it stay. Falsified if an operator cannot tell a row ready to plan from a row re-rated after its trigger fired.
+
+**Consequences:** A triage pass proposes fewer promotes and more priority changes off parked. A normal or low row whose trigger fired also reaches the Rung class, where it can move up or stay.

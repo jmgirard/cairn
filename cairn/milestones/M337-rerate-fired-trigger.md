@@ -43,8 +43,8 @@ When `/cairn-triage` finds that a candidate row's promotion trigger has fired, i
 
 - [x] T1: Edit `skills/cairn-triage/SKILL.md` step 2: the Staleness sentence (AC1), the Readiness class's ground (AC2), and a Rung class sentence for a parked row whose condition has held (AC3). Keep the step-3 sentence "A row whose condition has held usually moves up, as in `priority: parked → normal`" and check that step 3 and the close block say nothing that still ties a fired trigger to `promote`.
 - [x] T2: Add prose guards in `skills/tests/test_candidate_priority_token.py` for the three new sentences, with entries in `skills/tests/test_mutation_harness.py`, giving the "when this applies" half of each its own entry; hand-run `python3 -m unittest discover -s skills/tests`, the existing `TestPromoteCarriesHigh.test_readiness_class_states_it` case included.
-- [ ] T3: Add the README.md sentence (AC4) and the CHANGELOG.md Unreleased entry; grep README and the skills for the old phrasing first.
-- [ ] T4: Append the D-entry (AC5).
+- [x] T3: Add the README.md sentence (AC4) and the CHANGELOG.md Unreleased entry; grep README and the skills for the old phrasing first.
+- [x] T4: Append the D-entry (AC5).
 - [ ] T5: Spawn a fresh-context Opus reader with main's and the branch's `skills/cairn-triage/SKILL.md` and the four planted rows, each with the record it rests on (AC6). Also run a read-only dry run of the branch's step 2 over this repo's `cairn/ROADMAP.md`, stopping at the table with the open-PR read taken as empty, and log which rows the changed classes reach.
 - [ ] T6: Run the verify slot (AC7).
 
@@ -59,3 +59,5 @@ When `/cairn-triage` finds that a candidate row's promotion trigger has fired, i
 - 2026-11-05: criteria audit (full, Opus): 10 findings. Taken: AC1 says Staleness does not fire; AC2 removes the old ground and leaves Amend free; AC3 names every hold and allows a new condition; AC4 drops the false "only when it promotes"; AC6 states the branch's text with the reader as the check, plants in-repo triggers, softens main's expectation, and adds P4. AC5 had none. The hand-run guard check went to T2.
 - 2026-11-05: T1 done: Staleness no longer fires on a fired-trigger row, Readiness drops the fired-trigger ground and binds only the pass's proposal, Rung names the two changes for a parked row whose condition held; step 3 and the close block needed no change. My new sentences carry no simple-english lint hit (file 221 hits, main 222).
 - 2026-11-05: T2 done: `TestFiredTriggerReRated` (11 tests, two of them `assertNotIn` on the removed phrases, which main's text holds) and 9 mutation entries, one per positive sentence; hand-run `skills/tests` 1025 tests OK.
+- 2026-11-05: T3 done: README ladder paragraph and a CHANGELOG Unreleased entry; old phrasing ("goes to Readiness", "because its trigger has fired") grepped in README and skills, no other site. Lint counts equal main's for both files.
+- 2026-11-05: T4 done: D-243 supersedes D-228's Readiness clause; D-179 stands; outside D-108's door by its carve-out.
