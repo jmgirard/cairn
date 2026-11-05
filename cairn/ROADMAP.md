@@ -1,21 +1,19 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-11-05 (M334 merged: Copilot comment says only what maintainers need; skills/tests green; validate green)_
+_Last hygiene check: 2026-11-05 (M335 merged: a hotfix stop commits the row it writes; skills/tests green; validate green)_
 
 ## Milestones
 _Released 1.0.0 (2026-07-16) to 2.1.0 (2026-10-18), each tagged `v<version>`; 1.5.0 was cut retroactively at edb6942._
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M335 | Commit the row a hotfix stop writes | review | — | normal | milestones/M335-commit-hotfix-stop-row.md |
+| M335 | Commit the row a hotfix stop writes | done | — | normal | milestones/archive/M335-commit-hotfix-stop-row.md |
 | M334 | Say only what maintainers need in a Copilot comment | done | — | high | milestones/archive/M334-copilot-comment-for-maintainers.md |
 | M333 | Say so when no rule covers a task | done | — | normal | milestones/archive/M333-no-rule-covers.md |
-| M332 | Write host text so a maintainer follows it | done | — | high | milestones/archive/M332-clear-host-text.md |
 ## Candidates
 _Ordered high → normal → low → parked by each row's opening `[high]`/`[low]`/`[parked]` token, untagged = `normal`; `[parked]` = a promotion condition that has not held (tracking-rules "Candidate priority token", D-134, D-184); advisory within a level. Triage: D-027._
 - Let guest maintainers merge their PRs: in easystats/datawizard the operator is a maintainer who merges approved PRs, their own included, but the repo runs guest tracking (cairn/ untracked), and guest mode never merges (D-137). There a minor bug fix needs no review, and a larger change needs another maintainer's approving review first. Plan a guest repo where the operator merges on those terms; superseding D-137's never-merge clause is the decision. Raised by the easystats session at M315 implement — added 2026-10-22
-- Commit the hotfix over-the-bar row: in owner mode the over-the-bar stop adds a row with no commit, and step 7's commit has no no-remote rule. M324 review pass 2 (diff-bug #7) — added 2026-10-29 — started M335
 - Ask again before merging a red-CI fix: `/milestone-review` step 8's red path re-requests approval only "if the fix was nontrivial", so since M328 a fix the agent judges trivial merges after the wake with no one watching; `/hotfix` always re-asks. Promote when a user reports it — added 2026-10-31 — M328 review pass 2 (blame-history #5)
 - [parked] Extend the idea vet past plans and fixes: the idea vet's three questions run only in `/milestone-plan` and `/hotfix`; easystats hub H14 also applies them to reviews and to comments in the user's name. D-204 built the questions for behavior about to be built, and D-224 narrowed the vet once. Promote when a wrong recommendation or comment appears outside those skills in a repo without the easystats rule — added 2026-11-04 — M333 plan (easystats modelbased#701)
 - [parked] Add a skill for reviewing others' PRs: no skill covers a review of another person's PR; easystats hub H15 (one GitHub review with inline notes) and H16 (request only defect fixes) come from one review and changed wording twice in one afternoon. Promote when H15 and H16 hold unchanged through more reviews, or when a review request comes up outside easystats — added 2026-11-04 — M333 plan (easystats modelbased#701)
