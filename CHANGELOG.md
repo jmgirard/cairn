@@ -6,13 +6,16 @@
 
 - **A `/hotfix` stop commits the row it writes.** This applies in owner mode.
   `/hotfix` can stop early and write a candidate row. Three things cause this:
-  the work is over the hotfix bar, the open-PR cap is reached, or you decline
-  a merged PR's verification. The stop now commits and pushes that row to the
-  default branch before the close block. The close block names the commit. If
-  that cannot happen, the stop writes nothing, and the close block shows the
-  row and says what failed. Two examples are another branch and an already
-  modified `cairn/ROADMAP.md`. With no remote, the commit stays local. In guest
-  mode nothing changes: the row stays on disk with no commit.
+  the work is over the hotfix bar, the open-PR cap is reached or cannot be
+  read, or you decline a merged PR's verification. The stop now commits and
+  pushes that row to the default branch before the close block. The close block
+  names the commit. If that cannot happen, the stop writes nothing, and the
+  close block shows the row and says what failed. Two examples are another
+  branch and an already modified `cairn/ROADMAP.md`. If only the push fails, the
+  commit stays local, and the close block shows the row and the undo command.
+  With no remote, the commit stays local. In guest mode the row stays on disk
+  with no commit, as before. In both modes, a stop with no next command of its
+  own now gives `/milestone-plan` with the row's short title.
 
 - **A Copilot comment goes out only when the maintainers need it.** In every
   mode, the comment is written to the maintainers and says only what they

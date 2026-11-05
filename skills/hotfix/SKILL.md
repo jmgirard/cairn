@@ -80,7 +80,8 @@ can resolve against the fork instead of the base repo.
    no edit or, after a failed add or commit, run
    `git restore --staged --worktree -- cairn/ROADMAP.md`. The close block
    then shows the row verbatim, names what failed, and fences `/hotfix`
-   with the same argument.
+   with the same argument. If the restore fails too, the close block says
+   that the edit remains.
    When the push fails or is rejected, never force. The close block shows
    the row verbatim and names the local commit and the undo command
    `git reset --keep HEAD~1`. It fences `/hotfix` with the same argument,
@@ -337,7 +338,7 @@ can resolve against the fork instead of the base repo.
    since its PR is new. Read it as tracking-rules "Git and approval model"
    states in its open-PR caps bullet. The merged-PR re-entry's follow-up,
    a re-land, and a PR reference read no cap. At the cap, or on a failed
-   read, cut no branch, push no branch, open no PR, and stop with that
+   read, cut no branch, push no work branch, open no PR, and stop with that
    bullet's close block. Unless step 1 matched a candidate row, first add
    one for the bug (search-first), so the report outlives the chat. That
    row takes **Row at a stop** above.

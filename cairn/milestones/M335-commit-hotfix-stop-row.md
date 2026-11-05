@@ -15,7 +15,7 @@ In owner mode, a candidate row that a `/hotfix` step 1 stop writes reaches the d
 
 ## Scope
 
-**In:** Absorbs the candidate row "Commit the hotfix over-the-bar row". A stated commit sequence in `skills/hotfix/SKILL.md` step 1 for the row that each stop writes: the over-the-bar route (the owner arm's withdrawn approval included), the open-PR cap stop, and the merged-PR re-entry's decline. What the stop does when the commit cannot be made, and what it does with no remote. The merged-PR re-entry's over-the-bar row lands in step 7's one commit. The open-PR cap stop says it pushes no branch, in step 1 and in the rulebook, since its row now takes a docs-only push. A changelog entry and a D-entry.
+**In:** Absorbs the candidate row "Commit the hotfix over-the-bar row". A stated commit sequence in `skills/hotfix/SKILL.md` step 1 for the row that each stop writes: the over-the-bar route (the owner arm's withdrawn approval included), the open-PR cap stop, and the merged-PR re-entry's decline. What the stop does when the commit cannot be made, and what it does with no remote. The merged-PR re-entry's over-the-bar row lands in step 7's one commit. The open-PR cap stop says it pushes no work branch, in step 1 and in the rulebook, since its row now takes a docs-only push. A changelog entry and a D-entry.
 
 **Out:**
 - Guest mode: its row stays on disk with no commit, as now.
