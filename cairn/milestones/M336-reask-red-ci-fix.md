@@ -77,6 +77,7 @@ In owner mode, `/milestone-review` merges a red-CI fix only after the user appro
 - [x] T4: Update README's "Merges are yours" bullet (`README.md:919`). Add the CHANGELOG entry and edit the "On red" sentence (`CHANGELOG.md:91`). Run AC6's sweep. Add one sentence on the chip that does not name the fix to DESIGN's Known issue "A typed resume can restart CI".
 - [x] T5: Append the D-entry: every red-CI fix re-asks in `/milestone-review`, and the approval marker goes when the red path starts. It narrows D-229's consequence "After the merge approval, the session merges on green with no rerun by the user". State that D-108's door passes because the trigger is a defect in shipped behavior.
 - [x] T6: Run the `verify` slot. Hand-run `python3 -m unittest discover -s skills/tests` and update any pin the wording edits break (`test_resume_routing.py`, `test_wait_rule.py`, and `test_mutation_harness.py` hold nearby text). Add no new prose guard (`cairn/PROFILE.md` test-doctrine).
+- [x] T7: Review return 1: a fix after a failed `gh pr merge` goes back to the user, whatever the guard's restore note says. Also a rejected re-run push, the open companion PR at the resumed push, the companion's marker, "newer" by place in the log, the fix-now push on a Copilot-arm PR, and the batched D-entry.
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates.
@@ -108,6 +109,7 @@ In owner mode, `/milestone-review` merges a red-CI fix only after the user appro
 - 2026-11-05: T6 done: `verify` slot clean (scripts and hooks suites exit 0, both manifest validates exit 0, `claude plugin test` 2466 pass and 0 fail); hand-run `skills/tests` green, 1014 tests, with no pin broken and no pin edited.
 - 2026-11-05: claim audit: 25 claims read, 5 corrected — CHANGELOG.md, skills/milestone-review/SKILL.md. Corrected: the fix's push (a resume or a Copilot fix can push it first), marker not approval, the Red CI re-pose as a new pass of step 7's read, the companion read's reach, and a failed `rev-list` read taking the chip. The same reader's one re-read passed all but the Copilot push beside "Do not push the fix", now stated there. A sentence for a check the agent cannot fix was added and held on that re-read.
 - 2026-11-05: review return 1: step 8's retry clause and `hooks/merge_guard_post.py`'s "without re-asking" note let a fix merge with no new approval after a `gh pr merge` that fails on a late red required check. Also fix: a rejected re-run push, the open companion PR at the resumed push, the companion's marker at a decline, "newer" defined by place in the log, and the fix-now push on a Copilot-arm PR with a batched D-entry.
+- 2026-11-05: T7 added and done for review return 1: step 8's Red CI rule covers a failed merge and a rejected push and names the Copilot-arm push, the companion arm removes its marker and skips the create on an open PR, "newer" reads by place in the log, D-242 appended. The hook's note stays unchanged: changing it would touch `/hotfix`'s retry path, and skill text already overrides it there.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

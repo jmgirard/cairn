@@ -8701,3 +8701,9 @@ context. Then this text is not doing its job, and the fix is not a longer text.
 **Rejected:** Pushing the fix and asking after green CI, since `/hotfix` asks first and D-138 pushes after approval. Falsified by users who decline re-asks because the chip lacked CI's result. Removing the marker only at a decline, since the marker names a PR and not a head, so it would cover the fix until the chip is answered. Falsified by a guard that reads a head from the review's marker.
 
 **Consequences:** A fix made at a wake now waits for the user. A merge on green with no rerun stands for a head with no fix. Route (c)'s push before its chip stays, in DESIGN's Known issue "A typed resume can restart CI".
+
+### D-242 (2026-11-05): D-241 also covers a fix after a failed merge, and a fix-now push on a Copilot-arm PR is a second exception to its unpushed clause — narrows D-241's unpushed clause; extends D-241's rule; D-241's decision stands (M336 review)
+
+**Context:** M336's first review pass found that a `gh pr merge` failing on a late red required check restores the marker, and that step 8's retry clause and the guard's note let a fix merge with no new approval. It also found that step 6 pushes after each fix-now commit on a PR from step 2's Copilot arm, which D-241 does not name.
+
+**Decision:** A fix after a failed merge takes the Red CI rule, whatever the guard's restore note says. A fix-now push from step 7's read on a Copilot-arm PR can carry the fix before the chip. The merge still waits for the new approval. The guard's note stays unchanged, as at `/hotfix`, whose skill text also overrides it.
