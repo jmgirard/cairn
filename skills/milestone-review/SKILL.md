@@ -792,11 +792,23 @@ the session, re-enters here, at the step the record shows is next:
    open takes the Session-start routes. Never merge past red or pending CI. A PR that
    reports no checks makes the watch exit 1 at once, and it is mergeable
    on local green where the profile's consistency-gate says so — but a PR
-   created moments ago can report no checks before GitHub registers them,
-   so where the profile does not declare the repo CI-less, re-read
-   `gh pr checks` after a short wait, up to about a minute, before taking
-   the no-checks case. Red CI → fix on the branch,
-   re-verify, re-request approval if the fix was nontrivial. When green:
+   created or pushed moments ago can report no checks before GitHub
+   registers them, so where the profile does not declare the repo CI-less,
+   re-read `gh pr checks` after a short wait, up to about a minute, before
+   taking the no-checks case.
+
+   **Red CI.** The first read or a wake can find a failed check. If the
+   agent can fix it, remove `cairn/.merge-approved`. Then fix it on the
+   branch, commit the fix, and re-verify. Every fix goes back to the user,
+   whatever its size. Do not push the fix. Run step 7's PR-conversation
+   read and blocking rule, and re-pose step 7's merge chip. The chip's
+   question text names the failed check and says in plain words what the
+   fix changed. On approval, append and commit a new `step-7 approval:`
+   line, and run this step again from the push. That run writes the marker
+   and notes the new PR head before the next CI wait. A decline takes step
+   7's decline exit.
+
+   When green:
    `gh pr merge <N> --squash --delete-branch` with a clean summary message —
    name the PR number explicitly; a bare `gh pr merge` is denied by the guard
    because the approval cannot be checked against it.

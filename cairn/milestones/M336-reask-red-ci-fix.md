@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M336: Ask again before merging a red-CI fix
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** IP1   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
 - **Surface tier:** user-facing — it changes when a plugin user is asked before a merge   <!-- owner: plan · create/amend-via-gate; user-facing | internal — <one-clause reason>; skill conduct only — no validate check parses it -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
+- **Branch/PR:** m336-reask-red-ci-fix   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -71,7 +71,7 @@ In owner mode, `/milestone-review` merges a red-CI fix only after the user appro
      cites; an insertion, removal, or reorder renumbers the labels and the
      Coverage lines together. -->
 
-- [ ] T1: Rewrite the red-CI sentence at `skills/milestone-review/SKILL.md:798-799` for AC1 to AC3, and widen the "created moments ago" clause there (`:794-798`) and at `skills/hotfix/SKILL.md:587-590`.
+- [x] T1: Rewrite the red-CI sentence at `skills/milestone-review/SKILL.md:798-799` for AC1 to AC3, and widen the "created moments ago" clause there (`:794-798`) and at `skills/hotfix/SKILL.md:587-590`.
 - [ ] T2: Add the marker removal to the red-CI rule and to step 7's decline exit (`SKILL.md:701-705`), and the decline clause to Resume routing (`SKILL.md:82-109`).
 - [ ] T3: Add the companion rule to step 8's companion arm (`SKILL.md:804-827`), its re-entry check included.
 - [ ] T4: Update README's "Merges are yours" bullet (`README.md:919`). Add the CHANGELOG entry and edit the "On red" sentence (`CHANGELOG.md:91`). Run AC6's sweep. Add one sentence on the chip that does not name the fix to DESIGN's Known issue "A typed resume can restart CI".
@@ -100,6 +100,7 @@ In owner mode, `/milestone-review` merges a red-CI fix only after the user appro
 - 2026-11-05: plan gate chose asking before the fix is pushed over pushing the fix and asking after green CI because `/hotfix` already asks first and D-138's order pushes after approval; falsified by users declining re-asks because the chip lacked CI's result.
 - 2026-11-05: plan gate chose removing the marker when the red path starts over removing it only at a decline because the marker names a PR and not a head, so it would otherwise cover the fix until the chip is answered; falsified by a guard that reads a head from the review's marker.
 - 2026-11-05: criteria audit: full mode, 9 findings. Taken: companion re-entry check (2), companion read stays on the primary and the approval line's home (3), marker removal at the red path (4), decline line counts as no recorded approval (5), "appends and commits" (6), no-checks re-read after a push, extended to `/hotfix` for the same words (7), `grep -w` (8), AC7's guard sentence and `skills/tests` moved to T6 since D-109 says that suite gates nothing (9). Narrowed: route (c)'s push before its chip, finding 1, is Out, since the chip still asks before any merge.
+- 2026-11-05: T1 done: step 8's red-CI rule re-poses the merge chip after every fix and removes the marker first; the no-checks re-read covers a PR pushed moments ago in step 8 and `/hotfix` step 6. The simple-english lint hook reports hundreds of hits in these skill files, all but the new sentences older than this work; left as they are, out of scope.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
