@@ -7,7 +7,7 @@
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — the skill text decides what adopters' sessions post under their accounts
-- **Branch/PR:** m334-copilot-comment-for-maintainers
+- **Branch/PR:** m334-copilot-comment-for-maintainers, https://github.com/jmgirard/cairn/pull/349
 
 ## Goal
 
