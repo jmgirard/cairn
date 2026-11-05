@@ -8689,3 +8689,15 @@ context. Then this text is not doing its job, and the fix is not a longer text.
 **Rejected:** Leaving the row uncommitted on disk when the commit cannot be made, since the stop guard blocks that state and tells the session to commit. Falsified by a user who loses a row that a file on disk would have kept. Switching to the default branch from another branch and back, as `/milestone-plan`'s trivial route does not, since it adds a stop point and a worktree session could not switch. Falsified by a real stop on another branch whose close-block row was lost.
 
 **Consequences:** On those failure paths the close block is the row's only record, a further residual of D-042's rule beside the one D-225 records. Step 7's own failed fetch, pull, or commit stays open, in the candidate row "Say what a failed step 7 commit does".
+
+### D-241 (2026-11-05): `/milestone-review` asks at the merge question after every red-CI fix, and the approval marker goes before the fix starts — narrows D-229's consequence that a session merges on green with no rerun, for a head with a fix; annotates D-138; passes D-108's door on its retained trigger (M336)
+
+**Context:** Step 8 asked again only "if the fix was nontrivial", a clause from the plugin's first version. Since D-229 a fix can start at a wake with no one watching, so a commit the user never saw could merge under an approval given for an earlier head. `/hotfix` already asks after every fix.
+
+**Decision:** Every red-CI fix in `/milestone-review`, on the primary PR or a companion, goes back to the merge chip, whatever its size. The session removes the primary's marker before the fix, keeps the fix unpushed until the new approval, then appends and commits a new `step-7 approval:` line and runs step 8 again. A decline removes a marker that names the PR. A `step-7 decline:` line newer than the latest approval line counts as no recorded approval for routes (a) and (c). A companion re-entry with commits past its PR head takes the chip before its push.
+
+**Door:** The trigger is a defect in shipped behavior: the skill could merge a commit the user had not approved.
+
+**Rejected:** Pushing the fix and asking after green CI, since `/hotfix` asks first and D-138 pushes after approval. Falsified by users who decline re-asks because the chip lacked CI's result. Removing the marker only at a decline, since the marker names a PR and not a head, so it would cover the fix until the chip is answered. Falsified by a guard that reads a head from the review's marker.
+
+**Consequences:** A fix made at a wake now waits for the user. A merge on green with no rerun stands for a head with no fix. Route (c)'s push before its chip stays, in DESIGN's Known issue "A typed resume can restart CI".
