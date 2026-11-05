@@ -50,8 +50,8 @@ In owner mode, a candidate row that a `/hotfix` step 1 stop writes reaches the d
 
 - [x] T1: In `skills/hotfix/SKILL.md` step 1, write the commit sequence, its checks, its failure arms, and its no-remote arm (AC1, AC2, AC3), and point the three stops at it: the stop at lines 45-47, the re-entry's decline at lines 182-183, and the cap stop at line 301. End each `old_string` at a line end when rewrapping.
 - [x] T2: Reword the merged-PR re-entry's over-the-bar bullet (lines 124-130) and step 7's docs-only commit sentence (lines 648-650) for AC4.
-- [ ] T3: Run AC5's seven cases in throwaway repos with the commands as the skill now states them, and record the results in one work-log line.
-- [ ] T4: Add the CHANGELOG entry. Grep `README.md` and `skills/` for text about a hotfix stop's row and fix what the change makes stale. Append a D-entry that annotates D-042 and D-225 (the close block can be a stop's only record of a row) and records that the work passes D-108's door on its retained trigger.
+- [x] T3: Run AC5's seven cases in throwaway repos with the commands as the skill now states them, and record the results in one work-log line.
+- [x] T4: Add the CHANGELOG entry. Grep `README.md` and `skills/` for text about a hotfix stop's row and fix what the change makes stale. Append a D-entry that annotates D-042 and D-225 (the close block can be a stop's only record of a row) and records that the work passes D-108's door on its retained trigger.
 - [ ] T5: Give a fresh Opus reader `skills/hotfix/SKILL.md`, the rulebook, and AC6's cases, each with its facts in neutral words, and have each answer quote its deciding sentence. Fix any case the text leaves open. After any later edit to a quoted sentence, rerun that case.
 - [ ] T6: Run the five `verify` commands, each with its own exit code. Hand-run the `skills/tests` guards that pin this text (`test_hotfix_candidate_graduation`, `test_resume_routing`, `test_external_pr_intake`, `test_idea_vet`), and re-pin what T1 and T2 moved.
 
@@ -71,6 +71,8 @@ In owner mode, a candidate row that a `/hotfix` step 1 stop writes reaches the d
 - 2026-11-05: changelog: one entry under Unreleased (AC7); test scope: no new prose guard, per the profile's test-doctrine; AC5 and AC6 are the evidence.
 - 2026-11-05: T1, T2 done: step 1 gains the **Row at a stop** paragraph, and the over-the-bar stop's two other row writers point at it; the re-entry bullet and step 7 say step 7 writes that row. Suites green; the mod test runs at T6, since this checkpoint changes no `hooks/` code.
 - 2026-11-05: the simple-english lint hook reports 203 hits on `skills/hotfix/SKILL.md`, the same count as main; the text is unchanged outside this milestone's lines, so those hits stay.
+- 2026-11-05: T3 done: AC5's seven cases ran in throwaway repos with the skill's commands, 14 of 14 checks passed (script in the session scratchpad, not committed).
+- 2026-11-05: T4 done: CHANGELOG entry; D-240; the sweep of `README.md` and `skills/` found nothing stale, since README's `/hotfix` row names the candidate row and no commit.
 
 ## Decisions
 

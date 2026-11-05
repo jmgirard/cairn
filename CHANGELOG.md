@@ -4,6 +4,16 @@
 
 ### Changes that affect existing repos
 
+- **A `/hotfix` stop commits the row it writes.** This applies in owner mode.
+  `/hotfix` can stop early and write a candidate row. It does so when the work
+  is over the hotfix bar, when the open-PR cap is reached, or when you decline
+  a merged PR's verification. The stop now commits and pushes that row to the
+  default branch before the close block. The close block names the commit. If
+  that cannot happen, the stop writes nothing, and the close block shows the
+  row and says what failed. Two examples are another branch and an already
+  modified `cairn/ROADMAP.md`. With no remote, the commit stays local. In guest
+  mode nothing changes: the row stays on disk with no commit.
+
 - **A Copilot comment goes out only when the maintainers need it.** In every
   mode, the comment is written to the maintainers and says only what they
   need to know from the review. It no longer has to name each fix or note,

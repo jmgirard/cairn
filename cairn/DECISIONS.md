@@ -8677,3 +8677,15 @@ context. Then this text is not doing its job, and the fix is not a longer text.
 **Consequences:** §6 is the only record of a note the comment does not mention. In `/milestone-review` that record is the Review section, and elsewhere it lasts only in chat, so D-212's public record of which notes were real no longer exists on GitHub. A body finding with no anchor has no thread to clear, so with no comment its review stays a note, and each later run decides it again, since the round keeps no record (D-153), except that a later `/milestone-review` pass keeps an outcome its `copilot:` line records. The guest limit on replying to bots stays as a ceiling.
 
 **Falsifier:** A maintainer who asks why a resolved Copilot thread went unexplained, or a user who sees the same body finding across runs and calls it noise.
+
+### D-240 (2026-11-05): A `/hotfix` step 1 stop commits the row it writes, and the close block carries the row when it cannot — annotates D-042 and D-225; passes D-108's door on its retained trigger (M335)
+
+**Context:** In owner mode, three `/hotfix` step 1 stops add a candidate row and name no commit: the over-the-bar route, the open-PR cap stop, and the merged-PR re-entry's decline. `hooks/stop_guard.py` blocks that turn end and tells the session to commit, so the session improvised one.
+
+**Decision:** Such a row lands in one docs-only commit on the default branch before the close block. The stop commits only when the checkout is on the default branch, `cairn/ROADMAP.md` has no uncommitted change, and the checkout is level with the base after a pull. Otherwise, or when the fetch, pull, add, or commit fails, the stop leaves no uncommitted row, and the close block shows the row and names what failed. With no remote the commit stays local. A merged PR over the hotfix bar gets its row from step 7's one commit. Guest mode is unchanged.
+
+**Door:** The trigger is a defect in shipped behavior: the skill's stop ends in a state that the plugin's own hook blocks.
+
+**Rejected:** Leaving the row uncommitted on disk when the commit cannot be made, since the stop guard blocks that state and tells the session to commit. Falsified by a user who loses a row that a file on disk would have kept. Switching to the default branch from another branch and back, as `/milestone-plan`'s trivial route does not, since it adds a stop point and a worktree session could not switch. Falsified by a real stop on another branch whose close-block row was lost.
+
+**Consequences:** On those failure paths the close block is the row's only record, a further residual of D-042's rule beside the one D-225 records. Step 7's own failed fetch, pull, or commit stays open, in the candidate row "Say what a failed step 7 commit does".
