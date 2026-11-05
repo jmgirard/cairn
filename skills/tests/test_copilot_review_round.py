@@ -206,13 +206,27 @@ class TestOneComment(unittest.TestCase):
         self.assertIn("Put the review's `url` in it as a markdown link",
                       self.comment)
 
-    def test_comment_is_ordinary_sentences(self):
-        self.assertIn("Write it as ordinary sentences, as the PR's author "
-                      "would write to a reviewer.", self.comment)
+    def test_comment_is_written_to_the_maintainers(self):
+        self.assertIn("Write to the maintainers who will read the PR, in "
+                      "ordinary sentences", self.comment)
 
-    def test_comment_names_what_a_reader_could_ask_about(self):
-        self.assertIn("Name each fix, and any other note that a person "
-                      "reading the PR could ask about", self.comment)
+    def test_comment_states_the_reader_test(self):
+        self.assertIn("would a maintainer reading the PR act differently, or "
+                      "be misled, without it?", self.comment)
+
+    def test_comment_requires_no_note_by_note_report(self):
+        self.assertIn("need not mention each fix or note, cite a commit, or "
+                      "give a reason for a note left alone", self.comment)
+
+    def test_a_review_can_get_no_comment(self):
+        self.assertIn("When no sentence passes that test, the review gets no "
+                      "comment and its unresolved Copilot threads are "
+                      "resolved, under the same conditions as a comment",
+                      self.comment)
+
+    def test_a_body_finding_with_no_comment_stays_a_note(self):
+        self.assertIn("so that review stays a note, and each later run "
+                      "decides it again", self.comment)
 
     def test_host_matching_governs_guest_tone(self):
         self.assertIn("in guest mode, host matching governs tone and length.",
@@ -292,8 +306,13 @@ class TestDraftChip(unittest.TestCase):
                       "review.", self.draft)
 
     def test_owner_round_asks_nothing(self):
-        self.assertIn("An owner-mode round posts with no question.",
-                      self.draft)
+        self.assertIn("An owner-mode round posts or resolves with no "
+                      "question.", self.draft)
+
+    def test_the_chip_offers_to_resolve_with_no_comment(self):
+        self.assertIn("A review with no comment shows that in the same chip, "
+                      "with options to resolve its threads with no comment "
+                      "and to hold.", self.draft)
 
     def test_opt_in_states_both_arms(self):
         opt_in = flat(section(self.module, "## 1. Opt-in",
@@ -327,8 +346,8 @@ class TestDraftChip(unittest.TestCase):
 
     def test_skill_description_names_the_hold(self):
         description = section(self.skill, "description:", "argument-hint:")
-        self.assertIn("The user can post it, type an edit, or hold it.",
-                      description)
+        self.assertIn("The user can post it or resolve with no comment, type "
+                      "an edit, or hold it.", description)
 
     def test_a_typed_instruction_changes_the_draft(self):
         self.assertIn('Typed text that asks for a change and is not a comment, '
@@ -369,7 +388,7 @@ class TestDraftChip(unittest.TestCase):
         self.assertIn("Write the draft with the Write tool", before_chip)
         self.assertIn("The review id is the digits after "
                       "`#pullrequestreview-`", before_chip)
-        self.assertIn("rewrites the temp file with that text.", self.draft)
+        self.assertIn("writes that text to the temp file.", self.draft)
 
 
 class TestUnsettledNoteInTheRound(unittest.TestCase):

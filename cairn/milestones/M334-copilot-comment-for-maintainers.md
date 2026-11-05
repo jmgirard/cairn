@@ -1,13 +1,13 @@
 # M334: Say only what maintainers need in a Copilot comment
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — the skill text decides what adopters' sessions post under their accounts
-- **Branch/PR:** —
+- **Branch/PR:** m334-copilot-comment-for-maintainers
 
 ## Goal
 
@@ -51,12 +51,12 @@ A Copilot comment says only what the maintainers need to know, written to them, 
 
 ## Tasks
 
-- [ ] T1: In `skills/shared/copilot-review.md`, rewrite the "The comment" paragraphs per AC1 and AC3. Remove the naming, sha, and reason rules and the "one sentence" line. State no sample and no list of cases.
-- [ ] T2: Add the no-comment path per AC2 to "The comment", "The draft", and "The post". Read `wc -l -c` afterward, and cut wording rather than rules if the budget is close.
-- [ ] T3: Update the comment text in `skills/copilot-review/SKILL.md`, `skills/milestone-review/SKILL.md`, and `skills/hotfix/SKILL.md`.
-- [ ] T4: Update `README.md` and `cairn/DESIGN.md`, add the `CHANGELOG.md` entry, and run the AC4 sweep.
-- [ ] T5: Append the decision entry per AC5.
-- [ ] T6: In `skills/tests/test_copilot_review_round.py` and `skills/tests/test_mutation_harness.py`, replace the pins on the removed wording, and pin the test sentence and the no-comment path. Run `verify` and `skills/tests`.
+- [x] T1: In `skills/shared/copilot-review.md`, rewrite the "The comment" paragraphs per AC1 and AC3. Remove the naming, sha, and reason rules and the "one sentence" line. State no sample and no list of cases.
+- [x] T2: Add the no-comment path per AC2 to "The comment", "The draft", and "The post". Read `wc -l -c` afterward, and cut wording rather than rules if the budget is close.
+- [x] T3: Update the comment text in `skills/copilot-review/SKILL.md`, `skills/milestone-review/SKILL.md`, and `skills/hotfix/SKILL.md`.
+- [x] T4: Update `README.md` and `cairn/DESIGN.md`, add the `CHANGELOG.md` entry, and run the AC4 sweep.
+- [x] T5: Append the decision entry per AC5.
+- [x] T6: In `skills/tests/test_copilot_review_round.py` and `skills/tests/test_mutation_harness.py`, replace the pins on the removed wording, and pin the test sentence and the no-comment path. Run `verify` and `skills/tests`.
 
 ## Work log
 
@@ -72,6 +72,8 @@ A Copilot comment says only what the maintainers need to know, written to them, 
 - 2026-11-05: plan chose to leave a body-only finding open to re-decision over forcing a comment for it, because D-153 keeps no record and forcing one weakens the goal; falsified by a user who is shown the same finding across runs and calls it noise.
 - 2026-11-05: criteria audit (full): an Opus reader returned 9 findings. Fixed: the body-finding gap (AC2 and the set), a missing decision entry (new AC5), a sweep that missed `milestone-review`, `hotfix`, and the guest limit (AC4 and Out), ordering conditions for the no-comment path (AC2), AC5's instrument clause moved to T6, a reader's test and no sample (AC1), the `one sentence` line and the chip with no draft (AC1, AC2), the one-read and host clauses (AC3), a line-wrap gap in AC1's check, and the unstated budget (new AC6). Answered with no change: a partial stop, since a rerun re-disposes the remaining threads and git history prevents a second fix.
 - 2026-11-05: remainder ledger: every part of the request is in this milestone. Nothing is deferred or dropped.
+- 2026-11-05: T1-T6 done in one commit because the tasks edit the same paragraphs and the guards pin them together. The module reads 199 lines and 11,966 bytes after rewrapping my own paragraphs, with no rule cut outside this scope. `verify` is green, and skills/tests pass 1014 tests.
+- 2026-11-05: lint hits in the touched files are older text that this milestone does not change; I fixed the two long sentences I wrote and left the rest.
 
 ## Decisions
 

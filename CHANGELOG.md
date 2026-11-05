@@ -4,6 +4,16 @@
 
 ### Changes that affect existing repos
 
+- **A Copilot comment goes out only when the maintainers need it.** In every
+  mode, the comment is written to the maintainers and says only what they
+  need to know from the review. It no longer has to name each fix or note,
+  give a commit, or give a reason for a note left alone. If they need nothing,
+  the review gets no comment and its threads are resolved, so a note can go
+  unmentioned on GitHub. You still see each note's outcome in chat. In a guest
+  repo and in `/copilot-review`, Claude shows you this first. You can resolve
+  with no comment, type a comment, or hold it. A review with a finding
+  only in its summary and no comment comes up again on a later run.
+
 - **The session-start text covers work that no rule covers.** This rule
   applies in owner and guest mode. If no cairn route or rule covers a task, the
   text tells the session to say so before it starts. It also tells it to name

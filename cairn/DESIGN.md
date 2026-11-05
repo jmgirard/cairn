@@ -37,7 +37,8 @@ transitions, human-gated merges, and a domain verification doctrine.
   on-demand whole-list pass over candidates and Known issues (M173), or
   over `cairn/LESSONS.md` with the argument `lessons` (M263),
   `copilot-review`, which settles Copilot's notes on one PR and answers
-  each review in one PR comment, with no thread reply (M287, M314), and
+  each review in at most one PR comment, with no thread reply (M287, M314,
+  M334), and
   `design-interview`, a
   standalone two-phase (facts → principles) DESIGN.md elicitation interview
   (D-013), offered from `/cairn-init`'s close block; it recommends running

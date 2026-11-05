@@ -4281,15 +4281,27 @@ REGISTRY += [
     ),
     Mutation(
         guard="test_copilot_review_round",
-        test="TestOneComment.test_comment_is_ordinary_sentences",
+        test="TestOneComment.test_comment_is_written_to_the_maintainers",
         target=COPILOT_MODULE,
-        block="Write it as ordinary sentences, as the PR's author would write",
+        block="Write to the maintainers who will read the PR",
     ),
     Mutation(
         guard="test_copilot_review_round",
-        test="TestOneComment.test_comment_names_what_a_reader_could_ask_about",
+        test="TestOneComment.test_comment_states_the_reader_test",
         target=COPILOT_MODULE,
-        block="Name each fix, and any other note that a person reading the PR could ask",
+        block="Test each sentence: would",
+    ),
+    Mutation(
+        guard="test_copilot_review_round",
+        test="TestOneComment.test_a_review_can_get_no_comment",
+        target=COPILOT_MODULE,
+        block="When no sentence passes that test, the review gets no comment",
+    ),
+    Mutation(
+        guard="test_copilot_review_round",
+        test="TestOneComment.test_a_body_finding_with_no_comment_stays_a_note",
+        target=COPILOT_MODULE,
+        block="thread to clear, so that review stays a note",
     ),
     Mutation(
         guard="test_copilot_review_round",
@@ -4336,21 +4348,27 @@ REGISTRY += [
     ),
     Mutation(
         guard="test_copilot_review_round",
+        test="TestDraftChip.test_the_chip_offers_to_resolve_with_no_comment",
+        target=COPILOT_MODULE,
+        block="with no comment shows that in the same chip",
+    ),
+    Mutation(
+        guard="test_copilot_review_round",
         test="TestDraftChip.test_a_typed_edit_keeps_the_link",
         target=COPILOT_MODULE,
-        block="once the session restores a dropped review link.",
+        block="session restores a dropped review link.",
     ),
     Mutation(
         guard="test_copilot_review_round",
         test="TestDraftChip.test_a_hold_posts_nothing",
         target=COPILOT_MODULE,
-        block="hold posts no comment and resolves no thread of that review.",
+        block="no comment and resolves no thread of that review.",
     ),
     Mutation(
         guard="test_copilot_review_round",
         test="TestDraftChip.test_owner_round_asks_nothing",
         target=COPILOT_MODULE,
-        block="round posts with no question.",
+        block="or resolves with no question.",
     ),
     Mutation(
         guard="test_copilot_review_round",
@@ -4392,13 +4410,13 @@ REGISTRY += [
         guard="test_copilot_review_round",
         test="TestDraftChip.test_skill_description_names_the_hold",
         target=COPILOT_SKILL,
-        block="The user can post it, type an edit, or hold it.",
+        block="The user can post it or resolve with no comment, type an edit, or hold it.",
     ),
     Mutation(
         guard="test_copilot_review_round",
         test="TestDraftChip.test_a_typed_instruction_changes_the_draft",
         target=COPILOT_MODULE,
-        block='such as "shorten it", changes the draft',
+        block='"shorten it", changes the draft',
     ),
     Mutation(
         guard="test_copilot_review_round",
