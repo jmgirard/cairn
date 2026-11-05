@@ -172,3 +172,33 @@ spawned: diff-bug, blame-history, prior-review, ripple
 - ripple #7: `/hotfix` keeps its marker through its fix — reject, false: its marker names a head oid and its merge passes `--match-head-commit`.
 
 copilot: https://github.com/jmgirard/cairn/pull/351#pullrequestreview-5781368391 — no comment: no thread and no finding, noted. Copilot level: Lite (set by GitHub's settings).
+
+Pass 1's return and fix-now items: fixed 3deed568, 0ee4e08f, 9dbbd79e.
+
+Pass 2, head 9dbbd79e, 21 findings. No defect return: none of the fix-now items below reaches documented or common use, and the goal's path holds.
+spawned: diff-bug, blame-history, prior-review, ripple
+- diff-bug #1: a merge that fails on a conflict with green checks still takes the retry clause, so a conflict-resolution commit merges under the old approval — follow-up, parked row "Ask again after a merge conflict fix": not a red-CI fix and older than this diff, promote when a user reports it.
+- diff-bug #2: after a decline at a companion chip, the companion arm runs first on a resume, so a companion can merge under the old approval or reach its chip before steps 3 to 7 rerun — fix now, fixed 589ca117: the arm waits until step 7 records a new approval.
+- diff-bug #3: the Red CI rule names only the read and the blocking rule, so a fix that re-records a snapshot leaves the chip's snapshot list stale — fix now, fixed 589ca117.
+- diff-bug #4: the companion paragraph has no re-verify and no rejected-push stop — fix now, fixed 589ca117.
+- diff-bug #5: a failing re-verify has no branch — reject, false: it is the "cannot fix" stop, and the marker is already gone.
+- diff-bug #6: the re-run from the push skips the sync after a long chip wait — reject, false: the rulebook's git model merges a moved default branch before continuing.
+- diff-bug #7: a companion marker restored by a failed merge can survive a re-entry chip — reject, false: the arm merges only after that chip or on unchanged approved commits.
+- diff-bug #8: the read after a failed merge has no arm for a pending check — follow-up, same row: older than this diff in shape.
+- diff-bug #9: the pushed-moments-ago re-read covers only the no-checks case — follow-up, same row: the same limit stood for a new PR.
+- diff-bug #10: the re-run could push a merged companion's branch — reject, false: Resume routing re-enters only an open companion, and the primary's push comes after each companion merged.
+- diff-bug #11: nothing says the decline line is committed — reject, false: the decline ends in a close block, and stop points are commit points under `hooks/stop_guard.py`.
+- diff-bug #12: the Review evidence cites a head before T7 — reject, false: this pass reran it on 589ca117, below.
+- blame-history #1: the read after a red-CI fix brings back D-138's rejected second read — reject, planned change: AC2 calls for it, and D-138 rejected a read after green on a fresh PR with the chip not re-posed.
+- blame-history #2: D-146 warns of "newest approval line" predicates — reject, planned change: AC4 calls for it, and the rule defines it by place in the log.
+- blame-history #3: the hook's "without re-asking" note stands — reject, planned change: D-242 keeps it.
+- blame-history #4: the rulebook's approval bullets do not name the re-posed chip — reject, false: the merge question is already one of its two gates.
+- prior-review #1: a PR #279 thread's open follow-up now reaches this read — reject, false: that thread is about a push to an open PR needing no read, not the conversation read.
+- prior-review #2: the Copilot-arm push comes before the chip — reject, false: D-242 names it.
+- prior-review #3: the new rule has no prose guard — reject, false: `cairn/PROFILE.md` test-doctrine says none is owed.
+- ripple #1: `hooks/merge_guard_post.py:75` contradicts the rule — reject, planned change: as blame-history #3.
+- ripple #2: DESIGN's "the chip does not name the fix" may disagree with step 8's chip — reject, false: the sentence names route (c)'s chip.
+
+Fresh evidence on 589ca117, same script and criteria as above. AC1 `grep` printed nothing (exit 1). 24 of 25 phrase checks matched; the other is AC5's "The fix stays unpushed", which now reads "Re-verify, and the fix stays unpushed". AC6's sweep printed the same four lines. AC7: scripts and hooks suites exit 0, both manifest validates exit 0, `claude plugin test` exit 0 with 2466 pass and 0 fail, and no `plugins[N].version` warning. `cairn_validate.py` exit 0; `skills/tests` exit 0.
+
+PR conversation at 589ca117: one Copilot review on 978bed5f and nothing else, no thread and no comment. Copilot's state reads `reviewed earlier-head Lite`, so no second request. Snapshot list: empty.
