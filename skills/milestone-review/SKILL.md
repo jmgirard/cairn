@@ -840,7 +840,17 @@ counts as no recorded approval for routes (a) and (c).
    is denied. A companion's red CI that the agent cannot fix, or its failed
    merge, ends the step before the primary is pushed, with a close block
    naming the companion PR; the Session-start resume route re-reads
-   each companion's state. The arm is absent in guest mode.
+   each companion's state.
+   A companion's red CI that the agent fixes goes back to the user before
+   that companion merges. The fix stays unpushed. Re-pose step 7's merge
+   chip. It names the companion PR, the failed check, and what the fix
+   changed. Step 7's PR-conversation read stays on the primary's PR. On
+   approval, append and commit a new `step-7 approval:` line in the
+   primary's work log, and resume this arm at that companion's push. A
+   decline takes step 7's decline exit. On re-entry, read `cd <abs-path> &&
+   git rev-list <branch> --not origin/<branch>` when the companion has an
+   open PR. If that lists commits, that chip comes before the arm's push.
+   The arm is absent in guest mode.
 
    **Guest arm — the handoff sequence**, in place of the marker, the CI
    wait, and the merge: only on the handoff selection, push the branch to

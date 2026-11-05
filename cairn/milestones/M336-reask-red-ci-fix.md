@@ -73,7 +73,7 @@ In owner mode, `/milestone-review` merges a red-CI fix only after the user appro
 
 - [x] T1: Rewrite the red-CI sentence at `skills/milestone-review/SKILL.md:798-799` for AC1 to AC3, and widen the "created moments ago" clause there (`:794-798`) and at `skills/hotfix/SKILL.md:587-590`.
 - [x] T2: Add the marker removal to the red-CI rule and to step 7's decline exit (`SKILL.md:701-705`), and the decline clause to Resume routing (`SKILL.md:82-109`).
-- [ ] T3: Add the companion rule to step 8's companion arm (`SKILL.md:804-827`), its re-entry check included.
+- [x] T3: Add the companion rule to step 8's companion arm (`SKILL.md:804-827`), its re-entry check included.
 - [ ] T4: Update README's "Merges are yours" bullet (`README.md:919`). Add the CHANGELOG entry and edit the "On red" sentence (`CHANGELOG.md:91`). Run AC6's sweep. Add one sentence on the chip that does not name the fix to DESIGN's Known issue "A typed resume can restart CI".
 - [ ] T5: Append the D-entry: every red-CI fix re-asks in `/milestone-review`, and the approval marker goes when the red path starts. It narrows D-229's consequence "After the merge approval, the session merges on green with no rerun by the user". State that D-108's door passes because the trigger is a defect in shipped behavior.
 - [ ] T6: Run the `verify` slot. Hand-run `python3 -m unittest discover -s skills/tests` and update any pin the wording edits break (`test_resume_routing.py`, `test_wait_rule.py`, and `test_mutation_harness.py` hold nearby text). Add no new prose guard (`cairn/PROFILE.md` test-doctrine).
@@ -102,6 +102,7 @@ In owner mode, `/milestone-review` merges a red-CI fix only after the user appro
 - 2026-11-05: criteria audit: full mode, 9 findings. Taken: companion re-entry check (2), companion read stays on the primary and the approval line's home (3), marker removal at the red path (4), decline line counts as no recorded approval (5), "appends and commits" (6), no-checks re-read after a push, extended to `/hotfix` for the same words (7), `grep -w` (8), AC7's guard sentence and `skills/tests` moved to T6 since D-109 says that suite gates nothing (9). Narrowed: route (c)'s push before its chip, finding 1, is Out, since the chip still asks before any merge.
 - 2026-11-05: T1 done: step 8's red-CI rule re-poses the merge chip after every fix and removes the marker first; the no-checks re-read covers a PR pushed moments ago in step 8 and `/hotfix` step 6. The simple-english lint hook reports hundreds of hits in these skill files, all but the new sentences older than this work; left as they are, out of scope.
 - 2026-11-05: T2 done: step 7's decline exit removes a marker that names the PR, and a decline line newer than the latest approval line counts as no recorded approval for routes (a) and (c); the marker removal on the red path landed in T1's commit.
+- 2026-11-05: T3 done: a companion's fix stays unpushed and goes to the merge chip before that companion merges, and a re-entry that finds commits past the companion's PR head takes that chip before its push. The check is `git rev-list <branch> --not origin/<branch>`, since the arm already pushes to `origin`.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
