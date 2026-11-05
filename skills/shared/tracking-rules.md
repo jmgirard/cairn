@@ -367,7 +367,7 @@ is quoted verbatim from the full entry, never the heading. Prior state is surfac
   before step 7's merge chip in owner mode, and before step 8's push in guest mode, each only when the review will open
   a new PR (the header names no open PR, and the review is not on resume route (b)). A listed PR whose `headRefName`
   is the branch under review is its own PR: no new PR opens, so no cap applies. A `/hotfix` PR reference, its
-  merged-PR re-entry's follow-up, a re-land, and companion PRs read no cap. At the cap the skill pushes nothing, opens no PR, and leaves any milestone status as it is. Its close block
+  merged-PR re-entry's follow-up, a re-land, and companion PRs read no cap. At the cap the skill pushes no branch, opens no PR, and leaves any milestone status as it is. Its close block
   names the cap and each open PR of that kind, or says the list reached 100. A failed read stops the same way, naming
   the read and its error. The close block also names each cap line in the header whose value was not taken. A push to
   an already-open PR reads no cap. The session-start text states both caps, and `/milestone`'s audit reports each

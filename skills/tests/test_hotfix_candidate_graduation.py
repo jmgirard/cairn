@@ -89,7 +89,7 @@ class TestHotfixCandidateGraduation(unittest.TestCase):
             "On step 1's over-the-bar disposition, step 7 neither removes "
             "nor narrows a matched row.",
             "In owner mode, every ROADMAP edit step 7 makes on any path, the "
-            "candidate row added above included, lands in one docs-only "
+            "candidate rows added above included, lands in one docs-only "
             "commit on the default branch.",
             "Run step 2's `git status` check first, then check out the "
             "default branch, bring it up to date (fetch, pull ff-only), "

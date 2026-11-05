@@ -5,8 +5,8 @@
 ### Changes that affect existing repos
 
 - **A `/hotfix` stop commits the row it writes.** This applies in owner mode.
-  `/hotfix` can stop early and write a candidate row. It does so when the work
-  is over the hotfix bar, when the open-PR cap is reached, or when you decline
+  `/hotfix` can stop early and write a candidate row. Three things cause this:
+  the work is over the hotfix bar, the open-PR cap is reached, or you decline
   a merged PR's verification. The stop now commits and pushes that row to the
   default branch before the close block. The close block names the commit. If
   that cannot happen, the stop writes nothing, and the close block shows the

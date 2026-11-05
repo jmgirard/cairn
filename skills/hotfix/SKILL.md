@@ -56,6 +56,10 @@ can resolve against the fork instead of the base repo.
    open-PR cap stop, and the merged-PR re-entry's decline. It does not
    cover the row of a merged PR over the hotfix bar, which step 7 writes.
    In guest mode the row stays on disk with no commit.
+   In both modes, unless the stop names its own next command, the close
+   block fences `/milestone-plan` with the row's short title.
+   If the row already holds what the stop would add, make no edit and no
+   commit.
    Find `<base>` and the default branch by the rulebook's recipe. If the
    repo has no remote, the recipe asks the user. First check that the
    checkout is on the default branch and that `cairn/ROADMAP.md` has no
@@ -66,6 +70,8 @@ can resolve against the fork instead of the base repo.
    `git add -- cairn/ROADMAP.md`,
    `git commit -m "<one-line summary>" -- cairn/ROADMAP.md`, and
    `git push <base> HEAD:<default-branch>`.
+   Other uncommitted paths stay as they are, with no question, and the
+   close block names them.
    With no remote, skip the fetch, the pull, the level check, and the push.
    The close block then says that the commit is local and that nothing was
    pushed.
@@ -74,10 +80,11 @@ can resolve against the fork instead of the base repo.
    no edit or, after a failed add or commit, run
    `git restore --staged --worktree -- cairn/ROADMAP.md`. The close block
    then shows the row verbatim, names what failed, and fences `/hotfix`
-   with the same argument. Other uncommitted paths stay as they are.
+   with the same argument.
    When the push fails or is rejected, never force. The close block shows
    the row verbatim and names the local commit and the undo command
-   `git reset --keep HEAD~1`.
+   `git reset --keep HEAD~1`. It fences `/hotfix` with the same argument,
+   to run after the undo.
    If the stop guard blocks the turn end on a change the stop did not
    make, leave that change uncommitted. End with the same close block.
    **Idea vet (M306).** Every entry that runs this tier check, and the
@@ -330,7 +337,7 @@ can resolve against the fork instead of the base repo.
    since its PR is new. Read it as tracking-rules "Git and approval model"
    states in its open-PR caps bullet. The merged-PR re-entry's follow-up,
    a re-land, and a PR reference read no cap. At the cap, or on a failed
-   read, cut no branch, push nothing, open no PR, and stop with that
+   read, cut no branch, push no branch, open no PR, and stop with that
    bullet's close block. Unless step 1 matched a candidate row, first add
    one for the bug (search-first), so the report outlives the chat. That
    row takes **Row at a stop** above.

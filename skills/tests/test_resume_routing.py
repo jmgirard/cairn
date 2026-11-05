@@ -316,8 +316,9 @@ class TestHotfixMergedPrReentry(unittest.TestCase):
         self.assertIn(
             "A diff over the hotfix bar takes the over-the-bar disposition "
             "above with no regression test demanded, and step 7's close-out "
-            "still runs — the candidate row or the `/milestone-plan` next "
-            "command rides in that close block; when the PR body carries a "
+            "still runs — step 7 writes the candidate row in its one "
+            "docs-only commit (guest mode: on disk), or the `/milestone-plan` "
+            "next command rides in that close block; when the PR body carries a "
             "`Fixes #N` line, the issue close is put to the user as a chip "
             "before step 7 runs, never written unasked.",
             self.step1,

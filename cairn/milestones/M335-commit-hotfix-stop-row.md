@@ -15,7 +15,7 @@ In owner mode, a candidate row that a `/hotfix` step 1 stop writes reaches the d
 
 ## Scope
 
-**In:** Absorbs the candidate row "Commit the hotfix over-the-bar row". A stated commit sequence in `skills/hotfix/SKILL.md` step 1 for the row that each stop writes: the over-the-bar route (the owner arm's withdrawn approval included), the open-PR cap stop, and the merged-PR re-entry's decline. What the stop does when the commit cannot be made, and what it does with no remote. The merged-PR re-entry's over-the-bar row lands in step 7's one commit. A changelog entry and a D-entry.
+**In:** Absorbs the candidate row "Commit the hotfix over-the-bar row". A stated commit sequence in `skills/hotfix/SKILL.md` step 1 for the row that each stop writes: the over-the-bar route (the owner arm's withdrawn approval included), the open-PR cap stop, and the merged-PR re-entry's decline. What the stop does when the commit cannot be made, and what it does with no remote. The merged-PR re-entry's over-the-bar row lands in step 7's one commit. The open-PR cap stop says it pushes no branch, in step 1 and in the rulebook, since its row now takes a docs-only push. A changelog entry and a D-entry.
 
 **Out:**
 - Guest mode: its row stays on disk with no commit, as now.
@@ -73,6 +73,8 @@ In owner mode, a candidate row that a `/hotfix` step 1 stop writes reaches the d
 - 2026-11-05: the simple-english lint hook reports 203 hits on `skills/hotfix/SKILL.md`, the same count as main; the text is unchanged outside this milestone's lines, so those hits stay.
 - 2026-11-05: T3 done: AC5's seven cases ran in throwaway repos with the skill's commands, 14 of 14 checks passed (script in the session scratchpad, not committed).
 - 2026-11-05: T4 done: CHANGELOG entry; D-240; the sweep of `README.md` and `skills/` found nothing stale, since README's `/hotfix` row names the candidate row and no commit.
+- 2026-11-05: substantive amendment: Scope In gains "The open-PR cap stop says it pushes no branch, in step 1 and in the rulebook, since its row now takes a docs-only push." The T5 reader found that the cap stop's "push nothing" conflicts with the row's push; no criterion changes; the rulebook baseline is re-seeded in its three places.
+- 2026-11-05: T5 first reader pass: all cases decided in the row's handling. Fixed: the cap stop's push conflict; a fence for each stop (`/milestone-plan` with the row's short title unless the stop names its own, `/hotfix` after a rejected push and undo); other uncommitted paths on the success route; a row that needs no edit. Left as they were, since they predate this work and the row does not touch them: the re-entry's gate-lite and changelog wording, its "no regression test demanded" against a vet flaw, and a sweep rerun after the pull. Left because the rulebook settles them: docs-only commits need no approval chip, and a preview adds no stop.
 
 ## Decisions
 
