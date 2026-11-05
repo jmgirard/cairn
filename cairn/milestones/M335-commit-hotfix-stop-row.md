@@ -1,6 +1,6 @@
 # M335: Commit the row a hotfix stop writes
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -26,14 +26,14 @@ In owner mode, a candidate row that a `/hotfix` step 1 stop writes reaches the d
 
 ## Acceptance criteria
 
-- [ ] AC1: `skills/hotfix/SKILL.md` step 1 states that in owner mode a row that a stop adds or absorbs into lands in one docs-only commit on the default branch before the close block, and that the close block names the commit. It gives these commands in this order, with the row edit between the pull and the add: `git fetch <base>`, `git pull --ff-only <base> <default-branch>`, `git add -- cairn/ROADMAP.md`, `git commit -m "<one-line summary>" -- cairn/ROADMAP.md`, `git push <base> HEAD:<default-branch>`. It names the stops this covers: the over-the-bar route, the owner arm's withdrawn approval included, the open-PR cap stop, and the merged-PR re-entry's decline. It says that in guest mode the row stays on disk with no commit.
-- [ ] AC2: Step 1 states the checks that run before the row edit: the checkout is on the default branch, `cairn/ROADMAP.md` has no uncommitted change, and after the fetch and pull the checkout is level with `<base>/<default-branch>`. When a check, the fetch, the pull, the add, or the commit fails, `cairn/ROADMAP.md` ends with no uncommitted change from the stop, by making no edit or, after a failed add or commit, by `git restore --staged --worktree -- cairn/ROADMAP.md`. The close block then shows the row verbatim, names what failed, and fences `/hotfix` with the same argument. When the stop guard blocks on a change the stop did not make, the run leaves that change uncommitted and ends with the same close block. When the push fails or is rejected, the run never forces, and the close block shows the row verbatim and names the local commit and the undo command `git reset --keep HEAD~1`.
-- [ ] AC3: Step 1 states that with no remote the run skips the fetch, the pull, the level check, and the push, and that the close block says the commit is local and nothing was pushed.
-- [ ] AC4: The merged-PR re-entry's over-the-bar bullet and step 7 each state that step 7 writes that row in its one docs-only commit (guest mode: on disk). That bullet no longer says the row rides in the close block. Step 1's commit sequence states that it does not cover that row.
-- [ ] AC5: The AC1 commands, with AC2's restore and undo, run as written in throwaway git repos, give these results. (a) With a bare remote and an uncommitted change in another tracked file, the remote's default branch gains one commit whose only changed path is `cairn/ROADMAP.md`, and the other file stays modified. (b) With the remote one commit ahead, the remote ends with both commits. (c) With no remote, and the fetch, pull, and push skipped, the local default branch gains that same one-path commit. (d) With a staged change in another file, the commit carries only `cairn/ROADMAP.md`, and the other file stays staged. (e) With a local default branch that diverged from the remote, the pull exits nonzero. (f) With a failing pre-commit hook, the commit exits nonzero, and the restore leaves `cairn/ROADMAP.md` with no uncommitted change. (g) With the push rejected because the remote moved, the undo leaves `cairn/ROADMAP.md` with no uncommitted change and another modified file still modified.
+- [x] AC1: `skills/hotfix/SKILL.md` step 1 states that in owner mode a row that a stop adds or absorbs into lands in one docs-only commit on the default branch before the close block, and that the close block names the commit. It gives these commands in this order, with the row edit between the pull and the add: `git fetch <base>`, `git pull --ff-only <base> <default-branch>`, `git add -- cairn/ROADMAP.md`, `git commit -m "<one-line summary>" -- cairn/ROADMAP.md`, `git push <base> HEAD:<default-branch>`. It names the stops this covers: the over-the-bar route, the owner arm's withdrawn approval included, the open-PR cap stop, and the merged-PR re-entry's decline. It says that in guest mode the row stays on disk with no commit.
+- [x] AC2: Step 1 states the checks that run before the row edit: the checkout is on the default branch, `cairn/ROADMAP.md` has no uncommitted change, and after the fetch and pull the checkout is level with `<base>/<default-branch>`. When a check, the fetch, the pull, the add, or the commit fails, `cairn/ROADMAP.md` ends with no uncommitted change from the stop, by making no edit or, after a failed add or commit, by `git restore --staged --worktree -- cairn/ROADMAP.md`. The close block then shows the row verbatim, names what failed, and fences `/hotfix` with the same argument. When the stop guard blocks on a change the stop did not make, the run leaves that change uncommitted and ends with the same close block. When the push fails or is rejected, the run never forces, and the close block shows the row verbatim and names the local commit and the undo command `git reset --keep HEAD~1`.
+- [x] AC3: Step 1 states that with no remote the run skips the fetch, the pull, the level check, and the push, and that the close block says the commit is local and nothing was pushed.
+- [x] AC4: The merged-PR re-entry's over-the-bar bullet and step 7 each state that step 7 writes that row in its one docs-only commit (guest mode: on disk). That bullet no longer says the row rides in the close block. Step 1's commit sequence states that it does not cover that row.
+- [x] AC5: The AC1 commands, with AC2's restore and undo, run as written in throwaway git repos, give these results. (a) With a bare remote and an uncommitted change in another tracked file, the remote's default branch gains one commit whose only changed path is `cairn/ROADMAP.md`, and the other file stays modified. (b) With the remote one commit ahead, the remote ends with both commits. (c) With no remote, and the fetch, pull, and push skipped, the local default branch gains that same one-path commit. (d) With a staged change in another file, the commit carries only `cairn/ROADMAP.md`, and the other file stays staged. (e) With a local default branch that diverged from the remote, the pull exits nonzero. (f) With a failing pre-commit hook, the commit exits nonzero, and the restore leaves `cairn/ROADMAP.md` with no uncommitted change. (g) With the push rejected because the remote moved, the undo leaves `cairn/ROADMAP.md` with no uncommitted change and another modified file still modified.
 - [ ] AC6: For each case below, `skills/hotfix/SKILL.md` and the rulebook it requires decide what the run does. Owner mode unless named: (a) a new bug over the hotfix bar, on the default branch, clean tree, remote present; (b) the same on a milestone branch; (c) the same on the default branch with `cairn/ROADMAP.md` already modified; (d) the same with no remote; (e) a merged PR whose diff is over the bar; (f) a merged PR with nothing owed whose acceptance chip the user declines; (g) a new bug at the open-PR cap, no matched row; (h) that cap stop on a non-default branch; (i) a push rejected after the commit; (j) a failed fetch at the stop; (k) a new bug over the hotfix bar in guest mode.
-- [ ] AC7: `CHANGELOG.md`'s Unreleased section has an entry under "Changes that affect existing repos" that says, in owner mode, a row that a `/hotfix` stop writes is now committed and pushed to the default branch, that the close block carries the row when that cannot happen, and that with no remote the commit stays local. Guest mode is named as unchanged.
-- [ ] AC8: All five commands of the `verify` slot in `cairn/PROFILE.md` exit 0.
+- [x] AC7: `CHANGELOG.md`'s Unreleased section has an entry under "Changes that affect existing repos" that says, in owner mode, a row that a `/hotfix` stop writes is now committed and pushed to the default branch, that the close block carries the row when that cannot happen, and that with no remote the commit stays local. Guest mode is named as unchanged.
+- [x] AC8: All five commands of the `verify` slot in `cairn/PROFILE.md` exit 0.
 
 ## Coverage
 
@@ -78,7 +78,51 @@ In owner mode, a candidate row that a `/hotfix` step 1 stop writes reaches the d
 - 2026-11-05: T5 second reader pass (cases a, d, f, g, i, k, plus an unrelated dirty file and a row that needs no edit): no case open. The rulebook's "dirty tree means ask" against step 1's "with no question" stays, since `/milestone-plan`'s trivial route commits past other paths the same way and step 1's sentence is explicit.
 - 2026-11-05: claim audit: 29 claims read, 4 corrected — CHANGELOG.md, skills/hotfix/SKILL.md (the cap's failed read, a push-only failure, the guest fence, a failed restore); the loose "pushes no branch" also became "pushes no work branch" (Scope In follows; rulebook baseline re-seeded to 894 lines / 88,669 bytes); the one re-read found all corrected claims true, and case (g) has no conflict.
 - 2026-11-05: T6 done: `skills/tests` hand-run green after two re-pins and the baseline re-seed; verify run on the final text.
+- 2026-11-05: review return 1: AC6 case (e) is open, since no sentence names the close block's next command once step 7 writes the row. Also owed from pass 1's fix-now list in the Review section: README's cap sentence; a recipe that names no branch; the row read moved after the level check; the fence made owner mode only (CHANGELOG too); "the same close block" reworded; the rulebook's exception for other uncommitted paths with its baseline re-seed; the parked row "Keep staged files on a row push undo".
 
 ## Decisions
 
 ## Review
+
+**Pass 1 (2026-11-05, head b2ad9109).**
+
+- AC1: a script checked each named property and site against `skills/hotfix/SKILL.md` step 1, 10 of 10 present, command order included.
+- AC2: same script, 10 of 10.
+- AC3: same script, 2 of 2.
+- AC4: same script, 4 of 4.
+- AC5: the seven cases ran in throwaway repos with the skill's commands, 14 of 14 checks passed.
+- AC6: a fresh Opus reader decided ten of eleven cases from the text. Case (e) is open: no sentence names the close block's next command once step 7 writes the row. AC6 not met, so its box stays unticked.
+- AC7: same script, 6 of 6.
+- AC8: all five `verify` commands exit 0; the mod test ran 2466 tests with 0 fails.
+- Consistency gate: `cairn_validate` passes with the one sizing advisory; the marketplace output has no `plugins[N].version` warning; the changelog has its entry.
+- spawned: diff-bug, blame-history, prior-review, ripple
+- diff-bug #1: README's "At the cap they push nothing" is false for `/hotfix` — fix now
+- diff-bug #2: the recipe has no arm when it yields no default branch — fix now
+- diff-bug #3: the "row already holds" read comes before the pull, so a row that landed upstream can be duplicated — fix now
+- diff-bug #4: the both-modes fence and two other additions are outside the plan and conflict with "Guest mode… as now" — fix now: the fence becomes owner mode only; the other two are details of AC1 and AC2's commit
+- diff-bug #5: `git reset --keep HEAD~1` unstages another file's staged change — follow-up: new parked row "Keep staged files on a row push undo", promote when a user reports it, since only a rejected push with an unrelated staged file reaches it and nothing is lost
+- diff-bug #6: a rerun without the undo finds the row and makes no edit, so the unpushed commit goes unreported — fix now: moving the row read after the level check sends that rerun to the failure arm
+- diff-bug #7: "the same close block" reads as the push-failure block — fix now
+- diff-bug #8: "with no question" conflicts with the rulebook's dirty-tree rule — fix now: the rulebook names the exception
+- diff-bug #9: `hooks/commit_guard.py` can nudge falsely when another file is staged — reject, edge: only an unrelated staged file at a stop reaches it, outside common use, and the effect is a warning that does not block
+- diff-bug #10: the `/hotfix` fence after a failure repeats the tier check and can re-pose a chip — reject, edge: only a failed commit at a stop reaches it, outside common use, and the effect is repeated work
+- diff-bug #11: on a protected default branch every row push is rejected — follow-up: absorbed by the existing parked row "Support a protected default branch", which holds that case already
+- diff-bug #12: the "if it's urgent" arm overlaps the new fence — reject, style: both name `/milestone-plan`, and the arm predates this work
+- diff-bug #13: the over-the-bar row sits under the matched-rows heading — reject, style: the sentence and its parenthetical state the rule
+- diff-bug #14: AC5's script and AC6's answers are not in the repo — reject, false: the Review section records results, and the rulebook bars pasted output
+- diff-bug #15: D-240's falsifiers are folded into Rejected — reject, style
+- diff-bug #16: the "(owner mode)" label heads a paragraph with a guest sentence — reject, style
+- blame-history #1: the default-branch push has no approval step — reject, false: the git model accepts docs-only commits there and says to push them immediately
+- blame-history #2: D-240 says guest mode is unchanged but the skill changes it — fix now: same fix as diff-bug #4
+- blame-history #3: the re-entry bars default-branch commits for owed items — reject, false: that rule covers the test and the changelog entry, not a candidate row
+- blame-history #4: "pushes no work branch" narrows M315's rule — reject, planned change: Scope In names it after the amendment
+- blame-history #5: the stop can ask a question with no remote — reject, false: the recipe's question names the branch, and the skip covers only the four named steps
+- prior-review #1: the cap stop's push loosens M262's guard with no pin — reject, planned change: the profile owes no new prose guard
+- prior-review #2: other uncommitted paths at a stop can leak — reject, false: the pathspec commit carries only `cairn/ROADMAP.md`
+- prior-review #3: the stop does not state what happens off the default branch — reject, false: the first check fails and the failure arm states the rest
+- ripple #1: README's cap sentence — fix now: same fix as diff-bug #1
+- ripple #2: `/milestone-review` still says "push nothing" at the cap — reject, false: it writes no row, so that holds for it
+- ripple #3: `skills/hotfix/SKILL.md`'s "and nothing is pushed" on the change route — reject, false: that route is guest mode, where the row stays on disk
+- ripple #4: the ROADMAP still lists the absorbed row — reject, false: hygiene removes it at merge
+- copilot: skills/hotfix/SKILL.md:74 — fix now: same fix as diff-bug #8; comment and resolve wait for the next pass
+- Return floor: AC6 fails inside its domain, so the milestone returns (`review return 1`).
