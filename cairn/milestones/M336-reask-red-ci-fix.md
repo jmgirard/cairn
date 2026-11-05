@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M336: Ask again before merging a red-CI fix
 
-- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -107,6 +107,7 @@ In owner mode, `/milestone-review` merges a red-CI fix only after the user appro
 - 2026-11-05: T5 done: D-241 appended.
 - 2026-11-05: T6 done: `verify` slot clean (scripts and hooks suites exit 0, both manifest validates exit 0, `claude plugin test` 2466 pass and 0 fail); hand-run `skills/tests` green, 1014 tests, with no pin broken and no pin edited.
 - 2026-11-05: claim audit: 25 claims read, 5 corrected — CHANGELOG.md, skills/milestone-review/SKILL.md. Corrected: the fix's push (a resume or a Copilot fix can push it first), marker not approval, the Red CI re-pose as a new pass of step 7's read, the companion read's reach, and a failed `rev-list` read taking the chip. The same reader's one re-read passed all but the Copilot push beside "Do not push the fix", now stated there. A sentence for a check the agent cannot fix was added and held on that re-read.
+- 2026-11-05: review return 1: step 8's retry clause and `hooks/merge_guard_post.py`'s "without re-asking" note let a fix merge with no new approval after a `gh pr merge` that fails on a late red required check. Also fix: a rejected re-run push, the open companion PR at the resumed push, the companion's marker at a decline, "newer" defined by place in the log, and the fix-now push on a Copilot-arm PR with a batched D-entry.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
@@ -132,3 +133,39 @@ Evidence on head 978bed5f, read by one script per criterion, one check for each 
 - AC7: on 978bed5f, scripts and hooks suites exit 0, both manifest validates exit 0, `claude plugin test` exit 0 with 2466 pass and 0 fail.
 
 Consistency gate: `cairn_validate.py` exit 0. No DESIGN principle text changed, so no `cairn_impact` run. Toolchain: verify as AC7; the marketplace validate output holds no `plugins[N].version` warning; `## Unreleased` holds this change's entry. This repo has no CI.
+
+Pass 1, head 978bed5f. 31 findings.
+spawned: diff-bug, blame-history, prior-review, ripple
+- diff-bug #1: a `gh pr merge` that fails on a late red required check restores the marker, and step 8's retry clause and the hook's "without re-asking" note let a fix merge with no new approval — return floor, load-bearing: the milestone's goal fails on this path.
+- diff-bug #2: "run this step again from the push" has no branch for a rejected push, and the chip can wait for hours — fix now.
+- diff-bug #3: a re-verify that dirties a tracked file outside `cairn/` makes the wake run nothing — reject, edge: only a verify that writes tracked files reaches it, outside documented use, and the wake shows the line and its resume command.
+- diff-bug #4: a lagging `gh pr view` after the re-run's push could give an old head — reject, edge: GitHub's read lag on the head is unobserved in common use, and its effect is a named stop.
+- diff-bug #5: the re-run pushes to `origin` when a PR head is on a fork — reject, false: an owner-mode milestone PR opens from this repo's `origin` branch, and guest mode has its own arm.
+- diff-bug #6: the companion re-entry check asks again though an approval covers the commits — reject, edge: only fix-now companion commits on a resumed review reach it, and its effect is one more question.
+- diff-bug #7: `origin/<branch>` is not fetched and can be missing, so a failed read poses a chip with no failed check — reject, edge: a stale ref only adds a chip, and a companion PR's fork head is outside documented use.
+- diff-bug #8: "resume this arm at that companion's push" runs into `gh pr create` on an open PR — fix now.
+- diff-bug #9: a decline at the companion chip leaves a marker restored under `<abs-path>/cairn/` — fix now, for the companion's marker; the primary's marker part is false, since the primary writes its marker after every companion merged.
+- diff-bug #10: the decline clause reaches guest mode, and a later merge takes route (b)'s "verification never ran" statement — reject, edge: only a merge made after a decline reaches it, and route (b) verifies and asks.
+- diff-bug #11: "newer" is undefined where work-log dates have day resolution — fix now.
+- diff-bug #12: the first-read red path has no clean-tree check, so "commit the fix" can sweep in other changes — reject, false: the rulebook's git model governs every commit.
+- diff-bug #13: the push exception names only a Copilot fix, but step 6 pushes after any fix-now commit on a Copilot-arm PR, and D-241 states no such exception — fix now, with a batched D-entry.
+- diff-bug #14: the "cannot fix" close block fences no next command — reject, false: the rulebook's close-block shape makes the resume command primary at a stop inside a run.
+- diff-bug #15: a flaky check that a rerun clears is undefined, and "can fix" removes the marker — reject, edge: a rerun commits nothing, and the worst effect is a guard denial with its message.
+- diff-bug #16: a moved-head stop leaves the PR-only marker on disk — reject, false: the typed resume takes route (c), whose chip asks before any merge.
+- diff-bug #17: the re-posed chip's merge option names no PR number — reject, style: the option names the branch, and the guard reads the number at the merge.
+- blame-history #1: the Red CI rule says not to push, and then a Copilot fix pushes — fix now, as diff-bug #13.
+- blame-history #2: route (c) pushes before its chip — reject, planned change: Scope Out.
+- blame-history #3: the decline clause leaves out route (b) — reject, false: route (b) is route (a)'s otherwise branch, so no recorded approval reaches it.
+- prior-review #1: the same push contradiction — fix now, as diff-bug #13.
+- prior-review #2: route (c) pushes an unasked fix — reject, planned change: Scope Out.
+- prior-review #3: route (b) wording — reject, false: as blame-history #3.
+- prior-review #4: the chip is re-posed before CI runs on the fix — reject, planned change: the plan gate weighed this and recorded the alternative.
+- ripple #1: route (c) has no carve-out for the unpushed fix — reject, planned change: Scope Out.
+- ripple #2: `cairn/references/self-verification-ledger.md:148` quotes the removed sentence — reject, false: a first-hand record of a sweep at a named commit, observed 2026-07-27.
+- ripple #3: CHANGELOG's "On green the session merges" overstates the rule — reject, false: the next sentence covers the red path.
+- ripple #4: the ROADMAP row states the removed rule — reject, false: step 9 graduates the row.
+- ripple #5: the stop lists name only red CI it cannot fix — reject, false: the re-posed chip is the merge question, a gate and no stop.
+- ripple #6: the hook's "without re-asking" note overlaps a fix after a failed merge — return floor, as diff-bug #1.
+- ripple #7: `/hotfix` keeps its marker through its fix — reject, false: its marker names a head oid and its merge passes `--match-head-commit`.
+
+copilot: https://github.com/jmgirard/cairn/pull/351#pullrequestreview-5781368391 — no comment: no thread and no finding, noted. Copilot level: Lite (set by GitHub's settings).
