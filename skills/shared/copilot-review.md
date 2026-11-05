@@ -5,10 +5,8 @@ where they request Copilot and read the PR's conversation. With the round
 off, they read §1 and §3 at the closes §1 names. `/copilot-review` runs §3
 to §6 on one PR. It is a module of `tracking-rules.md`, read only then.
 
-Budget (M231, reset at M287, D-188, and M331, D-235):
-**under 200 lines and under 12,000 bytes**, hand-read with `wc -l -c` at
-hygiene passes, covered by no validator. Over either figure, compress or
-retire content here, never "let it grow".
+Budget (M231, reset at M287, D-188, and M331, D-235): **under 200 lines and
+under 12,000 bytes**, hand-read with `wc -l -c`, covered by no validator.
 
 ## 1. Opt-in
 
@@ -140,7 +138,7 @@ for a note left alone. Someone who has not seen this session must be able
 to tell on one read what it says. That comes first in every mode. After it,
 in guest mode, host matching governs tone and length.
 Put the review's `url` in it as a markdown link, wherever the link reads
-naturally, with no set opening. The comment never thanks Copilot, asks no
+naturally. The comment never thanks Copilot, asks no
 question, and in guest mode carries no cairn vocabulary.
 
 When no sentence passes that test, the review gets no comment and its
@@ -148,7 +146,8 @@ unresolved Copilot threads are resolved, under the same conditions as a
 comment: every note has a disposition, each fix is pushed, and no
 return-floor item holds the review. A body finding with no anchor has no
 thread to clear, so that review stays a note, and each later run decides it
-again. `/milestone-review` reuses its `copilot:` line on a later pass.
+again. A note settled on an earlier `/milestone-review` pass keeps the
+outcome its `copilot:` line records.
 Write the draft with the Write tool to
 `cairn-copilot-comment-<owner>-<name>-<N>-<review id>.md` in the system temp
 directory (Python's `tempfile.gettempdir()`), by its absolute path, reading
@@ -159,21 +158,21 @@ an existing file first. The review id is the digits after
 draft in an `AskUserQuestion` chip before it posts: one question per
 draft, four per chip, and more chips for more drafts. A draft of at most
 800 characters sits in the question text, and a longer one is cited by the
-path of its temp file. The options are to post it and to hold it. A review
-with no comment shows that in the same chip, with options to resolve its
-threads with no comment and to hold. With no open thread, the first option
-only skips the comment. A typed comment, with or without a draft, posts as
+path of its temp file.
+The options are to post it, to resolve its threads with no comment, and to hold it.
+A review with no comment shows that and each note's disposition in the same
+chip, with the last two options. A typed comment, with or without a draft, posts as
 typed, once the session restores a dropped review link or adds a missing one.
 The session writes that text to the temp file. Typed text that asks for a
-change and is not a comment, such as "shorten it", changes the draft, and the
-chip shows it again. A hold posts no comment and resolves no thread of that review.
+change and is not a comment, such as "shorten it", changes or writes the draft,
+and the chip shows it again. A hold posts no comment and resolves no thread of that review.
 An owner-mode round posts or resolves with no question.
 
-**The post.** Read the operator's comments again, and post nothing for a
+**The post.** A review with no comment skips to the resolve. Read the
+operator's comments again, and post nothing for a
 review that one of them now carries. Post the temp file with
 `gh pr comment <N> --body-file "<path>"` (guest mode: add `--repo
-<base-repo>`). A failed post resolves no thread. A review with no comment
-skips the post. Then resolve each unresolved Copilot thread tied to that
+<base-repo>`). A failed post resolves no thread. Then resolve each unresolved Copilot thread tied to that
 review. The resolve is the PR's only "handled" mark, so a later read skips
 the thread.
 
@@ -190,6 +189,7 @@ GitHub's settings)`, or says the review is pending, or says why no review
 exists, such as §2's not-recorded line in the same pass. When the read's
 own state query still prints `none`, that line is the reason. On `pending`
 or `reviewed`, the report gives the pending or level line.
+A review with no comment reports `copilot: <url> — no comment`.
 A review held back (a return-floor item, a failed push, a failed post, a
 hold at the draft chip) reports `copilot: <url> — held`. After a hold at
 the chip, the close block fences `/copilot-review <N>`, which finishes that

@@ -294,8 +294,8 @@ class TestDraftChip(unittest.TestCase):
                       "temp file.", self.draft)
 
     def test_options_are_post_and_hold(self):
-        self.assertIn("The options are to post it and to hold it.",
-                      self.draft)
+        self.assertIn("The options are to post it, to resolve its threads "
+                      "with no comment, and to hold it.", self.draft)
 
     def test_a_typed_edit_keeps_the_link(self):
         self.assertIn("A typed comment, with or without a draft, posts as "
@@ -311,9 +311,9 @@ class TestDraftChip(unittest.TestCase):
                       "question.", self.draft)
 
     def test_the_chip_offers_to_resolve_with_no_comment(self):
-        self.assertIn("A review with no comment shows that in the same chip, "
-                      "with options to resolve its threads with no comment "
-                      "and to hold.", self.draft)
+        self.assertIn("A review with no comment shows that and each note's "
+                      "disposition in the same chip, with the last two "
+                      "options.", self.draft)
 
     def test_opt_in_states_both_arms(self):
         opt_in = flat(section(self.module, "## 1. Opt-in",
@@ -353,8 +353,8 @@ class TestDraftChip(unittest.TestCase):
 
     def test_a_typed_instruction_changes_the_draft(self):
         self.assertIn('Typed text that asks for a change and is not a comment, '
-                      'such as "shorten it", changes the draft, and the chip '
-                      'shows it again.', self.draft)
+                      'such as "shorten it", changes or writes the draft, and '
+                      'the chip shows it again.', self.draft)
 
     def test_the_post_rereads_the_operator_comments(self):
         post = flat(section(self.module, "**The post.**", "## 6."))

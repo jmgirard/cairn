@@ -4344,13 +4344,13 @@ REGISTRY += [
         guard="test_copilot_review_round",
         test="TestDraftChip.test_options_are_post_and_hold",
         target=COPILOT_MODULE,
-        block="The options are to post it and to hold it.",
+        block="The options are to post it, to resolve its threads with no comment, and to hold it.",
     ),
     Mutation(
         guard="test_copilot_review_round",
         test="TestDraftChip.test_the_chip_offers_to_resolve_with_no_comment",
         target=COPILOT_MODULE,
-        block="with no comment shows that in the same chip",
+        block="A review with no comment shows that and each note's disposition",
     ),
     Mutation(
         guard="test_copilot_review_round",
@@ -4416,7 +4416,7 @@ REGISTRY += [
         guard="test_copilot_review_round",
         test="TestDraftChip.test_a_typed_instruction_changes_the_draft",
         target=COPILOT_MODULE,
-        block='"shorten it", changes the draft',
+        block='"shorten it", changes or writes the draft',
     ),
     Mutation(
         guard="test_copilot_review_round",

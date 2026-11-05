@@ -113,7 +113,7 @@ numbered step below (session start implicit).
 
 7. **Resolve.** Resolve each unresolved Copilot thread tied to a review
    whose comment posted, or that the user chose to resolve with no comment.
-   Also resolve each one of a review
+   Also resolve each unresolved Copilot thread of a review
    that an earlier comment by the operator already links (module §5). A
    held review's threads stay open.
 
