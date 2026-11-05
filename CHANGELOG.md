@@ -15,7 +15,7 @@
   commit stays local, and the close block shows the row and the undo command.
   With no remote, the commit stays local. A stop with no next command of its
   own now gives `/milestone-plan` with the row's short title. In guest mode
-  nothing changes: the row stays on disk with no commit.
+  the stop's row stays on disk with no commit, as before.
 
 - **A Copilot comment goes out only when the maintainers need it.** In every
   mode, the comment is written to the maintainers and says only what they

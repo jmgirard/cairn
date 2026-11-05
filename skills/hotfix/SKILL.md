@@ -691,8 +691,9 @@ can resolve against the fork instead of the base repo.
    those edits, step 7 adds the candidate row for each flaw that step 1's
    idea vet found in what the fix leaves as it was. On the merged-PR
    re-entry's over-the-bar disposition, step 7 also writes that route's
-   candidate row in its one docs-only commit (guest mode: on disk). The
-   close block fences `/milestone-plan` with that row's short title.
+   candidate row in its one docs-only commit (guest mode: on disk). In
+   owner mode, the close block fences `/milestone-plan` with that row's
+   short title.
    In owner mode, every ROADMAP edit step 7 makes on any path, the
    candidate rows added above included, lands in one docs-only commit on the
    default branch. Run step 2's `git status` check first, then check out

@@ -81,6 +81,7 @@ In owner mode, a candidate row that a `/hotfix` step 1 stop writes reaches the d
 - 2026-11-05: T6 done: `skills/tests` hand-run green after two re-pins and the baseline re-seed; verify run on the final text.
 - 2026-11-05: review return 1: AC6 case (e) is open, since no sentence names the close block's next command once step 7 writes the row. Also owed from pass 1's fix-now list in the Review section: README's cap sentence; a recipe that names no branch; the row read moved after the level check; the fence made owner mode only (CHANGELOG too); "the same close block" reworded; the rulebook's exception for other uncommitted paths with its baseline re-seed; the parked row "Keep staged files on a row push undo".
 - 2026-11-05: T7 done: step 7 names the close block's next command; step 1's row read follows the level check, a recipe with no branch counts as a failed check, and the fence is owner mode only; README, CHANGELOG, and the rulebook follow; baseline re-seeded to 894 lines / 88,741 bytes.
+- 2026-11-05: claim audit: 16 claims read, 2 corrected — CHANGELOG.md, README.md (the guest sentence; the cap's row names its matched-row and failed-read cases); the step 7 fence became owner mode only, so guest mode stays as it was. Scope: the lines added since the first audit.
 
 ## Decisions
 
