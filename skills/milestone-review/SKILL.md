@@ -113,6 +113,9 @@ the session, re-enters here, at the step the record shows is next:
   missing, unauthenticated, or has no remote → step 1, the recap naming
   which of the three it was.
 
+A `step-7 decline:` line newer than the latest `step-7 approval:` line
+counts as no recorded approval for routes (a) and (c).
+
 ## Workflow
 
 1. **Sync with the default branch first** — detect it (tracking-rules git
@@ -698,7 +701,8 @@ the session, re-enters here, at the step the record shows is next:
    approval covers them all, and for a companion without cairn tracking
    this chip is the only gate its merge has (tracking-rules, Git and
    approval model).
-   Approval withheld (or declined at the chip) → log the requested changes
+   Approval withheld (or declined at the chip) → remove any
+   `cairn/.merge-approved` that names this PR, log the requested changes
    as tasks with one work-log line `step-7 decline: <what was requested>`,
    status back to `in-progress`, and stop with the close block,
    its fenced next command `/milestone-implement <id>` labeled as the
