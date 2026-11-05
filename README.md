@@ -1028,8 +1028,10 @@ actually reach.
   an authored fix cuts its branch, `/hotfix` checks the bug-fix cap; a
   re-land or a follow-up to a merged PR is not checked. Before a review
   opens a new PR, `/milestone-review` checks the feature cap. At the cap
-  they push nothing, open no PR, and stop with a
-  list of those PRs. They also stop when the list cannot be read. In owner
+  they push no work branch, open no PR, and stop with a
+  list of those PRs. They also stop when the list cannot be read. At either
+  stop, `/hotfix` also writes a candidate row for the bug unless one already
+  matches, and in owner mode commits it to the default branch. In owner
   mode the review stops before the merge question, so you are never asked
   to approve a merge it cannot open. A push to a PR that is already open
   is never stopped. A cap line near the top whose value is not 1 to 99
