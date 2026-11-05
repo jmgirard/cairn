@@ -49,6 +49,37 @@ can resolve against the fork instead of the base repo.
    route and becomes (or joins) a milestone — the disposition is unchanged,
    only the entry point is new. If an active milestone covers this code,
    flag the overlap instead of racing it.
+   **Row at a stop (owner mode, M335).** A row that a stop adds or absorbs
+   into lands in one docs-only commit on the default branch before the
+   close block. The close block names the commit. This covers the
+   over-the-bar route, the owner arm's withdrawn approval included, the
+   open-PR cap stop, and the merged-PR re-entry's decline. It does not
+   cover the row of a merged PR over the hotfix bar, which step 7 writes.
+   In guest mode the row stays on disk with no commit.
+   Find `<base>` and the default branch by the rulebook's recipe. If the
+   repo has no remote, the recipe asks the user. First check that the
+   checkout is on the default branch and that `cairn/ROADMAP.md` has no
+   uncommitted change. Run `git fetch <base>` and
+   `git pull --ff-only <base> <default-branch>`, then check that the
+   checkout is level with `<base>/<default-branch>`. Then edit the row and
+   show it verbatim in chat (the durable-record preview). Run
+   `git add -- cairn/ROADMAP.md`,
+   `git commit -m "<one-line summary>" -- cairn/ROADMAP.md`, and
+   `git push <base> HEAD:<default-branch>`.
+   With no remote, skip the fetch, the pull, the level check, and the push.
+   The close block then says that the commit is local and that nothing was
+   pushed.
+   When a check, the fetch, the pull, the add, or the commit fails,
+   `cairn/ROADMAP.md` ends with no uncommitted change from the stop. Make
+   no edit or, after a failed add or commit, run
+   `git restore --staged --worktree -- cairn/ROADMAP.md`. The close block
+   then shows the row verbatim, names what failed, and fences `/hotfix`
+   with the same argument. Other uncommitted paths stay as they are.
+   When the push fails or is rejected, never force. The close block shows
+   the row verbatim and names the local commit and the undo command
+   `git reset --keep HEAD~1`.
+   If the stop guard blocks the turn end on a change the stop did not
+   make, leave that change uncommitted. End with the same close block.
    **Idea vet (M306).** Every entry that runs this tier check, and the
    owner arm's resumed merge below, also vets the behavior that the fix
    or the PR diff produces, documented behavior included. It asks
@@ -123,9 +154,10 @@ can resolve against the fork instead of the base repo.
    every path to the default branch, not only the one the session drove:
    - *Tier check* the merged diff (`gh pr diff <N>`) as above. A diff over
      the hotfix bar takes the over-the-bar disposition above with no
-     regression test demanded, and step 7's close-out still runs — the
-     candidate row or the `/milestone-plan` next command rides in that
-     close block; when the PR body carries a `Fixes #N` line, the issue
+     regression test demanded, and step 7's close-out still runs — step 7
+     writes the candidate row in its one docs-only commit (guest mode: on
+     disk), or the `/milestone-plan` next command rides in that close
+     block; when the PR body carries a `Fixes #N` line, the issue
      close is put to the user as a chip before step 7 runs, never written
      unasked.
    - *Baseline.* The pre-fix baseline is the oid `gh pr view <N> --json
@@ -180,7 +212,8 @@ can resolve against the fork instead of the base repo.
      — the candidate-row check, the issue close, then the close block with
      one recap line naming the merged PR and its verification. A decline
      stops with a close block naming the decline and the reason where the
-     user gave one, plus a `candidate` row (search-first). In both modes
+     user gave one, plus a `candidate` row (search-first). That row takes
+     **Row at a stop** above. In both modes
      the acceptance chip's question text also names each matched row's
      title and says whether step 7 removes the row or narrows it.
    **Open-PR re-entry (M262).** A PR-reference argument whose
@@ -299,8 +332,9 @@ can resolve against the fork instead of the base repo.
    a re-land, and a PR reference read no cap. At the cap, or on a failed
    read, cut no branch, push nothing, open no PR, and stop with that
    bullet's close block. Unless step 1 matched a candidate row, first add
-   one for the bug (search-first), so the report outlives the chat. The
-   close block names the row. Its fenced next command is `/hotfix` with
+   one for the bug (search-first), so the report outlives the chat. That
+   row takes **Row at a stop** above.
+   The close block names the row. Its fenced next command is `/hotfix` with
    the bug's description, to run once one of those PRs closes or merges.
 
 2. **Branch — cut one, or adopt the PR's.** Check `git status` (dirty tree
@@ -644,9 +678,11 @@ can resolve against the fork instead of the base repo.
    that narrowing, never a second new row. On step 1's over-the-bar
    disposition, step 7 neither removes nor narrows a matched row. After
    those edits, step 7 adds the candidate row for each flaw that step 1's
-   idea vet found in what the fix leaves as it was.
+   idea vet found in what the fix leaves as it was. On the merged-PR
+   re-entry's over-the-bar disposition, step 7 also writes that route's
+   candidate row in its one docs-only commit (guest mode: on disk).
    In owner mode, every ROADMAP edit step 7 makes on any path, the
-   candidate row added above included, lands in one docs-only commit on the
+   candidate rows added above included, lands in one docs-only commit on the
    default branch. Run step 2's `git status` check first, then check out
    the default branch, bring it up to date (fetch, pull ff-only), commit,
    and push at once. When step 7 makes no ROADMAP edit, nothing is checked

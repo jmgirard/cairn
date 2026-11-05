@@ -8,7 +8,7 @@ _Released 1.0.0 (2026-07-16) to 2.1.0 (2026-10-18), each tagged `v<version>`; 1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M335 | Commit the row a hotfix stop writes | planned | — | normal | milestones/M335-commit-hotfix-stop-row.md |
+| M335 | Commit the row a hotfix stop writes | in-progress | — | normal | milestones/M335-commit-hotfix-stop-row.md |
 | M334 | Say only what maintainers need in a Copilot comment | done | — | high | milestones/archive/M334-copilot-comment-for-maintainers.md |
 | M333 | Say so when no rule covers a task | done | — | normal | milestones/archive/M333-no-rule-covers.md |
 | M332 | Write host text so a maintainer follows it | done | — | high | milestones/archive/M332-clear-host-text.md |

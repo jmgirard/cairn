@@ -1,13 +1,13 @@
 # M335: Commit the row a hotfix stop writes
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP1, GP2
 - **Resolves:** —
 - **Surface tier:** user-facing — changes what `/hotfix` does in every adopting repo
-- **Branch/PR:** —
+- **Branch/PR:** m335-commit-hotfix-stop-row
 
 ## Goal
 
@@ -48,8 +48,8 @@ In owner mode, a candidate row that a `/hotfix` step 1 stop writes reaches the d
 
 ## Tasks
 
-- [ ] T1: In `skills/hotfix/SKILL.md` step 1, write the commit sequence, its checks, its failure arms, and its no-remote arm (AC1, AC2, AC3), and point the three stops at it: the stop at lines 45-47, the re-entry's decline at lines 182-183, and the cap stop at line 301. End each `old_string` at a line end when rewrapping.
-- [ ] T2: Reword the merged-PR re-entry's over-the-bar bullet (lines 124-130) and step 7's docs-only commit sentence (lines 648-650) for AC4.
+- [x] T1: In `skills/hotfix/SKILL.md` step 1, write the commit sequence, its checks, its failure arms, and its no-remote arm (AC1, AC2, AC3), and point the three stops at it: the stop at lines 45-47, the re-entry's decline at lines 182-183, and the cap stop at line 301. End each `old_string` at a line end when rewrapping.
+- [x] T2: Reword the merged-PR re-entry's over-the-bar bullet (lines 124-130) and step 7's docs-only commit sentence (lines 648-650) for AC4.
 - [ ] T3: Run AC5's seven cases in throwaway repos with the commands as the skill now states them, and record the results in one work-log line.
 - [ ] T4: Add the CHANGELOG entry. Grep `README.md` and `skills/` for text about a hotfix stop's row and fix what the change makes stale. Append a D-entry that annotates D-042 and D-225 (the close block can be a stop's only record of a row) and records that the work passes D-108's door on its retained trigger.
 - [ ] T5: Give a fresh Opus reader `skills/hotfix/SKILL.md`, the rulebook, and AC6's cases, each with its facts in neutral words, and have each answer quote its deciding sentence. Fix any case the text leaves open. After any later edit to a quoted sentence, rerun that case.
@@ -69,6 +69,8 @@ In owner mode, a candidate row that a `/hotfix` step 1 stop writes reaches the d
 - 2026-11-05: criteria audit (full, fresh Opus reader): 11 findings, all taken: undo leaves the row staged; guard block on an earlier change; Goal wider than AC4's route; AC6 bound an evidence quotation; AC6 cases lacked deciding facts; AC5's merge probe never reached the commit; probes did not vary the remote state or the stops; AC5 bound a location; `git add` missing from the failures; AC3's step 7 half unreachable (see the idea vet); "one paragraph" bound layout.
 - 2026-11-05: remainder: step 7's own fetch, pull, or commit failure has no stated arm, found by the audit, and goes to the parked candidate row "Say what a failed step 7 commit does".
 - 2026-11-05: changelog: one entry under Unreleased (AC7); test scope: no new prose guard, per the profile's test-doctrine; AC5 and AC6 are the evidence.
+- 2026-11-05: T1, T2 done: step 1 gains the **Row at a stop** paragraph, and the over-the-bar stop's two other row writers point at it; the re-entry bullet and step 7 say step 7 writes that row. Suites green; the mod test runs at T6, since this checkpoint changes no `hooks/` code.
+- 2026-11-05: the simple-english lint hook reports 203 hits on `skills/hotfix/SKILL.md`, the same count as main; the text is unchanged outside this milestone's lines, so those hits stay.
 
 ## Decisions
 
