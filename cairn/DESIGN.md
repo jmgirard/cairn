@@ -1420,6 +1420,8 @@ within each type and are never reused.
 - A typed resume can restart CI. `/milestone-review` route (c) pushes the
   branch, which carries step 8's unpushed header-URL commit, so typing the
   resume command during a merge CI wait moves the PR head and restarts CI
-  (D-138's unpushed record). If a user reports it, it becomes a `/hotfix`
-  or a candidate row. Routed from candidates 2026-11-02; added 2026-10-31 —
+  (D-138's unpushed record). A session that dies between a red-CI fix and
+  its chip leaves the same route to push that fix before the chip, and the
+  chip does not name the fix (M336). If a user reports it, it becomes a
+  `/hotfix` or a candidate row. Routed from candidates 2026-11-02; added 2026-10-31 —
   M328 review pass 2 (diff-bug #14).
