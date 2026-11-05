@@ -1,6 +1,6 @@
 # M334: Say only what maintainers need in a Copilot comment
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
@@ -74,6 +74,9 @@ A Copilot comment says only what the maintainers need to know, written to them, 
 - 2026-11-05: remainder ledger: every part of the request is in this milestone. Nothing is deferred or dropped.
 - 2026-11-05: T1-T6 done in one commit because the tasks edit the same paragraphs and the guards pin them together. The module reads 199 lines and 11,966 bytes after rewrapping my own paragraphs, with no rule cut outside this scope. `verify` is green, and skills/tests pass 1014 tests.
 - 2026-11-05: lint hits in the touched files are older text that this milestone does not change; I fixed the two long sentences I wrote and left the rest.
+- 2026-11-05: claim audit: about 60 claims read, 8 corrected — `skills/shared/copilot-review.md`, `skills/copilot-review/SKILL.md`, `README.md`, `CHANGELOG.md`, `skills/tests/test_copilot_review_round.py`; the same reader re-read the corrected claims and they hold.
+- 2026-11-05: left the guest limit "the one comment per Copilot review with a note" unchanged in the rulebook, the session hook, and the README, as the Out section says; it stays true as a ceiling.
+- 2026-11-05: to fit the budget, shortened the module's budget line (the reset reasons are in D-188 and D-235) and rewrapped my own paragraphs; no rule was cut outside this scope.
 
 ## Decisions
 
