@@ -584,8 +584,8 @@ can resolve against the fork instead of the base repo.
    step 1's open-PR re-entry resumes at this wait (or takes the walk again
    when one of its conditions fails, or stops before the wait when its idea
    vet finds a concern over the hotfix bar), and for a PR merged since,
-   step 1's merged-PR re-entry verifies the merged diff post-hoc. Never merge past red or pending CI. A PR created moments
-   ago can report no checks before GitHub registers them, so where the
+   step 1's merged-PR re-entry verifies the merged diff post-hoc. Never merge past red or pending CI. A PR created or pushed
+   moments ago can report no checks before GitHub registers them, so where the
    profile does not declare the repo CI-less, re-read `gh pr checks` after
    a short wait, up to about a minute, before taking the no-checks case. In owner mode, on approval, the order is
    fixed: the push and any `gh pr create` above, then the merge-guard

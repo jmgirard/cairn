@@ -4,6 +4,19 @@
 
 ### Changes that affect existing repos
 
+- **A fix after a failed CI run asks you again.** This applies in owner mode.
+  After you approve a merge, CI can fail, and `/milestone-review` can fix the
+  code. It now asks you to approve the merge again, whatever the fix's size.
+  The question names the failed check and says what the fix changed. Before,
+  a fix that the session judged small merged with no question. The session
+  does not push the fix before it asks, but a resume or a Copilot fix at that
+  question can. The session removes its approval marker, the file that the
+  merge guard reads, before it starts the fix. A decline also removes that
+  marker, and a later resume does not count the earlier approval. `/hotfix`
+  already asked again. Both skills also
+  give checks up to about a minute to appear on a PR pushed moments ago, as
+  they do for a new PR.
+
 - **A `/hotfix` stop commits the row it writes.** This applies in owner mode.
   `/hotfix` can stop early and write a candidate row. Three things cause this:
   the work is over the hotfix bar, the open-PR cap is reached or cannot be
@@ -88,7 +101,8 @@
   task and end the turn. When the watch ends, the task's notification
   starts the session again with no message from you. This was observed in
   the desktop app. On green the session merges. On red it fixes the code
-  on the branch. If it cannot fix the code, it stops. If a check is still
+  on the branch and asks you to approve the merge again. If it cannot fix
+  the code, it stops. If a check is still
   running, it waits again. A PR head that changed after your approval, a
   review that requests changes, or a failed GitHub read stops the session
   and tells you why. A check that never finishes leaves the session

@@ -113,6 +113,11 @@ the session, re-enters here, at the step the record shows is next:
   missing, unauthenticated, or has no remote → step 1, the recap naming
   which of the three it was.
 
+A `step-7 decline:` line newer than the latest `step-7 approval:` line,
+by its place in the work log, counts as no recorded approval for routes
+(a) and (c). With such a line, step 8's companion arm waits until step 7
+records a new approval.
+
 ## Workflow
 
 1. **Sync with the default branch first** — detect it (tracking-rules git
@@ -639,9 +644,9 @@ the session, re-enters here, at the step the record shows is next:
 
    **PR-conversation read (M177).** Only when the milestone header already
    names an open PR (a return from a prior review, a resume route re-posing
-   the chip, step 2's Copilot arm) — a fresh PR is opened at step 8 after this chip and is merged
+   the chip, step 8's Red CI rule, step 2's Copilot arm) — a fresh PR is opened at step 8 after this chip and is merged
    with no read, so the read runs at most once per pass through this gate,
-   here (a resume that re-poses the chip is a new pass). When it
+   here (a resume or step 8's Red CI rule that re-poses the chip is a new pass). When it
    runs: once, immediately before the merge chip
    is posed — no added wait, not re-run after fix-now commits — and
    unconditional, independent of the step-5 lens's probe gate (one PR's
@@ -698,7 +703,8 @@ the session, re-enters here, at the step the record shows is next:
    approval covers them all, and for a companion without cairn tracking
    this chip is the only gate its merge has (tracking-rules, Git and
    approval model).
-   Approval withheld (or declined at the chip) → log the requested changes
+   Approval withheld (or declined at the chip) → remove any
+   `cairn/.merge-approved` that names this PR, log the requested changes
    as tasks with one work-log line `step-7 decline: <what was requested>`,
    status back to `in-progress`, and stop with the close block,
    its fenced next command `/milestone-implement <id>` labeled as the
@@ -792,11 +798,30 @@ the session, re-enters here, at the step the record shows is next:
    open takes the Session-start routes. Never merge past red or pending CI. A PR that
    reports no checks makes the watch exit 1 at once, and it is mergeable
    on local green where the profile's consistency-gate says so — but a PR
-   created moments ago can report no checks before GitHub registers them,
-   so where the profile does not declare the repo CI-less, re-read
-   `gh pr checks` after a short wait, up to about a minute, before taking
-   the no-checks case. Red CI → fix on the branch,
-   re-verify, re-request approval if the fix was nontrivial. When green:
+   created or pushed moments ago can report no checks before GitHub
+   registers them, so where the profile does not declare the repo CI-less,
+   re-read `gh pr checks` after a short wait, up to about a minute, before
+   taking the no-checks case.
+
+   **Red CI.** The first read or a wake can find a failed check. So can a
+   `gh pr checks` read, which the session runs after each failed `gh pr
+   merge`. If the agent can fix it, remove
+   `cairn/.merge-approved`.
+   Then fix it on the branch, commit the fix, and re-verify. Every fix goes
+   back to the user, whatever its size and whatever the guard's restore
+   note says. Do not push the fix. Run step 7's PR-conversation read and
+   blocking rule, and re-pose step 7's merge chip. On a PR from step 2's
+   Copilot arm, a fix-now push from that read carries the fix. Compute step
+   7's changed-snapshot list again on the fix's head. The chip's
+   question text names the failed check and says in plain words what the
+   fix changed. On approval, append and commit a new `step-7 approval:`
+   line, and run this step again from the push. That run writes the marker
+   and notes the new PR head before the next CI wait. If that push is
+   rejected, never force it. Stop with a close block that names it. A
+   decline takes step 7's decline exit. If the agent cannot fix the check,
+   stop with a close block that names it.
+
+   When green:
    `gh pr merge <N> --squash --delete-branch` with a clean summary message —
    name the PR number explicitly; a bare `gh pr merge` is denied by the guard
    because the approval cannot be checked against it.
@@ -824,7 +849,21 @@ the session, re-enters here, at the step the record shows is next:
    is denied. A companion's red CI that the agent cannot fix, or its failed
    merge, ends the step before the primary is pushed, with a close block
    naming the companion PR; the Session-start resume route re-reads
-   each companion's state. The arm is absent in guest mode.
+   each companion's state.
+   A companion's red CI that the agent fixes goes back to the user before
+   that companion merges. Remove any `<abs-path>/cairn/.merge-approved`
+   first. Re-verify, and the fix stays unpushed. Re-pose step 7's merge
+   chip. It names the companion PR, the failed check, and what the fix
+   changed. Step 7's PR-conversation read stays on the primary's PR, so it
+   runs only when that PR is open. On approval, append and commit a new
+   `step-7 approval:` line in the primary's work log, and resume this arm
+   at that companion's push. The companion's PR is already open, so skip
+   its `gh pr create` and URL append. A rejected push stops as the Red CI
+   rule says. A decline takes step 7's decline exit. On
+   re-entry, read `cd <abs-path> && git rev-list <branch> --not
+   origin/<branch>` when the companion has an open PR. If that lists
+   commits or the read fails, that chip comes before the arm's push.
+   The arm is absent in guest mode.
 
    **Guest arm — the handoff sequence**, in place of the marker, the CI
    wait, and the merge: only on the handoff selection, push the branch to

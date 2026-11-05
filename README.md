@@ -920,6 +920,7 @@ profile.
   explicit approval at review. A guard hook mechanically blocks merges
   that lack a recorded approval, and the approval names the one PR it
   covers. Starting a review is not merging; you get the evidence first.
+  A fix after a failed CI run needs your approval again, whatever its size.
   (The guard watches what Claude runs, not what you do; see *Working with
   collaborators*.)
 - **Supply primary sources.** If a formula, cutoff, or scoring key needs a
