@@ -10,9 +10,9 @@
   trigger only ends the row's wait. For a parked row whose condition has held,
   the pass proposes a move to the rung it judges right, usually normal. It can
   instead propose keeping the row parked with a new condition, which replaces
-  the held one. If something the pass
-  read shows that the work is wanted now, it proposes `promote`, and the
-  reason names that.
+  the held one, or it can route or drop the row. If something the pass read
+  shows that the work is wanted now, it proposes `promote`, and the reason
+  names that.
 
 - **A fix after a failed CI run asks you again.** This applies in owner mode.
   After you approve a merge, CI can fail, and `/milestone-review` can fix the

@@ -419,11 +419,12 @@ high, normal, or low. `/cairn-triage` adds or removes `[parked]` as it re-rates 
 promote replaces it with `[high]`. When a parked row's condition has
 held, `/cairn-triage` proposes moving the row off parked to the rung it
 judges right, usually normal. It can instead propose keeping the row
-parked with a new condition. The held condition alone does not bring
-`[high]`. A promote does. If something the pass read shows that the
-work is wanted now, it proposes one. After a merge, `/milestone-review`
-removes it from each parked row whose short title the milestone file
-quotes, or whose text names the milestone, where the merge made its
+parked with a new condition, or routing or dropping the row. The held
+condition alone does not bring `[high]`. A promote does. If something
+the pass read shows that the work is wanted now, it proposes one. After
+a merge, `/milestone-review` removes `[parked]` from each parked row
+whose short title the milestone file quotes, or whose text names the
+milestone, where the merge made its
 condition hold. A row whose condition is not written down gets no
 `[parked]` token. `/milestone-review` and `/copilot-review` place each
 row they file for a review finding on a rung. If no documented or common

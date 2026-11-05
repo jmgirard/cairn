@@ -8727,3 +8727,11 @@ context. Then this text is not doing its job, and the fix is not a longer text.
 **Decision:** A parked row whose condition has held, and that the Rung class does not route or drop, takes one of D-243's two changes: a move off parked, usually to normal, or staying parked with a new condition that has not held. The Rung class can still route such a row to Known issues or drop it, with a reason.
 
 **Consequences:** No row that the Rung class could route or drop before M337 loses that option.
+
+### D-245 (2026-11-05): D-243's Context and Door, and D-244's missing Door, are corrected in one batched entry, and a held row's condition change gets its apply and Amend rules — supersedes D-243's Door and its Context sentence on `[high]`; extends D-244; D-243's decision stands (M337 review)
+
+**Context:** M337's review found that D-243's Context says every parked row whose trigger fired "came out `[high]`", though the gate could keep a row. It also found that D-243's Door claims D-108's carve-out for the whole entry, though the change adds rules beside the removal, and that D-244 has no Door.
+
+**Decision:** D-243's Context reads instead: a parked row whose trigger fired was proposed for `[high]`. Its Door reads instead: removing the forced route from Staleness to Readiness narrows a conduct rule and is outside D-108's door by its carve-out. The added rules pass on the retained trigger, a defect in shipped behavior: rows were proposed for `[high]` when normal or low fit. They are the required Rung change for a parked row whose condition has held, the promote reason that names more than the trigger, the in-place replacement of a held condition, and D-244's route-or-drop clause. The review also settled three gaps. A row that a hold or the kept-mark filter holds takes only what that hold allows. The reason cell for a row that stays parked shows the held condition and the new one. Declining that new condition at Amend writes a kept mark, as declining a move to parked does.
+
+**Consequences:** D-243's decision and D-244 stand as corrected here.

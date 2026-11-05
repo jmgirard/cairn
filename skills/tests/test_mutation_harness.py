@@ -2416,7 +2416,37 @@ REGISTRY = [
         guard="test_candidate_priority_token",
         test="TestFiredTriggerReRated.test_rung_still_allows_route_and_drop",
         target="skills/cairn-triage/SKILL.md",
-        block="the class can route or drop a `[parked]`\n     row whose promotion condition has held.",
+        block="Among those rows, the class can route or drop a `[parked]`\n     row whose promotion condition has held.",
+    ),
+    Mutation(
+        guard="test_candidate_priority_token",
+        test="TestFiredTriggerReRated.test_a_held_row_takes_only_what_its_hold_allows",
+        target="skills/cairn-triage/SKILL.md",
+        block="A row that one of them holds takes only what that\n     hold or filter allows.",
+    ),
+    Mutation(
+        guard="test_candidate_priority_token",
+        test="TestFiredTriggerReRated.test_declining_a_stay_parked_condition_writes_a_kept_mark",
+        target="skills/cairn-triage/SKILL.md",
+        block="or declines a new condition for a row that stays parked,",
+    ),
+    Mutation(
+        guard="test_candidate_priority_token",
+        test="TestFiredTriggerReRated.test_staying_parked_states_its_condition_change_alone",
+        target="skills/cairn-triage/SKILL.md",
+        block="A parked row whose condition has held and that stays parked\n     states its condition change alone, with no priority change, as in\n     `condition: <held condition> → <new condition>`.",
+    ),
+    Mutation(
+        guard="test_candidate_priority_token",
+        test="TestFiredTriggerReRated.test_staying_parked_replaces_the_held_condition",
+        target="skills/cairn-triage/SKILL.md",
+        block="On a row that\n     stays parked, it replaces the held condition text alone.",
+    ),
+    Mutation(
+        guard="test_candidate_priority_token",
+        test="TestFiredTriggerReRated.test_apply_replaces_the_held_condition_in_place",
+        target="skills/cairn-triage/SKILL.md",
+        block="it replaces the held condition\n   text, however the row words it. The new text keeps the old one's\n   position and separator.",
     ),
     Mutation(
         guard="test_candidate_priority_token",

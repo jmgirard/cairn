@@ -436,7 +436,8 @@ re-examines a lesson.
      condition that has not held. The holds and filters of this step still
      apply to that row. They are the started-token, PR-named,
      live-milestone, merge-survivor, and finding-absorbing holds, and the
-     kept-mark filter. A move to parked
+     kept-mark filter. A row that one of them holds takes only what that
+     hold or filter allows. A move to parked
      carries a condition change: the pass drafts
      one condition that has not held, `promote when <condition>`, unless
      the row already states one that has not held. For a review finding that no documented or common use
@@ -578,7 +579,8 @@ re-examines a lesson.
      reason cell states it with its move to parked, as in
      `condition: + promote when a user reports it; priority: normal →
      parked`. A parked row whose condition has held and that stays parked
-     states its condition change alone, with no priority change. A `keep`
+     states its condition change alone, with no priority change, as in
+     `condition: <held condition> → <new condition>`. A `keep`
      with no priority, token, or condition change sits
      last so the changes read first.
      On a `keep`, `compress`, or `retitle` row, a priority change can name
@@ -625,6 +627,7 @@ re-examines a lesson.
         that the pass proposed to move (a priority change, `route`,
         `drop`, `promote`, or absorption into a `merge`), or declines a
         proposed move to parked,
+        or declines a new condition for a row that stays parked,
         the row takes a kept mark,
         ` — kept <today>`, written when the answer is *Accept as
         proposed*. A promote's change
@@ -755,8 +758,9 @@ re-examines a lesson.
    row, hold no `: `, each one written as `; `. The absorbed row's subject
    in the lineage clause leaves out any started-token text. An accepted
    condition change writes `promote when <condition>` into the row. On a
-   parked row whose condition has held, it replaces the held
-   `promote when` text in place, keeping its position and separator. The
+   parked row whose condition has held, it replaces the held condition
+   text, however the row words it. The new text keeps the old one's
+   position and separator. The
    placement rules below are for a condition the row does not yet hold.
    The condition holds no `: ` and quotes no other row's short title in
    double quotes. If the row holds a ` — added ` text and no `: ` comes
