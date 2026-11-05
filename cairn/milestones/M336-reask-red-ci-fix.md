@@ -76,7 +76,7 @@ In owner mode, `/milestone-review` merges a red-CI fix only after the user appro
 - [x] T3: Add the companion rule to step 8's companion arm (`SKILL.md:804-827`), its re-entry check included.
 - [x] T4: Update README's "Merges are yours" bullet (`README.md:919`). Add the CHANGELOG entry and edit the "On red" sentence (`CHANGELOG.md:91`). Run AC6's sweep. Add one sentence on the chip that does not name the fix to DESIGN's Known issue "A typed resume can restart CI".
 - [x] T5: Append the D-entry: every red-CI fix re-asks in `/milestone-review`, and the approval marker goes when the red path starts. It narrows D-229's consequence "After the merge approval, the session merges on green with no rerun by the user". State that D-108's door passes because the trigger is a defect in shipped behavior.
-- [ ] T6: Run the `verify` slot. Hand-run `python3 -m unittest discover -s skills/tests` and update any pin the wording edits break (`test_resume_routing.py`, `test_wait_rule.py`, and `test_mutation_harness.py` hold nearby text). Add no new prose guard (`cairn/PROFILE.md` test-doctrine).
+- [x] T6: Run the `verify` slot. Hand-run `python3 -m unittest discover -s skills/tests` and update any pin the wording edits break (`test_resume_routing.py`, `test_wait_rule.py`, and `test_mutation_harness.py` hold nearby text). Add no new prose guard (`cairn/PROFILE.md` test-doctrine).
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates.
@@ -105,6 +105,7 @@ In owner mode, `/milestone-review` merges a red-CI fix only after the user appro
 - 2026-11-05: T3 done: a companion's fix stays unpushed and goes to the merge chip before that companion merges, and a re-entry that finds commits past the companion's PR head takes that chip before its push. The check is `git rev-list <branch> --not origin/<branch>`, since the arm already pushes to `origin`.
 - 2026-11-05: T4 done: README, a new CHANGELOG entry, the "On red" sentence of the CI-wait entry, and the DESIGN Known issue. AC6's sweep prints README's two "red CI it cannot fix" lines and the CHANGELOG's "On red" and "red run" lines, and all agree.
 - 2026-11-05: T5 done: D-241 appended.
+- 2026-11-05: T6 done: `verify` slot clean (scripts and hooks suites exit 0, both manifest validates exit 0, `claude plugin test` 2466 pass and 0 fail); hand-run `skills/tests` green, 1014 tests, with no pin broken and no pin edited.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
