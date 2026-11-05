@@ -43,13 +43,13 @@ In owner mode, `/milestone-review` merges a red-CI fix only after the user appro
      coverage-complete counts AC checkboxes positionally (M107); departures:
      a "Deviations from RR<NN>" table ends this section. -->
 
-- [ ] AC1: `skills/milestone-review/SKILL.md` step 8's red-CI rule sends every fix on the primary PR's branch back to the user: the session commits the fix, re-verifies, and re-poses step 7's merge chip, with no test of the fix's size. `grep -n nontrivial skills/milestone-review/SKILL.md` prints nothing.
-- [ ] AC2: That rule says the re-posed chip runs step 7's PR-conversation read and blocking rule, and that its question text names the failed check and says in plain words what the fix changed.
-- [ ] AC3: That rule says the session does not push the fix before the new approval, and that on approval the session appends and commits a new `step-7 approval:` line and runs step 8 again from the push, so it writes the marker and notes the new PR head before the next CI wait. The no-checks re-read in step 8 and in `/hotfix` step 6 covers a PR pushed moments ago as well as one created moments ago.
-- [ ] AC4: Taking the red-CI path removes `cairn/.merge-approved` before the fix. Step 7's decline exit removes any `cairn/.merge-approved` that names this PR. Resume routing counts a `step-7 decline:` line newer than the latest `step-7 approval:` line as no recorded approval for routes (a) and (c).
-- [ ] AC5: Step 8's companion arm says a companion's red CI that the agent fixes goes back to the user before that companion merges: the fix stays unpushed, the chip names the companion PR, the failed check, and what the fix changed, and step 7's PR-conversation read stays on the primary's PR. On approval the session appends and commits a new `step-7 approval:` line in the primary's work log, and the arm resumes at that companion's push. On re-entry, a companion checkout with commits past its PR head goes to that chip before its push.
-- [ ] AC6: README's "Merges are yours" bullet says that a fix after a failed CI run needs your approval again. `CHANGELOG.md`'s `## Unreleased` holds an entry for this change, and its existing "A merge waits for CI in the background" entry says the same. Each line that `grep -n -i -w "on red\|red ci\|red run" README.md` prints, and each such line of `CHANGELOG.md` above `## 2.1.0`, agrees with this rule.
-- [ ] AC7: The profile's `verify` slot is clean on the review head.
+- [x] AC1: `skills/milestone-review/SKILL.md` step 8's red-CI rule sends every fix on the primary PR's branch back to the user: the session commits the fix, re-verifies, and re-poses step 7's merge chip, with no test of the fix's size. `grep -n nontrivial skills/milestone-review/SKILL.md` prints nothing.
+- [x] AC2: That rule says the re-posed chip runs step 7's PR-conversation read and blocking rule, and that its question text names the failed check and says in plain words what the fix changed.
+- [x] AC3: That rule says the session does not push the fix before the new approval, and that on approval the session appends and commits a new `step-7 approval:` line and runs step 8 again from the push, so it writes the marker and notes the new PR head before the next CI wait. The no-checks re-read in step 8 and in `/hotfix` step 6 covers a PR pushed moments ago as well as one created moments ago.
+- [x] AC4: Taking the red-CI path removes `cairn/.merge-approved` before the fix. Step 7's decline exit removes any `cairn/.merge-approved` that names this PR. Resume routing counts a `step-7 decline:` line newer than the latest `step-7 approval:` line as no recorded approval for routes (a) and (c).
+- [x] AC5: Step 8's companion arm says a companion's red CI that the agent fixes goes back to the user before that companion merges: the fix stays unpushed, the chip names the companion PR, the failed check, and what the fix changed, and step 7's PR-conversation read stays on the primary's PR. On approval the session appends and commits a new `step-7 approval:` line in the primary's work log, and the arm resumes at that companion's push. On re-entry, a companion checkout with commits past its PR head goes to that chip before its push.
+- [x] AC6: README's "Merges are yours" bullet says that a fix after a failed CI run needs your approval again. `CHANGELOG.md`'s `## Unreleased` holds an entry for this change, and its existing "A merge waits for CI in the background" entry says the same. Each line that `grep -n -i -w "on red\|red ci\|red run" README.md` prints, and each such line of `CHANGELOG.md` above `## 2.1.0`, agrees with this rule.
+- [x] AC7: The profile's `verify` slot is clean on the review head.
 
 ## Coverage
 <!-- owner: plan · create/amend-via-gate; each acceptance criterion → the
@@ -120,3 +120,15 @@ In owner mode, `/milestone-review` merges a red-CI fix only after the user appro
      results, review findings + triage. EXEMPT from the 150-line cap (M55),
      as are the work log (D-046) and the decisions section (D-074); evidence
      never scrambles plan-owned content. -->
+
+Evidence on head 978bed5f, read by one script per criterion, one check for each named property, whitespace-normalized over step 8's Red CI paragraph, its companion arm, step 7's decline exit, and Resume routing.
+
+- AC1: `grep -n nontrivial skills/milestone-review/SKILL.md` printed nothing (exit 1). The Red CI paragraph holds "Every fix goes back to the user, whatever its size", "commit the fix, and re-verify", and "re-pose step 7's merge chip".
+- AC2: the paragraph holds "Run step 7's PR-conversation read and blocking rule", "question text names the failed check", and "says in plain words what the fix changed".
+- AC3: the paragraph holds "Do not push the fix", "append and commit a new `step-7 approval:` line", "run this step again from the push", and "writes the marker and notes the new PR head before the next CI wait". "created or pushed moments ago" is in step 8 and in `/hotfix` step 6.
+- AC4: the paragraph holds "remove `cairn/.merge-approved`. Then fix it". Step 7's decline exit holds "remove any `cairn/.merge-approved` that names this PR". Resume routing holds the decline sentence for routes (a) and (c).
+- AC5: the companion arm holds the go-back sentence, "The fix stays unpushed", "It names the companion PR, the failed check, and what the fix changed", the read on the primary's PR, the approval line in the primary's work log, the resume at that companion's push, and "that chip comes before the arm's push" on re-entry.
+- AC6: README's "Merges are yours" bullet holds "A fix after a failed CI run needs your approval again". `## Unreleased` holds the new entry and the wait entry's "asks you to approve the merge again". The sweep printed README:718 and :913 ("red CI it cannot fix") and CHANGELOG:103 and :117. All agree with the rule, CHANGELOG:103 read with the sentence that follows it.
+- AC7: on 978bed5f, scripts and hooks suites exit 0, both manifest validates exit 0, `claude plugin test` exit 0 with 2466 pass and 0 fail.
+
+Consistency gate: `cairn_validate.py` exit 0. No DESIGN principle text changed, so no `cairn_impact` run. Toolchain: verify as AC7; the marketplace validate output holds no `plugins[N].version` warning; `## Unreleased` holds this change's entry. This repo has no CI.
