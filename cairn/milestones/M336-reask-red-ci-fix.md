@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M336: Ask again before merging a red-CI fix
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -110,6 +110,7 @@ In owner mode, `/milestone-review` merges a red-CI fix only after the user appro
 - 2026-11-05: claim audit: 25 claims read, 5 corrected — CHANGELOG.md, skills/milestone-review/SKILL.md. Corrected: the fix's push (a resume or a Copilot fix can push it first), marker not approval, the Red CI re-pose as a new pass of step 7's read, the companion read's reach, and a failed `rev-list` read taking the chip. The same reader's one re-read passed all but the Copilot push beside "Do not push the fix", now stated there. A sentence for a check the agent cannot fix was added and held on that re-read.
 - 2026-11-05: review return 1: step 8's retry clause and `hooks/merge_guard_post.py`'s "without re-asking" note let a fix merge with no new approval after a `gh pr merge` that fails on a late red required check. Also fix: a rejected re-run push, the open companion PR at the resumed push, the companion's marker at a decline, "newer" defined by place in the log, and the fix-now push on a Copilot-arm PR with a batched D-entry.
 - 2026-11-05: T7 added and done for review return 1: step 8's Red CI rule covers a failed merge and a rejected push and names the Copilot-arm push, the companion arm removes its marker and skips the create on an open PR, "newer" reads by place in the log, D-242 appended. The hook's note stays unchanged: changing it would touch `/hotfix`'s retry path, and skill text already overrides it there.
+- 2026-11-05: claim audit: 10 claims read, 1 corrected — skills/milestone-review/SKILL.md. Corrected: step 8 now names the `gh pr checks` read after each failed merge, since no step read checks there. The re-read passed it and noted a limit on "when the merge names a check", so that condition was removed. Step 8's older "rewrite the marker" retry clause stays, since a rewrite after a retry changes nothing.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

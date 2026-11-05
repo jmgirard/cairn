@@ -803,8 +803,8 @@ by its place in the work log, counts as no recorded approval for routes
    taking the no-checks case.
 
    **Red CI.** The first read or a wake can find a failed check. So can a
-   `gh pr checks` read after a failed `gh pr merge`, which the session runs
-   when the merge names a check. If the agent can fix it, remove
+   `gh pr checks` read, which the session runs after each failed `gh pr
+   merge`. If the agent can fix it, remove
    `cairn/.merge-approved`.
    Then fix it on the branch, commit the fix, and re-verify. Every fix goes
    back to the user, whatever its size and whatever the guard's restore
