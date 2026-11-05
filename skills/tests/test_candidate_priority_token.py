@@ -268,7 +268,13 @@ class TestFiredTriggerReRated(unittest.TestCase):
 
     def test_rung_names_the_parked_held_row(self):
         self.assertIn(
-            "a `[parked]` row whose promotion condition has held is proposed for one of two changes",
+            "if it does neither, it proposes one of two changes for that row, each with a reason",
+            self.step(2),
+        )
+
+    def test_rung_still_allows_route_and_drop(self):
+        self.assertIn(
+            "the class can route or drop a `[parked]` row whose promotion condition has held",
             self.step(2),
         )
 

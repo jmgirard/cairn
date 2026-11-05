@@ -2410,7 +2410,13 @@ REGISTRY = [
         guard="test_candidate_priority_token",
         test="TestFiredTriggerReRated.test_rung_names_the_parked_held_row",
         target="skills/cairn-triage/SKILL.md",
-        block="a `[parked]` row whose promotion condition\n     has held is proposed for one of two changes",
+        block="If it does neither, it\n     proposes one of two changes for that row, each with a reason.",
+    ),
+    Mutation(
+        guard="test_candidate_priority_token",
+        test="TestFiredTriggerReRated.test_rung_still_allows_route_and_drop",
+        target="skills/cairn-triage/SKILL.md",
+        block="the class can route or drop a `[parked]`\n     row whose promotion condition has held.",
     ),
     Mutation(
         guard="test_candidate_priority_token",

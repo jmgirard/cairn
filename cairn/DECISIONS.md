@@ -8719,3 +8719,11 @@ context. Then this text is not doing its job, and the fix is not a longer text.
 **Rejected:** Keeping the route to Readiness and letting a promote carry a rung other than `high`, because D-179 ties a promote to `high` and the user asked that it stay. Falsified if an operator cannot tell a row ready to plan from a row re-rated after its trigger fired.
 
 **Consequences:** A triage pass proposes fewer promotes and more priority changes off parked. A normal or low row whose trigger fired also reaches the Rung class, where it can move up or stay.
+
+### D-244 (2026-11-05): A parked row whose condition has held can still be routed or dropped by the Rung class — supersedes D-243's clause that such a row "takes one of two Rung class changes"; D-243's decision otherwise stands (M337 implement)
+
+**Context:** M337's planted-row reader found that the skill sentence D-243 describes left no `route` or `drop` for a parked row whose condition has held, though the Rung class offers both. D-243 is history, so its clause is corrected here.
+
+**Decision:** A parked row whose condition has held, and that the Rung class does not route or drop, takes one of D-243's two changes: a move off parked, usually to normal, or staying parked with a new condition that has not held. The Rung class can still route such a row to Known issues or drop it, with a reason.
+
+**Consequences:** No row that the Rung class could route or drop before M337 loses that option.

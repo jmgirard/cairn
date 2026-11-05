@@ -428,8 +428,9 @@ re-examines a lesson.
      above leave `keep` or propose for `compress`, or that the Title class
      below proposes for `retitle`, the pass can propose
      any rung it judges right, up or down by any number of rungs, with a
-     reason. Among those rows, a `[parked]` row whose promotion condition
-     has held is proposed for one of two changes, each with a reason. The
+     reason. Among those rows, the class can route or drop a `[parked]`
+     row whose promotion condition has held. If it does neither, it
+     proposes one of two changes for that row, each with a reason. The
      first is a priority change off parked to the rung the pass judges
      right, usually normal. The second keeps the row parked with a new
      condition that has not held. The holds and filters of this step still
