@@ -166,9 +166,8 @@ only skips the comment. A typed comment, with or without a draft, posts as
 typed, once the session restores a dropped review link or adds a missing one.
 The session writes that text to the temp file. Typed text that asks for a
 change and is not a comment, such as "shorten it", changes the draft, and the
-chip shows it again. A hold posts
-no comment and resolves no thread of that review. An owner-mode round posts
-or resolves with no question.
+chip shows it again. A hold posts no comment and resolves no thread of that review.
+An owner-mode round posts or resolves with no question.
 
 **The post.** Read the operator's comments again, and post nothing for a
 review that one of them now carries. Post the temp file with
