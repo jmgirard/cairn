@@ -77,6 +77,7 @@ A Copilot comment says only what the maintainers need to know, written to them, 
 - 2026-11-05: claim audit: about 60 claims read, 8 corrected — `skills/shared/copilot-review.md`, `skills/copilot-review/SKILL.md`, `README.md`, `CHANGELOG.md`, `skills/tests/test_copilot_review_round.py`; the same reader re-read the corrected claims and they hold.
 - 2026-11-05: left the guest limit "the one comment per Copilot review with a note" unchanged in the rulebook, the session hook, and the README, as the Out section says; it stays true as a ceiling.
 - 2026-11-05: to fit the budget, shortened the module's budget line (the reset reasons are in D-188 and D-235) and rewrapped my own paragraphs; no rule was cut outside this scope.
+- 2026-11-05: step-7 approval: m334-copilot-comment-for-maintainers approved for merge
 
 ## Decisions
 
