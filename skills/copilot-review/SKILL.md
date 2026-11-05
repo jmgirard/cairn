@@ -1,6 +1,6 @@
 ---
 name: copilot-review
-description: Handle a GitHub Copilot review on one pull request. Read each Copilot note and the review summary, and fix, reject, or defer each note. Show a draft of one PR comment for each review that has a note. The comment uses ordinary sentences that a person reading the PR can follow. The user can post it, type an edit, or hold it. After a post, resolve the notes' threads. Never reply on a thread, and never thank Copilot. Ask the user in chat, never on GitHub, about a note the agent cannot decide alone. Use when the user wants to address, answer, handle, or work through Copilot's review comments or notes on a PR.
+description: Handle a GitHub Copilot review on one pull request. Read each Copilot note and the review summary, and fix, reject, or defer each note. For each review that has a note, show a draft of one PR comment that says only what the maintainers need to know. If they need nothing, show that it gets no comment. The user can post it or resolve with no comment, type an edit, or hold it. After either, resolve the notes' threads. Never reply on a thread, and never thank Copilot. Ask the user in chat, never on GitHub, about a note the agent cannot decide alone. Use when the user wants to address, answer, handle, or work through Copilot's review comments or notes on a PR.
 argument-hint: "[PR number or URL]"
 ---
 
@@ -77,7 +77,7 @@ numbered step below (session start implicit).
    chat. Use one `AskUserQuestion` chip with one question per such note,
    four questions per chip, and more chips for more notes. Put the agent's
    recommended disposition first.
-   That note's review gets no comment until the user answers.
+   That note's review is not settled until the user answers.
    Never post a question for the user to GitHub.
 
    Read `git log` on the checked-out head first. A note that a pushed
@@ -100,15 +100,20 @@ numbered step below (session start implicit).
    If the push fails, end with a close block that names the local commits.
 
 6. **Comment.** For each Copilot review that has a note and that no
-   comment by the operator links yet, write the module's one comment (§5)
+   comment by the operator links yet, settle it by the module's test (§5).
+   If the maintainers need something from it, write one comment to them
    in ordinary sentences with a markdown link to the review. Someone who
    has not seen this session can follow it on one read.
-   It never thanks Copilot. Show each draft in
-   the module's draft chip (§5), then post each one the user approves. A
+   It never thanks Copilot. If they need nothing, it gets no comment. Show
+   each draft in
+   the module's draft chip (§5), then post each one the user approves. The
+   same chip shows a review with no comment, and a typed comment posts as
+   the module says. A
    hold posts no comment for that review. Post no reply on a thread.
 
 7. **Resolve.** Resolve each unresolved Copilot thread tied to a review
-   whose comment posted, and each unresolved Copilot thread of a review
+   whose comment posted, or that the user chose to resolve with no comment.
+   Also resolve each unresolved Copilot thread of a review
    that an earlier comment by the operator already links (module §5). A
    held review's threads stay open.
 

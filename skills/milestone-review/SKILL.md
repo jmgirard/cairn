@@ -666,7 +666,7 @@ the session, re-enters here, at the step the record shows is next:
    no-added-wait rule. Each
    unresolved Copilot thread then takes its disposition, body findings are
    matched to their threads, each Copilot review that has a note gets the
-   module's one comment, the resolves follow (§5), and
+   module's comment or none by its test, the resolves follow (§5), and
    the `copilot:` lines and the level, pending, or reason line follow §6.
    An empty read is stated in one line. Each disposition is logged in the
    Review section as one line (`conversation: <author> <path:line or PR> —

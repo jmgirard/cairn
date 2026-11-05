@@ -4,6 +4,17 @@
 
 ### Changes that affect existing repos
 
+- **A Copilot comment goes out only when the maintainers need it.** In every
+  mode, the comment is written to the maintainers and says only what they
+  need to know from the review. It no longer has to name each fix or note,
+  give a commit, or give a reason for a note left alone. If they need nothing,
+  the review gets no comment and its threads are resolved, so a note can go
+  unmentioned on GitHub. You still see each note's outcome in chat. In a guest
+  repo and in `/copilot-review`, Claude first shows you the draft, or that the
+  review gets no comment. You can post it or resolve with no comment, type a
+  comment, or hold it. A review with a finding
+  only in its summary and no comment comes up again on a later run.
+
 - **The session-start text covers work that no rule covers.** This rule
   applies in owner and guest mode. If no cairn route or rule covers a task, the
   text tells the session to say so before it starts. It also tells it to name
@@ -348,22 +359,20 @@
   have the token proposed for rows that wait on a condition, run
   `/cairn-triage`.
 
-- **The Copilot round answers each review in one comment.** In every mode,
-  the round in `/hotfix` and `/milestone-review` and `/copilot-review` no
-  longer reply on each Copilot thread. For each Copilot review with an
-  open note they post one PR comment, in place of a reply on each note. It
-  reads as you would write to a reviewer, in ordinary sentences, and someone
-  who has not seen the session can follow it on one read. It links the
-  review, names each fix, and names any other note that a person reading the
-  PR could ask about. A note that needs no action can go unmentioned, and
-  its thread still resolves. It goes once every note is settled and each
+- **The Copilot round answers each review in at most one comment.** In every
+  mode, the round in `/hotfix` and `/milestone-review` and `/copilot-review` no
+  longer reply on each Copilot thread. A Copilot review with an open note gets
+  at most one PR comment, in place of a reply on each note. It is in ordinary
+  sentences, and someone who has not seen the session can follow it on one
+  read. It links the review. It goes once every note is settled and each
   fix is pushed. In a guest
-  repo and in `/copilot-review`, Claude shows you each draft first, and you
-  can post it, type your own version, or hold it. A hold posts nothing and
+  repo and in `/copilot-review`, Claude first shows you each draft, or that a
+  review gets no comment. You can post it or resolve with no comment, type your
+  own version, or hold it. A hold posts nothing and
   leaves that review's threads open. A guest close then gives you the
   `/copilot-review` command that finishes it while the PR is open. In your
   own repos the round
-  posts with no question. The comment never thanks Copilot. After it,
+  asks no question. The comment never thanks Copilot. After it,
   Claude resolves that review's open threads. A
   review that one of your comments already links gets no second comment,
   and its open threads are resolved. In `/hotfix` and `/milestone-review`, a thread
@@ -522,10 +531,11 @@
   it with a PR number or URL, or with nothing for the current branch's PR.
   It reads each unresolved Copilot note and each review summary. It fixes,
   rejects, or defers each note, and pushes the fixes to the PR's branch.
-  Then it shows you a draft of one comment for each Copilot review with an
-  open note. The draft links the review, in ordinary sentences that someone
-  who has not seen the session can follow on one read. It posts each
-  comment you approve and resolves that review's threads. It asks you in
+  Then, for each Copilot review with an open note, it shows you a draft of one
+  comment, or that the review gets no comment. A draft links the review, in
+  ordinary sentences that someone who has not seen the session can follow on
+  one read. It posts each comment you approve and resolves that review's
+  threads, or resolves them with no comment if you choose that. It asks you in
   chat about a note it cannot settle alone, and it never posts
   a question to GitHub or thanks Copilot. It does not request a review: on
   a PR with no Copilot review, it gives you the request command. It works
