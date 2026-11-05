@@ -7,7 +7,7 @@
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — it changes what a `/cairn-triage` pass proposes to users
-- **Branch/PR:** m337-rerate-fired-trigger
+- **Branch/PR:** m337-rerate-fired-trigger, https://github.com/jmgirard/cairn/pull/352
 
 ## Goal
 
