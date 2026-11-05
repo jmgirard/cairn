@@ -642,9 +642,9 @@ counts as no recorded approval for routes (a) and (c).
 
    **PR-conversation read (M177).** Only when the milestone header already
    names an open PR (a return from a prior review, a resume route re-posing
-   the chip, step 2's Copilot arm) — a fresh PR is opened at step 8 after this chip and is merged
+   the chip, step 8's Red CI rule, step 2's Copilot arm) — a fresh PR is opened at step 8 after this chip and is merged
    with no read, so the read runs at most once per pass through this gate,
-   here (a resume that re-poses the chip is a new pass). When it
+   here (a resume or step 8's Red CI rule that re-poses the chip is a new pass). When it
    runs: once, immediately before the merge chip
    is posed — no added wait, not re-run after fix-now commits — and
    unconditional, independent of the step-5 lens's probe gate (one PR's
@@ -805,12 +805,14 @@ counts as no recorded approval for routes (a) and (c).
    agent can fix it, remove `cairn/.merge-approved`. Then fix it on the
    branch, commit the fix, and re-verify. Every fix goes back to the user,
    whatever its size. Do not push the fix. Run step 7's PR-conversation
-   read and blocking rule, and re-pose step 7's merge chip. The chip's
-   question text names the failed check and says in plain words what the
+   read and blocking rule, and re-pose step 7's merge chip. A Copilot fix
+   from that read pushes the branch, and that push carries the fix. The
+   chip's question text names the failed check and says in plain words what the
    fix changed. On approval, append and commit a new `step-7 approval:`
    line, and run this step again from the push. That run writes the marker
    and notes the new PR head before the next CI wait. A decline takes step
-   7's decline exit.
+   7's decline exit. If the agent cannot fix the check, stop with a close
+   block that names it.
 
    When green:
    `gh pr merge <N> --squash --delete-branch` with a clean summary message —
@@ -844,12 +846,13 @@ counts as no recorded approval for routes (a) and (c).
    A companion's red CI that the agent fixes goes back to the user before
    that companion merges. The fix stays unpushed. Re-pose step 7's merge
    chip. It names the companion PR, the failed check, and what the fix
-   changed. Step 7's PR-conversation read stays on the primary's PR. On
-   approval, append and commit a new `step-7 approval:` line in the
-   primary's work log, and resume this arm at that companion's push. A
-   decline takes step 7's decline exit. On re-entry, read `cd <abs-path> &&
-   git rev-list <branch> --not origin/<branch>` when the companion has an
-   open PR. If that lists commits, that chip comes before the arm's push.
+   changed. Step 7's PR-conversation read stays on the primary's PR, so it
+   runs only when that PR is open. On approval, append and commit a new
+   `step-7 approval:` line in the primary's work log, and resume this arm
+   at that companion's push. A decline takes step 7's decline exit. On
+   re-entry, read `cd <abs-path> && git rev-list <branch> --not
+   origin/<branch>` when the companion has an open PR. If that lists
+   commits or the read fails, that chip comes before the arm's push.
    The arm is absent in guest mode.
 
    **Guest arm — the handoff sequence**, in place of the marker, the CI

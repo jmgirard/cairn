@@ -8,10 +8,12 @@
   After you approve a merge, CI can fail, and `/milestone-review` can fix the
   code. It now asks you to approve the merge again, whatever the fix's size.
   The question names the failed check and says what the fix changed. Before,
-  a fix that the session judged small merged with no question. The fix is not
-  pushed until you approve. The session removes your earlier approval before
-  it starts the fix. A decline also removes it, and a later resume does not
-  count the earlier approval. `/hotfix` already asked again. Both skills also
+  a fix that the session judged small merged with no question. The session
+  does not push the fix before it asks, but a resume or a Copilot fix at that
+  question can. The session removes its approval marker, the file that the
+  merge guard reads, before it starts the fix. A decline also removes that
+  marker, and a later resume does not count the earlier approval. `/hotfix`
+  already asked again. Both skills also
   give checks up to about a minute to appear on a PR pushed moments ago, as
   they do for a new PR.
 
