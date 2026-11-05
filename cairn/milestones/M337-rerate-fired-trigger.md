@@ -1,13 +1,13 @@
 # M337: Re-rate a row whose trigger fired
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — it changes what a `/cairn-triage` pass proposes to users
-- **Branch/PR:** —
+- **Branch/PR:** m337-rerate-fired-trigger
 
 ## Goal
 
@@ -41,7 +41,7 @@ When `/cairn-triage` finds that a candidate row's promotion trigger has fired, i
 
 ## Tasks
 
-- [ ] T1: Edit `skills/cairn-triage/SKILL.md` step 2: the Staleness sentence (AC1), the Readiness class's ground (AC2), and a Rung class sentence for a parked row whose condition has held (AC3). Keep the step-3 sentence "A row whose condition has held usually moves up, as in `priority: parked → normal`" and check that step 3 and the close block say nothing that still ties a fired trigger to `promote`.
+- [x] T1: Edit `skills/cairn-triage/SKILL.md` step 2: the Staleness sentence (AC1), the Readiness class's ground (AC2), and a Rung class sentence for a parked row whose condition has held (AC3). Keep the step-3 sentence "A row whose condition has held usually moves up, as in `priority: parked → normal`" and check that step 3 and the close block say nothing that still ties a fired trigger to `promote`.
 - [ ] T2: Add prose guards in `skills/tests/test_candidate_priority_token.py` for the three new sentences, with entries in `skills/tests/test_mutation_harness.py`, giving the "when this applies" half of each its own entry; hand-run `python3 -m unittest discover -s skills/tests`, the existing `TestPromoteCarriesHigh.test_readiness_class_states_it` case included.
 - [ ] T3: Add the README.md sentence (AC4) and the CHANGELOG.md Unreleased entry; grep README and the skills for the old phrasing first.
 - [ ] T4: Append the D-entry (AC5).
@@ -57,3 +57,4 @@ When `/cairn-triage` finds that a candidate row's promotion trigger has fired, i
 - 2026-11-05: question set: none posed — the user chose the change ("Yes, plan it") after the diagnosis, and no open choice is the user's alone.
 - 2026-11-05: approach: the fired-trigger row goes on to the Rung class; rejected: keeping it in Readiness and letting `promote` carry a rung other than `high`, because D-179 ties a promote to `high` and the user asked that it stay. Falsified if a pass leaves rows whose trigger fired on parked, or a user cannot tell a ready row from a re-rated one.
 - 2026-11-05: criteria audit (full, Opus): 10 findings. Taken: AC1 says Staleness does not fire; AC2 removes the old ground and leaves Amend free; AC3 names every hold and allows a new condition; AC4 drops the false "only when it promotes"; AC6 states the branch's text with the reader as the check, plants in-repo triggers, softens main's expectation, and adds P4. AC5 had none. The hand-run guard check went to T2.
+- 2026-11-05: T1 done: Staleness no longer fires on a fired-trigger row, Readiness drops the fired-trigger ground and binds only the pass's proposal, Rung names the two changes for a parked row whose condition held; step 3 and the close block needed no change. My new sentences carry no simple-english lint hit (file 221 hits, main 222).

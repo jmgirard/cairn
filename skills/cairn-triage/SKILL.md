@@ -372,7 +372,9 @@ re-examines a lesson.
      repo root, then under `cairn/` — provenance shorthand omits that
      prefix — before calling it dead). A dead citation with a live trigger
      is `compress`, not `drop`. A fired trigger whose work is still undone
-     goes to Readiness, not to a drop. In guest mode a code path is checked with
+     is not a drop. Staleness does not fire on that row, so it decides
+     nothing for it, and the row goes on to the classes below. In guest
+     mode a code path is checked with
      `git cat-file -e <base>/<default-branch>:<path>` (the tracking-rules
      git model's base remote and default branch) in place of `ls`, a fired
      trigger or an *already shipped* drop is judged at that ref too, and an
@@ -412,8 +414,12 @@ re-examines a lesson.
      the repo lives with, or a Known issues entry the pass judges worth
      doing. The reason says why.
    - **Readiness → `promote`.** The pass judges the work wanted now,
-     because its trigger has fired or because something it read says so,
-     and the reason names that. The close block hands it on. A promoted
+     because something it read says so. A fired trigger alone does not
+     make the work wanted now, since it shows only that the row's wait is
+     over. A proposed `promote` names in its reason what the pass read
+     that shows the work is wanted now, beyond the trigger firing. This
+     binds the pass's proposal, not a `promote` the user sets at *Amend*.
+     The close block hands it on. A promoted
      candidate row that does not open with `[high]` takes the priority
      change to `high`.
    - **Rung → a priority change, `route`, or `drop`.** The ladder runs
@@ -422,7 +428,15 @@ re-examines a lesson.
      above leave `keep` or propose for `compress`, or that the Title class
      below proposes for `retitle`, the pass can propose
      any rung it judges right, up or down by any number of rungs, with a
-     reason. A move to parked carries a condition change: the pass drafts
+     reason. Among those rows, a `[parked]` row whose promotion condition
+     has held is proposed for one of two changes, each with a reason. The
+     first is a priority change off parked to the rung the pass judges
+     right, usually normal. The second keeps the row parked with a new
+     condition that has not held. The holds and filters of this step still
+     apply to that row. They are the started-token, PR-named,
+     live-milestone, merge-survivor, and finding-absorbing holds, and the
+     kept-mark filter. A move to parked
+     carries a condition change: the pass drafts
      one condition that has not held, `promote when <condition>`, unless
      the row already states one that has not held. For a review finding that no documented or common use
      reaches, the drafted condition is `promote when a user reports it`. A
