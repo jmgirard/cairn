@@ -123,8 +123,8 @@ regression reopens that work.
 Beside it, report the rulebook's mass the same way: measure
 `skills/shared/tracking-rules.md` with `wc -l -c` and report current
 lines/bytes and the growth since the recorded baseline —
-894 lines / 88,669 bytes (M335, 2026-11-05, the whole file after M335
-narrowed the cap stop's push to a work branch; the prior seed was
+894 lines / 88,741 bytes (M335, 2026-11-05, the whole file after M335
+narrowed the cap stop's push and let a stop's row commit pass other paths; the prior seed was
 M332's 894 lines / 88,662 bytes; bytes, because a
 character count changes with the locale; re-seed these figures only when
 a later pass changes the file deliberately). Reporting only, same boundary

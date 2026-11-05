@@ -55,18 +55,20 @@ can resolve against the fork instead of the base repo.
    over-the-bar route, the owner arm's withdrawn approval included, the
    open-PR cap stop, and the merged-PR re-entry's decline. It does not
    cover the row of a merged PR over the hotfix bar, which step 7 writes.
-   In guest mode the row stays on disk with no commit.
-   In both modes, unless the stop names its own next command, the close
-   block fences `/milestone-plan` with the row's short title.
-   If the row already holds what the stop would add, make no edit and no
-   commit.
+   In guest mode the row stays on disk with no commit, and the rest of
+   this paragraph does not apply.
+   Unless the stop names its own next command, the close block fences
+   `/milestone-plan` with the row's short title.
    Find `<base>` and the default branch by the rulebook's recipe. If the
-   repo has no remote, the recipe asks the user. First check that the
+   repo has no remote, the recipe asks the user. A recipe that names no
+   default branch counts as a failed check. First check that the
    checkout is on the default branch and that `cairn/ROADMAP.md` has no
    uncommitted change. Run `git fetch <base>` and
    `git pull --ff-only <base> <default-branch>`, then check that the
-   checkout is level with `<base>/<default-branch>`. Then edit the row and
-   show it verbatim in chat (the durable-record preview). Run
+   checkout is level with `<base>/<default-branch>`.
+   If `cairn/ROADMAP.md` then holds what the stop would add, make no edit
+   and no commit, and the close block names the row. Otherwise edit the
+   row and show it verbatim in chat (the durable-record preview). Run
    `git add -- cairn/ROADMAP.md`,
    `git commit -m "<one-line summary>" -- cairn/ROADMAP.md`, and
    `git push <base> HEAD:<default-branch>`.
@@ -87,7 +89,8 @@ can resolve against the fork instead of the base repo.
    `git reset --keep HEAD~1`. It fences `/hotfix` with the same argument,
    to run after the undo.
    If the stop guard blocks the turn end on a change the stop did not
-   make, leave that change uncommitted. End with the same close block.
+   make, leave that change uncommitted. End with the close block that
+   this paragraph gives for the stop's outcome.
    **Idea vet (M306).** Every entry that runs this tier check, and the
    owner arm's resumed merge below, also vets the behavior that the fix
    or the PR diff produces, documented behavior included. It asks
@@ -688,7 +691,8 @@ can resolve against the fork instead of the base repo.
    those edits, step 7 adds the candidate row for each flaw that step 1's
    idea vet found in what the fix leaves as it was. On the merged-PR
    re-entry's over-the-bar disposition, step 7 also writes that route's
-   candidate row in its one docs-only commit (guest mode: on disk).
+   candidate row in its one docs-only commit (guest mode: on disk). The
+   close block fences `/milestone-plan` with that row's short title.
    In owner mode, every ROADMAP edit step 7 makes on any path, the
    candidate rows added above included, lands in one docs-only commit on the
    default branch. Run step 2's `git status` check first, then check out

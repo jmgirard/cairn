@@ -338,8 +338,8 @@ is quoted verbatim from the full entry, never the heading. Prior state is surfac
   commits are cheap — squash erases them. Exception: an adopted external PR keeps the contributor's branch and its name.
 - Before branching or committing, check `git status`: a dirty tree with unrelated changes means ask the user — never
   sweep strangers into a checkpoint commit. Inside a run the agent leaves them unstaged and logs a work-log line
-  instead. If the default branch moves under an active branch, merge it into the branch
-  and re-run tests before continuing or reviewing.
+  instead. A `/hotfix` stop's row commit leaves them too, by path, and names them. If the default branch moves under
+  an active branch, merge it into the branch and re-run tests before continuing or reviewing.
 - **Nothing reaches the default branch without the user's explicit approval at the merge question**, or for a
   trivial-tier commit the user's own request or `/milestone-plan`'s tier chip. Never force-push (the
   force_push_guard hook denies it on the default branch); never merge red or pending CI.

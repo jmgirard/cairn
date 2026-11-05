@@ -42,7 +42,7 @@ In owner mode, a candidate row that a `/hotfix` step 1 stop writes reaches the d
 - AC3 → T1
 - AC4 → T2
 - AC5 → T3
-- AC6 → T1, T2, T5
+- AC6 → T1, T2, T5, T7
 - AC7 → T4
 - AC8 → T6
 
@@ -54,6 +54,7 @@ In owner mode, a candidate row that a `/hotfix` step 1 stop writes reaches the d
 - [x] T4: Add the CHANGELOG entry. Grep `README.md` and `skills/` for text about a hotfix stop's row and fix what the change makes stale. Append a D-entry that annotates D-042 and D-225 (the close block can be a stop's only record of a row) and records that the work passes D-108's door on its retained trigger.
 - [x] T5: Give a fresh Opus reader `skills/hotfix/SKILL.md`, the rulebook, and AC6's cases, each with its facts in neutral words, and have each answer quote its deciding sentence. Fix any case the text leaves open. After any later edit to a quoted sentence, rerun that case.
 - [x] T6: Run the five `verify` commands, each with its own exit code. Hand-run the `skills/tests` guards that pin this text (`test_hotfix_candidate_graduation`, `test_resume_routing`, `test_external_pr_intake`, `test_idea_vet`), and re-pin what T1 and T2 moved.
+- [x] T7: Review return 1: name the close block's next command once step 7 writes the row (AC6), and make the fix-now items that the return's work-log line lists.
 
 ## Work log
 
@@ -79,6 +80,7 @@ In owner mode, a candidate row that a `/hotfix` step 1 stop writes reaches the d
 - 2026-11-05: claim audit: 29 claims read, 4 corrected — CHANGELOG.md, skills/hotfix/SKILL.md (the cap's failed read, a push-only failure, the guest fence, a failed restore); the loose "pushes no branch" also became "pushes no work branch" (Scope In follows; rulebook baseline re-seeded to 894 lines / 88,669 bytes); the one re-read found all corrected claims true, and case (g) has no conflict.
 - 2026-11-05: T6 done: `skills/tests` hand-run green after two re-pins and the baseline re-seed; verify run on the final text.
 - 2026-11-05: review return 1: AC6 case (e) is open, since no sentence names the close block's next command once step 7 writes the row. Also owed from pass 1's fix-now list in the Review section: README's cap sentence; a recipe that names no branch; the row read moved after the level check; the fence made owner mode only (CHANGELOG too); "the same close block" reworded; the rulebook's exception for other uncommitted paths with its baseline re-seed; the parked row "Keep staged files on a row push undo".
+- 2026-11-05: T7 done: step 7 names the close block's next command; step 1's row read follows the level check, a recipe with no branch counts as a failed check, and the fence is owner mode only; README, CHANGELOG, and the rulebook follow; baseline re-seeded to 894 lines / 88,741 bytes.
 
 ## Decisions
 
