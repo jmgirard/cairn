@@ -77,7 +77,7 @@ numbered step below (session start implicit).
    chat. Use one `AskUserQuestion` chip with one question per such note,
    four questions per chip, and more chips for more notes. Put the agent's
    recommended disposition first.
-   That note's review gets no comment until the user answers.
+   That note's review is not settled until the user answers.
    Never post a question for the user to GitHub.
 
    Read `git log` on the checked-out head first. A note that a pushed
@@ -107,7 +107,8 @@ numbered step below (session start implicit).
    It never thanks Copilot. If they need nothing, it gets no comment. Show
    each draft in
    the module's draft chip (§5), then post each one the user approves. The
-   same chip shows a review with no comment. A
+   same chip shows a review with no comment, and a typed comment posts as
+   the module says. A
    hold posts no comment for that review. Post no reply on a thread.
 
 7. **Resolve.** Resolve each unresolved Copilot thread tied to a review

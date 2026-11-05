@@ -10,8 +10,9 @@
   give a commit, or give a reason for a note left alone. If they need nothing,
   the review gets no comment and its threads are resolved, so a note can go
   unmentioned on GitHub. You still see each note's outcome in chat. In a guest
-  repo and in `/copilot-review`, Claude shows you this first. You can resolve
-  with no comment, type a comment, or hold it. A review with a finding
+  repo and in `/copilot-review`, Claude first shows you the draft, or that the
+  review gets no comment. You can post it or resolve with no comment, type a
+  comment, or hold it. A review with a finding
   only in its summary and no comment comes up again on a later run.
 
 - **The session-start text covers work that no rule covers.** This rule

@@ -148,7 +148,7 @@ class TestCopilotReviewSkill(unittest.TestCase):
         self.assertIn("Use one `AskUserQuestion` chip", self.decide)
 
     def test_that_review_waits_for_the_answer(self):
-        self.assertIn("That note's review gets no comment until the user "
+        self.assertIn("That note's review is not settled until the user "
                       "answers.", self.decide)
 
     def test_no_question_goes_to_github(self):
@@ -183,11 +183,11 @@ class TestNoThanks(unittest.TestCase):
 
 
 class TestOneComment(unittest.TestCase):
-    """M314 AC1, M331 AC1 and AC5, M332 AC3: the module answers each Copilot review
-    with one comment and no thread reply, after every note has a disposition
-    and each fix is pushed, links the review, names what a reader could ask
-    about, resolves after it, and posts no second comment for a review an operator
-    comment links. One test per clause."""
+    """M314 AC1, M331 AC1 and AC5, M332 AC3, M334 AC1 and AC2: the module settles
+    each Copilot review with at most one comment and no thread reply, after every
+    note has a disposition and each fix is pushed, links the review, says only
+    what the maintainers need, resolves after it, and posts no second comment for
+    a review an operator comment links. One test per clause."""
 
     def setUp(self):
         module = read("shared", "copilot-review.md")
@@ -298,8 +298,9 @@ class TestDraftChip(unittest.TestCase):
                       self.draft)
 
     def test_a_typed_edit_keeps_the_link(self):
-        self.assertIn("A typed edit posts as typed, once the session restores "
-                      "a dropped review link.", self.draft)
+        self.assertIn("A typed comment, with or without a draft, posts as "
+                      "typed, once the session restores a dropped review link "
+                      "or adds a missing one.", self.draft)
 
     def test_a_hold_posts_nothing(self):
         self.assertIn("A hold posts no comment and resolves no thread of that "
@@ -318,7 +319,8 @@ class TestDraftChip(unittest.TestCase):
         opt_in = flat(section(self.module, "## 1. Opt-in",
                               "**Off but present"))
         self.assertIn("with no question (M231), except that a guest-mode "
-                      "round shows each draft first (§5).", opt_in)
+                      "round shows each draft, or that a review gets no "
+                      "comment, first (§5).", opt_in)
 
     def test_report_names_a_hold_and_its_resume(self):
         report = flat(section(self.module, "## 6.", "`/milestone-review` "

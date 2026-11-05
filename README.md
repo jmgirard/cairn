@@ -1049,9 +1049,9 @@ actually reach.
   in ordinary sentences to the maintainers. It says only what they need to
   know from the review, and someone who has not seen the session can follow
   it on one read. It links the review and never thanks Copilot. If they need
-  nothing, there is no comment, and you see each note's outcome in chat. A
-  review with a finding only in its summary and no comment comes up again
-  on a later run. Claude then resolves that review's open threads. A
+  nothing, there is no comment, and you see each note's outcome in chat.
+  Claude then resolves that review's open threads. A review with a finding
+  only in its summary and no comment comes up again on a later run. A
   thread that `/milestone-review` returns to implement holds back its
   review's comment, and its threads stay open for a later pass. A review
   your comment already links gets no second comment, and its open threads
@@ -1064,7 +1064,8 @@ actually reach.
   threads open, and `/copilot-review` finishes the review while the PR is
   open.
   `/copilot-review` runs the same read, comments, and resolves on one PR
-  without the line, and it always shows each draft first. It never requests
+  without the line, and it always shows each draft, or that a review gets no
+  comment, first. It never requests
   a review. A `pull_request`-triggered CI suite also runs on the early
   push and the fix pushes. A hotfix opens its PR before its approval chip;
   a decline there closes the PR and keeps the branch. In guest mode the

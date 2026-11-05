@@ -5,12 +5,10 @@ where they request Copilot and read the PR's conversation. With the round
 off, they read §1 and §3 at the closes §1 names. `/copilot-review` runs §3
 to §6 on one PR. It is a module of `tracking-rules.md`, read only then.
 
-Budget (M231, plus headroom, reset at M287 for the summary reply and the
-unsettled-note rule, D-188, and at M331 for the comment's wording and the
-draft chip, D-235): **under 200 lines and under 12,000 bytes**,
-hand-read with `wc -l -c` at hygiene passes, covered by no
-validator. Over either figure, compress or retire content here, never "let
-it grow".
+Budget (M231, reset at M287, D-188, and M331, D-235):
+**under 200 lines and under 12,000 bytes**, hand-read with `wc -l -c` at
+hygiene passes, covered by no validator. Over either figure, compress or
+retire content here, never "let it grow".
 
 ## 1. Opt-in
 
@@ -19,9 +17,10 @@ If the `# Copilot review:` header line of `cairn/PROFILE.md` reads `on`
 No line, or any other value, means off: the PR opens
 after the merge approval (D-138), and the skill writes nothing to the PR,
 but its recap can carry the note below. The opt-in line also
-permits the round's outward writes (the request, fix pushes, the comment
-on each review, resolves) and its thread dispositions, with no question
-(M231), except that a guest-mode round shows each draft first (§5). The
+permits the round's outward writes (the request, fix pushes, a review's
+comment, resolves) and its thread dispositions, with no question
+(M231), except that a guest-mode round shows each draft, or that a review
+gets no comment, first (§5). The
 round keeps no record that it ran. The PR's signals (§2)
 decide each step (RR17).
 
@@ -162,10 +161,12 @@ draft, four per chip, and more chips for more drafts. A draft of at most
 800 characters sits in the question text, and a longer one is cited by the
 path of its temp file. The options are to post it and to hold it. A review
 with no comment shows that in the same chip, with options to resolve its
-threads with no comment and to hold. A typed edit posts as typed, once the
-session restores a dropped review link. The session writes that text to the
-temp file. Typed text that asks for a change and is not a comment, such as
-"shorten it", changes the draft, and the chip shows it again. A hold posts
+threads with no comment and to hold. With no open thread, the first option
+only skips the comment. A typed comment, with or without a draft, posts as
+typed, once the session restores a dropped review link or adds a missing one.
+The session writes that text to the temp file. Typed text that asks for a
+change and is not a comment, such as "shorten it", changes the draft, and the
+chip shows it again. A hold posts
 no comment and resolves no thread of that review. An owner-mode round posts
 or resolves with no question.
 

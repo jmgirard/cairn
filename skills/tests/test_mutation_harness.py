@@ -4240,7 +4240,7 @@ REGISTRY += [
         guard="test_copilot_review_round",
         test="TestCopilotReviewSkill.test_that_review_waits_for_the_answer",
         target=COPILOT_SKILL,
-        block="That note's review gets no comment until the user answers.",
+        block="That note's review is not settled until the user answers.",
     ),
     Mutation(
         guard="test_copilot_review_round",
@@ -4356,7 +4356,7 @@ REGISTRY += [
         guard="test_copilot_review_round",
         test="TestDraftChip.test_a_typed_edit_keeps_the_link",
         target=COPILOT_MODULE,
-        block="session restores a dropped review link.",
+        block="session restores a dropped review link or adds a missing one.",
     ),
     Mutation(
         guard="test_copilot_review_round",
@@ -4374,7 +4374,7 @@ REGISTRY += [
         guard="test_copilot_review_round",
         test="TestDraftChip.test_opt_in_states_both_arms",
         target=COPILOT_MODULE,
-        block="except that a guest-mode round shows each draft first (§5).",
+        block="except that a guest-mode round shows each draft, or that a review",
     ),
     Mutation(
         guard="test_copilot_review_round",
