@@ -115,7 +115,8 @@ the session, re-enters here, at the step the record shows is next:
 
 A `step-7 decline:` line newer than the latest `step-7 approval:` line,
 by its place in the work log, counts as no recorded approval for routes
-(a) and (c).
+(a) and (c). With such a line, step 8's companion arm waits until step 7
+records a new approval.
 
 ## Workflow
 
@@ -810,7 +811,8 @@ by its place in the work log, counts as no recorded approval for routes
    back to the user, whatever its size and whatever the guard's restore
    note says. Do not push the fix. Run step 7's PR-conversation read and
    blocking rule, and re-pose step 7's merge chip. On a PR from step 2's
-   Copilot arm, a fix-now push from that read carries the fix. The chip's
+   Copilot arm, a fix-now push from that read carries the fix. Compute step
+   7's changed-snapshot list again on the fix's head. The chip's
    question text names the failed check and says in plain words what the
    fix changed. On approval, append and commit a new `step-7 approval:`
    line, and run this step again from the push. That run writes the marker
@@ -850,13 +852,14 @@ by its place in the work log, counts as no recorded approval for routes
    each companion's state.
    A companion's red CI that the agent fixes goes back to the user before
    that companion merges. Remove any `<abs-path>/cairn/.merge-approved`
-   first. The fix stays unpushed. Re-pose step 7's merge
+   first. Re-verify, and the fix stays unpushed. Re-pose step 7's merge
    chip. It names the companion PR, the failed check, and what the fix
    changed. Step 7's PR-conversation read stays on the primary's PR, so it
    runs only when that PR is open. On approval, append and commit a new
    `step-7 approval:` line in the primary's work log, and resume this arm
    at that companion's push. The companion's PR is already open, so skip
-   its `gh pr create` and URL append. A decline takes step 7's decline exit. On
+   its `gh pr create` and URL append. A rejected push stops as the Red CI
+   rule says. A decline takes step 7's decline exit. On
    re-entry, read `cd <abs-path> && git rev-list <branch> --not
    origin/<branch>` when the companion has an open PR. If that lists
    commits or the read fails, that chip comes before the arm's push.
