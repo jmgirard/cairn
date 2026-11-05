@@ -31,7 +31,7 @@ In owner mode, a candidate row that a `/hotfix` step 1 stop writes reaches the d
 - [x] AC3: Step 1 states that with no remote the run skips the fetch, the pull, the level check, and the push, and that the close block says the commit is local and nothing was pushed.
 - [x] AC4: The merged-PR re-entry's over-the-bar bullet and step 7 each state that step 7 writes that row in its one docs-only commit (guest mode: on disk). That bullet no longer says the row rides in the close block. Step 1's commit sequence states that it does not cover that row.
 - [x] AC5: The AC1 commands, with AC2's restore and undo, run as written in throwaway git repos, give these results. (a) With a bare remote and an uncommitted change in another tracked file, the remote's default branch gains one commit whose only changed path is `cairn/ROADMAP.md`, and the other file stays modified. (b) With the remote one commit ahead, the remote ends with both commits. (c) With no remote, and the fetch, pull, and push skipped, the local default branch gains that same one-path commit. (d) With a staged change in another file, the commit carries only `cairn/ROADMAP.md`, and the other file stays staged. (e) With a local default branch that diverged from the remote, the pull exits nonzero. (f) With a failing pre-commit hook, the commit exits nonzero, and the restore leaves `cairn/ROADMAP.md` with no uncommitted change. (g) With the push rejected because the remote moved, the undo leaves `cairn/ROADMAP.md` with no uncommitted change and another modified file still modified.
-- [ ] AC6: For each case below, `skills/hotfix/SKILL.md` and the rulebook it requires decide what the run does. Owner mode unless named: (a) a new bug over the hotfix bar, on the default branch, clean tree, remote present; (b) the same on a milestone branch; (c) the same on the default branch with `cairn/ROADMAP.md` already modified; (d) the same with no remote; (e) a merged PR whose diff is over the bar; (f) a merged PR with nothing owed whose acceptance chip the user declines; (g) a new bug at the open-PR cap, no matched row; (h) that cap stop on a non-default branch; (i) a push rejected after the commit; (j) a failed fetch at the stop; (k) a new bug over the hotfix bar in guest mode.
+- [x] AC6: For each case below, `skills/hotfix/SKILL.md` and the rulebook it requires decide what the run does. Owner mode unless named: (a) a new bug over the hotfix bar, on the default branch, clean tree, remote present; (b) the same on a milestone branch; (c) the same on the default branch with `cairn/ROADMAP.md` already modified; (d) the same with no remote; (e) a merged PR whose diff is over the bar; (f) a merged PR with nothing owed whose acceptance chip the user declines; (g) a new bug at the open-PR cap, no matched row; (h) that cap stop on a non-default branch; (i) a push rejected after the commit; (j) a failed fetch at the stop; (k) a new bug over the hotfix bar in guest mode.
 - [x] AC7: `CHANGELOG.md`'s Unreleased section has an entry under "Changes that affect existing repos" that says, in owner mode, a row that a `/hotfix` stop writes is now committed and pushed to the default branch, that the close block carries the row when that cannot happen, and that with no remote the commit stays local. Guest mode is named as unchanged.
 - [x] AC8: All five commands of the `verify` slot in `cairn/PROFILE.md` exit 0.
 
@@ -129,3 +129,44 @@ In owner mode, a candidate row that a `/hotfix` step 1 stop writes reaches the d
 - ripple #4: the ROADMAP still lists the absorbed row — reject, false: hygiene removes it at merge
 - copilot: skills/hotfix/SKILL.md:74 — fix now: same fix as diff-bug #8; comment and resolve wait for the next pass
 - Return floor: AC6 fails inside its domain, so the milestone returns (`review return 1`).
+- Pass 1's fix-now items: all fixed 9f967cb8 and 707c7ffa, return 1's T7.
+
+**Pass 2 (2026-11-05, head 60f21049 and its record commit).**
+
+- AC1: the text script ran again, 10 of 10.
+- AC2: 10 of 10; the stop-guard sentence now ends "the close block that this paragraph gives for the stop's outcome".
+- AC3: 2 of 2; the close block now says "any commit is local".
+- AC4: 4 of 4.
+- AC5: the seven cases ran again, 14 of 14 checks passed.
+- AC6: a fresh Opus reader decided all eleven cases with none open, and step 7's fence now decides case (e). A second fresh reader reran cases (b), (c), (d), and (j) after pass 2's edit to their sentences, with none open.
+- AC7: 6 of 6, and the entry names no milestone number.
+- AC8: all five `verify` commands exit 0 at 60f21049; the mod test ran 2466 tests with 0 fails; `skills/tests` hand-run green.
+- Consistency gate: `cairn_validate` passes with the one sizing advisory; no `plugins[N].version` warning; the changelog has its entry; no changed snapshot files; no check runs on the PR, and the profile says this repo has no CI.
+- spawned: diff-bug, blame-history, prior-review, ripple
+- diff-bug #1: the failure arm's `/hotfix` fence reruns from the same checkout with no word on switching branches — fix now, fixed 60f21049
+- diff-bug #2: a resume on the PR's head branch takes the failure arm, so the withdrawn approval's row rarely commits — reject, planned change: AC1 and AC2 state both
+- diff-bug #3: a rejected step 7 push has no arm and no row names it — follow-up: extends the parked row "Say what a failed step 7 commit does", fixed 60f21049
+- diff-bug #4: the re-entry bullet's "or" sits beside step 7's fence — reject, style: the urgent arm writes no row, and a row takes the fence
+- diff-bug #5: step 7's over-the-bar row sentence has no search-first clause — reject, false: step 7 opens with that sweep
+- diff-bug #6: with no remote and the row already present, the close block claims a local commit — fix now, fixed 60f21049
+- diff-bug #7: a rerun without the undo names a level-check failure, not the stranded commit — reject, edge: only ignoring the fence's "after the undo" reaches it, outside common use, and the effect is a stop with an error
+- diff-bug #8: after a failed restore the guard blocks on the stop's own edit — reject, edge: only a held index lock reaches it, outside common use, and the effect is a warning
+- diff-bug #9: the CHANGELOG's "the stop writes nothing" is loose after a failed add or commit — fix now, fixed 60f21049
+- diff-bug #10: README's cap sentence states no failure case — reject, style: the CHANGELOG entry has the detail
+- blame-history #1: the row commit reaches the default branch with no approval at a gate, reopening pass 1's disposition — reject, false: the git model's first bullet accepts docs-only commits and says to push them immediately, and the plan and hygiene commits do so; shown at the merge question for the user's call
+- blame-history #2: the dirty-tree exception — reject, false: settled at pass 1, fixed by T7
+- blame-history #3: "pushes no work branch" — reject, planned change: settled at pass 1
+- prior-review #1: `/milestone-review`'s cap sites still say "push nothing" — reject, false: a review writes no row at the cap, so that holds for it
+- prior-review #2: Copilot's thread is answered by the diff — noted
+- ripple #1: rulebook line 343 and IP1 against the row commit — reject, false: same as blame-history #1
+- ripple #2: `skills/hotfix/SKILL.md`'s "and nothing is pushed" — reject, false: the change route is guest mode, settled at pass 1
+- ripple #3: step 2's "ask" against step 1's "with no question" — reject, false: step 2 cuts a branch, and the rulebook names the stop's exception alone
+- ripple #4: the rulebook's guest "no docs-only commit" — reject, false: that bullet is guest mode, where the row stays on disk
+- ripple #5: leaving a change uncommitted at a turn end against "stop points are commit points" — reject, planned change: AC2 states it for a change the stop did not make
+- ripple #6: `/milestone-review`'s "push nothing" — reject, false: same as prior-review #1
+- ripple #7: the ROADMAP still lists the absorbed row — reject, false: hygiene removes it at merge
+- ripple #8: "88,669" gone, 88,741 matches — noted
+- conversation: PR #350 has no human review, comment, or thread; Copilot's review is the only item.
+- copilot: skills/hotfix/SKILL.md:74 — fixed 9f967cb8
+- copilot: https://github.com/jmgirard/cairn/pull/350#pullrequestreview-5780908497 — no comment
+- Copilot level: Lite (set by GitHub's settings)
