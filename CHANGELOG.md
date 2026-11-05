@@ -9,8 +9,8 @@
   the work is over the hotfix bar, the open-PR cap is reached or cannot be
   read, or you decline a merged PR's verification. The stop now commits and
   pushes that row to the default branch before the close block. The close block
-  names the commit. If that cannot happen, the stop writes nothing, and the
-  close block shows the row and says what failed. Two examples are another
+  names the commit. If that cannot happen, the stop leaves no uncommitted row,
+  and the close block shows the row and says what failed. Two examples are another
   branch and an already modified `cairn/ROADMAP.md`. If only the push fails, the
   commit stays local, and the close block shows the row and the undo command.
   With no remote, the commit stays local. A stop with no next command of its

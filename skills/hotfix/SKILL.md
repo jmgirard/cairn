@@ -75,14 +75,15 @@ can resolve against the fork instead of the base repo.
    Other uncommitted paths stay as they are, with no question, and the
    close block names them.
    With no remote, skip the fetch, the pull, the level check, and the push.
-   The close block then says that the commit is local and that nothing was
+   The close block then says that any commit is local and that nothing was
    pushed.
    When a check, the fetch, the pull, the add, or the commit fails,
    `cairn/ROADMAP.md` ends with no uncommitted change from the stop. Make
    no edit or, after a failed add or commit, run
    `git restore --staged --worktree -- cairn/ROADMAP.md`. The close block
    then shows the row verbatim, names what failed, and fences `/hotfix`
-   with the same argument. If the restore fails too, the close block says
+   with the same argument, to run once that failure is cleared, from the
+   default branch. If the restore fails too, the close block says
    that the edit remains.
    When the push fails or is rejected, never force. The close block shows
    the row verbatim and names the local commit and the undo command
