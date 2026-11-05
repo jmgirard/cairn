@@ -168,8 +168,8 @@ change and is not a comment, such as "shorten it", changes or writes the draft,
 and the chip shows it again. A hold posts no comment and resolves no thread of that review.
 An owner-mode round posts or resolves with no question.
 
-**The post.** A review with no comment skips to the resolve. Read the
-operator's comments again, and post nothing for a
+**The post.** A review with no comment skips to the resolve.
+Read the operator's comments again, and post nothing for a
 review that one of them now carries. Post the temp file with
 `gh pr comment <N> --body-file "<path>"` (guest mode: add `--repo
 <base-repo>`). A failed post resolves no thread. Then resolve each unresolved Copilot thread tied to that
