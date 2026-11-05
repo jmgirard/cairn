@@ -111,6 +111,7 @@ In owner mode, `/milestone-review` merges a red-CI fix only after the user appro
 - 2026-11-05: review return 1: step 8's retry clause and `hooks/merge_guard_post.py`'s "without re-asking" note let a fix merge with no new approval after a `gh pr merge` that fails on a late red required check. Also fix: a rejected re-run push, the open companion PR at the resumed push, the companion's marker at a decline, "newer" defined by place in the log, and the fix-now push on a Copilot-arm PR with a batched D-entry.
 - 2026-11-05: T7 added and done for review return 1: step 8's Red CI rule covers a failed merge and a rejected push and names the Copilot-arm push, the companion arm removes its marker and skips the create on an open PR, "newer" reads by place in the log, D-242 appended. The hook's note stays unchanged: changing it would touch `/hotfix`'s retry path, and skill text already overrides it there.
 - 2026-11-05: claim audit: 10 claims read, 1 corrected — skills/milestone-review/SKILL.md. Corrected: step 8 now names the `gh pr checks` read after each failed merge, since no step read checks there. The re-read passed it and noted a limit on "when the merge names a check", so that condition was removed. Step 8's older "rewrite the marker" retry clause stays, since a rewrite after a retry changes nothing.
+- 2026-11-05: step-7 approval: m336-reask-red-ci-fix approved for merge
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
