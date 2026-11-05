@@ -802,8 +802,10 @@ by its place in the work log, counts as no recorded approval for routes
    re-read `gh pr checks` after a short wait, up to about a minute, before
    taking the no-checks case.
 
-   **Red CI.** The first read, a wake, or a failed `gh pr merge` can find a
-   failed check. If the agent can fix it, remove `cairn/.merge-approved`.
+   **Red CI.** The first read or a wake can find a failed check. So can a
+   `gh pr checks` read after a failed `gh pr merge`, which the session runs
+   when the merge names a check. If the agent can fix it, remove
+   `cairn/.merge-approved`.
    Then fix it on the branch, commit the fix, and re-verify. Every fix goes
    back to the user, whatever its size and whatever the guard's restore
    note says. Do not push the fix. Run step 7's PR-conversation read and
