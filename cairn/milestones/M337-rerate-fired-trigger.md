@@ -108,3 +108,8 @@ spawned: diff-bug, blame-history, prior-review, ripple
 - ripple #2: tracking-rules "The token goes when the condition holds" — reject, false: after the replacement the row's condition is the new one, which has not held
 - ripple #3: "the promote itself is the reason" against the new promote reason — reject, false: that sentence governs the `→ high` cell, not the promote's own reason
 - AC6 reader note: rows spell "Promote when" with a capital — reject, style (covered by #6's fix)
+- copilot: cairn/milestones/M337-rerate-fired-trigger.md:61 — reject, false: the T2 line records the nine entries T2 committed (87ed7a03 holds 9); the tenth came with the AC3 amendment, logged later, and the work log is append-only
+- copilot: https://github.com/jmgirard/cairn/pull/352#pullrequestreview-5793868270 — no comment
+- Copilot level: Lite (set by GitHub's settings)
+- conversation: PR #352 — no human review, comment, or thread; Copilot's one review (state COMMENTED, on 346b2032) handled above
+- snapshots: none changed (`git diff --name-only origin/main...HEAD` holds no `_snaps` or `__snapshots__` path)
