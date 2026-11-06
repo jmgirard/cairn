@@ -592,10 +592,11 @@ can resolve against the fork instead of the base repo.
    marker, then the CI wait, then the merge. Write the marker before the
    wait, so a run whose wait never wakes leaves it on disk for step 1's
    open-PR re-entry. Just before the marker write, read the PR head. For
-   an adopted PR, which this step does not push, one read with
+   an adopted PR, which is not pushed on approval, one read with
    `gh pr view <N> --json headRefOid` does. For an authored fix, which
-   this step pushes, `gh pr view` can still report the previous head just
-   after the push, so re-read in one Bash call until the PR head equals
+   the approval pushes (a no-op push where step 5 or the Copilot round
+   pushed it before the gate), `gh pr view` can still report the previous
+   head just after a push, so re-read in one Bash call until the PR head equals
    the head the gate showed, for at most about a minute. `<oid>` is that
    head, and a failed read inside the loop counts as no match:
 
@@ -603,8 +604,10 @@ can resolve against the fork instead of the base repo.
 
    If the PR head still differs from the head the gate showed, write no
    marker and stop with a close block that names the PR head it read and
-   the head the gate showed. Its fenced next command is `/hotfix` with the
-   PR reference, which takes any new commits through the tier-check walk.
+   the head the gate showed. A failed last read leaves the PR head blank,
+   and the close block says that read failed. Its fenced next command is
+   `/hotfix` with the PR reference, which takes any new commits through
+   the tier-check walk.
    The
    marker is `cairn/.merge-approved` (gitignored; one line:
    `hotfix <slug> approved YYYY-MM-DD for PR #<N> at <headRefOid>`, the

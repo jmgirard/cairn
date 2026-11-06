@@ -757,8 +757,9 @@ records a new approval.
    **Settle the pushed head.** After the push and any `gh pr create`
    above, and before the marker write below, read the pushed commit with
    `git rev-parse origin/<branch>`, not local `HEAD`, which the unpushed
-   URL commit moves past. This runs after every push of this step,
-   whether or not the PR already existed, a Red CI rerun's push included.
+   URL commit, where one is made, moves past. This runs after every
+   owner-mode push of this step, whether or not the PR already existed, a
+   Red CI rerun's push included. The guest arm has no marker and no wait.
    Just after a push, `gh pr view` can still report the previous head, so
    re-read the PR head in one Bash call until it equals the pushed
    commit, for at most about a minute:
@@ -767,8 +768,9 @@ records a new approval.
 
    A failed read inside the loop counts as no match. If the two commits
    on the last line differ, write no marker, arm no watch, and stop with a
-   close block that names both commits. Its fenced next command is
-   `/milestone-review M<NNN>`. Otherwise note the pushed commit as the
+   close block that names both commits. A failed last read leaves the PR
+   head blank, and the close block says that read failed. Its fenced next
+   command is `/milestone-review M<NNN>`. Otherwise note the pushed commit as the
    head the wake compares against.
    Then record the approval for the merge
    guard — write `cairn/.merge-approved` (gitignored; one line:
