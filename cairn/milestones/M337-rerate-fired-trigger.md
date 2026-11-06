@@ -70,6 +70,7 @@ When `/cairn-triage` finds that a candidate row's promotion trigger has fired, i
 - 2026-11-05: claim audit: 16 claims read, 3 corrected — CHANGELOG.md, README.md, skills/cairn-triage/SKILL.md (the old behavior overstated as every fired row; README stated a proposal as an action and left out the stay-parked option; the stay-parked option had no apply text, so steps 3 and 4 now say the new condition replaces the held one in place). The re-read found all three hold and asked that the replacement keep its position, taken.
 - 2026-11-05: implement done; skills/tests 1026 OK, scripts/tests and hooks/tests exit 0 after the last edits; lint counts on the three changed docs equal or below main's.
 - 2026-11-05: review pass 1: Copilot arm opened PR #352 and requested Copilot (pending); four lenses spawned; 23 findings: 11 fixed in 64560f98 (with D-245), 2 to candidate rows, 10 rejected; no return.
+- 2026-11-05: step-7 approval: m337-rerate-fired-trigger approved for merge
 
 ## Review
 
