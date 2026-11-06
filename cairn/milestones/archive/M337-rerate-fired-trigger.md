@@ -1,0 +1,11 @@
+# M337: Re-rate a row whose trigger fired
+
+**Status:** done (2026-11-06, PR #352 https://github.com/jmgirard/cairn/pull/352)
+
+**Goal:** When `/cairn-triage` finds that a candidate row's promotion trigger has fired, it moves the row to the rung it judges right and proposes `promote`, and so `[high]`, only when it judges the work wanted now.
+
+**Outcome:** `skills/cairn-triage/SKILL.md` step 2: Staleness no longer fires on a row whose trigger fired with work undone, and the row goes on to the later classes. Readiness drops "because its trigger has fired", and a proposed `promote` names what shows the work is wanted now beyond the trigger, which does not bind a promote set at Amend. The Rung class can route or drop a parked row whose condition has held. Otherwise it proposes a move off parked, usually to normal, or staying parked with a new condition. A row that a hold or the kept-mark filter holds takes only what that allows. Step 3 shows `condition: <held condition> → <new condition>`, and declining that condition at Amend writes a kept mark. Step 4 replaces the held condition in place however the row words it. README's ladder paragraph and a CHANGELOG entry say so. `TestFiredTriggerReRated` (15 tests) and 15 mutation entries guard the sentences. D-179's promote-to-`high` rule is unchanged.
+
+**Decisions:** D-243 (supersedes D-228's Readiness clause), D-244 (keeps route and drop for a parked held row), D-245 (corrects D-243's Context and Door; the held-row apply and Amend rules). Rejected in the work log: keeping the Readiness route and letting a promote carry another rung.
+
+**Review:** Criteria audit at plan (full, 10 findings, all taken or answered); one substantive amendment (AC3 keeps route and drop) with its re-audit (4 findings); planted-row reader and a ROADMAP dry run (no real row reached the changed classes); claim audit 16 claims, 3 corrected. Pass 1, four lenses plus Copilot: 24 items, 11 fixed, 2 to rows, 11 rejected (1 `edge`: a condition inside a short title). Copilot: one review at Lite, its note rejected, no comment. New rows: "Drop a held condition from a row" (parked, absorbs the split case), "Let Staleness see a fired row's other faults" (parked). Hygiene: `used M337` on nine lessons; one lesson captured; rank eviction removed 2026-10-01 (M210, extended M311).

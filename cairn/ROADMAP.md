@@ -1,17 +1,16 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-11-05 (M336 merged: a red-CI fix asks at the merge again; skills/tests green; validate green)_
+_Last hygiene check: 2026-11-06 (M337 merged: a fired trigger re-rates a row instead of promoting it; skills/tests green; validate green)_
 
 ## Milestones
 _Released 1.0.0 (2026-07-16) to 2.1.0 (2026-10-18), each tagged `v<version>`; 1.5.0 was cut retroactively at edb6942._
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M337 | Re-rate a row whose trigger fired | review | — | normal | milestones/M337-rerate-fired-trigger.md |
+| M337 | Re-rate a row whose trigger fired | done | — | normal | milestones/archive/M337-rerate-fired-trigger.md |
 | M336 | Ask again before merging a red-CI fix | done | — | normal | milestones/archive/M336-reask-red-ci-fix.md |
 | M335 | Commit the row a hotfix stop writes | done | — | normal | milestones/archive/M335-commit-hotfix-stop-row.md |
-| M334 | Say only what maintainers need in a Copilot comment | done | — | high | milestones/archive/M334-copilot-comment-for-maintainers.md |
 ## Candidates
 _Ordered high → normal → low → parked by each row's opening `[high]`/`[low]`/`[parked]` token, untagged = `normal`; `[parked]` = a promotion condition that has not held (tracking-rules "Candidate priority token", D-134, D-184); advisory within a level. Triage: D-027._
 - Let guest maintainers merge their PRs: in easystats/datawizard the operator is a maintainer who merges approved PRs, their own included, but the repo runs guest tracking (cairn/ untracked), and guest mode never merges (D-137). There a minor bug fix needs no review, and a larger change needs another maintainer's approving review first. Plan a guest repo where the operator merges on those terms; superseding D-137's never-merge clause is the decision. Raised by the easystats session at M315 implement — added 2026-10-22
