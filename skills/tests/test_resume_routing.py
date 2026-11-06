@@ -456,10 +456,11 @@ class TestHotfixOpenPrReentry(unittest.TestCase):
             self.step6,
         )
         self.assertIn(
-            "If it differs from the head the gate showed, write no marker and "
-            "stop with a close block that names the new head. Its fenced next "
-            "command is `/hotfix` with the PR reference, which takes the new "
-            "commits through the tier-check walk.",
+            "If the PR head still differs from the head the gate showed, write "
+            "no marker and stop with a close block that names the PR head it "
+            "read and the head the gate showed. Its fenced next command is "
+            "`/hotfix` with the PR reference, which takes any new commits "
+            "through the tier-check walk.",
             self.step6,
         )
 

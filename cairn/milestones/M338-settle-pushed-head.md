@@ -74,7 +74,7 @@ The parked row "Ask again after a merge conflict fix" keeps its clauses
 - [x] T4: Edit the merge CI wait in `skills/shared/tracking-rules.md` (lines 401-417), then run AC4's `git grep` and fix each hit.
 - [x] T5: Write the D-entry of AC5.
 - [x] T6: Write the CHANGELOG entry of AC6.
-- [ ] T7: Run the `verify` slot, each suite checked by its exit code, and hand-run `skills/tests` (LESSONS M148).
+- [x] T7: Run the `verify` slot, each suite checked by its exit code, and hand-run `skills/tests` (LESSONS M148).
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates.
@@ -104,3 +104,4 @@ The parked row "Ask again after a merge conflict fix" keeps its clauses
 - 2026-11-05: T3: hotfix step 6's head read before the marker write keeps one read for an adopted PR and re-reads for an authored fix (the push on approval, the Copilot round arm, and the PR-reference re-entry all push) until the PR head equals the gate's head; the stop names the PR head read and the gate's head in place of "the new head".
 - 2026-11-05: T4: the merge CI wait's step (a) re-reads the PR head after a push before the marker and any check read, and the recorded-head clause names the pushed commit for `/milestone-review`; AC4's `git grep` prints no line. The rulebook grew to 896 lines / 89,057 bytes, so the three baseline pins (`skills/milestone/SKILL.md`, `test_cost_audit_line.py`, `test_mutation_harness.py`) are re-seeded (LESSONS M149).
 - 2026-11-05: T5: D-246 supersedes D-232's head-read clause and passes D-108's door on its retained trigger (PR #351). T6: CHANGELOG Unreleased gains "A merge waits for GitHub to show the pushed commit".
+- 2026-11-05: T7: verify green, each exit code 0: `scripts/tests` (446 tests, 21 skipped), `hooks/tests` (212), both `claude plugin validate`, `claude plugin test` (2466 pass). Hand-run `skills/tests` first failed on the guard pinning hotfix's old "names the new head" stop and its mutation block; both re-pinned to AC3's new text, then 1031 tests OK.
