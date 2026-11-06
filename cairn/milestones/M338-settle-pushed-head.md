@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M338: Note the pushed head after a merge push
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -106,3 +106,5 @@ The parked row "Ask again after a merge conflict fix" keeps its clauses
 - 2026-11-05: T5: D-246 supersedes D-232's head-read clause and passes D-108's door on its retained trigger (PR #351). T6: CHANGELOG Unreleased gains "A merge waits for GitHub to show the pushed commit".
 - 2026-11-05: T7: verify green, each exit code 0: `scripts/tests` (446 tests, 21 skipped), `hooks/tests` (212), both `claude plugin validate`, `claude plugin test` (2466 pass). Hand-run `skills/tests` first failed on the guard pinning hotfix's old "names the new head" stop and its mutation block; both re-pinned to AC3's new text, then 1031 tests OK.
 - 2026-11-05: claim audit pass (Opus): 34 claims read, 5 corrected — step 8's settle now says owner-mode push only and URL commit "where one is made"; hotfix's adopted PR is "not pushed on approval" and an authored fix's approval push can be a no-op; both stops say what a failed last read shows. The unsettled gate read after an earlier push went to the candidate row "Settle a hotfix gate head after a push" (normal). Guard re-pinned; skills/tests, both suites, validate green. Re-read of the corrected claims pending.
+- 2026-11-05: claim audit: 34 claims read, 5 corrected — skills/milestone-review/SKILL.md, skills/hotfix/SKILL.md. The same reader's one re-read found four corrections holding and added an address-first fix to hotfix's no-op-push list, now applied; no second pass.
+- 2026-11-05: implement complete; status review. After the last edit: skills/tests, both suites, and both validates green; `claude plugin test` not rerun, since the branch changes no `hooks/` code (its T7 run was 2466 pass).

@@ -594,8 +594,8 @@ can resolve against the fork instead of the base repo.
    open-PR re-entry. Just before the marker write, read the PR head. For
    an adopted PR, which is not pushed on approval, one read with
    `gh pr view <N> --json headRefOid` does. For an authored fix, which
-   the approval pushes (a no-op push where step 5 or the Copilot round
-   pushed it before the gate), `gh pr view` can still report the previous
+   the approval pushes (a no-op push where step 5, the Copilot round,
+   or an address-first fix pushed it before the gate), `gh pr view` can still report the previous
    head just after a push, so re-read in one Bash call until the PR head equals
    the head the gate showed, for at most about a minute. `<oid>` is that
    head, and a failed read inside the loop counts as no match:
