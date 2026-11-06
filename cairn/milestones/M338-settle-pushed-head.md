@@ -156,3 +156,9 @@ Pass 1 findings (2026-11-05):
 - ripple #5: hotfix's checks read has no settle of its own — reject, false: the settle precedes the marker, and the checks read follows it.
 - ripple #6: hotfix's open-PR resume compares the marker with one read — reject, false: that route runs on a typed resume with no push just before its read.
 - After the fixes: verify suites and both validates green, hand-run skills/tests OK, AC4's grep prints no line; AC1-AC4 re-read at the fix head and still hold; the rulebook re-seeded to 898 lines / 89,181 bytes.
+- copilot: skills/hotfix/SKILL.md:600 (outdated) — follow-up, the row "Settle a hotfix gate head after a push" (normal); its fix (settle against the remote-tracking ref) would drop the gate's binding to the head the user approved, so the gate read itself needs the wait.
+- copilot: review body (new behavior lacks dedicated test and mutation coverage) — reject, planned change: D-109 owes no prose guard for a new skill rule.
+- copilot: https://github.com/jmgirard/cairn/pull/353#pullrequestreview-5795292451 — comment posted (issuecomment-6676000139), thread resolved; the body finding has no anchor, so the review stays a note for later runs.
+- Copilot level: Lite (set by GitHub's settings); reviewed an earlier head.
+- conversation: copilot-pull-request-reviewer PR — noted (its items above); no human review or comment.
+- snapshot: list empty (no `_snaps` or `__snapshots__` path in the diff).
