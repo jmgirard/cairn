@@ -9,10 +9,13 @@
   commit as the PR's head for a few seconds. `/milestone-review` and
   `/hotfix` now read the PR's head again, for up to about a minute, until it
   shows the commit they pushed. Only then do they record your approval for
-  the merge guard and read the PR's checks. Before, a stale read can stop
-  the merge with a false report that the head moved, or show the previous
-  commit's finished checks. If the head still differs after about a
-  minute, the skill stops and names both commits.
+  the merge guard and read the PR's checks. Before, a stale read sometimes
+  stopped the merge with a false report that the head moved, or showed the
+  previous commit's finished checks. If the head still differs after about
+  a minute, the skill stops and names both commits. A push that is rejected
+  stops the merge too. One case remains. `/hotfix` can show its approval
+  question just after an earlier push to the PR. The head it shows can
+  then be stale, and the merge can stop the same way.
 
 - **A row whose trigger fired is re-rated, not always promoted.**
   `/cairn-triage` used to treat a fired promotion trigger as enough to propose

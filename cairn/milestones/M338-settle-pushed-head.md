@@ -122,3 +122,37 @@ Evidence gathered 2026-11-05 at branch head 227d949d.
 - AC6: `CHANGELOG.md:7`, under `## Unreleased`: "A merge waits for GitHub to show the pushed commit", saying both skills read the PR head again for up to about a minute until it shows the pushed commit, and only then record approval and read checks. Pass.
 - AC7: at 227d949d, each exit code 0: `scripts/tests` 446 tests OK (21 skipped), `hooks/tests` 212 OK, `claude plugin validate` on plugin.json and marketplace.json, `claude plugin test .` 2466 pass, 0 fail. Pass.
 - Gate: `cairn_validate.py` exit 0 (all checks pass, coverage complete); no principle changed, so `cairn_impact` skipped; profile gate: verify green (AC7), marketplace validate prints no `version` warning, CHANGELOG Unreleased carries the entry with no milestone id. Pass.
+
+Pass 1 findings (2026-11-05):
+
+- spawned: diff-bug, blame-history, prior-review, ripple
+- diff-bug #1: a rejected merge push leaves `origin/<branch>` at a commit the session did not push (a fetched foreign commit), so the settle can match it and the marker approves a commit the user never saw; pre-existing in the old read — fix now (step 8 and hotfix step 6 now stop on a rejected or failed push; D-247). Not a floor return: it needs a second person pushing to the branch, outside the one-operator use, but it authorizes a merge, so it is fixed.
+- diff-bug #2: after a moved-remote stop, route (c)'s push is rejected with no next step — reject, edge: a second pusher on the milestone branch is outside the one-operator use (tracking-rules enforcement boundary), and the effect is a stop, now one that names the rejected push.
+- diff-bug #3: a hotfix gate head read just after an earlier push can lag, and the CHANGELOG and D-246 claimed no false stop remains — fix now for the claims (CHANGELOG names the remaining case; D-247 corrects D-246's sentence); the gate read itself goes to the existing row "Settle a hotfix gate head after a push" (normal).
+- diff-bug #4: the companion settle's `cd <abs-path> && …` covers only the first command of the loop — fix now (spelled `cd <abs-path> && { <command>; }`).
+- diff-bug #5: the companion mismatch stop had no fenced command and could leave the header edit dirty — fix now (commits the primary file, fences `/milestone-review M<NNN>`).
+- diff-bug #6: the rulebook's mismatch sentence omitted "writes no marker" and the fenced command — fix now.
+- diff-bug #7: the rulebook said "pushed commit" where hotfix compares the gate's head — fix now ("for `/hotfix`, the head its gate showed").
+- diff-bug #8: D-246's heading names only `/milestone-review` — fix now (D-247).
+- diff-bug #9: a failed first push makes `git rev-parse origin/<branch>` print the ref name — fix now, covered by #1's stop before the settle.
+- diff-bug #10: CHANGELOG tense "can stop" — fix now ("sometimes stopped").
+- diff-bug #11: wrap width on tracking-rules :401 and :418 and hotfix :598, and a lone "The" — fix now for those lines; the spelled command lines stay long — reject, style, for them.
+- diff-bug #12: the loop sleeps once after its last failed read, about 65 s — reject, false: within "about a minute" (T1 measured 65 s).
+- diff-bug #13: the review settle has no guard pin — reject, planned change: D-109 owes no prose guard for a new skill rule.
+- blame-history #1: the rulebook's general re-read rule and hotfix's one read for an adopted PR differ — reject, false: the rule is "after a push", and an adopted PR is not pushed on approval; a lag after step 5's push is the gate-read row.
+- blame-history #2: what step 8 reads when it makes no push — reject, false: the owner-mode push always runs (only the create is skipped).
+- blame-history #3: "names both commits" against hotfix's "names the PR head it read and the head the gate showed" — reject, style: same substance.
+- blame-history #4: D-246 does not name the old hotfix stop sentence — reject, false: D-246's Decision states the hotfix change, and D-247 now names its reach.
+- blame-history #5: `sha=<oid>` is a placeholder; a wrong fill fails safe — reject, false: no defect.
+- prior-review #1: hotfix compares against a gate head that can be stale (also Copilot's thread on PR #353) — follow-up, the existing row "Settle a hotfix gate head after a push" (normal).
+- prior-review #2: a hung `gh pr view` has no timeout — reject, false: the loop runs in the foreground under the harness timeout, which stops a command that contains `git` (tracking-rules long-running local command), unlike D-231's background watch.
+- prior-review #3: rulebook and hotfix differ on the adopted-PR path — reject, false: as blame-history #1.
+- prior-review #4: a foreground compound with `git` and `sleep` at the harness ceiling — reject, false: it ends within about 65 s, under the 120 s default.
+- prior-review #5: the companion `cd` form is unverified against the merge guard — reject, false: `hooks/merge_guard.py` acts only on `gh pr merge` and `git merge` commands.
+- ripple #1: DESIGN Known issue "no-checks path skips the fresh-PR re-read" is now false — reject, false: that names the no-checks re-read for checks to register, not the head re-read.
+- ripple #2: the M338 candidate row describes the old reads — reject, planned change: step 9's hygiene graduates that row.
+- ripple #3: the gate-read row says M338 removed the false stop from the marker read — reject, false: the lag stop is removed there, and a real mismatch still stops, which the row does not deny.
+- ripple #4: hotfix's "the head oid that read returned" is ambiguous after the loop — fix now ("the head oid that the read above matched").
+- ripple #5: hotfix's checks read has no settle of its own — reject, false: the settle precedes the marker, and the checks read follows it.
+- ripple #6: hotfix's open-PR resume compares the marker with one read — reject, false: that route runs on a typed resume with no push just before its read.
+- After the fixes: verify suites and both validates green, hand-run skills/tests OK, AC4's grep prints no line; AC1-AC4 re-read at the fix head and still hold; the rulebook re-seeded to 898 lines / 89,181 bytes.

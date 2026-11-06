@@ -8747,3 +8747,13 @@ context. Then this text is not doing its job, and the fix is not a longer text.
 **Rejected:** Recording the local pushed commit with no PR read, because a checks read made before GitHub moves the head still reports the old head's runs. Falsified if a `gh pr checks` read reports the old head's runs after `headRefOid` already shows the pushed commit.
 
 **Consequences:** A merge push can take up to about a minute longer. GitHub lag no longer gives a false moved-head stop, and a real moved head still stops.
+
+### D-247 (2026-11-05): D-246's reach and its lag claim are corrected, and a rejected merge push stops — supersedes D-246's heading subject and its Consequences sentence on lag; D-246's decision stands (M338 review)
+
+**Context:** M338's review found three gaps in D-246. Its heading names only `/milestone-review`, though its Decision also changes `/hotfix` step 6. Its Consequences say that GitHub lag no longer gives a false moved-head stop, but `/hotfix`'s gate can show a head read just after an earlier push, and that read can lag. And a rejected merge push left `origin/<branch>` at a commit the session did not push, so the settle could match a commit the user never saw.
+
+**Decision:** D-246 covers both `/milestone-review` step 8 and `/hotfix` step 6. Its lag sentence reads instead: lag at the marker read no longer gives a false moved-head stop, and a lagging gate read in `/hotfix` still can; the candidate row "Settle a hotfix gate head after a push" holds that work. A merge push in either skill that is rejected or fails is never forced: the session writes no marker and stops with a close block that names it.
+
+**Door:** The rejected-push stop passes D-108's door on its retained trigger, a defect in shipped behavior: the settle could approve a commit the session did not push.
+
+**Consequences:** D-246's decision stands as corrected here.
