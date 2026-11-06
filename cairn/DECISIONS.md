@@ -8735,3 +8735,15 @@ context. Then this text is not doing its job, and the fix is not a longer text.
 **Decision:** D-243's Context reads instead: a parked row whose trigger fired was proposed for `[high]`. Its Door reads instead: removing the forced route from Staleness to Readiness narrows a conduct rule and is outside D-108's door by its carve-out. The added rules pass on the retained trigger, a defect in shipped behavior: rows were proposed for `[high]` when normal or low fit. They are the required Rung change for a parked row whose condition has held, the promote reason that names more than the trigger, the in-place replacement of a held condition, and D-244's route-or-drop clause. The review also settled three gaps. A row that a hold or the kept-mark filter holds takes only what that hold allows. The reason cell for a row that stays parked shows the held condition and the new one. Declining that new condition at Amend writes a kept mark, as declining a move to parked does.
 
 **Consequences:** D-243's decision and D-244 stand as corrected here.
+
+### D-246 (2026-11-05): After a merge push, `/milestone-review` records the pushed commit once the PR reports it as its head — supersedes D-232's clause on the head read right after step 8's push; D-232's review guard stands; passes D-108's door on its retained trigger (M338)
+
+**Context:** D-232 says: "`/milestone-review` reads the PR head with `gh pr view --json headRefOid` right after step 8's push and before the first check read". On PR #351, that read printed the previous head just after the push, and a re-read seconds later printed the pushed commit. A wake that compares against a stale head stops on a head that did not move, and a checks read made before GitHub moves the head can report the old head's finished runs. `/hotfix` step 6 compares the same kind of read against its gate's head.
+
+**Decision:** That D-232 clause is superseded. After step 8's push, `/milestone-review` reads the pushed commit with `git rev-parse origin/<branch>` and re-reads the PR head until it equals that commit, for at most about a minute, before the approval marker and the first check read. It records that commit as the head the wake compares against. `/hotfix` step 6 re-reads the same way, for an authored fix, until the PR head equals the head its gate showed. A head that still differs at the end writes no marker and stops with a close block that names both commits. The merge CI wait in the rulebook states the re-read. D-232's `latestReviews` guard stands.
+
+**Door:** The change adds to a conduct rule about verification. It passes D-108's door on its retained trigger, a defect in shipped behavior: the lagging head read seen on PR #351.
+
+**Rejected:** Recording the local pushed commit with no PR read, because a checks read made before GitHub moves the head still reports the old head's runs. Falsified if a `gh pr checks` read reports the old head's runs after `headRefOid` already shows the pushed commit.
+
+**Consequences:** A merge push can take up to about a minute longer. GitHub lag no longer gives a false moved-head stop, and a real moved head still stops.

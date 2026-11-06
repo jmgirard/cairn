@@ -72,8 +72,8 @@ The parked row "Ask again after a merge conflict fix" keeps its clauses
 - [x] T2: Edit `skills/milestone-review/SKILL.md` step 8 (lines 734-822): the pushed-commit read, the re-read before the marker write, the note, the stop, the Red CI rerun's wording ("notes the new PR head"), and the companion arm (lines 829-866).
 - [x] T3: Edit `skills/hotfix/SKILL.md` step 6 (lines 590-598): the re-read for an authored fix, the one read for an adopted PR, and the stop text.
 - [x] T4: Edit the merge CI wait in `skills/shared/tracking-rules.md` (lines 401-417), then run AC4's `git grep` and fix each hit.
-- [ ] T5: Write the D-entry of AC5.
-- [ ] T6: Write the CHANGELOG entry of AC6.
+- [x] T5: Write the D-entry of AC5.
+- [x] T6: Write the CHANGELOG entry of AC6.
 - [ ] T7: Run the `verify` slot, each suite checked by its exit code, and hand-run `skills/tests` (LESSONS M148).
 
 ## Work log
@@ -103,3 +103,4 @@ The parked row "Ask again after a merge conflict fix" keeps its clauses
 - 2026-11-05: T2: step 8 gains "Settle the pushed head" after the push, create, and URL record and before the marker write; the old "read and note the PR head" sentence now reads checks after the settle; the Red CI rerun settles then writes the marker; the companion arm settles each companion's head before its wait. The settle sits after the unpushed URL commit, so its stop leaves a clean tree and route (c) resumes it.
 - 2026-11-05: T3: hotfix step 6's head read before the marker write keeps one read for an adopted PR and re-reads for an authored fix (the push on approval, the Copilot round arm, and the PR-reference re-entry all push) until the PR head equals the gate's head; the stop names the PR head read and the gate's head in place of "the new head".
 - 2026-11-05: T4: the merge CI wait's step (a) re-reads the PR head after a push before the marker and any check read, and the recorded-head clause names the pushed commit for `/milestone-review`; AC4's `git grep` prints no line. The rulebook grew to 896 lines / 89,057 bytes, so the three baseline pins (`skills/milestone/SKILL.md`, `test_cost_audit_line.py`, `test_mutation_harness.py`) are re-seeded (LESSONS M149).
+- 2026-11-05: T5: D-246 supersedes D-232's head-read clause and passes D-108's door on its retained trigger (PR #351). T6: CHANGELOG Unreleased gains "A merge waits for GitHub to show the pushed commit".
