@@ -1,21 +1,19 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-11-06 (M337 merged: a fired trigger re-rates a row instead of promoting it; skills/tests green; validate green)_
+_Last hygiene check: 2026-11-06 (M338 merged: a merge push waits for GitHub to show the pushed commit as the PR head; skills/tests green; validate green)_
 
 ## Milestones
 _Released 1.0.0 (2026-07-16) to 2.1.0 (2026-10-18), each tagged `v<version>`; 1.5.0 was cut retroactively at edb6942._
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M338 | Note the pushed head after a merge push | review | — | normal | milestones/M338-settle-pushed-head.md |
+| M338 | Note the pushed head after a merge push | done | — | normal | milestones/archive/M338-settle-pushed-head.md |
 | M337 | Re-rate a row whose trigger fired | done | — | normal | milestones/archive/M337-rerate-fired-trigger.md |
 | M336 | Ask again before merging a red-CI fix | done | — | normal | milestones/archive/M336-reask-red-ci-fix.md |
-| M335 | Commit the row a hotfix stop writes | done | — | normal | milestones/archive/M335-commit-hotfix-stop-row.md |
 ## Candidates
 _Ordered high → normal → low → parked by each row's opening `[high]`/`[low]`/`[parked]` token, untagged = `normal`; `[parked]` = a promotion condition that has not held (tracking-rules "Candidate priority token", D-134, D-184); advisory within a level. Triage: D-027._
 - Let guest maintainers merge their PRs: in easystats/datawizard the operator is a maintainer who merges approved PRs, their own included, but the repo runs guest tracking (cairn/ untracked), and guest mode never merges (D-137). There a minor bug fix needs no review, and a larger change needs another maintainer's approving review first. Plan a guest repo where the operator merges on those terms; superseding D-137's never-merge clause is the decision. Raised by the easystats session at M315 implement — added 2026-10-22
-- Note the pushed head after a merge push: `/milestone-review` step 8 reads `gh pr view --json headRefOid` right after its push and compares a wake against that head, and `/hotfix` step 6 reads the head before its marker. On PR #351 on 2026-11-05 that read printed the previous head just after the push, and it matched within seconds. On a repo with CI this can give a false moved-head stop, or old checks read as the new head's. Normal rung: seen on a real merge — added 2026-11-05 — M336 merge — started M338
 - Settle a hotfix gate head after a push: `/hotfix` step 6's gate reads an existing PR's `headRefOid` seconds after a push to that PR (step 5's test and changelog push to an adopted PR, an own-PR re-entry's fixes, an address-first fix), and nothing settles that read, so a lagging read can still give the false "head moved" stop that M338 removed from the marker read. Normal rung: the same lag was seen on PR #351 — added 2026-11-05 — M338 implement (claim audit #1, #2)
 - [parked] Drop a held condition from a row: since M337 a normal or low row whose promotion condition has held reaches `/cairn-triage`'s Rung class, which can leave it on its rung with the held `promote when` text still in the row; only a parked row must change. A `split` of a parked row whose condition held also copies the held condition into each new row (M337 review, diff-bug #9). Promote when a user reports it — added 2026-11-05 — M337 implement (planted-row reader, P4)
 - [parked] Let Staleness see a fired row's other faults: since M337, as on main, Staleness decides nothing for a row whose trigger fired with work undone, so a refuted premise, dead citation, or retired subject on that row gets no `drop` or `compress` from it; promote when a user reports it — added 2026-11-05 — M337 review (diff-bug #1)
