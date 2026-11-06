@@ -120,7 +120,7 @@ REGISTRY = [
         guard="test_cost_audit_line",
         test="TestCostAuditLine.test_the_rulebook_line_carries_its_seeded_baseline",
         target=MILESTONE,
-        block="894 lines / 88,741 bytes",
+        block="898 lines / 89,181 bytes",
     ),
     Mutation(
         guard="test_cost_audit_line",
@@ -4763,7 +4763,7 @@ REGISTRY += [
         test="TestHotfixOpenPrReentry."
              "test_step_six_binds_the_marker_to_the_head_the_gate_showed",
         target=HOTFIX,
-        block="write no marker and stop with a close block that names the new",
+        block="marker and stop with a close block that names the PR head it read and",
     ),
     Mutation(
         guard="test_resume_routing",

@@ -754,6 +754,28 @@ records a new approval.
    back to `gh pr list --head <branch>` once the local branch is gone.
    Where step 2's Copilot arm opened the PR, its URL is already in the
    header in a commit on the branch, so no record is written here (D-185).
+   **Settle the pushed head.** A push in this step that is rejected or
+   fails, a companion's included, is never forced: write no marker, arm
+   no watch, and stop with a close block that names it. Its fenced next
+   command is `/milestone-review M<NNN>`. After a successful push and any
+   `gh pr create` above, and before the marker write below, read the
+   pushed commit with
+   `git rev-parse origin/<branch>`, not local `HEAD`, which the unpushed
+   URL commit, where one is made, moves past. This runs after every
+   owner-mode push of this step, whether or not the PR already existed, a
+   Red CI rerun's push included. The guest arm has no marker and no wait.
+   Just after a push, `gh pr view` can still report the previous head, so
+   re-read the PR head in one Bash call until it equals the pushed
+   commit, for at most about a minute:
+
+   `sha=$(git rev-parse origin/<branch>); head=; for i in $(seq 12); do head=$(gh pr view <N> --json headRefOid -q .headRefOid) && [ "$head" = "$sha" ] && break; sleep 5; done; echo "pushed $sha PR head $head"`
+
+   A failed read inside the loop counts as no match. If the two commits
+   on the last line differ, write no marker, arm no watch, and stop with a
+   close block that names both commits. A failed last read leaves the PR
+   head blank, and the close block says that read failed. Its fenced next
+   command is `/milestone-review M<NNN>`. Otherwise note the pushed commit as the
+   head the wake compares against.
    Then record the approval for the merge
    guard — write `cairn/.merge-approved` (gitignored; one line:
    `M<NNN> approved YYYY-MM-DD for PR #<N>` — the marker names the PR it
@@ -765,9 +787,8 @@ records a new approval.
    command — the hook checks it before the command runs, so writing it in
    the same shell line as the merge is denied. Then
    require green CI by the tracking-rules merge CI wait (one watcher).
-   After the step's last commit and the push above, read and note the
-   PR head with `gh pr view <N> --json headRefOid` (the head the wake
-   compares against), then read `gh pr checks <N>`. With no check
+   After the step's last commit and the head settle above, read
+   `gh pr checks <N>`. With no check
    pending, act on that read at once (below) and arm nothing. Otherwise
    arm the watch as a Bash `run_in_background` task:
 
@@ -815,8 +836,9 @@ records a new approval.
    7's changed-snapshot list again on the fix's head. The chip's
    question text names the failed check and says in plain words what the
    fix changed. On approval, append and commit a new `step-7 approval:`
-   line, and run this step again from the push. That run writes the marker
-   and notes the new PR head before the next CI wait. If that push is
+   line, and run this step again from the push. That run settles and
+   notes the new pushed head, then writes the marker, before the next CI
+   wait. If that push is
    rejected, never force it. Stop with a close block that names it. A
    decline takes step 7's decline exit. If the agent cannot fix the check,
    stop with a close block that names it.
@@ -835,6 +857,12 @@ records a new approval.
    push -u origin <branch>`), open its PR (`cd <abs-path> && gh pr create
    --title … --body …`, ready for review, no `Candidate row:` line, and no
    cairn vocabulary when that repo is untracked), append its URL to the companion's header entry,
+   settle its pushed head as the primary does, the whole re-read command
+   in one call spelled `cd <abs-path> && { <command>; }` with the
+   companion's branch and PR number (a mismatch commits any change to the
+   primary's milestone file, then stops with a close block naming the
+   companion PR and both commits, before the primary is pushed, its
+   fenced next command `/milestone-review M<NNN>`), then
    wait on its checks by the same merge CI wait as the primary (the
    background watch spelled `cd <abs-path> && gh pr checks <N> --watch
    --fail-fast …`, its wake line naming the companion PR and

@@ -8735,3 +8735,25 @@ context. Then this text is not doing its job, and the fix is not a longer text.
 **Decision:** D-243's Context reads instead: a parked row whose trigger fired was proposed for `[high]`. Its Door reads instead: removing the forced route from Staleness to Readiness narrows a conduct rule and is outside D-108's door by its carve-out. The added rules pass on the retained trigger, a defect in shipped behavior: rows were proposed for `[high]` when normal or low fit. They are the required Rung change for a parked row whose condition has held, the promote reason that names more than the trigger, the in-place replacement of a held condition, and D-244's route-or-drop clause. The review also settled three gaps. A row that a hold or the kept-mark filter holds takes only what that hold allows. The reason cell for a row that stays parked shows the held condition and the new one. Declining that new condition at Amend writes a kept mark, as declining a move to parked does.
 
 **Consequences:** D-243's decision and D-244 stand as corrected here.
+
+### D-246 (2026-11-05): After a merge push, `/milestone-review` records the pushed commit once the PR reports it as its head — supersedes D-232's clause on the head read right after step 8's push; D-232's review guard stands; passes D-108's door on its retained trigger (M338)
+
+**Context:** D-232 says: "`/milestone-review` reads the PR head with `gh pr view --json headRefOid` right after step 8's push and before the first check read". On PR #351, that read printed the previous head just after the push, and a re-read seconds later printed the pushed commit. A wake that compares against a stale head stops on a head that did not move, and a checks read made before GitHub moves the head can report the old head's finished runs. `/hotfix` step 6 compares the same kind of read against its gate's head.
+
+**Decision:** That D-232 clause is superseded. After step 8's push, `/milestone-review` reads the pushed commit with `git rev-parse origin/<branch>` and re-reads the PR head until it equals that commit, for at most about a minute, before the approval marker and the first check read. It records that commit as the head the wake compares against. `/hotfix` step 6 re-reads the same way, for an authored fix, until the PR head equals the head its gate showed. A head that still differs at the end writes no marker and stops with a close block that names both commits. The merge CI wait in the rulebook states the re-read. D-232's `latestReviews` guard stands.
+
+**Door:** The change adds to a conduct rule about verification. It passes D-108's door on its retained trigger, a defect in shipped behavior: the lagging head read seen on PR #351.
+
+**Rejected:** Recording the local pushed commit with no PR read, because a checks read made before GitHub moves the head still reports the old head's runs. Falsified if a `gh pr checks` read reports the old head's runs after `headRefOid` already shows the pushed commit.
+
+**Consequences:** A merge push can take up to about a minute longer. GitHub lag no longer gives a false moved-head stop, and a real moved head still stops.
+
+### D-247 (2026-11-05): D-246's reach and its lag claim are corrected, and a rejected merge push stops — supersedes D-246's heading subject and its Consequences sentence on lag; D-246's decision stands (M338 review)
+
+**Context:** M338's review found three gaps in D-246. Its heading names only `/milestone-review`, though its Decision also changes `/hotfix` step 6. Its Consequences say that GitHub lag no longer gives a false moved-head stop, but `/hotfix`'s gate can show a head read just after an earlier push, and that read can lag. And a rejected merge push left `origin/<branch>` at a commit the session did not push, so the settle could match a commit the user never saw.
+
+**Decision:** D-246 covers both `/milestone-review` step 8 and `/hotfix` step 6. Its lag sentence reads instead: lag at the marker read no longer gives a false moved-head stop, and a lagging gate read in `/hotfix` still can; the candidate row "Settle a hotfix gate head after a push" holds that work. A merge push in either skill that is rejected or fails is never forced: the session writes no marker and stops with a close block that names it.
+
+**Door:** The rejected-push stop passes D-108's door on its retained trigger, a defect in shipped behavior: the settle could approve a commit the session did not push.
+
+**Consequences:** D-246's decision stands as corrected here.

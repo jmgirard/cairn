@@ -398,9 +398,13 @@ watcher per wait: a run, command, or subagent is watched by one mechanism at a t
 exception: a host app's own PR monitor that the user turned on, such as the desktop app's Auto-fix. A session never
 turns such a monitor on for a merge wait, the monitor does not replace the armed watch below, and a red result for a
 head commit the session already acted on is not acted on again.
-**A merge's CI wait** (`/milestone-review` step 8, `/hotfix` step 6) has four steps. (a) Read `gh pr checks <N>`
-first. With no check pending, go straight to (d) and arm nothing, since a watch that exits before the turn ends is
-not observed to send a later wake (a no-checks PR, CI already done, a red run that fails in seconds). Otherwise arm
+**A merge's CI wait** (`/milestone-review` step 8, `/hotfix` step 6) has four steps. (a) After a push, the session
+first re-reads the PR head until it equals the pushed commit (for `/hotfix`, the head its gate showed), for at most
+about a minute, before the approval marker and any check read, because `gh pr view` can still report the previous
+head just after a push. A mismatch at the end writes no marker and stops with a close block naming both commits,
+its fenced next command the invoking skill's resume command. Then read `gh pr checks <N>`. With no check pending,
+go straight to (d) and arm nothing, since a watch that exits before the turn ends is not observed to send a later
+wake (a no-checks PR, CI already done, a red run that fails in seconds). Otherwise arm
 `gh pr checks <N> --watch --fail-fast` as a Bash `run_in_background` task. The watch has no time bound: a check that
 never settles leaves it armed with no wake (DESIGN.md Known issues). (b) After the watch exits, that task prints one
 wake line naming the PR number, the watch's exit status, and the invoking skill's resume command. The task's own
@@ -413,8 +417,8 @@ with no uncommitted change to a tracked file; if not, show the wake line and its
 Then read the check state with `gh pr checks <N>`, and the merge state, head, and reviews with `gh pr view <N>
 --json state,headRefOid,latestReviews`; a failed read stops with a close block naming its error. Before any fix,
 re-arm, or merge, a head that differs from the head the invoking skill recorded at the approval
-(`/milestone-review`: the PR head read right after step 8's push; `/hotfix`: the marker's head oid), or a latest
-review in state `CHANGES_REQUESTED`, stops with a close block naming it. Then, if any check failed, take the red-CI
+(`/milestone-review`: the pushed commit, once the PR reports it as its head; `/hotfix`: the marker's head oid), or a
+latest review in state `CHANGES_REQUESTED`, stops with a close block naming it. Then, if any check failed, take the red-CI
 path. Otherwise, if a check is pending, arm the watch again. If every check passed (a skipped check counts as
 passed), go on to the merge. Each of these stops fences the resume command. A PR no longer open follows "Resume is
 stateless" below, and one that reports no checks follows the no-checks clause. A red run ends the watch at its first

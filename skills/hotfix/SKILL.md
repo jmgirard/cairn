@@ -591,14 +591,28 @@ can resolve against the fork instead of the base repo.
    fixed: the push and any `gh pr create` above, then the merge-guard
    marker, then the CI wait, then the merge. Write the marker before the
    wait, so a run whose wait never wakes leaves it on disk for step 1's
-   open-PR re-entry. Just before the marker write, read the head with
-   `gh pr view <N> --json headRefOid`. If it differs from the head the gate
-   showed, write no marker and stop with a close block that names the new
-   head. Its fenced next command is `/hotfix` with the PR reference, which
-   takes the new commits through the tier-check walk. The
+   open-PR re-entry. Just before the marker write, read the PR head. For
+   an adopted PR, which is not pushed on approval, one read with
+   `gh pr view <N> --json headRefOid` does. For an authored fix, which
+   the approval pushes (a no-op push where step 5, the Copilot round, or
+   an address-first fix pushed it before the gate), `gh pr view` can
+   still report the previous head just after a push, so re-read in one
+   Bash call until the PR head equals the head the gate showed, for at
+   most about a minute. `<oid>` is that head, and a failed read inside
+   the loop counts as no match. A push that is rejected or fails is never
+   forced: write no marker and stop with a close block that names it.
+
+   `sha=<oid>; head=; for i in $(seq 12); do head=$(gh pr view <N> --json headRefOid -q .headRefOid) && [ "$head" = "$sha" ] && break; sleep 5; done; echo "gate $sha PR head $head"`
+
+   If the PR head still differs from the head the gate showed, write no
+   marker and stop with a close block that names the PR head it read and
+   the head the gate showed. A failed last read leaves the PR head blank,
+   and the close block says that read failed. Its fenced next command is
+   `/hotfix` with the PR reference, which takes any new commits through
+   the tier-check walk. The
    marker is `cairn/.merge-approved` (gitignored; one line:
    `hotfix <slug> approved YYYY-MM-DD for PR #<N> at <headRefOid>`, the
-   head oid that read returned —
+   head oid that the read above matched —
    the marker names the PR it approves, and the guard refuses a merge that
    names a different PR or none) — the plugin's hook denies
    merges to the default branch without it and consumes it per attempt. Write the marker
