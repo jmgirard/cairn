@@ -8707,3 +8707,31 @@ context. Then this text is not doing its job, and the fix is not a longer text.
 **Context:** M336's first review pass found that a `gh pr merge` failing on a late red required check restores the marker, and that step 8's retry clause and the guard's note let a fix merge with no new approval. It also found that step 6 pushes after each fix-now commit on a PR from step 2's Copilot arm, which D-241 does not name.
 
 **Decision:** A fix after a failed merge takes the Red CI rule, whatever the guard's restore note says. A fix-now push from step 7's read on a Copilot-arm PR can carry the fix before the chip. The merge still waits for the new approval. The guard's note stays unchanged, as at `/hotfix`, whose skill text also overrides it.
+
+### D-243 (2026-11-05): In `/cairn-triage` a fired trigger ends a row's wait and re-rates the row; a promote needs a reason beyond the trigger — supersedes D-228's clause that a fired trigger goes to Readiness; D-179 stands; outside D-108's door (M337)
+
+**Context:** D-228 says that "a fired trigger whose work is still undone now goes to Readiness instead". Readiness proposes `promote`, and D-179 makes every promote of a candidate row write `[high]`. The user saw that every parked row whose trigger fired came out `[high]`, when normal or low often fit. A parked row waits on a condition. A held condition ends the wait but does not say how much the work matters. `/milestone-review`'s post-merge unpark step already moves such a row to normal.
+
+**Decision:** At the user's request, that D-228 clause is superseded. In `/cairn-triage` step 2, Staleness does not fire on a row whose trigger fired and whose work is still undone, and the row goes on to the later classes. Readiness no longer counts a fired trigger alone as a reason to promote. A proposed `promote` names what the pass read that shows the work is wanted now, beyond the trigger firing. A promote the user sets at Amend is not bound by that. A parked row whose condition has held takes one of two Rung class changes: a move off parked to the rung the pass judges right, usually normal, or staying parked with a new condition that has not held. D-179's rule that a promote writes `[high]` stands, and so does D-228's rule that a fired trigger is not a drop.
+
+**Door:** The change narrows a conduct rule. It removes a forced route from Staleness to Readiness, so it is outside D-108's door by its carve-out, as D-228's gate removal was.
+
+**Rejected:** Keeping the route to Readiness and letting a promote carry a rung other than `high`, because D-179 ties a promote to `high` and the user asked that it stay. Falsified if an operator cannot tell a row ready to plan from a row re-rated after its trigger fired.
+
+**Consequences:** A triage pass proposes fewer promotes and more priority changes off parked. A normal or low row whose trigger fired also reaches the Rung class, where it can move up or stay.
+
+### D-244 (2026-11-05): A parked row whose condition has held can still be routed or dropped by the Rung class — supersedes D-243's clause that such a row "takes one of two Rung class changes"; D-243's decision otherwise stands (M337 implement)
+
+**Context:** M337's planted-row reader found that the skill sentence D-243 describes left no `route` or `drop` for a parked row whose condition has held, though the Rung class offers both. D-243 is history, so its clause is corrected here.
+
+**Decision:** A parked row whose condition has held, and that the Rung class does not route or drop, takes one of D-243's two changes: a move off parked, usually to normal, or staying parked with a new condition that has not held. The Rung class can still route such a row to Known issues or drop it, with a reason.
+
+**Consequences:** No row that the Rung class could route or drop before M337 loses that option.
+
+### D-245 (2026-11-05): D-243's Context and Door, and D-244's missing Door, are corrected in one batched entry, and a held row's condition change gets its apply and Amend rules — supersedes D-243's Door and its Context sentence on `[high]`; extends D-244; D-243's decision stands (M337 review)
+
+**Context:** M337's review found that D-243's Context says every parked row whose trigger fired "came out `[high]`", though the gate could keep a row. It also found that D-243's Door claims D-108's carve-out for the whole entry, though the change adds rules beside the removal, and that D-244 has no Door.
+
+**Decision:** D-243's Context reads instead: a parked row whose trigger fired was proposed for `[high]`. Its Door reads instead: removing the forced route from Staleness to Readiness narrows a conduct rule and is outside D-108's door by its carve-out. The added rules pass on the retained trigger, a defect in shipped behavior: rows were proposed for `[high]` when normal or low fit. They are the required Rung change for a parked row whose condition has held, the promote reason that names more than the trigger, the in-place replacement of a held condition, and D-244's route-or-drop clause. The review also settled three gaps. A row that a hold or the kept-mark filter holds takes only what that hold allows. The reason cell for a row that stays parked shows the held condition and the new one. Declining that new condition at Amend writes a kept mark, as declining a move to parked does.
+
+**Consequences:** D-243's decision and D-244 stand as corrected here.

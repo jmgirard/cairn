@@ -2374,6 +2374,98 @@ REGISTRY = [
         target="skills/cairn-triage/SKILL.md",
         block="the candidate rows first, in table order, then the\n   Known issues entries, in table order",
     ),
+    # M337: a fired trigger re-rates a row; the trigger half of each rule
+    # gets its own entry (LESSONS M165).
+    Mutation(
+        guard="test_candidate_priority_token",
+        test="TestFiredTriggerReRated.test_staleness_names_the_fired_row",
+        target="skills/cairn-triage/SKILL.md",
+        block="A fired trigger whose work is still undone\n     is not a drop.",
+    ),
+    Mutation(
+        guard="test_candidate_priority_token",
+        test="TestFiredTriggerReRated.test_staleness_does_not_fire_on_it",
+        target="skills/cairn-triage/SKILL.md",
+        block="Staleness does not fire on that row, so it decides\n     nothing for it, and the row goes on to the classes below.",
+    ),
+    Mutation(
+        guard="test_candidate_priority_token",
+        test="TestFiredTriggerReRated.test_a_fired_trigger_alone_is_not_wanted_now",
+        target="skills/cairn-triage/SKILL.md",
+        block="A fired trigger alone does not\n     make the work wanted now",
+    ),
+    Mutation(
+        guard="test_candidate_priority_token",
+        test="TestFiredTriggerReRated.test_a_promote_reason_names_more_than_the_trigger",
+        target="skills/cairn-triage/SKILL.md",
+        block="A proposed `promote` names in its reason what the pass read\n     that shows the work is wanted now, beyond the trigger firing.",
+    ),
+    Mutation(
+        guard="test_candidate_priority_token",
+        test="TestFiredTriggerReRated.test_amend_promote_is_not_bound",
+        target="skills/cairn-triage/SKILL.md",
+        block="This\n     binds the pass's proposal, not a `promote` the user sets at *Amend*.",
+    ),
+    Mutation(
+        guard="test_candidate_priority_token",
+        test="TestFiredTriggerReRated.test_rung_names_the_parked_held_row",
+        target="skills/cairn-triage/SKILL.md",
+        block="If it does neither, it\n     proposes one of two changes for that row, each with a reason.",
+    ),
+    Mutation(
+        guard="test_candidate_priority_token",
+        test="TestFiredTriggerReRated.test_rung_still_allows_route_and_drop",
+        target="skills/cairn-triage/SKILL.md",
+        block="Among those rows, the class can route or drop a `[parked]`\n     row whose promotion condition has held.",
+    ),
+    Mutation(
+        guard="test_candidate_priority_token",
+        test="TestFiredTriggerReRated.test_a_held_row_takes_only_what_its_hold_allows",
+        target="skills/cairn-triage/SKILL.md",
+        block="A row that one of them holds takes only what that\n     hold or filter allows.",
+    ),
+    Mutation(
+        guard="test_candidate_priority_token",
+        test="TestFiredTriggerReRated.test_declining_a_stay_parked_condition_writes_a_kept_mark",
+        target="skills/cairn-triage/SKILL.md",
+        block="or declines a new condition for a row that stays parked,",
+    ),
+    Mutation(
+        guard="test_candidate_priority_token",
+        test="TestFiredTriggerReRated.test_staying_parked_states_its_condition_change_alone",
+        target="skills/cairn-triage/SKILL.md",
+        block="A parked row whose condition has held and that stays parked\n     states its condition change alone, with no priority change, as in\n     `condition: <held condition> → <new condition>`.",
+    ),
+    Mutation(
+        guard="test_candidate_priority_token",
+        test="TestFiredTriggerReRated.test_staying_parked_replaces_the_held_condition",
+        target="skills/cairn-triage/SKILL.md",
+        block="On a row that\n     stays parked, it replaces the held condition text alone.",
+    ),
+    Mutation(
+        guard="test_candidate_priority_token",
+        test="TestFiredTriggerReRated.test_apply_replaces_the_held_condition_in_place",
+        target="skills/cairn-triage/SKILL.md",
+        block="it replaces the held condition\n   text, however the row words it. The new text keeps the old one's\n   position and separator.",
+    ),
+    Mutation(
+        guard="test_candidate_priority_token",
+        test="TestFiredTriggerReRated.test_rung_first_change_is_off_parked",
+        target="skills/cairn-triage/SKILL.md",
+        block="The\n     first is a priority change off parked to the rung the pass judges\n     right, usually normal.",
+    ),
+    Mutation(
+        guard="test_candidate_priority_token",
+        test="TestFiredTriggerReRated.test_rung_second_change_is_a_new_condition",
+        target="skills/cairn-triage/SKILL.md",
+        block="The second keeps the row parked with a new\n     condition that has not held.",
+    ),
+    Mutation(
+        guard="test_candidate_priority_token",
+        test="TestFiredTriggerReRated.test_rung_keeps_the_holds",
+        target="skills/cairn-triage/SKILL.md",
+        block="The holds and filters of this step still\n     apply to that row.",
+    ),
 ]
 
 # Prose-guard files deliberately NOT in the registry, each with a reason. The

@@ -372,7 +372,9 @@ re-examines a lesson.
      repo root, then under `cairn/` — provenance shorthand omits that
      prefix — before calling it dead). A dead citation with a live trigger
      is `compress`, not `drop`. A fired trigger whose work is still undone
-     goes to Readiness, not to a drop. In guest mode a code path is checked with
+     is not a drop. Staleness does not fire on that row, so it decides
+     nothing for it, and the row goes on to the classes below. In guest
+     mode a code path is checked with
      `git cat-file -e <base>/<default-branch>:<path>` (the tracking-rules
      git model's base remote and default branch) in place of `ls`, a fired
      trigger or an *already shipped* drop is judged at that ref too, and an
@@ -412,8 +414,12 @@ re-examines a lesson.
      the repo lives with, or a Known issues entry the pass judges worth
      doing. The reason says why.
    - **Readiness → `promote`.** The pass judges the work wanted now,
-     because its trigger has fired or because something it read says so,
-     and the reason names that. The close block hands it on. A promoted
+     because something it read says so. A fired trigger alone does not
+     make the work wanted now, since it shows only that the row's wait is
+     over. A proposed `promote` names in its reason what the pass read
+     that shows the work is wanted now, beyond the trigger firing. This
+     binds the pass's proposal, not a `promote` the user sets at *Amend*.
+     The close block hands it on. A promoted
      candidate row that does not open with `[high]` takes the priority
      change to `high`.
    - **Rung → a priority change, `route`, or `drop`.** The ladder runs
@@ -422,7 +428,17 @@ re-examines a lesson.
      above leave `keep` or propose for `compress`, or that the Title class
      below proposes for `retitle`, the pass can propose
      any rung it judges right, up or down by any number of rungs, with a
-     reason. A move to parked carries a condition change: the pass drafts
+     reason. Among those rows, the class can route or drop a `[parked]`
+     row whose promotion condition has held. If it does neither, it
+     proposes one of two changes for that row, each with a reason. The
+     first is a priority change off parked to the rung the pass judges
+     right, usually normal. The second keeps the row parked with a new
+     condition that has not held. The holds and filters of this step still
+     apply to that row. They are the started-token, PR-named,
+     live-milestone, merge-survivor, and finding-absorbing holds, and the
+     kept-mark filter. A row that one of them holds takes only what that
+     hold or filter allows. A move to parked
+     carries a condition change: the pass drafts
      one condition that has not held, `promote when <condition>`, unless
      the row already states one that has not held. For a review finding that no documented or common use
      reaches, the drafted condition is `promote when a user reports it`. A
@@ -562,7 +578,10 @@ re-examines a lesson.
      can also carry a condition change (step 2's Rung class). The
      reason cell states it with its move to parked, as in
      `condition: + promote when a user reports it; priority: normal →
-     parked`. A `keep` with no priority, token, or condition change sits
+     parked`. A parked row whose condition has held and that stays parked
+     states its condition change alone, with no priority change, as in
+     `condition: <held condition> → <new condition>`. A `keep`
+     with no priority, token, or condition change sits
      last so the changes read first.
      On a `keep`, `compress`, or `retitle` row, a priority change can name
      any rung of the ladder, up or down by any number of rungs (step 2's
@@ -608,6 +627,7 @@ re-examines a lesson.
         that the pass proposed to move (a priority change, `route`,
         `drop`, `promote`, or absorption into a `merge`), or declines a
         proposed move to parked,
+        or declines a new condition for a row that stays parked,
         the row takes a kept mark,
         ` — kept <today>`, written when the answer is *Accept as
         proposed*. A promote's change
@@ -682,7 +702,8 @@ re-examines a lesson.
      alone. A promoted row's change to `high` is a fourth. It touches the
      row's opening token and the row's place in the order alone. An
      accepted condition change is a fifth. It adds the condition text
-     alone, with its move to parked as a priority change. A kept mark set
+     alone, with its move to parked as a priority change. On a row that
+     stays parked, it replaces the held condition text alone. A kept mark set
      at *Amend* is a sixth. It adds or replaces the mark text alone.
 
 4. **Apply.** When no accepted disposition changes a file — every item
@@ -736,8 +757,12 @@ re-examines a lesson.
    ` — `. The lineage clause, and any trigger it takes from the absorbed
    row, hold no `: `, each one written as `; `. The absorbed row's subject
    in the lineage clause leaves out any started-token text. An accepted
-   condition change writes `promote when <condition>` into the row. The
-   condition holds no `: ` and quotes no other row's short title in
+   condition change writes `promote when <condition>` into the row. On a
+   parked row whose condition has held, it replaces the held condition
+   text, however the row words it. The new text keeps the old one's
+   position and separator. The
+   placement rules below are for a condition the row does not yet hold.
+   The condition holds no `: ` and quotes no other row's short title in
    double quotes. If the row holds a ` — added ` text and no `: ` comes
    after that text's start, the condition goes right before it. It
    opens with `; ` when a `: ` comes before it, and with ` — ` when the

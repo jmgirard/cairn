@@ -226,5 +226,100 @@ class TestPromoteCarriesHigh(unittest.TestCase):
         )
 
 
+class TestFiredTriggerReRated(unittest.TestCase):
+    """M337: a fired trigger re-rates a row; it does not force a promote.
+
+    Read with whitespace collapsed, as `TestPromoteCarriesHigh` reads it.
+    """
+
+    def step(self, n):
+        return " ".join(TestTriageReadsTheToken.step(self, n).split())
+
+    triage = TestTriageReadsTheToken.triage
+
+    def test_staleness_names_the_fired_row(self):
+        self.assertIn("a fired trigger whose work is still undone is not a drop.", self.step(2))
+
+    def test_staleness_does_not_fire_on_it(self):
+        self.assertIn(
+            "staleness does not fire on that row, so it decides nothing for it, "
+            "and the row goes on to the classes below",
+            self.step(2),
+        )
+
+    def test_staleness_no_longer_routes_to_readiness(self):
+        self.assertNotIn("goes to readiness", self.step(2))
+
+    def test_readiness_drops_the_fired_trigger_ground(self):
+        self.assertNotIn("because its trigger has fired", self.step(2))
+
+    def test_a_fired_trigger_alone_is_not_wanted_now(self):
+        self.assertIn("a fired trigger alone does not make the work wanted now", self.step(2))
+
+    def test_a_promote_reason_names_more_than_the_trigger(self):
+        self.assertIn(
+            "a proposed `promote` names in its reason what the pass read that shows the work is wanted now, "
+            "beyond the trigger firing",
+            self.step(2),
+        )
+
+    def test_amend_promote_is_not_bound(self):
+        self.assertIn("this binds the pass's proposal, not a `promote` the user sets at *amend*", self.step(2))
+
+    def test_rung_names_the_parked_held_row(self):
+        self.assertIn(
+            "if it does neither, it proposes one of two changes for that row, each with a reason",
+            self.step(2),
+        )
+
+    def test_rung_still_allows_route_and_drop(self):
+        self.assertIn(
+            "among those rows, the class can route or drop a `[parked]` row whose promotion condition has held",
+            self.step(2),
+        )
+
+    def test_a_held_row_takes_only_what_its_hold_allows(self):
+        self.assertIn("a row that one of them holds takes only what that hold or filter allows", self.step(2))
+
+    def test_declining_a_stay_parked_condition_writes_a_kept_mark(self):
+        self.assertIn(
+            "or declines a new condition for a row that stays parked, the row takes a kept mark",
+            self.step(3),
+        )
+
+    def test_rung_first_change_is_off_parked(self):
+        self.assertIn(
+            "the first is a priority change off parked to the rung the pass judges right, usually normal",
+            self.step(2),
+        )
+
+    def test_rung_second_change_is_a_new_condition(self):
+        self.assertIn("the second keeps the row parked with a new condition that has not held", self.step(2))
+
+    def test_rung_keeps_the_holds(self):
+        self.assertIn(
+            "the holds and filters of this step still apply to that row. they are the started-token, "
+            "pr-named, live-milestone, merge-survivor, and finding-absorbing holds, and the kept-mark filter",
+            self.step(2),
+        )
+
+    def test_staying_parked_states_its_condition_change_alone(self):
+        self.assertIn(
+            "a parked row whose condition has held and that stays parked states its condition change alone, "
+            "with no priority change, as in `condition: <held condition> → <new condition>`",
+            self.step(3),
+        )
+
+    def test_staying_parked_replaces_the_held_condition(self):
+        self.assertIn("on a row that stays parked, it replaces the held condition text alone", self.step(3))
+
+    def test_apply_replaces_the_held_condition_in_place(self):
+        self.assertIn(
+            "on a parked row whose condition has held, it replaces the held condition text, "
+            "however the row words it. the new text keeps the old one's position and separator",
+            self.step(4),
+        )
+
+
 if __name__ == "__main__":
     unittest.main()
