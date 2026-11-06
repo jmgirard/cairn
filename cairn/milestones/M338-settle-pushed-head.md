@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M338: Note the pushed head after a merge push
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** IP1   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
 - **Surface tier:** user-facing — it changes what `/milestone-review` and `/hotfix` do at a merge   <!-- owner: plan · create/amend-via-gate; user-facing | internal — <one-clause reason>; skill conduct only — no validate check parses it -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
+- **Branch/PR:** m338-settle-pushed-head   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -68,7 +68,7 @@ The parked row "Ask again after a merge conflict fix" keeps its clauses
      cites; an insertion, removal, or reorder renumbers the labels and the
      Coverage lines together. -->
 
-- [ ] T1: Write the re-read command form and try it once on a real `gh pr view` of a merged PR (for example #351 against its known head), in this harness, since a foreground command that starts with `sleep` is blocked (LESSONS M328).
+- [x] T1: Write the re-read command form and try it once on a real `gh pr view` of a merged PR (for example #351 against its known head), in this harness, since a foreground command that starts with `sleep` is blocked (LESSONS M328).
 - [ ] T2: Edit `skills/milestone-review/SKILL.md` step 8 (lines 734-822): the pushed-commit read, the re-read before the marker write, the note, the stop, the Red CI rerun's wording ("notes the new PR head"), and the companion arm (lines 829-866).
 - [ ] T3: Edit `skills/hotfix/SKILL.md` step 6 (lines 590-598): the re-read for an authored fix, the one read for an adopted PR, and the stop text.
 - [ ] T4: Edit the merge CI wait in `skills/shared/tracking-rules.md` (lines 401-417), then run AC4's `git grep` and fix each hit.
@@ -98,3 +98,5 @@ The parked row "Ask again after a merge conflict fix" keeps its clauses
 - 2026-11-05: plan gate chose re-reading the PR head until it equals the pushed commit over recording the local pushed commit alone, because a checks read made before GitHub moves the head reports the old head's runs; falsified by a `gh pr checks` read that reports the old head's runs after `headRefOid` already shows the pushed commit.
 - 2026-11-05: question set: none posed — the user named the row, and no open choice is the user's alone; the run's outward actions are the merge question's.
 - 2026-11-05: criteria audit (full, Opus): 8 findings, all taken. The re-read moves before the marker write, so AC2 writes no marker; AC1 names the push made when the PR exists, the Red CI rerun, and the companion arm; AC1 says not local `HEAD`; both skills spell one re-read command, tried at T1; AC3 splits authored fix from adopted PR and changes "names the new head"; AC5 states the D-108 answer; AC4's grep adds "read and note the PR head" and names the hotfix head; the Goal narrows to the pushes the criteria name.
+- 2026-11-05: implement started on branch m338-settle-pushed-head; status in-progress.
+- 2026-11-05: T1: the form `sha=…; head=; for i in $(seq 12); do head=$(gh pr view <N> --json headRefOid -q .headRefOid) && [ "$head" = "$sha" ] && break; sleep 5; done; echo "pushed $sha PR head $head"` ran in this harness on PR #351: a match exits on try 1 (0.4 s); a non-match ends at the bound (12 tries, 65 s; 2 tries, 11 s); a failed read (an HTTP 504 seen) is retried, not taken as a match.

@@ -8,7 +8,7 @@ _Released 1.0.0 (2026-07-16) to 2.1.0 (2026-10-18), each tagged `v<version>`; 1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M338 | Note the pushed head after a merge push | planned | — | normal | milestones/M338-settle-pushed-head.md |
+| M338 | Note the pushed head after a merge push | in-progress | — | normal | milestones/M338-settle-pushed-head.md |
 | M337 | Re-rate a row whose trigger fired | done | — | normal | milestones/archive/M337-rerate-fired-trigger.md |
 | M336 | Ask again before merging a red-CI fix | done | — | normal | milestones/archive/M336-reask-red-ci-fix.md |
 | M335 | Commit the row a hotfix stop writes | done | — | normal | milestones/archive/M335-commit-hotfix-stop-row.md |
