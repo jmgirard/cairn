@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 2.2.0 (2026-11-05)
 
 ### Changes that affect existing repos
 
@@ -53,16 +53,31 @@
   own now gives `/milestone-plan` with the row's short title. In guest mode
   the stop's row stays on disk with no commit, as before.
 
-- **A Copilot comment goes out only when the maintainers need it.** In every
-  mode, the comment is written to the maintainers and says only what they
-  need to know from the review. It no longer has to name each fix or note,
-  give a commit, or give a reason for a note left alone. If they need nothing,
-  the review gets no comment and its threads are resolved, so a note can go
-  unmentioned on GitHub. You still see each note's outcome in chat. In a guest
-  repo and in `/copilot-review`, Claude first shows you the draft, or that the
-  review gets no comment. You can post it or resolve with no comment, type a
-  comment, or hold it. A review with a finding
-  only in its summary and no comment comes up again on a later run.
+- **The Copilot round answers each review in at most one comment, and only
+  when the maintainers need it.** In every mode, the round in `/hotfix`,
+  `/milestone-review`, and `/copilot-review` no longer replies on each
+  Copilot thread. A Copilot review with an open note gets at most one PR
+  comment, written to the maintainers. It says only what they need to know
+  from the review. It uses ordinary sentences that someone who has not seen
+  the session can follow on one read. It links the review. It goes once every
+  note is settled and each fix is pushed. If the maintainers need nothing,
+  the review gets no comment, so a note can go unmentioned on GitHub. You
+  still see each note's outcome in chat. The comment never thanks Copilot.
+  After the comment, or with no comment, Claude resolves that review's open
+  threads. In a guest repo and in `/copilot-review`, Claude first shows you
+  each draft, or that a review gets no comment. You can post it or resolve
+  with no comment, type your own version, or hold it. A hold posts nothing
+  and leaves that review's threads open. A guest close then gives you the
+  `/copilot-review` command that finishes it while the PR is open. In your
+  own repos the round asks no question. A review that one of your comments
+  already links gets no second comment, and its open threads are resolved.
+  A review with a finding only in its summary and no comment comes up again
+  on a later run. In `/hotfix` and `/milestone-review`, a thread that Claude
+  cannot settle without you becomes a follow-up row. The merge question or
+  the approval chip names that row. `/copilot-review` asks you in chat. No
+  question goes to GitHub. A thread that `/milestone-review` returns to
+  implement holds back its review's comment, and its threads stay open for
+  a later pass.
 
 - **The session-start text covers work that no rule covers.** This rule
   applies in owner and guest mode. If no cairn route or rule covers a task, the
@@ -143,8 +158,9 @@
   parked, Known issue, and dropped. Whoever writes or updates a row places
   it on a rung with a reason. A move can go up or down any number of
   rungs. Only a parked row needs a promotion condition. `/cairn-triage`
-  can now propose any rung for any row that a started token or a live
-  milestone does not hold. Before, the pass promoted a row only after its
+  can now propose any rung for a row. The exceptions are a row that a
+  started token, an open pull request, a live milestone, or a kept mark
+  holds. Before, the pass promoted a row only after its
   trigger fired. It never parked a `[high]` row, and it routed a Known
   issues entry back to a row only with a stated trigger. A move to parked drafts a
   condition, and a move off parked needs no condition that has held. A
@@ -322,13 +338,12 @@
   already open, lists the `edge` findings in plain words and asks the
   maintainers whether they want them handled.
 
-- **A repo with a Quarto extension marker, no language or plugin marker,
-  and no `cairn/PROFILE.md` now reads as the quarto-extension profile.** The profile inference checks
-  `_extensions/*/_extension.yml` (or `.yaml`) after the plugin marker and
-  before a `Dockerfile`. A repo with an extension marker and a `Dockerfile`,
-  and no `cairn/PROFILE.md`, read as docker-image before and reads as
-  quarto-extension now. A repo whose `cairn/PROFILE.md` names a profile
-  keeps that profile.
+- **A repo with a Quarto extension marker and a `Dockerfile` now reads as
+  quarto-extension.** With no `cairn/PROFILE.md` and no language or plugin
+  marker, such a repo read as docker-image before. The profile inference
+  now checks `_extensions/*/_extension.yml` (or `.yaml`) after the plugin
+  marker and before a `Dockerfile`. A repo whose `cairn/PROFILE.md` names a
+  profile keeps that profile.
 
 - **Candidate short titles are one short sentence.** The rulebook now
   tells whoever writes a candidate row to open it with one sentence that
@@ -339,7 +354,13 @@
   parentheses, for example `Fix SE of skewness calculation (#100)`. The
   number counts toward the 40 characters and not toward the words. An
   issue added to an existing row later goes in the row's details, so its
-  title stays the same. `/cairn-triage` now proposes a `retitle` for a
+  title stays the same. A ✎ press or the pane's plan button passes such a
+  title to `/milestone-plan`. The plan reads the number as part of the
+  title, not as an issue. It runs its check for a hotfix or a small direct
+  edit on the row. `/hotfix` also reads such a number in a quoted title as part
+  of the title, not as a pull request. It still uses the number for the
+  PR's `Fixes #N` line. A `#N` outside the title is read as before.
+  `/cairn-triage` now proposes a `retitle` for a
   title with fewer than 5 words or more than 40 characters, in place of
   the old 60-character limit, and gives each new title these bounds.
   Existing rows keep their titles until a `/cairn-triage` pass retitles
@@ -409,28 +430,6 @@
   have the token proposed for rows that wait on a condition, run
   `/cairn-triage`.
 
-- **The Copilot round answers each review in at most one comment.** In every
-  mode, the round in `/hotfix` and `/milestone-review` and `/copilot-review` no
-  longer reply on each Copilot thread. A Copilot review with an open note gets
-  at most one PR comment, in place of a reply on each note. It is in ordinary
-  sentences, and someone who has not seen the session can follow it on one
-  read. It links the review. It goes once every note is settled and each
-  fix is pushed. In a guest
-  repo and in `/copilot-review`, Claude first shows you each draft, or that a
-  review gets no comment. You can post it or resolve with no comment, type your
-  own version, or hold it. A hold posts nothing and
-  leaves that review's threads open. A guest close then gives you the
-  `/copilot-review` command that finishes it while the PR is open. In your
-  own repos the round
-  asks no question. The comment never thanks Copilot. After it,
-  Claude resolves that review's open threads. A
-  review that one of your comments already links gets no second comment,
-  and its open threads are resolved. In `/hotfix` and `/milestone-review`, a thread
-  that Claude cannot settle without you becomes a follow-up row, named at
-  the merge question or the approval chip. `/copilot-review` asks you in
-  chat. No question goes to GitHub. A thread that `/milestone-review`
-  returns to implement holds back its review's comment, and its threads
-  stay open for a later pass.
 
 - **Sessions are told to read the source shelf before the web.** When
   `cairn/references/` holds source pages or shelf entries, the
@@ -452,8 +451,8 @@
 - **The idle cairn pane drops two lines.** The pane no longer shows a `no
   active milestone` line. When the next step is planning and the
   Candidates list shows a row, the pane shows no `→ /milestone-plan` line.
-  Each candidate line with a short title carries a `✎` that plans its
-  row. With no candidate row
+  While no cairn skill runs, each candidate line with a short title
+  carries a `✎` that plans its row. With no candidate row
   shown, the line and its `Plan` and `Status` buttons stay. The band's
   `Plan` and `Status` buttons do not change.
 
@@ -614,16 +613,6 @@
   delete the live file, and mark the ROADMAP row `done`, in that order.
   A pass that stops earlier leaves the live file in place, and a rerun
   does not capture a lesson twice.
-
-- **A candidate title's issue number stays part of the title.** A row
-  written for an issue ends its short title with the number, for example
-  `Fix SE of skewness calculation (#100)`. A ✎ press or the pane's plan
-  button passes that title to `/milestone-plan`. The plan read the number
-  as an issue and skipped its check for a hotfix or a small direct edit.
-  It now reads the number as part of the title and runs the check on the
-  row. `/hotfix` also reads such a number in a quoted title as part of the
-  title, not as a pull request. It still uses the number for the PR's
-  `Fixes #N` line. A `#N` outside the title is read as before.
 
 - **`/cairn-triage` proposes to keep a row that an open pull request names.** The
   pane hides a candidate row that one of your own open PRs names in a
