@@ -108,6 +108,7 @@ The parked row "Ask again after a merge conflict fix" keeps its clauses
 - 2026-11-05: claim audit pass (Opus): 34 claims read, 5 corrected — step 8's settle now says owner-mode push only and URL commit "where one is made"; hotfix's adopted PR is "not pushed on approval" and an authored fix's approval push can be a no-op; both stops say what a failed last read shows. The unsettled gate read after an earlier push went to the candidate row "Settle a hotfix gate head after a push" (normal). Guard re-pinned; skills/tests, both suites, validate green. Re-read of the corrected claims pending.
 - 2026-11-05: claim audit: 34 claims read, 5 corrected — skills/milestone-review/SKILL.md, skills/hotfix/SKILL.md. The same reader's one re-read found four corrections holding and added an address-first fix to hotfix's no-op-push list, now applied; no second pass.
 - 2026-11-05: implement complete; status review. After the last edit: skills/tests, both suites, and both validates green; `claude plugin test` not rerun, since the branch changes no `hooks/` code (its T7 run was 2466 pass).
+- 2026-11-05: step-7 approval: m338-settle-pushed-head approved for merge
 - 2026-11-05: review started; Copilot arm opened PR #353 (feature cap 0 of 1 open), header URL commit pushed, Copilot requested (state `pending`).
 
 ## Review
