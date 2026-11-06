@@ -69,7 +69,7 @@ The parked row "Ask again after a merge conflict fix" keeps its clauses
      Coverage lines together. -->
 
 - [x] T1: Write the re-read command form and try it once on a real `gh pr view` of a merged PR (for example #351 against its known head), in this harness, since a foreground command that starts with `sleep` is blocked (LESSONS M328).
-- [ ] T2: Edit `skills/milestone-review/SKILL.md` step 8 (lines 734-822): the pushed-commit read, the re-read before the marker write, the note, the stop, the Red CI rerun's wording ("notes the new PR head"), and the companion arm (lines 829-866).
+- [x] T2: Edit `skills/milestone-review/SKILL.md` step 8 (lines 734-822): the pushed-commit read, the re-read before the marker write, the note, the stop, the Red CI rerun's wording ("notes the new PR head"), and the companion arm (lines 829-866).
 - [ ] T3: Edit `skills/hotfix/SKILL.md` step 6 (lines 590-598): the re-read for an authored fix, the one read for an adopted PR, and the stop text.
 - [ ] T4: Edit the merge CI wait in `skills/shared/tracking-rules.md` (lines 401-417), then run AC4's `git grep` and fix each hit.
 - [ ] T5: Write the D-entry of AC5.
@@ -100,3 +100,4 @@ The parked row "Ask again after a merge conflict fix" keeps its clauses
 - 2026-11-05: criteria audit (full, Opus): 8 findings, all taken. The re-read moves before the marker write, so AC2 writes no marker; AC1 names the push made when the PR exists, the Red CI rerun, and the companion arm; AC1 says not local `HEAD`; both skills spell one re-read command, tried at T1; AC3 splits authored fix from adopted PR and changes "names the new head"; AC5 states the D-108 answer; AC4's grep adds "read and note the PR head" and names the hotfix head; the Goal narrows to the pushes the criteria name.
 - 2026-11-05: implement started on branch m338-settle-pushed-head; status in-progress.
 - 2026-11-05: T1: the form `sha=…; head=; for i in $(seq 12); do head=$(gh pr view <N> --json headRefOid -q .headRefOid) && [ "$head" = "$sha" ] && break; sleep 5; done; echo "pushed $sha PR head $head"` ran in this harness on PR #351: a match exits on try 1 (0.4 s); a non-match ends at the bound (12 tries, 65 s; 2 tries, 11 s); a failed read (an HTTP 504 seen) is retried, not taken as a match.
+- 2026-11-05: T2: step 8 gains "Settle the pushed head" after the push, create, and URL record and before the marker write; the old "read and note the PR head" sentence now reads checks after the settle; the Red CI rerun settles then writes the marker; the companion arm settles each companion's head before its wait. The settle sits after the unpushed URL commit, so its stop leaves a clean tree and route (c) resumes it.
