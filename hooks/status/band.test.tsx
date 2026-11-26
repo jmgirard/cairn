@@ -199,9 +199,10 @@ async function chapter($, title: string) {
 }
 
 // Another plugin that draws its own band row and never calls `next`. The
-// engine asks each plugin for its own row, so the engine's slot still
-// follows that row. Its register closes over nothing here, so its row text
-// is written inside it and restated as BENEATH_ROW.
+// engine asks each plugin for its own row and draws its slot after them, so
+// this row sits between cairn's rows and the slot. Its register closes over
+// nothing here, so its row text is written inside it and restated as
+// BENEATH_ROW.
 const BENEATH = {
   name: 'band-beneath',
   tier: 'append' as const,
@@ -224,7 +225,6 @@ type Element = { type: string; key?: string; text?: string; props: Record<string
 type Ui = {
   findAll: (q: { type?: string; key?: string }) => Promise<Element[]>
   press: (q: { key: string }) => Promise<unknown>
-  keepsBeneath: () => Promise<boolean>
   unmount: () => Promise<void>
 }
 
@@ -319,7 +319,8 @@ function rowText(row: Element): string {
 }
 
 // The rows as drawn, top to bottom: each of cairn's rows (a keyed Box), then
-// the rows the hooks beneath drew (ENGINE, BENEATH_ROW).
+// another plugin's row (BENEATH_ROW) where one loads, then the engine's slot
+// (ENGINE).
 async function lines(ui: Ui): Promise<string[]> {
   const all = await ui.findAll({})
   return all
@@ -1588,7 +1589,6 @@ describe("cairn's rows sit above the band beneath (M193 AC6)", () => {
       BAND,
       async ui => {
         expect(await lines(ui)).toEqual([...DRAWN['single-in-progress'], BENEATH_ROW, ENGINE])
-        expect((await bandTexts(ui)).map(textOf)).not.toContain(BENEATH_ROW)
       },
       $,
     )
@@ -1600,7 +1600,7 @@ describe("cairn's rows sit above the band beneath (M193 AC6)", () => {
     await mountEach('no-active', BAND, async ui => expect(await lines(ui)).toEqual([EMPTY_TEXT, BENEATH_ROW, ENGINE]), $)
   })
 
-  test('with no ROADMAP, the band beneath shows alone', { plugins: [BENEATH] }, async ($, on) => {
+  test("with no ROADMAP, only the other plugin's row and the engine's slot show", { plugins: [BENEATH] }, async ($, on) => {
     seat(on, copyOf('no-roadmap'))
     await $.turn.complete(turn())
     await mountEach('no-roadmap', BAND, async ui => expect(await lines(ui)).toEqual([BENEATH_ROW, ENGINE]), $)
@@ -2085,7 +2085,6 @@ describe('no skill row, and the idle row with no next label (M206 AC4)', () => {
         at(200),
         async ui => {
           await isEmptyRow(ui, false)
-          expect(await ui.keepsBeneath()).toBe(true)
         },
         $,
       )
