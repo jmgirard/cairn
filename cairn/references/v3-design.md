@@ -146,13 +146,13 @@ Status: proposed.
 
 - Session start injects the home-folder path, ROADMAP and the active plan.
 - GitHub branch protection replaces most guard hooks, since it covers Claude and Codex alike.
-- The pane mod becomes optional. A status view is built on the status script so it works outside Claude Desktop.
+- The pane mod becomes optional. The status view starts as text from `/cairn status`; a visual view is decided after the pilot (agreed).
 
 ## Migration
 
 Status: proposed.
 
-- The new core ships as v3.0.0 under the same plugin name, in this repo.
+- The new core ships as v3.0.0 under the same plugin name, in this repo. It is built on one `v3` branch outside v2's milestone process and merged to main once, as the release (agreed).
 - A script does the mechanical part per repo in one commit: move `DECISIONS.md`, `LESSONS.md` and the old archive aside, swap the cairn section of `CLAUDE.md`, add an `AGENTS.md` for Codex. Guest repos move to the home folder.
 - A triage pass per repo does the judgment part: each Known issues entry becomes a GitHub issue if it has a failing input and is otherwise dropped; each candidate is promoted, kept or dropped.
 - All repos are cut over in one sitting; triage passes follow as each repo is next worked in.
@@ -160,6 +160,8 @@ Status: proposed.
 - Order: test T3 Code, write the format spec, build the script while piloting on chromodoris, run it on the rest, triage.
 
 ## To test in T3 Code
+
+Read from T3 Code's own docs, observed 2026-11-25 (app version 0.1.12 installed): it drives the user's Claude Code installation, and skills load from the config directory's `skills` folder, the project's `.claude/skills` and enabled plugins. Skills are invoked with a `$` prefix, not `/`. A thread can take a "New worktree". The default permission mode for new threads is "Full access". The docs say nothing about hooks. cairn is installed as a skills-directory plugin at `~/.claude/skills/cairn`, so it should load there.
 
 - Whether a thread loads Claude Code plugins, meaning cairn's skills and hooks.
 - Whether `/cairn start` reaches Claude unchanged.
@@ -170,7 +172,5 @@ Status: proposed.
 
 - The user's markup of the draft steps per verb, which supplies the steps wanted every time.
 - The user's word on the sections still marked proposed.
-- How the build is run in this repo: under v2's milestone process, or on one `v3` branch outside it.
-- What form the status view takes outside Claude Desktop.
 - Whether a small format validator survives.
 - The T3 Code tests above.
