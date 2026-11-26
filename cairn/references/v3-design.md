@@ -215,6 +215,13 @@ Config folders, observed 2026-11-26. This machine has two Claude config folders,
 - `~/.cairn` and `~/.codex` are one folder each, shared by both accounts.
 - The Claude Code docs, read 2026-11-26 through a subagent and not tested: `CLAUDE_CONFIG_DIR` moves settings, session history, and plugins, and credentials are keyed to the folder, so two accounts can stay signed in. The desktop app has no folder setting per account and no documented second profile. It accepts the variable through a saved local environment, which applies to sessions started from it.
 
+Folder arrangement, set by the user and observed 2026-11-26. The Claude desktop app is for personal use only. T3 Code is for both accounts, each in its own folder.
+
+- `~/.claude` is personal: the desktop app uses it, and it is signed in with the gmail.com account. cairn, `writing-for-people`, and the global `CLAUDE.md` stay there.
+- `~/.claude_work` is work: T3 Code's WORK instance now sets `homePath` to it, and it is signed in with the fluidconcepts.ai account. cairn is not installed there.
+- `~/.claude_personal` is still the folder of T3 Code's HOME instance, signed in with gmail.com.
+- A sign-in lands in the default folder unless `CLAUDE_CONFIG_DIR` is set on the same line as `claude auth login`. The Keychain entry for a folder is named by the first eight hex digits of the SHA-256 of its path.
+
 Still untested: a "New worktree" thread; the other permission modes; hooks other than SessionStart; how a skill named `cairn` in the plugin `cairn` is listed.
 
 What the results change (proposed):
