@@ -112,7 +112,7 @@ Status: proposed.
 
 - cairn writes no prose for other readers. It hands the facts to the user's `writing-for-people` skill as the brief, and a fresh drafter writes the text.
 - The user sees each text once, at the gate that already exists. Internal files are never previewed in chat.
-- With Codex available, it reads the draft cold and reports what the text says and asks. A mismatch with the brief means a rewrite from the brief.
+- A fresh subagent reads the draft cold and reports what the text says and asks. A mismatch with the brief means a rewrite from the brief.
 - The only style rule cairn keeps is the guest rule: match the host maintainers' own text.
 - A review of the writing skill is a separate candidate row.
 
@@ -163,14 +163,26 @@ Status: proposed.
 
 Read from T3 Code's own docs, observed 2026-11-25 (app version 0.1.12 installed): it drives the user's Claude Code installation, and skills load from the config directory's `skills` folder, the project's `.claude/skills` and enabled plugins. Skills are invoked with a `$` prefix, not `/`. A thread can take a "New worktree". The default permission mode for new threads is "Full access". The docs say nothing about hooks. cairn is installed as a skills-directory plugin at `~/.claude/skills/cairn`, so it should load there.
 
-- Whether a thread loads Claude Code plugins, meaning cairn's skills and hooks.
-- Whether `/cairn start` reaches Claude unchanged.
-- Whether a thread can write to `~/.cairn` without a permission prompt each time.
-- How Codex gets the skill and the plan; Codex reads `AGENTS.md` and its own skills folder.
+Tested by the user in one thread on chromodoris, observed 2026-11-25. The thread ran in "Current checkout" on main with "Full access", on Claude Opus 5.5 and then Codex.
+
+- cairn's SessionStart hook ran and its text reached the session. The session also saw a notice that the hook was "skipped" because "cc-plugin-sec-default" ran first; the notice is unexplained.
+- All 11 `cairn:` skills were available. Typing `/` in the composer listed the cairn skills; typing `$` listed only `simple-english` and `writing-for-people`. A `$writing-for-people` message with arguments invoked that skill.
+- Writing to `~/.cairn` raised no approval prompt in "Full access".
+- Switching to Codex inside the thread worked and carried a summary of the conversation. Codex ran in the same folder and could read `~/.cairn` and `~/.claude`. It received no `AGENTS.md` (the repo has none), no `CLAUDE.md`, none of the Claude skills and no hooks.
+
+Still untested: a "New worktree" thread; the other permission modes; hooks other than SessionStart; how a skill named `cairn` in the plugin `cairn` is listed.
+
+What the results change (proposed):
+
+- The plugin form holds. No plain-skills fallback is needed for Claude in T3 Code.
+- Codex gets its own small skill, installed by `setup` into Codex's user skills folder so it also works in guest repos. It tells Codex how to review: read the plan at the path given, read the diff, and write findings to a file beside the plan, each with its failing input and its ordinary-use pointer. The folder is taken to be `~/.codex/skills`, which exists on this machine; that is to be confirmed in the pilot.
+- A Codex review runs in a new thread on the same checkout, because a switch inside the thread hands Codex the conversation and the reviewer should not have seen the build. `review` then reads the findings file.
+- The cold read of text for other readers is done by a fresh Claude subagent. A new Codex thread per text would cost more than it gives.
+- Codex has no hooks, so anything that must hold for both agents is a GitHub branch rule, not a hook.
 
 ## Open
 
 - The user's markup of the draft steps per verb, which supplies the steps wanted every time.
 - The user's word on the sections still marked proposed.
 - Whether a small format validator survives.
-- The T3 Code tests above.
+- The untested T3 Code items above, to be covered in the pilot.
