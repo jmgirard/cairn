@@ -241,13 +241,16 @@ Folder arrangement, set by the user and observed 2026-11-26. The Claude desktop 
 
 Still untested: a "New worktree" thread; the other permission modes; hooks other than SessionStart; how a skill named `cairn` in the plugin `cairn` is listed.
 
-What the results change (proposed):
+What the results change. The Codex account arrangement is agreed 2026-11-26; the other bullets were revised that day and wait for the user's word.
 
-- The plugin form holds. No plain-skills fallback is needed for Claude in T3 Code.
-- Codex gets its own small skill, installed by `setup` into Codex's user skills folder so it also works in guest repos. It tells Codex how to review: read the plan at the path given, read the diff, and write findings to a file beside the plan, each with its failing input and its ordinary-use pointer. The folder is taken to be `~/.codex/skills`, which exists on this machine; that is to be confirmed in the pilot.
-- A Codex review runs in a new thread on the same checkout, because a switch inside the thread hands Codex the conversation and the reviewer should not have seen the build. `review` then reads the findings file.
-- The cold read of text for other readers is done by a fresh Claude subagent. A new Codex thread per text would cost more than it gives.
-- Codex has no hooks, so anything that must hold for both agents is a GitHub branch rule, not a hook.
+- The plugin form holds. No plain-skills fallback is needed for Claude in T3 Code. This was tested under `~/.claude` only and is rerun under the HOME instance before the pilot.
+- Accounts (agreed, the user's decision): a personal Codex account goes in `~/.codex`, the default folder, and the work account moves to `~/.codex_work`, as was done for Claude. cairn therefore sets no `CODEX_HOME`. Observed 2026-11-26: `~/.codex` is signed in with ChatGPT, T3 Code names its one Codex instance WORK, and the move is not yet done.
+- `review` runs Codex itself from the command line, read-only, with the reviewer's brief as the prompt. A fresh process has not seen the build, so the review needs no new thread and no extra stop. Observed 2026-11-26: Codex 0.171.0 is installed and has `codex review --base <branch> [PROMPT]` and `codex exec` with a `read-only` sandbox. Neither was run.
+- There is one brief and two runners: Codex, or a fresh Claude subagent where Codex is not installed or not signed in. No Codex skill is installed, and `setup` never touches Codex's folder. Findings come back as the command's output, so there is no findings file.
+- The read-only sandbox is what keeps Codex from pushing, merging, or editing. Branch rules do not do that job: they hold only force-push and deletion.
+- The migration script adds no `AGENTS.md`. Review does not need one, and nothing in this note has Codex doing build work.
+- The cold read of text for other readers is done by a fresh Claude subagent.
+- For the pilot: whether a Claude thread in T3 Code can start `codex`, and whether `codex review` takes a prompt together with `--base`.
 
 ## Open
 
