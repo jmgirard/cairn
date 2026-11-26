@@ -101,13 +101,38 @@ class TestHotfixCandidateGraduation(unittest.TestCase):
         ):
             self.assertIn(phrase, self.step7)
 
-    def test_guest_arm_waits_for_the_maintainers_merge(self):
+    def test_guest_handoff_records_flaws_and_waits_for_the_merge(self):
         self.assertIn(
-            "The handoff changes a matched candidate row only by its started "
-            "token. Step 7's guest arm edits it on a later `/hotfix` run with "
-            "the PR reference, after the maintainers merge.",
+            "Beyond its started token, the handoff leaves a matched candidate "
+            "row as it is. Step 7's guest arm edits it on a later `/hotfix` "
+            "run with the PR reference, after the maintainers merge.",
             self.step6,
         )
+        # M339: the handoff records each flaw it left alone, tagged by PR.
+        for phrase in (
+            "**Handoff flaw record (M339).** When the Copilot round below is "
+            "on, make this record after that round. When the round is off, "
+            "make it here. Record on disk, with no commit, each flaw that "
+            "step 1's idea vet found.",
+            "`— added YYYY-MM-DD — hotfix PR #<n> handoff`",
+            "A row that already holds the flaw itself gets no edit.",
+            "`; extended YYYY-MM-DD by hotfix PR #<n> handoff: <the flaw>`",
+            "The first is a row that step 1 matched. The second is a row that "
+            "ends with a ` — started` token. The third is a row of a "
+            "finding-absorbing group",
+            "On a standing rejection the flaw gets no row, and the close "
+            "block names the flaw and the decision.",
+            "A handoff that stops before its PR opens records nothing, and "
+            "its close block names each flaw, as step 1 says.",
+        ):
+            self.assertIn(phrase, self.step6)
+        for phrase in (
+            "After the push, make step 6's handoff flaw record, with `<n>` "
+            "this PR's number.",
+            "with two guest-mode exceptions. A handoff whose `gh pr create` "
+            "succeeds records the flaw at the handoff",
+        ):
+            self.assertIn(phrase, self.step1)
         # M258: the guest handoff appends ` — started #<n>` after the create.
         self.assertIn(
             "After the create, append ` — started #<n>` on disk, `<n>` the "
@@ -115,8 +140,22 @@ class TestHotfixCandidateGraduation(unittest.TestCase):
             self.step6,
         )
         for phrase in (
-            "*Guest arm:* the handoff only appends its started token to each "
-            "matched row.",
+            "*Guest arm:* the handoff appends its started token to each "
+            "matched row and makes step 6's handoff flaw record. It edits no "
+            "other row.",
+            "each Candidates row of `cairn/ROADMAP.md` that holds `hotfix PR "
+            "#<N> handoff`. `<N>` is the PR that the re-entry's argument "
+            "names. Judge each row against the merged diff.",
+            "When the diff covers that flaw in full, delete the note. For a "
+            "row the handoff wrote, check whether anything was added to it "
+            "later. If nothing was, delete the whole row. If something was, "
+            "delete only the handoff's flaw text. When the diff covers the "
+            "flaw in part, narrow the flaw's text to the part left and add "
+            "the `narrowed` note above after it. Otherwise keep it.",
+            "A flaw that the re-entry's idea vet finds and such a row holds "
+            "adds no new row.",
+            "Any other re-entry outcome, a PR closed without a merge "
+            "included, leaves these rows as they are.",
             "When the merged-PR re-entry finds that the maintainers merged "
             "the PR, and its post-hoc verification is accepted, remove or "
             "narrow each matched row on disk with no commit, judged against "
@@ -142,6 +181,11 @@ class TestHotfixCandidateGraduation(unittest.TestCase):
         self.assertIn(
             "After the merge it removes the candidate row it fixed, or "
             "narrows it to the part left.",
+            readme_row[0],
+        )
+        self.assertIn(
+            "In guest mode, the hotfix writes that row at the handoff of its "
+            "PR to the maintainers, not after their merge.",
             readme_row[0],
         )
 

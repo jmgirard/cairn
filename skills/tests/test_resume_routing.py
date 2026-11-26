@@ -717,12 +717,18 @@ class TestHotfixGuestChangeRoute(unittest.TestCase):
         self.assertIn(
             "On approval, push to the remote that holds the PR's head, found by "
             "the rulebook's open-PR head rule: `git push <head-remote> "
-            "HEAD:<headRefName>`. Post no comment or reply on the PR. Then stop "
-            "with the close block of "
-            "the report-and-stop above. That close block also says that the "
-            "reply to the maintainers is the operator's.",
+            "HEAD:<headRefName>`. Post no comment or reply on the PR.",
             self.step1,
         )
+        stop = ("Then stop with the close block of the report-and-stop above. "
+                "That close block also says that the reply to the maintainers "
+                "is the operator's,")
+        self.assertIn(stop, self.step1)
+        # The flaw record comes after the push and before the stop.
+        record = self.step1.index("make step 6's handoff flaw record")
+        self.assertLess(self.step1.index("Post no comment or reply on the PR."),
+                        record)
+        self.assertLess(record, self.step1.index(stop))
 
     def test_decline_pushes_nothing(self):
         self.assertIn(

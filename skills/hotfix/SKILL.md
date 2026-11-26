@@ -125,12 +125,16 @@ can resolve against the fork instead of the base repo.
    it as a design decision for later work (search-first applies), after
    its matched-row edits and in its one docs-only commit (guest mode: on
    disk). A close block that ends the run before step 7 names the flaw
-   instead. On the merged-PR
+   instead, with two guest-mode exceptions. A handoff whose
+   `gh pr create` succeeds records the flaw at the handoff (step 6's
+   handoff flaw record). The change route's push records it too, once
+   the push lands. On the merged-PR
    re-entry below, the vet runs after the merge. When step 7 runs, a flaw
    goes in its close block. There the flaw waives none of the re-entry's
    checks below, and the over-the-bar route's candidate row still names it.
    A flaw that the merged diff leaves as it was is not over the bar. It
-   gets its candidate row from step 7, as above.
+   gets its candidate row from step 7, as above, unless a guest handoff's
+   row already holds it (step 7's handoff flaw rows).
    **Candidate-row match (M249).** Step 1 also finds the candidate rows
    this hotfix fixes. It runs on every entry to step 1, PR-reference
    re-entries included, before any stop this step takes, and never from
@@ -317,9 +321,14 @@ can resolve against the fork instead of the base repo.
      present. On approval, push to the remote that holds the PR's head,
      found by the rulebook's open-PR head rule:
      `git push <head-remote> HEAD:<headRefName>`. Post no comment or reply
-     on the PR. Then stop with the close block
+     on the PR. This route runs no Copilot round. After the push, make
+     step 6's handoff flaw record, with `<n>` this PR's number. It covers each flaw that the idea vet found
+     in what this route's changed diff leaves as it was. A decline, a stop
+     before the push, or a push that fails records nothing, and its close
+     block names each flaw. Then stop with the close block
      of the report-and-stop above. That close block also says that the
-     reply to the maintainers is the operator's. On decline, push nothing,
+     reply to the maintainers is the operator's, and it shows the record's
+     rows. On decline, push nothing,
      and stop with a close block that names the unpushed commits. Every
      close block of this route carries the report-and-stop's CI line, and
      its fenced next command is `/hotfix` with the PR reference.
@@ -656,7 +665,32 @@ can resolve against the fork instead of the base repo.
    wait, no merge. After the create,
    append ` — started #<n>` on disk, `<n>` the new PR's number, to the end
    of each candidate row step 1 matched (tracking-rules "Candidate started
-   token"), so the cairn pane in a checkout with no active milestone hides the row while the PR is open. With the Copilot
+   token"), so the cairn pane in a checkout with no active milestone hides the row while the PR is open.
+   **Handoff flaw record (M339).** When the Copilot round below is on,
+   make this record after that round. When the round is off, make it
+   here. Record on disk, with no commit, each flaw that step 1's idea vet
+   found. These are the flaws in what the
+   fix's diff leaves as it was. Sweep first by the search-first
+   candidate-creation rule (`tracking-rules.md`, Intake). A flaw that no
+   row holds gets a new candidate row. The row names the flaw as a design
+   decision for later work. Its provenance is
+   `— added YYYY-MM-DD — hotfix PR #<n> handoff`. A row that already holds
+   the flaw itself gets no edit. A row that holds only the flaw's subject
+   gains `; extended YYYY-MM-DD by hotfix PR #<n> handoff: <the flaw>` at
+   the end of its lineage. Three kinds of row are never extended, and the
+   flaw gets a new row instead. The first is a row that step 1 matched.
+   The second is a row that ends with a ` — started` token. The third is a
+   row of a finding-absorbing group (`skills/shared/records-hygiene.md`
+   §7). Step 7 or a milestone's
+   hygiene can delete the first two, and §7 bars a silent extension of
+   the third. A new row for the third names that row's short title in
+   double quotes after its own title's `: `, as §7 groups it. A flaw that
+   a Copilot fix changed gets no record. On a standing rejection the
+   flaw gets no row, and the close block names the flaw and the decision.
+   The close block shows each row written or extended, verbatim. Step 7's
+   guest arm judges these rows against the merged diff on the re-entry. A
+   handoff that stops before its PR opens records nothing, and its close
+   block names each flaw, as step 1 says. With the Copilot
    review round on (`skills/shared/copilot-review.md` §1), run it next,
    asking for Lite: the state query, the request on `none`, the state
    query again with the bounded wait while it prints `pending` (the read's
@@ -669,7 +703,8 @@ can resolve against the fork instead of the base repo.
    which also says that a Copilot review
    arriving after the wait is the operator's to handle by hand. A hold at
    the module's draft chip (§5) adds §6's `/copilot-review <N>` fence before
-   this close's next command, and it changes nothing else here. Then
+   this close's next command, and it changes nothing else here. With the
+   round on, make the handoff flaw record above at this point. Then
    stop with the close block: the recap says the fix is in the maintainers'
    hands; the CI line says their CI on the PR is the check that counts and
    nothing waits on it here; the fenced next command is `/hotfix` with the
@@ -679,10 +714,10 @@ can resolve against the fork instead of the base repo.
    With the Copilot round off, this close also follows the off-but-present
    rule (`skills/shared/copilot-review.md` §1).
    Step 7's issue
-   close is theirs — the `Fixes` keyword closes it at their merge. The
-   handoff changes a matched candidate row only by its started token. Step
-   7's guest arm edits it on a later `/hotfix` run with the PR reference,
-   after the maintainers merge.
+   close is theirs — the `Fixes` keyword closes it at their merge. Beyond
+   its started token, the handoff leaves a matched candidate row as it is.
+   Step 7's guest arm edits it on a later `/hotfix` run with the PR
+   reference, after the maintainers merge.
 
 7. If the fix revealed deeper work, add a `candidate` row before closing
    out — sweep first per the search-first candidate-creation rule
@@ -704,7 +739,9 @@ can resolve against the fork instead of the base repo.
    that narrowing, never a second new row. On step 1's over-the-bar
    disposition, step 7 neither removes nor narrows a matched row. After
    those edits, step 7 adds the candidate row for each flaw that step 1's
-   idea vet found in what the fix leaves as it was. On the merged-PR
+   idea vet found in what the fix leaves as it was. In guest mode, a row
+   from step 6's handoff flaw record can already hold a flaw. Such a flaw
+   gets no second row, and the guest arm below judges that row. On the merged-PR
    re-entry's over-the-bar disposition, step 7 also writes that route's
    candidate row in its one docs-only commit (guest mode: on disk). In
    owner mode, the close block fences `/milestone-plan` with that row's
@@ -716,14 +753,28 @@ can resolve against the fork instead of the base repo.
    and push at once. When step 7 makes no ROADMAP edit, nothing is checked
    out or committed. Show each deleted, narrowed, and new row verbatim in
    chat (the durable-record preview).
-   *Guest arm:* the handoff only appends its started token to each matched
-   row. When the
+   *Guest arm:* the handoff appends its started token to each matched row
+   and makes step 6's handoff flaw record. It edits no other row. When the
    merged-PR re-entry finds that the maintainers merged the PR, and its
    post-hoc verification is accepted, remove or narrow each matched row on
    disk with no commit, judged against the merged diff, and show each
    deleted, narrowed, and new row verbatim in chat. A narrowed row loses
    this hotfix's ` — started #<n>` token and keeps any other token
    (records-hygiene §1). A PR closed without a merge leaves the row.
+   **Handoff flaw rows (M339).** On that same accepted re-entry, also find
+   each Candidates row of `cairn/ROADMAP.md` that holds
+   `hotfix PR #<N> handoff`. `<N>` is the PR that the re-entry's argument
+   names. Judge each row against the merged diff. For a row the handoff
+   extended, judge only the flaw inside its `extended` note. When the diff
+   covers that flaw in full, delete the note. For a row the handoff wrote,
+   check whether anything was added to it later. If nothing was, delete
+   the whole row. If something was, delete only the handoff's flaw text. When the diff covers the flaw in
+   part, narrow the flaw's text to the part left and add the `narrowed`
+   note above after it.
+   Otherwise keep it. Show each deleted or narrowed row
+   verbatim in chat. A flaw that the re-entry's idea vet finds and such a
+   row holds adds no new row. Any other re-entry outcome, a PR closed
+   without a merge included, leaves these rows as they are.
    If a milestone branch is currently active, remind the user that its
    next implement/review session will merge the default branch into it (the
    branch-sync rule) — nothing to do now. With the Copilot round off, the
