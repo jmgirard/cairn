@@ -187,14 +187,19 @@ Status: agreed 2026-11-26. The user is the primary maintainer of easystats/dataw
 
 ## Migration
 
-Status: proposed.
+Status: agreed 2026-11-26.
 
-- The new core ships as v3.0.0 under the same plugin name, in this repo. It is built on one `v3` branch outside v2's milestone process and merged to main once, as the release (agreed).
-- A script does the mechanical part per repo in one commit: move `DECISIONS.md`, `LESSONS.md` and the old archive aside, swap the cairn section of `CLAUDE.md`, add an `AGENTS.md` for Codex. Guest repos move to the home folder.
-- A triage pass per repo does the judgment part: each Known issues entry becomes a GitHub issue if it has a failing input and is otherwise dropped; each candidate is promoted, kept or dropped.
-- All repos are cut over in one sitting; triage passes follow as each repo is next worked in.
-- In flight, observed 2026-11-25: hitop 5, glmmTMB 3, ackwards 1, easystats/correlation 2, easystats/insight 2. These finish under v2 or have their files renamed to slugs.
-- Order: test T3 Code, write the format spec, build the script while piloting on chromodoris, run it on the rest, triage.
+- The new core ships as v3.0.0 under the same plugin name, in this repo. It is built on one `v3` branch outside v2's milestone process and merged to main once, as the release.
+- The build happens in a second worktree. `~/.claude/skills/cairn` is a symlink to this checkout, so checking out `v3` here would switch every repo at once. The worktree is linked into `~/.claude_personal/skills/`, and the pilot runs in T3 Code under the HOME instance, while the desktop app keeps loading v2 from `~/.claude`.
+- cairn is never installed in `~/.claude_work`. v3's text and scripts name no config folder.
+- Before the pilot, `writing-for-people` must be in `~/.claude_personal`, and the three T3 Code checks (the hook runs, the skill is listed, a write to `~/.cairn` raises no prompt) are rerun there.
+- chromodoris is migrated by hand before the pilot. Observed 2026-11-25, it has 13 commits, 6 candidates, and no work in flight. The script is written after the pilot, when the formats have stopped changing.
+- After the pilot, datawizard is cut over alone and one piece of work is done there. The pilot covers none of the guest path: files in the home folder only, host style, `done/`, the Copilot verb, the merge hook, and the maintainer line. datawizard has no work in flight and no Known issues, and it carries the maintainer line.
+- Then the other 31 repos are cut over in one sitting. v3 merges to main, T3 Code's HOME instance is pointed at `~/.claude`, and `~/.claude_personal` retires.
+- For one of the user's own repos, the script makes one commit: it moves `DECISIONS.md`, `LESSONS.md`, and the old archive aside, and swaps the cairn section of `CLAUDE.md`. Whether it adds an `AGENTS.md` is decided with Codex's part. Observed 2026-11-26, none of the 21 own repos has one, and the 11 that are R packages would each need a `.Rbuildignore` line.
+- For a guest repo, the script moves the untracked `cairn/` to the home folder, removes its line from `.git/info/exclude`, and carries over the profile's guest lines. Its commit lands in `~/.cairn`. Observed 2026-11-26, none of the 12 guest checkouts has a `CLAUDE.md` or `AGENTS.md`.
+- The script converts work in flight. It moves each file to the home folder under a slug and writes the `Route:`, `Branch:`, `Issue:`, and `Phase:` lines, leaving the body as written. Nothing waits to finish under v2, since guest PRs wait on other people. Observed 2026-11-26: 12 pieces in 5 repos (hitop 4, glmmTMB 3, easystats/correlation 2, easystats/insight 2, ackwards 1), 7 of them in guest repos.
+- A pass per repo does the judgment part, as each repo is next worked in. It belongs to `setup`'s v2 case, not to `triage`. Each Known issues entry becomes a GitHub issue only if it has a failing input and points to ordinary use, as the findings rule requires, and is otherwise dropped. In a guest repo the issue is proposed to the user and never opened without the user's word. Each candidate is promoted, kept, or dropped. Observed 2026-11-26: 315 Known issues entries across the 33 repos, 25 of them in easystats repos.
 
 ## To test in T3 Code
 
@@ -235,6 +240,6 @@ What the results change (proposed):
 ## Open
 
 - The user's markup of the draft steps per verb, which supplies the steps wanted every time.
-- The user's word on the sections still marked proposed. A walk-through on 2026-11-25 settled one skill, slugs, text for other readers, and length; on 2026-11-26 it settled rewriting the skills and how v3 is fixed later. It also settled hooks and status view, and added the maintainer line for guest repos. Still to walk through: migration, the ordinary-use test, and Codex's part.
+- The user's word on the sections still marked proposed. A walk-through on 2026-11-25 settled one skill, slugs, text for other readers, and length; on 2026-11-26 it settled rewriting the skills and how v3 is fixed later. It also settled hooks and status view, added the maintainer line for guest repos, and settled migration. Still to walk through: the ordinary-use test and Codex's part.
 - Whether a small format validator survives.
 - The untested T3 Code items above, to be covered in the pilot.
