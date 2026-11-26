@@ -186,6 +186,18 @@ Status: agreed 2026-11-26.
 - One hook stays, for guest repos. It denies a push to the default branch, and it denies a merge unless the repo's profile says `Maintainer: yes`. It keeps no approval marker. It covers Claude only, and whether such hooks run in T3 Code is untested. Observed 2026-11-25: the user is admin on all 10 easystats repos, admins are exempt from protection on the 5 read, and the user has no push right on brms or glmmTMB.
 - The pane mod is not ported to the `v3` branch. The status view is text from `/cairn status`; a visual view, if wanted after the pilot, is built on the status script's output (agreed).
 
+## No format validator
+
+Status: agreed 2026-11-26.
+
+- v3 has no separate validator. The status script is the only parser of cairn's files, and where it cannot read one it says so in its listing, one line per problem.
+- Session start prints that listing, so a broken file shows at the start of the next session in that repo. Nothing gates `review`, and nothing waits on an exit code.
+- The script never checks anything it does not need for the listing. A problem line is a by-product of reading, not a check of its own.
+- What scripts read, and so what can produce a problem line: a plan's labeled lines; ROADMAP rows and their `[high]` and `[blocked]` marks; and the profile's lines, which the guest merge hook also reads.
+- What goes unchecked: the references index against its files, a plan's body headings, the limit of 7 acceptance criteria, and the wording of a candidate row. If one goes wrong in real sessions, the fix rule applies.
+- After the migration script runs on a repo, a status listing with no problem lines is the sign the conversion worked.
+- Measured in this repo, observed 2026-11-26: v2's validator is 1,957 lines and 24 checks, with 8,765 lines of tests in the files that exercise it. 42 of 1,249 commits touch it, and 52 of the 340 archived milestone files mention it. About 3 of the 24 checks still have a subject in v3.
+
 ## Guest repos the user maintains
 
 Status: agreed 2026-11-26. The user is the primary maintainer of easystats/datawizard and will soon be of easystats/correlation.
@@ -258,6 +270,5 @@ What the results change (agreed 2026-11-26, after the draft was revised that day
 The walk-through is complete: every section is agreed as of 2026-11-26. What is left before the build:
 
 - The user's markup of the draft steps per verb, which supplies the steps wanted every time. The markup sheet predates the sections agreed on 2026-11-26, so some of its lines are out of step with them: the guest lines (a maintained guest repo may merge and release), the merge question (two counts of dropped findings), `AGENTS.md` in `setup` (none), and the merge record going through the writing skill (the agreed text section has it written directly from its questions).
-- Whether a small format validator survives.
 - The user's setup before the pilot: `writing-for-people` in `~/.claude_personal`, and the logging skill there.
 - To cover in the pilot, all untested: the v3 worktree loading from `~/.claude_personal/skills/`; the three T3 Code checks under the HOME instance; a "New worktree" thread; the other permission modes; whether a hook other than SessionStart runs in T3 Code, which the guest merge hook needs; how a skill named `cairn` in the plugin `cairn` is listed; whether a Claude thread in T3 Code can start `codex` and what `CODEX_HOME` it carries; and whether `codex review` takes a prompt together with `--base`.
