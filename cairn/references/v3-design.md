@@ -250,7 +250,7 @@ What the results change. The Codex account arrangement is agreed 2026-11-26; the
 - The read-only sandbox is what keeps Codex from pushing, merging, or editing. Branch rules do not do that job: they hold only force-push and deletion.
 - The migration script adds no `AGENTS.md`. Review does not need one, and nothing in this note has Codex doing build work.
 - The cold read of text for other readers is done by a fresh Claude subagent.
-- State after the user's move, observed 2026-11-26: `~/.codex_work` holds the fluidconcepts.ai login and T3 Code's WORK instance points at it. T3 Code's HOME Codex instance is in "managed" setup mode with no home path, and `~/.codex` has no `auth.json`, so `codex login status` from a terminal says "Not logged in". The command-line review needs one `codex login` with no variable set.
+- State after the user's move, observed 2026-11-26: `~/.codex_work` holds the fluidconcepts.ai login and T3 Code's WORK instance points at it. `~/.codex` holds the jmgirard.com login, so a `codex` started from the command line with no `CODEX_HOME` is the personal account. T3 Code's HOME Codex instance is in "managed" setup mode with no home path and keeps its own login.
 - For the pilot: whether a Claude thread in T3 Code can start `codex`, whether that thread's environment carries a `CODEX_HOME`, and whether `codex review` takes a prompt together with `--base`.
 
 ## Open
