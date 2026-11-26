@@ -198,9 +198,10 @@ async function chapter($, title: string) {
   await $.tool.call({ tool: CHAPTER_TOOL, title })
 }
 
-// A plugin beneath the mod that draws its own band row and never calls
-// `next`. Its register closes over nothing here, so its row text is
-// written inside it and restated as BENEATH_ROW.
+// Another plugin that draws its own band row and never calls `next`. The
+// engine asks each plugin for its own row, so the engine's slot still
+// follows that row. Its register closes over nothing here, so its row text
+// is written inside it and restated as BENEATH_ROW.
 const BENEATH = {
   name: 'band-beneath',
   tier: 'append' as const,
@@ -217,35 +218,13 @@ const BENEATH = {
 }
 const BENEATH_ROW = "another plugin's band row"
 
-// A plugin above the mod that draws how the mod's render hook settled, read
-// from `next.trace`: `returned` when it settled on a result, here the
-// engine's drawing it handed on to, and `skipped` when it threw. A thrown
-// hook is skipped and the engine draws, so the drawing alone cannot tell
-// the two apart.
-const PROBE = {
-  name: 'band-probe',
-  tier: 'prepend' as const,
-  register: on => {
-    on('ui.render', { component: 'AbovePrompt' }, async ($, e, next) => {
-      const drawn = await next(e)
-      const link = next.trace.find(t => t.plugin === 'cairn')
-      const { Box, Text } = $.ui.resolve(e)
-      return (
-        <Box key="band-probe" flexDirection="column">
-          <Text>{`cairn hook: ${link ? link.outcome : 'absent'}`}</Text>
-          {drawn}
-        </Box>
-      )
-    })
-  },
-}
-
 // An element as `findAll` returns it, or as it sits in a found element's
 // `children`, where its key is in its props.
 type Element = { type: string; key?: string; text?: string; props: Record<string, unknown>; children: unknown[] }
 type Ui = {
   findAll: (q: { type?: string; key?: string }) => Promise<Element[]>
   press: (q: { key: string }) => Promise<unknown>
+  keepsBeneath: () => Promise<boolean>
   unmount: () => Promise<void>
 }
 
@@ -1015,9 +994,9 @@ describe('the close button (M194 AC2)', () => {
       seat(on, copyOf('mixed'))
       await $.turn.complete(turn())
       const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
-      expect(await lines(ui)).toEqual([SHOWN.mixed, BENEATH_ROW])
+      expect(await lines(ui)).toEqual([SHOWN.mixed, BENEATH_ROW, ENGINE])
       await ui.press({ key: 'cairn-close' })
-      expect(await lines(ui)).toEqual([BENEATH_ROW])
+      expect(await lines(ui)).toEqual([BENEATH_ROW, ENGINE])
       expect(await hasCairn(ui)).toBe(false)
       await ui.unmount()
     })
@@ -1523,14 +1502,14 @@ describe('the close state is written only on a change, and a session end beats a
 describe('the band draws nothing where no ROADMAP is found', () => {
   for (const name of ['no-roadmap']) {
     for (const skill of [null, 'milestone-plan'] as const) {
-      test(`${name} with ${skill ?? 'no skill'}: the mod draws nothing, passes to the engine, and does not throw`, { plugins: [PROBE] }, async ($, on) => {
+      test(`${name} with ${skill ?? 'no skill'}: the mod draws nothing and the engine's slot shows`, async ($, on) => {
         seat(on, noneWorkable(name))
         await $.turn.complete(turn())
         if (skill !== null) await prompt($, skill)
         for (const surface of SURFACES) {
           const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
           const shown = (await ui.findAll({ type: 'Text' })).map(textOf)
-          expect(shown).toEqual(['cairn hook: returned', ENGINE])
+          expect(shown).toEqual([ENGINE])
           await ui.unmount()
         }
       })
@@ -1608,7 +1587,7 @@ describe("cairn's rows sit above the band beneath (M193 AC6)", () => {
       'single-in-progress',
       BAND,
       async ui => {
-        expect(await lines(ui)).toEqual([...DRAWN['single-in-progress'], BENEATH_ROW])
+        expect(await lines(ui)).toEqual([...DRAWN['single-in-progress'], BENEATH_ROW, ENGINE])
         expect((await bandTexts(ui)).map(textOf)).not.toContain(BENEATH_ROW)
       },
       $,
@@ -1618,19 +1597,19 @@ describe("cairn's rows sit above the band beneath (M193 AC6)", () => {
   test('with nothing active or workable, the empty row sits above the band beneath (M213)', { plugins: [BENEATH] }, async ($, on) => {
     seat(on, noneWorkable('no-active'))
     await $.turn.complete(turn())
-    await mountEach('no-active', BAND, async ui => expect(await lines(ui)).toEqual([EMPTY_TEXT, BENEATH_ROW]), $)
+    await mountEach('no-active', BAND, async ui => expect(await lines(ui)).toEqual([EMPTY_TEXT, BENEATH_ROW, ENGINE]), $)
   })
 
   test('with no ROADMAP, the band beneath shows alone', { plugins: [BENEATH] }, async ($, on) => {
     seat(on, copyOf('no-roadmap'))
     await $.turn.complete(turn())
-    await mountEach('no-roadmap', BAND, async ui => expect(await lines(ui)).toEqual([BENEATH_ROW]), $)
+    await mountEach('no-roadmap', BAND, async ui => expect(await lines(ui)).toEqual([BENEATH_ROW, ENGINE]), $)
   })
 
   test('the idle row sits above the band beneath (M199)', { plugins: [BENEATH] }, async ($, on) => {
     seat(on, copyOf('no-active'))
     await $.turn.complete(turn())
-    await mountEach('no-active', BAND, async ui => expect(await lines(ui)).toEqual([IDLE_DRAWN['no-active'], BENEATH_ROW]), $)
+    await mountEach('no-active', BAND, async ui => expect(await lines(ui)).toEqual([IDLE_DRAWN['no-active'], BENEATH_ROW, ENGINE]), $)
   })
 })
 
@@ -2097,7 +2076,7 @@ describe('no skill row, and the idle row with no next label (M206 AC4)', () => {
   }
 
   for (const skill of SKILLS) {
-    test(`with nothing workable, ${skill} draws the empty row with no action Buttons (M213)`, { plugins: [PROBE] }, async ($, on) => {
+    test(`with nothing workable, ${skill} draws the empty row with no action Buttons (M213)`, async ($, on) => {
       seat(on, noneWorkable('no-active'))
       await $.turn.complete(turn())
       await prompt($, skill)
@@ -2106,7 +2085,7 @@ describe('no skill row, and the idle row with no next label (M206 AC4)', () => {
         at(200),
         async ui => {
           await isEmptyRow(ui, false)
-          expect(textOf((await ui.findAll({ type: 'Text' }))[0])).toBe('cairn hook: returned')
+          expect(await ui.keepsBeneath()).toBe(true)
         },
         $,
       )
