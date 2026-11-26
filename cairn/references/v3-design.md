@@ -25,7 +25,7 @@ Status: agreed.
 
 ## Vocabulary and sizes
 
-Status: agreed, except the slug rules, which are proposed.
+Status: agreed.
 
 - The words "milestone" and "hotfix" and the M-numbers are dropped. Old archives keep them as history.
 - Every piece of non-trivial work has a **plan** and ends in a **PR**. There are two sizes, named for the route:
@@ -34,7 +34,10 @@ Status: agreed, except the slug rules, which are proposed.
 - A trail plan that grows becomes a road plan by gaining sections. Nothing is renamed.
 - A bug gets a regression test written first, at either size.
 - A trivial edit (no runtime surface) still commits to main.
-- Each piece of work has one slug of two to four words. It is the branch name, the plan's file name, and the handle the user types. The route is a line inside the plan.
+- Each piece of work has one slug of two to four lowercase words, proposed at `start` and open to change before the first commit. It is the plan's file name and the handle the user types; any unique start of it works. The route is a line inside the plan.
+- The plan records its branch in a `Branch:` line, and lookups go through that line. The branch carries the slug only where cairn creates it; an app that starts a thread in a new worktree names the branch itself, and guest repos have their own conventions.
+- Work that starts from a GitHub issue records it as an `Issue:` line; `status #N` and `resume #N` find the plan that way.
+- A new slug must differ from the active plans, and in a guest repo from those in `done/`. Across 1,883 archived v2 plans, observed 2026-11-25, no slug repeats within a repo and 95% use two to four words.
 
 ## Where files live
 
@@ -56,9 +59,9 @@ Status: agreed.
 
 ## Commands
 
-Status: proposed. The user agreed there is no separate verb for small work, that status takes an id, the verb `start`, one reviewer, and Copilot handling in guest repos only.
+Status: agreed, except the draft steps, which wait for the user's markup.
 
-One skill, `/cairn`, takes a verb. Each verb's text is its own file, loaded when used.
+One skill, `/cairn`, takes a verb. The skill's own text is the rulebook plus a table of verbs, so the rulebook is in context whenever any verb runs; separate skills would each have to start by reading a shared rules file, a step that can be skipped. Each verb's steps are a separate file, read when used. The cost is that the `/` menu shows one entry, so its argument hint lists the verbs.
 
 - `status [slug | #N]`: read-only. No argument lists road and trail work, open PRs and the candidate count, with one recommended next action. A slug reports that plan. A GitHub number is an issue or a PR; one call says which.
 - `start <idea, issue or bug>`: investigates, picks trail or road and says which, writes the plan, builds, and goes on to review. The user can overrule the size.
@@ -108,22 +111,29 @@ Two marks, proposed after the user set the requirements for both:
 
 ## Text for other readers
 
-Status: proposed.
+Status: agreed.
 
-- cairn writes no prose for other readers. It hands the facts to the user's `writing-for-people` skill as the brief, and a fresh drafter writes the text.
-- The user sees each text once, at the gate that already exists. Internal files are never previewed in chat.
-- A fresh subagent reads the draft cold and reports what the text says and asks. A mismatch with the brief means a rewrite from the brief.
-- The only style rule cairn keeps is the guest rule: match the host maintainers' own text.
-- A review of the writing skill is a separate candidate row.
+The cause of bad text is the same everywhere: the session knows too much and writes about its own work. The split is by how the text is written, not where it is posted.
+
+- Standalone prose is drafted by a fresh subagent that never saw the session: changelog entries, vignettes, new help pages, README sections, PR text in guest repos, and messages to people. The brief is the facts plus two or three existing examples of the same kind from that repo. Messages to people go through the user's `writing-for-people` skill; documentation goes through cairn's own drafting step, since that skill excludes READMEs and release notes. A second fresh subagent reads the draft cold and reports what it says and asks; a mismatch with the brief means a rewrite from the brief.
+- Text woven into code is written inline by the session: code comments, edits to existing help text, error and warning messages. Two rules apply: say what the code does or why, never the story of the change; and match the neighbouring text. The independent reviewer reads these cold as part of the diff.
+- The merge record and issues in the user's own repos are written directly from their questions.
+- One rule covers all repos: match the repo's existing text of the same kind. In a guest repo that text is the maintainers'. No cairn vocabulary reaches a host repo. cairn has no other style rules.
+- The user sees each text once, at the gate that already exists. The merge question quotes the changelog entry in full and lists other changed documentation by file. Internal files are never previewed in chat.
+- A review of the writing skill is a separate candidate row; whether that skill should take over documentation is a question for it.
 
 ## Length
 
-Status: proposed.
+Status: agreed.
 
 v2 required text to be complete and to fit a size, and sessions gamed the unit or reworded in circles. v3 uses no line, word or byte limits and no length checker.
 
-- Each document is a fixed set of questions; the answers are the document.
-- Omission is allowed. The diff and PR hold the detail.
+- Each document is a fixed set of questions; the answers are the document. A candidate row is a title, one sentence on what and why, and for a marked row what goes wrong or what it waits for. An issue from a finding is the failing input in a code block and where it comes from.
+- Detail may be left out; the facts each question asks for may not. Each merge record question is complete when it covers a list that already exists: what changed covers every changelog entry in the PR; choices made covers every answer the user gave in the question set, plus any choice the session made that changes what the user gets; what was left out covers every item the plan marked as later, a candidate or dropped; how it was checked covers every check in the plan with its result. Each item gets one sentence.
+- What can still be lost is the reasoning behind implementation choices. It survives as a line under choices made or, better, as a code comment where the odd choice lives. As a safety net, `review` commits `~/.cairn` locally just before deleting a plan, so deleted plans stay in that repo's history.
+- cairn ships empty templates, headings and labelled lines with nothing under them, and no filled-in examples. A plan is markdown with labelled lines at the top (`Route:`, `Branch:`, `Issue:`, `Phase:`, `Blocked on:`) and one heading per question; an empty section says "none". A merge record uses labelled lines with no `#` headings, since the same text is the commit message; an empty label is dropped. Text for a guest repo follows the host's template where it has one.
+- Where output is a readout of files, a script prints it: the status listing comes from the script, and the model adds only the recommended next action.
+- There is no cap on the number of candidates; status shows the count and the user decides when to triage.
 - Where a limit is needed it counts whole items. A road plan has at most 7 acceptance criteria, each naming one check; more means two plans (agreed). Seven is v2's figure: in 400 v2 plans read before archiving, the median was 6, and 27% sat at exactly 7, which suggests criteria were combined to fit.
 - The one remedy for "too long" is removing an item or splitting the work, never rewording to fit.
 - Rules describe the reader and give no example.
@@ -137,14 +147,25 @@ Status: proposed.
 - Error branches and rare cases get no text; the agent uses judgment and asks when unsure.
 - Guest mode is stated once, in the rulebook.
 - The rulebook becomes a format spec of a page or two.
-- A line is added back only after a real failure.
+- After drafting a verb, the v2 skill is read once as a checklist, only for something public or hard to undo that was missed.
+- Each verb names its stopping points and says not to stop anywhere else.
+- Order: the rulebook and templates, then `start` and `review`, then the pilot, then the other verbs. Scripts get unit tests; verb text gets none, and the pilot is its test.
 - The kept v2 skills and rulebook total about 72,500 words. The target is under 8,000, a guess to adjust in the pilot.
+
+Fixing v3 without regrowth (under discussion; the user found the session's first proposals careless, so read these as a draft):
+
+- A change to skill text cites a real session where something went wrong. Hypothetical gaps in prose do not count.
+- A one-off gets no text change; the second occurrence does. Anything public or hard to undo is fixed the first time.
+- The first response is to delete or reword the line that was misread. A new line is added only if nothing existing is at fault, and only if it passes the two tests above.
+- Occurrences are logged, at the user's word, as one line each in the cairn repo's home-folder entry (`~/.cairn/jmgirard/cairn/log.md`): date, repo, branch or slug, verb, what happened. Nothing reads the log during work. They are not candidate rows (the user's requirement). Triage in the cairn repo groups the lines and proposes a fix for a group of two or more.
+- A feature goes in only if the user needs it now in a repo being worked in. No new record types, validators or hooks are added to stop a failure recurring.
+- Shipped text serves users of cairn; maintainer practice lives outside the plugin (the user's point). The logging command is a personal skill in the user's own skills folder; these habits go in the cairn repo's `CLAUDE.md`; a word count per verb at release goes in the cairn repo's `PROFILE.md`.
 
 ## Hooks and status view
 
 Status: proposed.
 
-- Session start injects the home-folder path, ROADMAP and the active plan.
+- Session start injects the home-folder path, ROADMAP and the active plan. `/cairn` also works the path out itself, so a session where the hook did not run still works.
 - GitHub branch protection replaces most guard hooks, since it covers Claude and Codex alike.
 - The pane mod becomes optional. The status view starts as text from `/cairn status`; a visual view is decided after the pilot (agreed).
 
@@ -183,6 +204,6 @@ What the results change (proposed):
 ## Open
 
 - The user's markup of the draft steps per verb, which supplies the steps wanted every time.
-- The user's word on the sections still marked proposed.
+- The user's word on the sections still marked proposed. A walk-through on 2026-11-25 settled one skill, slugs, text for other readers and length. Still to walk through: rewriting the skills and how v3 is fixed later, hooks and status view, migration, the ordinary-use test, and Codex's part.
 - Whether a small format validator survives.
 - The untested T3 Code items above, to be covered in the pilot.
