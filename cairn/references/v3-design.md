@@ -86,7 +86,9 @@ Three questions in order; the first yes decides.
 
 1. Did this PR cause it or make it worse? Fold it in.
 2. Is it older, but the fix sits in lines the PR already changes and needs no new check? Fold it in.
-3. Is it older, and can the reviewer name a concrete input that fails today? Open an issue, with the failing input in it.
+3. Is it older, can the reviewer name a concrete input that fails today, and can it point to where that input comes from in ordinary use? Open an issue, with both in it.
+
+Ordinary use (proposed, to keep rare cases from flooding the list): the reviewer points to a user's report, or to the repo's own documentation, examples or tests showing that use. An input the reviewer had to construct, such as an empty vector, an all-missing column or an undocumented argument combination, has no such pointer and is an edge case. Likelihood is judged by that pointer, never by a guess at how many users do it, so a wrong result for a documented model class counts even if few people fit it. Edge cases are dropped and the merge question gives only their count; the user can ask to see them. The reviewer's brief limits it to the diff and the code the diff relies on, so it does not hunt for constructed inputs elsewhere. The same test gates `[high]`.
 
 Anything else is dropped. The review decides 1, 2 and the drops; issues are listed at the merge question for the user's approval. Nothing is opened upstream in a guest repo without the user's word. Review findings never become candidate rows.
 
@@ -98,7 +100,7 @@ Candidates are things the user or the agent proposes to build. Triage has one li
 
 Two marks, proposed after the user set the requirements for both:
 
-- `[high]`: a bug that gives wrong answers or misleads users now. The row says what goes wrong. The agent sets or proposes it only for that kind of bug; the user may put it on any row. The user works these off quickly, so few exist at once: about 101 such rows have existed across 21 repos and 5 were present, observed 2026-11-25. A review finding of this kind is offered at the merge question as a fix to start right away or as a `[high]` row.
+- `[high]`: a bug that gives wrong answers or misleads users now, in ordinary use as the findings rule defines it. The row says what goes wrong and points to that use. The agent sets or proposes it only for that kind of bug; the user may put it on any row. The user works these off quickly, so few exist at once: about 101 such rows have existed across 21 repos and 5 were present, observed 2026-11-25. A review finding of this kind is offered at the merge question as a fix to start right away or as a `[high]` row.
 - `[blocked]`: work that cannot move until something outside happens. The row says what it waits for and, where there is one, names the issue, PR or release to look at. A plan in flight carries the same fact as a `Blocked on:` line.
 - A row may carry both. `[low]` and `[parked]` are gone; an unmarked row can wait.
 - Status shows at a glance what can move and what is blocked, with what each blocked item waits for. A PR waiting on someone else's review or on CI is read from GitHub. `start` and `resume` on a blocked item check whether the block has cleared and do not go on unless it has or the user says so.
