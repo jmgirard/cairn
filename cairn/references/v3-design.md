@@ -98,7 +98,7 @@ Candidates are things the user or the agent proposes to build. Triage has one li
 
 Two marks, proposed after the user set the requirements for both:
 
-- `[high]`: a bug that gives wrong answers or misleads users now, or other work that should start next. The row says why. The user works these off quickly, so few exist at once: about 101 such rows have existed across 21 repos and 5 were present, observed 2026-11-25. A review finding of this kind is offered at the merge question as work to start next or as a `[high]` row.
+- `[high]`: a bug that gives wrong answers or misleads users now. The row says what goes wrong. The agent sets or proposes it only for that kind of bug; the user may put it on any row. The user works these off quickly, so few exist at once: about 101 such rows have existed across 21 repos and 5 were present, observed 2026-11-25. A review finding of this kind is offered at the merge question as a fix to start right away or as a `[high]` row.
 - `[blocked]`: work that cannot move until something outside happens. The row says what it waits for and, where there is one, names the issue, PR or release to look at. A plan in flight carries the same fact as a `Blocked on:` line.
 - A row may carry both. `[low]` and `[parked]` are gone; an unmarked row can wait.
 - Status shows at a glance what can move and what is blocked, with what each blocked item waits for. A PR waiting on someone else's review or on CI is read from GitHub. `start` and `resume` on a blocked item check whether the block has cleared and do not go on unless it has or the user says so.
