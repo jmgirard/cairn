@@ -140,26 +140,27 @@ v2 required text to be complete and to fit a size, and sessions gamed the unit o
 
 ## Rewriting the skills
 
-Status: proposed.
+Status: agreed 2026-11-26, after the section was checked against the agreed ones and seven points were changed.
 
-- Each verb is written from a blank page as its steps and what done looks like. The v2 text stays under the v2.2.0 tag to consult.
-- A rule goes in only if it guards something public or hard to undo, or the user names it as a step wanted every time.
-- Error branches and rare cases get no text; the agent uses judgment and asks when unsure.
-- Guest mode is stated once, in the rulebook.
-- The rulebook becomes a format spec of a page or two.
+- Each verb is written from a blank page as its steps, its stopping points and what done looks like. The v2 text stays under the v2.2.0 tag to consult.
+- A rule goes in only if it guards something public or hard to undo, or the user names it as a step wanted every time. Public or hard to undo means: pushing, merging, posting to GitHub, a tag or release, deleting, and writing in a guest checkout.
+- Error branches and rare cases get no text unless they pass that test. Two agreed ones do: a plan missing on another machine, and a blocked item.
+- Each verb names its stopping points. Outside them the agent decides and goes on, and asks only what the user alone can decide.
+- The rulebook holds what more than one verb needs: sizes, the approval rule, guest mode, the findings rule, the ask rule and the file formats. Guest mode is stated once, there.
 - After drafting a verb, the v2 skill is read once as a checklist, only for something public or hard to undo that was missed.
-- Each verb names its stopping points and says not to stop anywhere else.
-- Order: the rulebook and templates, then `start` and `review`, then the pilot, then the other verbs. Scripts get unit tests; verb text gets none, and the pilot is its test.
-- The kept v2 skills and rulebook total about 72,500 words. The target is under 8,000, a guess to adjust in the pilot.
+- Size is counted in steps and rules, not words, as the Length section requires. Too long is fixed by removing a step or a rule. There is no word target. The words per verb are printed at release as a number with no threshold.
+- Order: the rulebook and templates; then the session-start hook, `status`, `start`, `review` and `resume`; then the pilot; then the other verbs. Scripts get unit tests; verb text gets none, and the pilot is its test.
+- The pilot is three pieces of real work in chromodoris: one road, one bug trail, one with standalone prose. At least one is reviewed by Codex and one is resumed in a second sitting. Observed 2026-11-25, chromodoris has 6 candidate rows, which include each kind.
+- Measured, observed 2026-11-25: the kept v2 skills and rulebook total about 79,300 words (82,255 in the 12 skill folders, less design-interview and milestone-brief). All markdown under `skills/` grew from 19,600 words at v1.0.0 (2026-07-16) to 90,515 at v2.2.0 (2026-11-05).
 
-Fixing v3 without regrowth (under discussion; the user found the session's first proposals careless, so read these as a draft):
+Fixing v3 without regrowth (agreed 2026-11-26):
 
-- A change to skill text cites a real session where something went wrong. Hypothetical gaps in prose do not count.
-- A one-off gets no text change; the second occurrence does. Anything public or hard to undo is fixed the first time.
-- The first response is to delete or reword the line that was misread. A new line is added only if nothing existing is at fault, and only if it passes the two tests above.
-- Occurrences are logged, at the user's word, as one line each in the cairn repo's home-folder entry (`~/.cairn/jmgirard/cairn/log.md`): date, repo, branch or slug, verb, what happened. Nothing reads the log during work. They are not candidate rows (the user's requirement). Triage in the cairn repo groups the lines and proposes a fix for a group of two or more.
-- A feature goes in only if the user needs it now in a repo being worked in. No new record types, validators or hooks are added to stop a failure recurring.
-- Shipped text serves users of cairn; maintainer practice lives outside the plugin (the user's point). The logging command is a personal skill in the user's own skills folder; these habits go in the cairn repo's `CLAUDE.md`; a word count per verb at release goes in the cairn repo's `PROFILE.md`.
+- A change to skill text cites a real session where something went wrong. Hypothetical gaps in prose do not count. This binds the reviewer of a skill-text PR too: a finding that a line could be misread, with no session behind it, is dropped.
+- During the pilot, any real failure may change the text, between pieces of work. From 3.0.0 on, a one-off gets no text change and the second occurrence does. Anything public or hard to undo is fixed the first time.
+- The first response is to delete or reword the line that was misread. A new line is added only if nothing existing is at fault, and only if it passes the tests above.
+- Occurrences are logged, at the user's word, as one line each in `~/.cairn/log.md`: date, repo, branch or slug, verb, what happened. The file sits outside the per-repo folders, so no shipped script reads it, and nothing reads it during work. Occurrences are not candidate rows (the user's requirement). They are not issues either: the cairn repo is public, the lines name other people's repos, and a one-off would stay open.
+- A feature goes in only if the user needs it now in a repo being worked in. No record types, validators or hooks are added to the plugin to stop a failure recurring. The log is the one record kept for that, and it is outside the plugin.
+- Shipped text serves users of cairn; maintainer practice lives outside the plugin (the user's point). A personal skill in the user's own skills folder writes the log line and, when asked, groups the lines and proposes a fix for a group of two or more. `/cairn triage` does neither. These habits go in the cairn repo's `CLAUDE.md`; the words-per-verb readout at release goes in the cairn repo's `PROFILE.md`.
 
 ## Hooks and status view
 
@@ -204,6 +205,6 @@ What the results change (proposed):
 ## Open
 
 - The user's markup of the draft steps per verb, which supplies the steps wanted every time.
-- The user's word on the sections still marked proposed. A walk-through on 2026-11-25 settled one skill, slugs, text for other readers and length. Still to walk through: rewriting the skills and how v3 is fixed later, hooks and status view, migration, the ordinary-use test, and Codex's part.
+- The user's word on the sections still marked proposed. A walk-through on 2026-11-25 settled one skill, slugs, text for other readers and length; on 2026-11-26 it settled rewriting the skills and how v3 is fixed later. Still to walk through: hooks and status view, migration, the ordinary-use test, and Codex's part.
 - Whether a small format validator survives.
 - The untested T3 Code items above, to be covered in the pilot.
