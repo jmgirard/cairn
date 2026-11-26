@@ -14,7 +14,7 @@ Status: agreed.
 - The user wants to shed: documentation nobody rereads, and rule text that makes the agent over-apply principles or skip wanted steps.
 - The user may move from Claude Desktop to T3 Code, to use Claude and Codex together (Codex for review and second opinions). T3 Code runs one thread per task in its own worktree. Only the pane mod is tied to Claude Desktop.
 - Measured in this repo, observed 2026-11-25: skills and rulebook hold about 82,000 words (rulebook 14,180); `DECISIONS.md` holds 248 entries in 595 KB; session start injects 22 KB; hooks and scripts are 6,480 lines of Python with 30,378 lines of tests; 340 milestones and 1,225 commits in 4.5 months.
-- Across the user's machine, observed 2026-11-25: 23 repos carry `cairn/` (21 tracked, 2 guest), with 582 candidate rows and 290 Known issues entries.
+- Across the user's machine, observed 2026-11-25: 33 repos carry `cairn/` (21 tracked, 12 guest), with about 900 candidate rows. Ten of the guest repos sit under `easystats/` and the first count missed them, so figures in this note that say "of 23" cover the 21 tracked repos plus brms and glmmTMB. Those 23 hold 290 Known issues entries; the easystats repos were not counted for that.
 
 ## What stays and what goes
 
@@ -156,7 +156,7 @@ Status: proposed.
 - A script does the mechanical part per repo in one commit: move `DECISIONS.md`, `LESSONS.md` and the old archive aside, swap the cairn section of `CLAUDE.md`, add an `AGENTS.md` for Codex. Guest repos move to the home folder.
 - A triage pass per repo does the judgment part: each Known issues entry becomes a GitHub issue if it has a failing input and is otherwise dropped; each candidate is promoted, kept or dropped.
 - All repos are cut over in one sitting; triage passes follow as each repo is next worked in.
-- In flight, observed 2026-11-25: hitop 5, glmmTMB 3, ackwards 1. These finish under v2 or have their files renamed to slugs.
+- In flight, observed 2026-11-25: hitop 5, glmmTMB 3, ackwards 1, easystats/correlation 2, easystats/insight 2. These finish under v2 or have their files renamed to slugs.
 - Order: test T3 Code, write the format spec, build the script while piloting on chromodoris, run it on the rest, triage.
 
 ## To test in T3 Code
@@ -168,5 +168,9 @@ Status: proposed.
 
 ## Open
 
-- Whether the user accepts the `[high]` and `[blocked]` marks as the Triage section states them.
+- The user's markup of the draft steps per verb, which supplies the steps wanted every time.
+- The user's word on the sections still marked proposed.
+- How the build is run in this repo: under v2's milestone process, or on one `v3` branch outside it.
+- What form the status view takes outside Claude Desktop.
+- Whether a small format validator survives.
 - The T3 Code tests above.
