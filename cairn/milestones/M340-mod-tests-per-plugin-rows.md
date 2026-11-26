@@ -66,6 +66,7 @@ The status mod's test suite passes on the installed `claude` binaries again, wit
 - 2026-11-25: claim audit: not owed — internal tier
 - 2026-11-25: implement done; status review.
 - 2026-11-25: T1's wording narrowed at review (minor amendment, Copilot thread on PR #355): it no longer claims a thrown-hook signal was found; T3 recorded none, and the check is in the parked row "Recheck band tests for per-plugin rows".
+- 2026-11-25: step-7 approval: m340-mod-tests-per-plugin-rows approved for merge
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
