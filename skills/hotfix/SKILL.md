@@ -125,14 +125,15 @@ can resolve against the fork instead of the base repo.
    it as a design decision for later work (search-first applies), after
    its matched-row edits and in its one docs-only commit (guest mode: on
    disk). A close block that ends the run before step 7 names the flaw
-   instead. In guest mode, a handoff whose `gh pr create` succeeds records
-   the flaw at the handoff (step 6's handoff flaw record). The change
-   route's approved push records it too. On the merged-PR
+   instead, with two guest-mode exceptions. A handoff whose
+   `gh pr create` succeeds records the flaw at the handoff (step 6's
+   handoff flaw record), and so does the change route's approved push. On the merged-PR
    re-entry below, the vet runs after the merge. When step 7 runs, a flaw
    goes in its close block. There the flaw waives none of the re-entry's
    checks below, and the over-the-bar route's candidate row still names it.
    A flaw that the merged diff leaves as it was is not over the bar. It
-   gets its candidate row from step 7, as above.
+   gets its candidate row from step 7, as above, unless a guest handoff's
+   row already holds it (step 7's handoff flaw rows).
    **Candidate-row match (M249).** Step 1 also finds the candidate rows
    this hotfix fixes. It runs on every entry to step 1, PR-reference
    re-entries included, before any stop this step takes, and never from
@@ -323,10 +324,10 @@ can resolve against the fork instead of the base repo.
      of the report-and-stop above. That close block also says that the
      reply to the maintainers is the operator's. Before that close, after
      the push, make step 6's handoff flaw record, with `<n>` this PR's
-     number. It covers each flaw that the idea vet found in what the PR's
-     whole diff leaves as it was. The close block shows its rows. A decline
-     or a stop before the push records nothing, and its close block names
-     each flaw. On decline, push nothing,
+     number. It covers each flaw that this route's idea vet found in what
+     the diff leaves as it was. The close block shows its rows. A decline,
+     a stop before the push, or a push that fails records nothing, and its
+     close block names each flaw. On decline, push nothing,
      and stop with a close block that names the unpushed commits. Every
      close block of this route carries the report-and-stop's CI line, and
      its fenced next command is `/hotfix` with the PR reference.
@@ -752,9 +753,10 @@ can resolve against the fork instead of the base repo.
    each Candidates row of `cairn/ROADMAP.md` that holds
    `hotfix PR #<N> handoff`, `<N>` the merged PR. Judge each one against
    the merged diff. For a row the handoff extended, judge only the part it
-   added. When the diff covers that part in full, delete it, or the whole
-   row the handoff wrote. When the diff covers it in part, narrow it with
-   the `narrowed` note above. Otherwise keep it. Show each deleted or narrowed row
+   added. When the diff covers that part in full, delete it with its
+   `extended` note, or delete the whole row the handoff wrote. When the
+   diff covers it in part, narrow it with the `narrowed` note above.
+   Otherwise keep it. Show each deleted or narrowed row
    verbatim in chat. A flaw that the re-entry's idea vet finds and such a
    row holds adds no new row. Any other re-entry outcome, a PR closed
    without a merge included, leaves these rows as they are.

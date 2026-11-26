@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M339: Write hotfix flaw rows at the guest handoff
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -73,6 +73,8 @@ A guest-mode `/hotfix` records each flaw its idea vet found in what the fix leav
 - 2026-11-25: substantive amendment: AC5 narrowed to exempt `claude plugin test` failures whose test names also fail on the merge base with main under the same binary; the deliverable is unchanged, so no stop. Review records the base sha and the binary version as evidence.
 - 2026-11-25: re-audit: AC5 (full) — satisfiable (merge base = f16ca210, so the stash run was a merge-base run), no IP or D-143 conflict, bounded, proportionate; two optional tightenings (file-qualified test names, a hooks/ no-change clause) not taken, the wording kept as audited.
 - 2026-11-25: T6 done: D-248 written; verify per amended AC5 (four commands green, plugin test's 19 failures shared with the merge base); hand-run `skills/tests` OK.
+- 2026-11-25: claim audit: 38 claims read, 7 corrected — CHANGELOG.md, README.md, skills/hotfix/SKILL.md (re-entry keep and part-only edits in CHANGELOG and README, the matched-row exception, step 1's two guest exceptions and its step 7 sentence, the change route's vet scope and failed push, the `extended` note's removal); the re-read found all seven correct.
+- 2026-11-25: implement done; status review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
