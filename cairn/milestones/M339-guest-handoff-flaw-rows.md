@@ -156,3 +156,4 @@ Pass 2 (head 3b8c052a, after return 1). Evidence: scripts OK (446, 21 skipped), 
 - Copilot level: Lite (set by GitHub's settings)
 - conversation: PR #354 — empty read beyond that Copilot review (no issue comments, no threads)
 - snapshot: none (no `_snaps` or `__snapshots__` path in the diff)
+- Pass 2 fix-now items fixed 4e609136; on that head `skills/tests` OK, scripts and hooks suites OK, `claude plugin test .` the same 19 merge-base failures, AC3's grep lists nothing.
