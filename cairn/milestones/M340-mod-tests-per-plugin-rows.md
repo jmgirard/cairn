@@ -28,8 +28,8 @@ The status mod's test suite passes on the installed `claude` binaries again, wit
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets. -->
 
-- [ ] AC1: On the branch, `CLAUDE_CODE_ENABLE_FUNCTION_HOOKS=1 claude plugin test .` exits 0 under the Homebrew `claude` 2.1.323 and under the desktop-app binary 2.1.331 (the newest under the path that `cairn/PROFILE.md`'s verify slot names), and each run reports at least 2466 tests.
-- [ ] AC2: On the branch, both `python3 -m unittest discover` suites (`scripts/tests`, `hooks/tests`), both `claude plugin validate` commands of the verify slot, and the hand-run `python3 -m unittest discover -s skills/tests -p "test_*.py"` pass.
+- [x] AC1: On the branch, `CLAUDE_CODE_ENABLE_FUNCTION_HOOKS=1 claude plugin test .` exits 0 under the Homebrew `claude` 2.1.323 and under the desktop-app binary 2.1.331 (the newest under the path that `cairn/PROFILE.md`'s verify slot names), and each run reports at least 2466 tests.
+- [x] AC2: On the branch, both `python3 -m unittest discover` suites (`scripts/tests`, `hooks/tests`), both `claude plugin validate` commands of the verify slot, and the hand-run `python3 -m unittest discover -s skills/tests -p "test_*.py"` pass.
 
 ## Coverage
 <!-- owner: plan · create/amend-via-gate -->
@@ -40,7 +40,7 @@ The status mod's test suite passes on the installed `claude` binaries again, wit
 ## Tasks
 <!-- owner: plan (create) / implement (check-off, minor edits); substantive change is amend-via-gate. -->
 
-- [x] T1: Rewrite the PROBE cases (`band.test.tsx` ~lines 1522-1536 and ~2100-2110): assert the mod draws nothing and keeps what is beneath (`ui.keepsBeneath()`), and find a kit signal that tells a thrown hook from a returned one (the kit's report of skipped hooks, or a check in the case itself); drop PROBE if nothing uses it.
+- [x] T1: Rewrite the PROBE cases (`band.test.tsx` ~lines 1522-1536 and ~2100-2110): assert the mod draws nothing and keeps what is beneath (`ui.keepsBeneath()`), and look for a kit signal that tells a thrown hook from a returned one; drop PROBE. The search found no such signal (T3), so that check went to the parked row "Recheck band tests for per-plugin rows" and is not part of this task's result.
 - [x] T2: Update the BENEATH cases ("the close button (M194 AC2) > mixed over a plugin beneath", "cairn's rows sit above the band beneath (M193 AC6)") to the per-plugin row model, keeping their stated property: cairn's rows first, the other plugin's row kept, and a press leaving that row.
 - [x] T3: Plant a `throw` as the first statement of the `AbovePrompt` hook (`hooks/status/register.tsx:811`), run the suite once, record what fails, and revert; the plant is never committed.
 - [x] T4: Run the verify slot under both binaries and the hand-run `skills/tests`; record each binary's version and test count.
@@ -65,9 +65,45 @@ The status mod's test suite passes on the installed `claude` binaries again, wit
 - 2026-11-25: T4: `claude plugin test .` exit 0, 2466 pass of 2466, under claude 2.1.323 (Homebrew) and 2.1.331 (desktop app); scripts and hooks suites OK, both validates exit 0, hand-run `skills/tests` OK.
 - 2026-11-25: claim audit: not owed — internal tier
 - 2026-11-25: implement done; status review.
+- 2026-11-25: T1's wording narrowed at review (minor amendment, Copilot thread on PR #355): it no longer claims a thrown-hook signal was found; T3 recorded none, and the check is in the parked row "Recheck band tests for per-plugin rows".
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
 
 ## Review
 <!-- owner: review · exclusive -->
+
+Review head 15dd70b6, merge base 2b2d90ae (= origin/main). Copilot arm: PR #355 opened at review start, Copilot requested.
+
+- AC1: on 15dd70b6, `CLAUDE_CODE_ENABLE_FUNCTION_HOOKS=1 claude plugin test .` exit 0, 2466 pass of 2466, under the Homebrew claude 2.1.323 and the desktop-app claude 2.1.331 (the newest under the verify slot's path). Also green on 5baf3eeb before the fix-now commit. Met.
+- AC2: on 15dd70b6, `scripts/tests` and `hooks/tests` OK, both `claude plugin validate` commands exit 0 (no `plugins[N].version` warning), hand-run `skills/tests` OK. Met.
+- Consistency gate: `cairn_validate` all checks passed; no DESIGN principle changed; no CHANGELOG entry owed (test-only change, no user-visible behavior); verify per AC1-AC2.
+- spawned: diff-bug, blame-history, prior-review, ripple
+- diff-bug #1: the five other-plugin cases now check the engine's row stacking more than cairn's placement of `next(e)` — follow-up, parked row "Recheck band tests for per-plugin rows" (extended), promote when a band hook misplaces a row in a live session
+- diff-bug #2: `not.toContain(BENEATH_ROW)` in cairn's Box is vacuous — fix now
+- diff-bug #3: the M194 AC2 case's "leaves the row" half cannot fail through cairn's code — follow-up, same parked row
+- diff-bug #4: those cases test dependency behavior ("What gets a test") — follow-up, same parked row
+- diff-bug #5: the new `keepsBeneath()` check was never shown able to fail — fix now (removed; the M213 cases' `isEmptyRow` already fails when no empty row draws)
+- diff-bug #6: the no-throw property is lost for the no-roadmap cases — follow-up, same parked row
+- diff-bug #7: the parked row overstated the M213 cases' loss — fix now (row rewritten)
+- diff-bug #8: the BENEATH comment credits the plugin for the engine's slot — fix now
+- diff-bug #9: stale `lines()` comment order and "beneath" names — fix now for the comment; reject the names (style: "band beneath" still names the other plugin's row below cairn's)
+- diff-bug #10: `[rows, ENGINE]` assertions elsewhere test less than before — follow-up, same parked row (outside the diff)
+- diff-bug #11, #12: no issue found
+- blame-history #1: no-throw check lost (D-143's risk) — follow-up, same parked row
+- blame-history #2: parked row overstates the M213 loss — fix now (same as diff-bug #7)
+- blame-history #3: Scope still says to rewrite the no-throw check — reject (false: the amendment's work-log line supersedes it; Scope is plan-owned)
+- blame-history #4: the `keepsBeneath` rejection in the no-roadmap cases is unverified — reject (false: observed as a HooksError in the first T1 run)
+- blame-history #5, #6: no finding
+- prior-review #1: plant-verified discrimination dropped — follow-up, same parked row
+- prior-review #2: `keepsBeneath()` meaning under a throw unverified — fix now (removed, as diff-bug #5)
+- prior-review #3: the rename hides that a throw was under test — reject (planned change: the amendment removed that claim)
+- prior-review #4: ENGINE ordering encoded as contract — follow-up, same parked row
+- prior-review #5: the AC2 removal had no reader — reject (false: a removal leaves no amended wording for the re-audit)
+- ripple #1: "the band beneath shows alone" now false — fix now (renamed)
+- copilot: cairn/milestones/M340-mod-tests-per-plugin-rows.md:43 (T1 claims the signal search delivered) — fix now
+- copilot: https://github.com/jmgirard/cairn/pull/355#pullrequestreview-6067564881 — no comment
+- Copilot level: Low (set by GitHub's settings)
+- conversation: PR #355 — no issue comments; the one thread is Copilot's above
+- snapshot: none
+- Fix-now items fixed 15dd70b6 (test file and parked row) and in this commit (T1 wording).
