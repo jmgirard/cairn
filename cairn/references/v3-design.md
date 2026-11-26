@@ -245,7 +245,7 @@ Status: agreed.
 
 Candidates are things the user or the agent proposes to build. Triage has one list and three outcomes. Routing to Known issues and the lessons pass are gone.
 
-Two marks, proposed after the user set the requirements for both:
+Two marks, agreed after the user set the requirements for both:
 
 - `[high]`: a bug that gives wrong answers or misleads users now, in ordinary use as the findings rule defines it. The row says what goes wrong and points to that use. The agent sets or proposes it only for that kind of bug; the user may put it on any row. The user works these off quickly, so few exist at once: about 101 such rows have existed across 21 repos and 5 were present, observed 2026-11-25. A review finding of this kind is offered at the merge question as a fix to start right away or as a `[high]` row.
 - `[blocked]`: work that cannot move until something outside happens. The row says what it waits for and, where there is one, names the issue, PR or release to look at. A plan in flight carries the same fact as a `Blocked on:` line.
