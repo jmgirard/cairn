@@ -60,7 +60,7 @@ Status: agreed.
 
 ## Commands
 
-Status: agreed, except the draft steps, which wait for the user's markup.
+Status: agreed. The steps of each verb are in "Steps per verb" below.
 
 One skill, `/cairn`, takes a verb. The skill's own text is the rulebook plus a table of verbs, so the rulebook is in context whenever any verb runs; separate skills would each have to start by reading a shared rules file, a step that can be skipped. Each verb's steps are a separate file, read when used. The cost is that the `/` menu shows one entry, so its argument hint lists the verbs.
 
@@ -73,14 +73,144 @@ One skill, `/cairn`, takes a verb. The skill's own text is the rulebook plus a t
 
 Removed skills get no stubs. Whether anyone else has cairn installed is unknown (observed 2026-11-25: 3 stars, no forks, no issues or PRs from others). The session-start hook names a v2 repo and points to `/cairn setup`, which covers any other user who updates.
 
-Draft steps per verb, not yet marked up by the user. The review and setup lines were revised 2026-11-26 to match the sections agreed since, and the review line again that day for the claim check:
+## Steps per verb
 
-- **start**: check whether the request is trivial; investigate before asking; for a road plan, one question set with recommendations; write the plan; account for everything the user asked for; per task, test first, then code, then a commit; add the changelog entry the profile calls for; run `verify`; go to review.
-- **review**: sync with the default branch; run every check in the plan fresh; run `verify`; one independent reviewer reading the diff for bugs and reading each statement the diff adds about what the code does against the code, Codex run from the command line where it is installed and signed in and otherwise a fresh subagent (of 63 recorded v2 findings that name their reviewer, 52 came from the diff reader); apply the findings rule; ask the merge question showing the merge record, the findings that changed something, the issues proposed, and the two counts of dropped findings; on approval only, push, open the PR, wait for CI, squash-merge; open the approved issues and delete the plan and branch.
-- **triage**: list every candidate; check each against code and git; propose promote, keep or drop per row in one table for the user; apply in one commit.
-- **setup**: detect a new repo, a v2 repo, or a v3 repo with pieces missing; scaffold, migrate, or repair; in the user's own repos, propose the two GitHub rules; for a v2 repo, run the Known issues and candidates pass.
-- **source add**: put the file on the shelf, write a note with citation and what was read, add the index line.
-- **copilot**: read the notes; decide fix, reject or defer; fix and push; draft at most one comment per review for the user; resolve the threads; never reply on a thread.
+Status: agreed 2026-11-26. The user and a session went through the markup sheet part by part that day; this section replaces the draft steps and the sheet.
+
+Each line is one step. A line ending in (stop) is a point where the agent waits for the user. The Rulebook is the skill's own text and is in context for every verb.
+
+**Rulebook (loaded with every verb)**
+
+- Sizes: a trivial edit commits to main; trail work is one sitting, one PR, no design choice for the user; road work is everything larger.
+- Work happens on a branch. Nothing reaches main without the user's approval at the merge question.
+- Nothing is pushed, merged, posted to GitHub, tagged, or deleted except at a step that names it.
+- Where files live (the repo and the home folder), and the file formats: ROADMAP rows and their marks, the trail and road plan, the merge record, PROFILE lines.
+- A row's title says what the work would do in about six words, starting with a verb. It is unique in the file and ends with `(#N)` when the row comes from an issue.
+- Review findings: sort each finding by its ordinary-use pointer first; then fold in, open an issue, add an input check, or drop, by three questions asked in order. Did this PR cause it or make it worse? Is it older, but fixed in lines the PR already changes, with no new check? Is it older, with a concrete input that fails today and comes from ordinary use?
+- Look for a cited source in this order: the references index and shelf; then Zotero, where the profile has a `Zotero collection:` line; then the web. A file found in Zotero is copied to the shelf, and its item is added to the repo's collection. If Zotero is not running, start it in the background.
+- If a cited source is not on the shelf and its full text cannot be found, ask the user for the file before going on with anything that rests on it. Never treat the source as nonexistent, and never use an abstract or someone else's summary in its place. If the user cannot supply it, record it as not obtained, with the date, and rest nothing on it. (stop)
+- Guest repos, stated once: nothing of cairn in the checkout. Never push the default branch, even for a trivial edit. Never merge or release unless the profile says `Maintainer: yes`, and then only at the user's word. Post nothing upstream without the user's approval. Match the host's conventions.
+- Ask only what the user alone can decide, in one batch.
+- Text for other readers: standalone prose is drafted by a fresh subagent from the facts and two or three examples from the repo, then read cold by a second. Messages to people go through the user's writing skill. Text woven into code is written inline. All of it matches the repo's existing text of the same kind. The user sees each text once, at the gate.
+
+**status**
+
+- No argument: show the status script's listing as printed (road and trail work with its phase, what is blocked and on what, candidates marked `[high]`, the candidate count, and any file the script could not read), then add the user's open PRs and their state from GitHub.
+- Recommend one next action.
+- With a slug or a GitHub number: report on that one item.
+- Never change files, branches or anything on GitHub.
+- Left out of v3: the health audit of tracking files against git; the hygiene stamp in ROADMAP.
+
+**start**
+
+- If the request is trivial, say so and do it: commit to main and push in the user's own repos, a PR in a guest repo.
+- If the item is marked `[blocked]`, check whether the block has cleared; stop if it has not, unless the user says to go on.
+- Fetch, then investigate the code as it stands on the remote's default branch before asking anything.
+- Pick trail or road and propose the slug; say both in one line. The user can overrule either. In a guest repo, also say how many of the user's PRs are open on the host.
+- Road only: one question set, each question with a recommendation. (stop)
+- Guest repos, road only: check a maintainer has agreed to the change in an issue before planning it; stop if none has. Skipped where the profile says `Maintainer: yes`.
+- Write the plan in the home folder with its `Route:`, `Branch:`, and `Issue:` lines. Cut the branch, or record the one the app already made.
+- Account for everything the user asked for: in this plan, a later one, a candidate row, or dropped at the user's word.
+- For a bug: write the regression test first and see it fail.
+- Per task: test first, then code, then a commit. Keep the plan's `Phase:` line current.
+- When the work takes a value or a claim from a source, run `source add` for it; the note rides in the PR.
+- If trail work turns out to need a design choice from the user or a second sitting, say so, add the road sections to the plan, and ask the question set. (stop)
+- New user-facing functions assert what their documentation says they expect.
+- Add the changelog entry the profile calls for, in user-facing words.
+- Run the profile's `verify`.
+- Go straight to review.
+- Left out of v3: showing the drafted plan in chat before saving it; reading past decisions before planning; a separate check of user-facing prose against the code before review (v2's claim audit; the check now lives in the reviewer's brief); rules for which model each subagent uses; a formal record when the plan changes during the build.
+
+**resume**
+
+- No argument: the work on the current branch. Otherwise the named slug.
+- If the plan says `Blocked on:`, check whether it has cleared; stop if it has not, unless the user says to go on.
+- If the plan is missing on this machine, say so and offer to rebuild it from the branch and PR. (stop)
+- If the plan's PR is open: read new review comments and CI, make the fixes, run `verify`, and push at the user's word; draft any reply for the user; never resolve a person's thread. (stop)
+- Otherwise continue at the phase the plan shows.
+
+**review**
+
+- Sync the branch with the default branch; rerun tests if it moved.
+- Run every check in the plan fresh and record one evidence line each.
+- Run the profile's `verify`.
+- One independent reviewer reads the diff for bugs, and reads each statement the diff adds about what the code does (changelog, help pages, README, vignettes, comments, error messages) against the code: Codex from the command line, read-only, where it is installed and signed in; otherwise, or if the Codex run fails, a fresh subagent. The merge question says which one ran.
+- Sort each finding by its ordinary-use pointer, then put it through the Rulebook's three questions. Fix the fold-ins, add the input checks, and rerun what they touch. Each dropped finding gets one line in the plan.
+- Make the ROADMAP edits on the branch, so they ride in the PR.
+- Write the merge record from the plan as answers to its five questions. In a guest repo, the PR text is drafted in the host's style by a fresh subagent and read cold against the diff.
+- Merge question: the merge record, the changelog entry quoted in full, other changed documentation by file, the findings that changed something, the issues proposed, any `[high]` finding offered as a fix to start now or as a row, and the two counts of dropped findings. (stop)
+- On approval only: push, open the PR, wait for CI, squash-merge with the merge record as the message. If a CI fix changes what the user approved, ask again.
+- After the merge: open the approved issues, commit `~/.cairn`, then delete the plan and the branch.
+- Guest repos: the question is whether to open the PR, and it shows the PR text and how many of the user's PRs are open on the host. Stop at the open PR. Where the profile says `Maintainer: yes`, merge at the user's word with the host's merge method and message, never with the admin override unless the user says so. The plan moves to `done/` once the PR is merged or closed. (stop)
+- With someone else's PR as the argument: read it, test it, report findings to the user; post nothing without the user's word.
+- Left out of v3: the format validator run as a gate; two to four reviewers, scaled by how user-facing the change is; a Copilot round in the user's own repos; caps on how many of the user's PRs may be open at once (in guest repos the count is shown at `start` and at the open-PR question instead); a rule for stopping after repeated failed reviews of the same plan.
+
+**triage**
+
+- Fetch and bring the default branch up to date, so work others have merged is seen.
+- List every candidate row.
+- Check each against the code and git: already done, subject gone, still true.
+- For each `[blocked]` row, check whether the block has cleared.
+- For each `[high]` row that names a failing input, check that it still fails.
+- One table proposing promote, keep, or drop per row, with a one-line reason and any mark to clear. Promote adds `[high]`: the agent proposes it only for a wrong answer in ordinary use; the user may promote any row. (stop)
+- Order the rows: `[high]` first, then the rest, each group from most to least important.
+- Apply the accepted outcomes in one commit to main and push it. In a guest repo the commit lands in `~/.cairn`.
+- Left out of v3: retitling and compressing rows; a written record for each drop.
+
+**source add**
+
+- Given a URL whose full text cannot be fetched (a paywall, a refused request): stop and ask the user for the file; write no note from an abstract. (stop)
+- Put the file on the shelf in the home folder.
+- Write a note: citation, what was read and when, the values or claims taken from it with page numbers.
+- Add the index line. Commit the note and the index line to main and push; during work on a branch they ride in the PR. In a guest repo both live in the home folder.
+- If the profile has a `Zotero collection:` line, look the source up in Zotero by DOI, then by title and year. If it is absent, add the item with the file attached, in that collection. Say what was added or was already there. A failure here never blocks the note.
+
+**copilot (guest repos)**
+
+- Find the PR and check out its head.
+- Read each unresolved Copilot thread and the review summary.
+- Decide fix, reject or defer per note; ask the user about any the agent cannot decide. (stop)
+- Make the fixes and run `verify`.
+- Draft at most one comment per review, holding only what the maintainers need; if they need nothing, there is no comment. Show it with the fixes. (stop)
+- At the user's word: push, post the comment if there is one, and resolve Copilot's threads, never a person's. Never reply on a thread; never thank Copilot.
+
+**release**
+
+- Preconditions: clean tree, on the default branch and up to date with the remote, `verify` passes.
+- Version decision; the question lists work in flight and any open `[high]` rows. (stop)
+- Consolidate the changelog under that version: retitle the heading, group the entries, and remove noise. Reword an entry only where the reader in the next step finds a fault.
+- A fresh subagent reads the consolidated section cold, against the code at the release commit. It reports what a user would take from it and any statement the code does not bear out. Fix what it finds.
+- Run the profile's release steps.
+- Commit the version bump and the changelog: to main in the user's own repos, through a PR in a guest repo the user maintains.
+- Hand the user the submission checklist, with the release section quoted in full. Never submit or publish. Push and tag at the user's word. (stop)
+- In a guest repo, stop unless the profile says `Maintainer: yes`: a release is the maintainers' act.
+
+**setup**
+
+- Detect the case: no cairn files, a v2 repo, or a v3 repo with pieces missing.
+- New repo of the user's: write ROADMAP, PROFILE with the detected `verify` command, the references index, and the cairn section of `CLAUDE.md`. No `AGENTS.md`.
+- The user's own repos: show what was written and propose the two GitHub rules on the default branch (no force-push, no deletion). Commit, push, and apply the rules on the user's yes. (stop)
+- Someone else's repo: create its home folder with ROADMAP, PROFILE, and the references index. Write nothing in the checkout and never change the host's settings. The commit lands in `~/.cairn`. `Maintainer: yes` is the user's to add by hand.
+- v2 repo: run the migration script, show the diff, and commit on approval. A status listing with no problem lines is the sign it worked. (stop)
+- v2 repo, then or the next time the repo is worked in: one table for the old Known issues and the candidates. A Known issues entry becomes a proposed GitHub issue only if it has a failing input and points to ordinary use; otherwise it is dropped. Each candidate is promoted, kept, or dropped. Apply on the user's yes; in a guest repo no issue is opened without the user's word. (stop)
+- v3 repo with pieces missing: write only the missing pieces and show them.
+- Propose a `Zotero collection:` line for the profile, with the repo's name as the default; the user can decline. Where a repo gains the line, add every shelf file not already in Zotero, at the user's yes. (stop)
+- Left out of v3: seeding a `DESIGN.md`; offering the design interview.
+
+What the markup changed in sections agreed earlier, each at the user's word on 2026-11-26:
+
+- Nothing public without a named step. The Rulebook states the public-or-hard-to-undo list once, so no verb repeats it.
+- A trivial request is done at once and pushed in the user's own repos. A local main with unpushed commits would carry them into the next PR.
+- A trail that outgrows its size stops the build and asks the question set. Finishing first would mean redoing the build if the user overturned the choice.
+- `start` and `triage` fetch first, so work others have merged in a shared repo is seen (the user's point).
+- Open PRs in guest repos. v2 capped them at 3 bug-fix and 1 feature PR per repo (D-213 and D-214, 2026-10-22, after an audit found sessions holding many open PRs on one host). v3 has no cap; the count is shown at `start` and at the open-PR question, where the user already decides. Observed 2026-11-26, the user had 4 open PRs in correlation, 2 in datawizard, and 1 in glmmTMB.
+- A maintainer's review comments on an open guest PR are handled by `resume`. No verb covered them, and the pilot would not have shown the gap, since chromodoris is the user's own repo. A person's thread is never resolved, as D-213 required.
+- `copilot` pushes only after its stop, so no fix reaches the maintainers' PR before the user has seen it.
+- `release` loses the "nothing in progress" precondition: work in flight sits on branches and cannot reach the release. The version question lists it, with any open `[high]` rows.
+- `release` gains a cold reader for the consolidated changelog (the user's suggestion). It is the one verb that commits to main with no reviewer, and a later PR can make an earlier entry false. v2 had the session read its own text here and logged no counts.
+- The release commit goes to main in the user's own repos and through a PR in a guest repo the user maintains; the push and the tag wait for the user's word.
+- One reviewer, not two to four: of 63 recorded v2 findings that name their reviewer, 52 came from the diff reader.
+- If the Codex run fails, a fresh subagent reviews, and the merge question says which reviewer ran. Observed 2026-11-26 from the desktop app: `codex` 0.172.0 is on the path and signed in, `CODEX_HOME` is unset, and `codex review` lists both `--base` and a prompt in its help. No review was run, and nothing was checked in T3 Code.
 
 ## Review findings
 
@@ -121,6 +251,7 @@ Two marks, proposed after the user set the requirements for both:
 - `[blocked]`: work that cannot move until something outside happens. The row says what it waits for and, where there is one, names the issue, PR or release to look at. A plan in flight carries the same fact as a `Blocked on:` line.
 - A row may carry both. `[low]` and `[parked]` are gone; an unmarked row can wait.
 - Status shows at a glance what can move and what is blocked, with what each blocked item waits for. A PR waiting on someone else's review or on CI is read from GitHub. `start` and `resume` on a blocked item check whether the block has cleared and do not go on unless it has or the user says so.
+- The three outcomes are promote, keep, and drop (agreed 2026-11-26). Promote adds `[high]`. The agent proposes it only for the kind of bug above; the user may promote any row. Triage then orders the rows: `[high]` first, then the rest, each group from most to least important. Since a `[high]` row of the user's need not be a bug, triage does not re-test each one as a wrong answer; it checks that a row naming a failing input still fails.
 - In migration, a `[parked]` row with a real outside condition becomes `[blocked]`; the rest lose the tag or are dropped. `[low]` rows lose the tag. In this repo, observed 2026-11-25, 36 of 39 rows were parked and all traced to a milestone; 15 triage commits routed about 46 rows to Known issues, dropped 7 and promoted 3.
 
 ## Text for other readers
@@ -152,8 +283,22 @@ v2 required text to be complete and to fit a size, and sessions gamed the unit o
 - Where output is a readout of files, a script prints it: the status listing comes from the script, and the model adds only the recommended next action.
 - There is no cap on the number of candidates; status shows the count and the user decides when to triage.
 - Where a limit is needed it counts whole items. A road plan has at most 7 acceptance criteria, each naming one check; more means two plans (agreed). Seven is v2's figure: in 400 v2 plans read before archiving, the median was 6, and 27% sat at exactly 7, which suggests criteria were combined to fit.
+- One exception, at the user's word on 2026-11-26: a candidate row's title is about six words. Matching the titles already in the file gives a new repo nothing to match. No checker reads the number, so nothing fails and no rewording loop starts. Observed 2026-11-26: v2 required at least 5 words and at most 40 characters, and of 527 titles parsed across the user's repos the median is 6 words and 36 characters, 80% have 5 to 7 words, and 36 run over 40 characters.
 - The one remedy for "too long" is removing an item or splitting the work, never rewording to fit.
 - Rules describe the reader and give no example.
+
+## Sources and Zotero
+
+Status: agreed 2026-11-26. The user raised both problems during the markup: a source that could not be found was sometimes treated as nonexistent, and a PDF cairn found itself never reached the user's Zotero, so a paper about the project lacked sources.
+
+- A cited source is looked for in order: the references index and shelf, then Zotero, then the web, then the user.
+- When the full text cannot be found, the agent asks the user for the file before going on with anything that rests on it. Only that work stops. It never treats the source as nonexistent and never uses an abstract or someone else's summary in its place. If the user cannot supply the file, the source is recorded as not obtained, with the date, and nothing rests on it.
+- Work that takes a value or a claim from a source runs `source add` for it, and the note rides in the PR. v2 required a note in that case; the draft steps had dropped it.
+- A `Zotero collection:` line in the repo's profile turns the Zotero steps on and names the collection, so a project's sources sit together. `setup` proposes the line, with the repo's name as the default, and the user can decline.
+- With the line, `source add` looks the source up in Zotero by DOI, then by title and year, and adds the item with the file attached if it is absent. A file found in Zotero during a search is copied to the shelf and its item is added to the collection. If Zotero is not running, the agent starts it in the background. A script does the work, and a failure never blocks the note.
+- Where a repo gains the line, `setup` adds every shelf file not already in Zotero, at the user's yes. Observed 2026-11-26: the shelves hold 169 PDFs in 10 repos (circumplex 45, ackwards 45, intraclass 35, hitop 28).
+- Observed 2026-11-26: Zotero 10.0.9 is installed, its local API is switched on in the user's settings, and `~/Zotero/storage` holds 7,185 PDFs. Zotero's documentation says the local API takes writes and file uploads from version 10, that reads need no key, and that Zotero shows a dialog to allow a write. None of it was tested: Zotero was not running, and a test would have put an item in the user's library.
+- Observed 2026-11-26: of 267 reference notes in the user's repos, 14 in 5 repos mention something not retrieved, mostly supplementary data and code. A source that was silently skipped leaves no note to count.
 
 ## Rewriting the skills
 
@@ -271,8 +416,7 @@ What the results change (agreed 2026-11-26, after the draft was revised that day
 
 ## Open
 
-The walk-through is complete: every section is agreed as of 2026-11-26. What is left before the build:
+The walk-through and the markup of the steps are complete: every section is agreed as of 2026-11-26. What is left before the build:
 
-- The user's markup of the draft steps per verb, which supplies the steps wanted every time. The markup sheet predates the sections agreed on 2026-11-26, so some of its lines are out of step with them: the guest lines (a maintained guest repo may merge and release), the merge question (two counts of dropped findings), `AGENTS.md` in `setup` (none), and the merge record going through the writing skill (the agreed text section has it written directly from its questions).
 - The user's setup before the pilot: `writing-for-people` in `~/.claude_personal`, and the logging skill there.
-- To cover in the pilot, all untested: the v3 worktree loading from `~/.claude_personal/skills/`; the three T3 Code checks under the HOME instance; a "New worktree" thread; the other permission modes; whether a hook other than SessionStart runs in T3 Code, which the guest merge hook needs; how a skill named `cairn` in the plugin `cairn` is listed; whether a Claude thread in T3 Code can start `codex` and what `CODEX_HOME` it carries; and whether `codex review` takes a prompt together with `--base`.
+- To cover in the pilot, all untested: the v3 worktree loading from `~/.claude_personal/skills/`; the three T3 Code checks under the HOME instance; a "New worktree" thread; the other permission modes; whether a hook other than SessionStart runs in T3 Code, which the guest merge hook needs; how a skill named `cairn` in the plugin `cairn` is listed; whether a Claude thread in T3 Code can start `codex` and what `CODEX_HOME` it carries; whether `codex review` takes a prompt together with `--base`; and the Zotero steps (the look-up, the dialog for a write, and the file upload), which need Zotero running.
