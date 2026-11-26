@@ -1,17 +1,16 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-11-06 (M338 merged: a merge push waits for GitHub to show the pushed commit as the PR head; skills/tests green; validate green)_
+_Last hygiene check: 2026-11-25 (M339 merged: a guest hotfix records the flaws it leaves alone at the handoff; skills/tests green; validate green; mod test red on main, see "Fix mod tests that fail on main")_
 
 ## Milestones
 _Released 1.0.0 (2026-07-16) to 2.2.0 (2026-11-05), each tagged `v<version>`; 1.5.0 was cut retroactively at edb6942._
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M339 | Write hotfix flaw rows at the guest handoff | review | — | normal | milestones/M339-guest-handoff-flaw-rows.md |
+| M339 | Write hotfix flaw rows at the guest handoff | done | — | normal | milestones/archive/M339-guest-handoff-flaw-rows.md |
 | M338 | Note the pushed head after a merge push | done | — | normal | milestones/archive/M338-settle-pushed-head.md |
 | M337 | Re-rate a row whose trigger fired | done | — | normal | milestones/archive/M337-rerate-fired-trigger.md |
-| M336 | Ask again before merging a red-CI fix | done | — | normal | milestones/archive/M336-reask-red-ci-fix.md |
 ## Candidates
 _Ordered high → normal → low → parked by each row's opening `[high]`/`[low]`/`[parked]` token, untagged = `normal`; `[parked]` = a promotion condition that has not held (tracking-rules "Candidate priority token", D-134, D-184); advisory within a level. Triage: D-027._
 - [high] Fix mod tests that fail on main: `CLAUDE_CODE_ENABLE_FUNCTION_HOOKS=1 claude plugin test .` fails 19 of 2466 tests in `hooks/status` on main at f16ca210 and on the M339 branch, with both claude 2.1.323 (Homebrew) and 2.1.331 (desktop app); the band and close-button tests receive "cairn hook: absent" where they expect "returned". The verify slot is red for every milestone until this is fixed. High rung: it blocks the gate — added 2026-11-25 — M339 implement
