@@ -127,3 +127,32 @@ Review head 14a51b55, merge base f16ca210 (= origin/main). Copilot arm: PR #354 
 - ripple #5: tracking-rules "Candidate started token" omits the flaw record — reject (false: incomplete, not contradicted; the token rule is unchanged)
 - ripple #6: DESIGN.md:637 omits the flaw rows — reject (false: its claim is still true)
 - ripple #7: the owner resume arm's step 7 sentence — reject (false: owner mode, consistent)
+- Pass 1 fix-now items fixed 3b8c052a (T7), except ripple #2, re-settled as reject.
+
+Pass 2 (head 3b8c052a, after return 1). Evidence: scripts OK (446, 21 skipped), hooks OK (212), both validates exit 0 with no `plugins[N].version` warning, `claude plugin test .` 19 fails of 2466 with the same names as the merge-base run (claude 2.1.323, no `hooks/` change), `skills/tests` OK (1031); AC1-AC4 re-read on the new text: still met (AC1's started-token placement is now moot, since a started row is never extended; AC2's part-only judgment now reads the flaw inside the `extended` note).
+- spawned: diff-bug, blame-history, prior-review, ripple
+- diff-bug #1: step 7's new sentence "step 6's handoff flaw record wrote those rows" leaves no row for a re-entry flaw no handoff row holds — fix now (not load-bearing: step 1's "unless a guest handoff's row already holds it" still governs; a wording error in the T7 sentence)
+- diff-bug #2: CHANGELOG's "unless it is a row the fix itself closes" misstates step 6 — fix now
+- diff-bug #3: after the Copilot round the record still lists flaws a Copilot fix changed — fix now
+- diff-bug #4: narrowing an extended note's flaw has no placement — fix now
+- diff-bug #5: deleting a handoff-written row drops later additions — fix now
+- diff-bug #6: a handoff row can match as "a row that describes the bug" — reject (false: a flaw row describes code the fix left as it was, not the bug)
+- diff-bug #7: a new row for a §7 group does not name the group row — fix now
+- diff-bug #8: "approved push" vs "a push that fails records nothing" — fix now
+- diff-bug #9: a failed on-disk ROADMAP write has no arm — reject (edge: a failed local Write is an error the session sees, outside common use)
+- diff-bug #10: the split pin drops the order check — fix now
+- diff-bug #11: the `# M339:` comment — reject (style, as pass 1)
+- blame-history #1: CHANGELOG clause — fix now (same as diff-bug #2)
+- blame-history #2: the record sits before the Copilot round's "Then stop" — fix now (the round's text now says to make the record before it stops)
+- blame-history #3: the §7 group has no test the handoff can apply — reject (false: §7 defines the group)
+- prior-review #1: CHANGELOG clause — fix now (same as diff-bug #2)
+- prior-review #2: the change route could read the round-on/off timing — fix now (it says it runs no round)
+- prior-review #3: a re-entry run on a follow-up PR's number misses rows tagged with the handoff PR — reject (edge: a guest re-entry on a follow-up number is outside common use, and the rows stay visible to `/cairn-triage`)
+- ripple #1: README.md:641-644 says the guest arm writes the started token after the create — reject (false: still true)
+- ripple #2: `narrowed … by the PR #N hotfix` vs `extended … by hotfix PR #<n> handoff` word order — reject (style)
+- ripple #3: an `extended …: <flaw>` note changes a colon-less row's short title — reject (false: every row has ` — added` before its lineage, so the cut falls there first)
+- ripple #4: `/cairn-triage` SKILL.md:85-86 on the guest token — reject (false: still true)
+- copilot: review body https://github.com/jmgirard/cairn/pull/354#pullrequestreview-6067236613 — noted (no open issues, no threads, no note)
+- Copilot level: Lite (set by GitHub's settings)
+- conversation: PR #354 — empty read beyond that Copilot review (no issue comments, no threads)
+- snapshot: none (no `_snaps` or `__snapshots__` path in the diff)

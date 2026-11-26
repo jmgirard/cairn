@@ -12,8 +12,9 @@
   cleared session lost it. Now the hotfix writes the row on disk at the
   handoff of its PR to the maintainers. A push of changes they asked for
   writes the row too. The row names the PR, for example
-  `hotfix PR #12 handoff`. A row that already covers the problem gets a
-  note instead, unless it is a row the fix itself closes. When you later
+  `hotfix PR #12 handoff`. A row that already names the problem is left
+  as it is. A row on the same subject gets a note instead, unless other
+  work has already taken that row. When you later
   run `/hotfix` on the merged PR and accept its check, it compares each
   such row with what the maintainers merged. It deletes the part that the
   merge fixed in full, narrows the part that it fixed in part, and keeps

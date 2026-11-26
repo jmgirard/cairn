@@ -146,10 +146,12 @@ class TestHotfixCandidateGraduation(unittest.TestCase):
             "each Candidates row of `cairn/ROADMAP.md` that holds `hotfix PR "
             "#<N> handoff`. `<N>` is the PR that the re-entry's argument "
             "names. Judge each row against the merged diff.",
-            "When the diff covers that flaw in full, delete the note, or "
-            "delete the whole row the handoff wrote. When the diff covers it "
-            "in part, narrow it with the `narrowed` note above. Otherwise "
-            "keep it.",
+            "When the diff covers that flaw in full, delete the note. For a "
+            "row the handoff wrote, check whether anything was added to it "
+            "later. If nothing was, delete the whole row. If something was, "
+            "delete only the handoff's flaw text. When the diff covers the "
+            "flaw in part, narrow the flaw's text to the part left and add "
+            "the `narrowed` note above after it. Otherwise keep it.",
             "A flaw that the re-entry's idea vet finds and such a row holds "
             "adds no new row.",
             "Any other re-entry outcome, a PR closed without a merge "
