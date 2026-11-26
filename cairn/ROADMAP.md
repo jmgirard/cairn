@@ -1,20 +1,18 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-11-25 (M339 merged: a guest hotfix records the flaws it leaves alone at the handoff; skills/tests green; validate green; mod test red on main, see "Fix mod tests that fail on main")_
+_Last hygiene check: 2026-11-25 (M340 merged: the band tests follow per-plugin rows, mod test green on claude 2.1.323 and 2.1.331; skills/tests green; validate green)_
 
 ## Milestones
 _Released 1.0.0 (2026-07-16) to 2.2.0 (2026-11-05), each tagged `v<version>`; 1.5.0 was cut retroactively at edb6942._
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M340 | Fix mod tests that fail on main | review | — | high | milestones/M340-mod-tests-per-plugin-rows.md |
+| M340 | Fix mod tests that fail on main | done | — | high | milestones/archive/M340-mod-tests-per-plugin-rows.md |
 | M339 | Write hotfix flaw rows at the guest handoff | done | — | normal | milestones/archive/M339-guest-handoff-flaw-rows.md |
 | M338 | Note the pushed head after a merge push | done | — | normal | milestones/archive/M338-settle-pushed-head.md |
-| M337 | Re-rate a row whose trigger fired | done | — | normal | milestones/archive/M337-rerate-fired-trigger.md |
 ## Candidates
 _Ordered high → normal → low → parked by each row's opening `[high]`/`[low]`/`[parked]` token, untagged = `normal`; `[parked]` = a promotion condition that has not held (tracking-rules "Candidate priority token", D-134, D-184); advisory within a level. Triage: D-027._
-- [high] Fix mod tests that fail on main: `CLAUDE_CODE_ENABLE_FUNCTION_HOOKS=1 claude plugin test .` fails 19 of 2466 tests in `hooks/status` on main at f16ca210 and on the M339 branch, with both claude 2.1.323 (Homebrew) and 2.1.331 (desktop app); the band and close-button tests receive "cairn hook: absent" where they expect "returned". The verify slot is red for every milestone until this is fixed. High rung: it blocks the gate — added 2026-11-25 — M339 implement — started M340
 - Let guest maintainers merge their PRs: in easystats/datawizard the operator is a maintainer who merges approved PRs, their own included, but the repo runs guest tracking (cairn/ untracked), and guest mode never merges (D-137). There a minor bug fix needs no review, and a larger change needs another maintainer's approving review first. Plan a guest repo where the operator merges on those terms; superseding D-137's never-merge clause is the decision. Raised by the easystats session at M315 implement — added 2026-10-22
 - Settle a hotfix gate head after a push: `/hotfix` step 6's gate reads an existing PR's `headRefOid` seconds after a push to that PR (step 5's test and changelog push to an adopted PR, an own-PR re-entry's fixes, an address-first fix), and nothing settles that read, so a lagging read can still give the false "head moved" stop that M338 removed from the marker read. Normal rung: the same lag was seen on PR #351 — added 2026-11-05 — M338 implement (claim audit #1, #2)
 - [parked] Drop a held condition from a row: since M337 a normal or low row whose promotion condition has held reaches `/cairn-triage`'s Rung class, which can leave it on its rung with the held `promote when` text still in the row; only a parked row must change. A `split` of a parked row whose condition held also copies the held condition into each new row (M337 review, diff-bug #9). Promote when a user reports it — added 2026-11-05 — M337 implement (planted-row reader, P4)
