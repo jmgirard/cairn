@@ -92,9 +92,21 @@ Three questions in order; the first yes decides.
 2. Is it older, but the fix sits in lines the PR already changes and needs no new check? Fold it in.
 3. Is it older, can the reviewer name a concrete input that fails today, and can it point to where that input comes from in ordinary use? Open an issue, with both in it.
 
-Ordinary use (proposed, to keep rare cases from flooding the list): the reviewer points to a user's report, or to the repo's own documentation, examples or tests showing that use. An input the reviewer had to construct, such as an empty vector, an all-missing column or an undocumented argument combination, has no such pointer and is an edge case. Likelihood is judged by that pointer, never by a guess at how many users do it, so a wrong result for a documented model class counts even if few people fit it. An edge case is never fixed by making the input work. Where it sits in a user-facing function the PR already changes, and one check at that function's entry would refuse the input with a clear error, the PR adds that check in the repo's own idiom with one test line; this turns a silent wrong answer into a loud one (the user's point: cheap assertions alongside other work are good practice). The same holds for new user-facing functions: they assert what their documentation says they expect. It does not extend to internal helpers, to functions the PR does not touch, or to a sweep across the package. In a guest repo the check is added only where the host's nearby code already asserts its inputs. Other edge cases are dropped and the merge question gives only their count; the user can ask to see them. The reviewer's brief limits it to the diff and the code the diff relies on, so it does not hunt for constructed inputs elsewhere. The same test gates `[high]`.
+Ordinary use (agreed 2026-11-26; the user's requirement is to keep rare cases from flooding the list):
 
-Anything else is dropped. The review decides 1, 2 and the drops; issues are listed at the merge question for the user's approval. Nothing is opened upstream in a guest repo without the user's word. Review findings never become candidate rows.
+- Every finding is sorted first by whether the reviewer can point to ordinary use. A pointer is a user's report; the repo's own documentation, examples, or tests showing that use; or a call in a package that depends on the repo. A finding with a pointer goes through the three questions. A finding without one is an edge case, whichever question it would have reached.
+- An input the reviewer had to construct, such as an empty vector, an all-missing column, or an undocumented argument combination, has no pointer. Likelihood is judged by the pointer, never by a guess at how many users do it, so a wrong result for a documented model class counts even if few people fit it.
+- One exception: an input that worked before the PR and fails after it is always folded in. The earlier behavior is the pointer.
+- An edge case is never fixed by making the input work. It gets an input check, or it is dropped.
+- An input check is one assertion at the entry of a user-facing function that refuses the input with a clear error. It turns a silent wrong answer into a loud one (the user's point: cheap assertions alongside other work are good practice). The PR adds one when three things hold: the PR adds or changes that function; today's result for the input is a wrong answer or an unclear error, not merely unspecified; and one assertion at the entry is enough. It is written in the repo's own idiom, with one test line and a changelog line.
+- New user-facing functions assert what their documentation says they expect. Input checks do not extend to internal helpers, to functions the PR does not touch, or to a sweep across the package. In a guest repo one is added only where the host's nearby code already asserts its inputs.
+- "Input check" names that assertion. "Check" alone means a verification step in a plan, as in question 2.
+- The reviewer's brief limits it to the diff and the code the diff relies on. It looks for constructed inputs only in user-facing functions the PR adds or changes, the one place such a finding can lead to an input check.
+- Dropped findings are one line each in the plan. The merge question gives two counts, edge cases and other, and the user can ask to see them. The merge record does not list them: its "what was left out" covers scope, not findings.
+- The same test gates `[high]`.
+- Observed 2026-11-26: 27 of the 105 Known issues entries in the user's R packages name an empty, all-missing, zero-length, single-element, or similar input. This is a keyword count, not a classification.
+
+Anything else is dropped. The review decides 1, 2, and the drops; issues are listed at the merge question for the user's approval. Nothing is opened upstream in a guest repo without the user's word. Review findings never become candidate rows.
 
 ## Triage
 
@@ -240,6 +252,6 @@ What the results change (proposed):
 ## Open
 
 - The user's markup of the draft steps per verb, which supplies the steps wanted every time.
-- The user's word on the sections still marked proposed. A walk-through on 2026-11-25 settled one skill, slugs, text for other readers, and length; on 2026-11-26 it settled rewriting the skills and how v3 is fixed later. It also settled hooks and status view, added the maintainer line for guest repos, and settled migration. Still to walk through: the ordinary-use test and Codex's part.
+- The user's word on the sections still marked proposed. A walk-through on 2026-11-25 settled one skill, slugs, text for other readers, and length; on 2026-11-26 it settled rewriting the skills and how v3 is fixed later. It also settled hooks and status view, added the maintainer line for guest repos, and settled migration and the ordinary-use test. Still to walk through: Codex's part.
 - Whether a small format validator survives.
 - The untested T3 Code items above, to be covered in the pilot.
