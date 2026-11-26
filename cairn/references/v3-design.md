@@ -73,12 +73,12 @@ One skill, `/cairn`, takes a verb. The skill's own text is the rulebook plus a t
 
 Removed skills get no stubs. Whether anyone else has cairn installed is unknown (observed 2026-11-25: 3 stars, no forks, no issues or PRs from others). The session-start hook names a v2 repo and points to `/cairn setup`, which covers any other user who updates.
 
-Draft steps per verb, not yet marked up by the user:
+Draft steps per verb, not yet marked up by the user. The review and setup lines were revised 2026-11-26 to match the sections agreed since:
 
 - **start**: check whether the request is trivial; investigate before asking; for a road plan, one question set with recommendations; write the plan; account for everything the user asked for; per task, test first, then code, then a commit; add the changelog entry the profile calls for; run `verify`; go to review.
-- **review**: sync with the default branch; run every check in the plan fresh; run `verify`; one independent reviewer reading the diff for bugs, Codex when available and otherwise a fresh subagent (of 63 recorded v2 findings that name their reviewer, 52 came from the diff reader); apply the findings rule; ask the merge question showing the merge record, each finding's outcome and the issues proposed; on approval only, push, open the PR, wait for CI, squash-merge; open the approved issues and delete the plan and branch.
+- **review**: sync with the default branch; run every check in the plan fresh; run `verify`; one independent reviewer reading the diff for bugs, Codex run from the command line where it is installed and signed in and otherwise a fresh subagent (of 63 recorded v2 findings that name their reviewer, 52 came from the diff reader); apply the findings rule; ask the merge question showing the merge record, the findings that changed something, the issues proposed, and the two counts of dropped findings; on approval only, push, open the PR, wait for CI, squash-merge; open the approved issues and delete the plan and branch.
 - **triage**: list every candidate; check each against code and git; propose promote, keep or drop per row in one table for the user; apply in one commit.
-- **setup**: detect a new repo, a v2 repo or a v3 repo with pieces missing; scaffold, migrate or repair.
+- **setup**: detect a new repo, a v2 repo, or a v3 repo with pieces missing; scaffold, migrate, or repair; in the user's own repos, propose the two GitHub rules; for a v2 repo, run the Known issues and candidates pass.
 - **source add**: put the file on the shelf, write a note with citation and what was read, add the index line.
 - **copilot**: read the notes; decide fix, reject or defer; fix and push; draft at most one comment per review for the user; resolve the threads; never reply on a thread.
 
@@ -208,7 +208,7 @@ Status: agreed 2026-11-26.
 - chromodoris is migrated by hand before the pilot. Observed 2026-11-25, it has 13 commits, 6 candidates, and no work in flight. The script is written after the pilot, when the formats have stopped changing.
 - After the pilot, datawizard is cut over alone and one piece of work is done there. The pilot covers none of the guest path: files in the home folder only, host style, `done/`, the Copilot verb, the merge hook, and the maintainer line. datawizard has no work in flight and no Known issues, and it carries the maintainer line.
 - Then the other 31 repos are cut over in one sitting. v3 merges to main, T3 Code's HOME instance is pointed at `~/.claude`, and `~/.claude_personal` retires.
-- For one of the user's own repos, the script makes one commit: it moves `DECISIONS.md`, `LESSONS.md`, and the old archive aside, and swaps the cairn section of `CLAUDE.md`. Whether it adds an `AGENTS.md` is decided with Codex's part. Observed 2026-11-26, none of the 21 own repos has one, and the 11 that are R packages would each need a `.Rbuildignore` line.
+- For one of the user's own repos, the script makes one commit: it moves `DECISIONS.md`, `LESSONS.md`, and the old archive aside, and swaps the cairn section of `CLAUDE.md`. It adds no `AGENTS.md`, as agreed under Codex's part. Observed 2026-11-26, none of the 21 own repos has one, and the 11 that are R packages would each have needed a `.Rbuildignore` line.
 - For a guest repo, the script moves the untracked `cairn/` to the home folder, removes its line from `.git/info/exclude`, and carries over the profile's guest lines. Its commit lands in `~/.cairn`. Observed 2026-11-26, none of the 12 guest checkouts has a `CLAUDE.md` or `AGENTS.md`.
 - The script converts work in flight. It moves each file to the home folder under a slug and writes the `Route:`, `Branch:`, `Issue:`, and `Phase:` lines, leaving the body as written. Nothing waits to finish under v2, since guest PRs wait on other people. Observed 2026-11-26: 12 pieces in 5 repos (hitop 4, glmmTMB 3, easystats/correlation 2, easystats/insight 2, ackwards 1), 7 of them in guest repos.
 - A pass per repo does the judgment part, as each repo is next worked in. It belongs to `setup`'s v2 case, not to `triage`. Each Known issues entry becomes a GitHub issue only if it has a failing input and points to ordinary use, as the findings rule requires, and is otherwise dropped. In a guest repo the issue is proposed to the user and never opened without the user's word. Each candidate is promoted, kept, or dropped. Observed 2026-11-26: 315 Known issues entries across the 33 repos, 25 of them in easystats repos.
@@ -241,7 +241,7 @@ Folder arrangement, set by the user and observed 2026-11-26. The Claude desktop 
 
 Still untested: a "New worktree" thread; the other permission modes; hooks other than SessionStart; how a skill named `cairn` in the plugin `cairn` is listed.
 
-What the results change. The Codex account arrangement is agreed 2026-11-26; the other bullets were revised that day and wait for the user's word.
+What the results change (agreed 2026-11-26, after the draft was revised that day):
 
 - The plugin form holds. No plain-skills fallback is needed for Claude in T3 Code. This was tested under `~/.claude` only and is rerun under the HOME instance before the pilot.
 - Accounts (agreed, the user's decision): a personal Codex account goes in `~/.codex`, the default folder, and the work account moves to `~/.codex_work`, as was done for Claude. cairn therefore sets no `CODEX_HOME`. Observed 2026-11-26: `~/.codex` is signed in with ChatGPT, T3 Code names its one Codex instance WORK, and the move is not yet done. T3 Code's Codex instance settings have a "CODEX_HOME path" field and a "Shadow home path" field; the second keeps only `auth.json` apart and shares the rest. The command-line review reads the default folder's login, so the personal login must sit in `~/.codex` itself, not in a shadow home.
@@ -255,7 +255,9 @@ What the results change. The Codex account arrangement is agreed 2026-11-26; the
 
 ## Open
 
-- The user's markup of the draft steps per verb, which supplies the steps wanted every time.
-- The user's word on the sections still marked proposed. A walk-through on 2026-11-25 settled one skill, slugs, text for other readers, and length; on 2026-11-26 it settled rewriting the skills and how v3 is fixed later. It also settled hooks and status view, added the maintainer line for guest repos, and settled migration and the ordinary-use test. Still to walk through: Codex's part.
+The walk-through is complete: every section is agreed as of 2026-11-26. What is left before the build:
+
+- The user's markup of the draft steps per verb, which supplies the steps wanted every time. The markup sheet predates the sections agreed on 2026-11-26, so some of its lines are out of step with them: the guest lines (a maintained guest repo may merge and release), the merge question (two counts of dropped findings), `AGENTS.md` in `setup` (none), and the merge record going through the writing skill (the agreed text section has it written directly from its questions).
 - Whether a small format validator survives.
-- The untested T3 Code items above, to be covered in the pilot.
+- The user's setup before the pilot: `writing-for-people` in `~/.claude_personal`, and the logging skill there.
+- To cover in the pilot, all untested: the v3 worktree loading from `~/.claude_personal/skills/`; the three T3 Code checks under the HOME instance; a "New worktree" thread; the other permission modes; whether a hook other than SessionStart runs in T3 Code, which the guest merge hook needs; how a skill named `cairn` in the plugin `cairn` is listed; whether a Claude thread in T3 Code can start `codex` and what `CODEX_HOME` it carries; and whether `codex review` takes a prompt together with `--base`.
