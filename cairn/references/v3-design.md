@@ -116,7 +116,7 @@ Status: agreed.
 The cause of bad text is the same everywhere: the session knows too much and writes about its own work. The split is by how the text is written, not where it is posted.
 
 - Standalone prose is drafted by a fresh subagent that never saw the session: changelog entries, vignettes, new help pages, README sections, PR text in guest repos, and messages to people. The brief is the facts plus two or three existing examples of the same kind from that repo. Messages to people go through the user's `writing-for-people` skill; documentation goes through cairn's own drafting step, since that skill excludes READMEs and release notes. A second fresh subagent reads the draft cold and reports what it says and asks; a mismatch with the brief means a rewrite from the brief.
-- Text woven into code is written inline by the session: code comments, edits to existing help text, error and warning messages. Two rules apply: say what the code does or why, never the story of the change; and match the neighbouring text. The independent reviewer reads these cold as part of the diff.
+- Text woven into code is written inline by the session: code comments, edits to existing help text, error and warning messages. Two rules apply: say what the code does or why, never the story of the change; and match the neighboring text. The independent reviewer reads these cold as part of the diff.
 - The merge record and issues in the user's own repos are written directly from their questions.
 - One rule covers all repos: match the repo's existing text of the same kind. In a guest repo that text is the maintainers'. No cairn vocabulary reaches a host repo. cairn has no other style rules.
 - The user sees each text once, at the gate that already exists. The merge question quotes the changelog entry in full and lists other changed documentation by file. Internal files are never previewed in chat.
@@ -131,7 +131,7 @@ v2 required text to be complete and to fit a size, and sessions gamed the unit o
 - Each document is a fixed set of questions; the answers are the document. A candidate row is a title, one sentence on what and why, and for a marked row what goes wrong or what it waits for. An issue from a finding is the failing input in a code block and where it comes from.
 - Detail may be left out; the facts each question asks for may not. Each merge record question is complete when it covers a list that already exists: what changed covers every changelog entry in the PR; choices made covers every answer the user gave in the question set, plus any choice the session made that changes what the user gets; what was left out covers every item the plan marked as later, a candidate or dropped; how it was checked covers every check in the plan with its result. Each item gets one sentence.
 - What can still be lost is the reasoning behind implementation choices. It survives as a line under choices made or, better, as a code comment where the odd choice lives. As a safety net, `review` commits `~/.cairn` locally just before deleting a plan, so deleted plans stay in that repo's history.
-- cairn ships empty templates, headings and labelled lines with nothing under them, and no filled-in examples. A plan is markdown with labelled lines at the top (`Route:`, `Branch:`, `Issue:`, `Phase:`, `Blocked on:`) and one heading per question; an empty section says "none". A merge record uses labelled lines with no `#` headings, since the same text is the commit message; an empty label is dropped. Text for a guest repo follows the host's template where it has one.
+- cairn ships empty templates, headings and labeled lines with nothing under them, and no filled-in examples. A plan is markdown with labeled lines at the top (`Route:`, `Branch:`, `Issue:`, `Phase:`, `Blocked on:`) and one heading per question; an empty section says "none". A merge record uses labeled lines with no `#` headings, since the same text is the commit message; an empty label is dropped. Text for a guest repo follows the host's template where it has one.
 - Where output is a readout of files, a script prints it: the status listing comes from the script, and the model adds only the recommended next action.
 - There is no cap on the number of candidates; status shows the count and the user decides when to triage.
 - Where a limit is needed it counts whole items. A road plan has at most 7 acceptance criteria, each naming one check; more means two plans (agreed). Seven is v2's figure: in 400 v2 plans read before archiving, the median was 6, and 27% sat at exactly 7, which suggests criteria were combined to fit.
@@ -142,15 +142,15 @@ v2 required text to be complete and to fit a size, and sessions gamed the unit o
 
 Status: agreed 2026-11-26, after the section was checked against the agreed ones and seven points were changed.
 
-- Each verb is written from a blank page as its steps, its stopping points and what done looks like. The v2 text stays under the v2.2.0 tag to consult.
+- Each verb is written from a blank page as its steps, its stopping points, and what done looks like. The v2 text stays under the v2.2.0 tag to consult.
 - A rule goes in only if it guards something public or hard to undo, or the user names it as a step wanted every time. Public or hard to undo means: pushing, merging, posting to GitHub, a tag or release, deleting, and writing in a guest checkout.
 - Error branches and rare cases get no text unless they pass that test. Two agreed ones do: a plan missing on another machine, and a blocked item.
 - Each verb names its stopping points. Outside them the agent decides and goes on, and asks only what the user alone can decide.
-- The rulebook holds what more than one verb needs: sizes, the approval rule, guest mode, the findings rule, the ask rule and the file formats. Guest mode is stated once, there.
+- The rulebook holds what more than one verb needs: sizes, the approval rule, guest mode, the findings rule, the ask rule, and the file formats. Guest mode is stated once, there.
 - After drafting a verb, the v2 skill is read once as a checklist, only for something public or hard to undo that was missed.
 - Size is counted in steps and rules, not words, as the Length section requires. Too long is fixed by removing a step or a rule. There is no word target. The words per verb are printed at release as a number with no threshold.
-- Order: the rulebook and templates; then the session-start hook, `status`, `start`, `review` and `resume`; then the pilot; then the other verbs. Scripts get unit tests; verb text gets none, and the pilot is its test.
-- The pilot is three pieces of real work in chromodoris: one road, one bug trail, one with standalone prose. At least one is reviewed by Codex and one is resumed in a second sitting. Observed 2026-11-25, chromodoris has 6 candidate rows, which include each kind.
+- Order: the rulebook and templates; then the session-start hook, `status`, `start`, `review`, and `resume`; then the pilot; then the other verbs. Scripts get unit tests; verb text gets none, and the pilot is its test.
+- The pilot is three pieces of real work in chromodoris: one road, one bug trail, and one with standalone prose. At least one is reviewed by Codex and one is resumed in a second sitting. Observed 2026-11-25, chromodoris has 6 candidate rows, which include each kind.
 - Measured, observed 2026-11-25: the kept v2 skills and rulebook total about 79,300 words (82,255 in the 12 skill folders, less design-interview and milestone-brief). All markdown under `skills/` grew from 19,600 words at v1.0.0 (2026-07-16) to 90,515 at v2.2.0 (2026-11-05).
 
 Fixing v3 without regrowth (agreed 2026-11-26):
@@ -159,7 +159,7 @@ Fixing v3 without regrowth (agreed 2026-11-26):
 - During the pilot, any real failure may change the text, between pieces of work. From 3.0.0 on, a one-off gets no text change and the second occurrence does. Anything public or hard to undo is fixed the first time.
 - The first response is to delete or reword the line that was misread. A new line is added only if nothing existing is at fault, and only if it passes the tests above.
 - Occurrences are logged, at the user's word, as one line each in `~/.cairn/log.md`: date, repo, branch or slug, verb, what happened. The file sits outside the per-repo folders, so no shipped script reads it, and nothing reads it during work. Occurrences are not candidate rows (the user's requirement). They are not issues either: the cairn repo is public, the lines name other people's repos, and a one-off would stay open.
-- A feature goes in only if the user needs it now in a repo being worked in. No record types, validators or hooks are added to the plugin to stop a failure recurring. The log is the one record kept for that, and it is outside the plugin.
+- A feature goes in only if the user needs it now in a repo being worked in. No record types, validators, or hooks are added to the plugin to stop a failure recurring. The log is the one record kept for that, and it is outside the plugin.
 - Shipped text serves users of cairn; maintainer practice lives outside the plugin (the user's point). A personal skill in the user's own skills folder writes the log line and, when asked, groups the lines and proposes a fix for a group of two or more. `/cairn triage` does neither. These habits go in the cairn repo's `CLAUDE.md`; the words-per-verb readout at release goes in the cairn repo's `PROFILE.md`.
 
 ## Hooks and status view
@@ -205,6 +205,6 @@ What the results change (proposed):
 ## Open
 
 - The user's markup of the draft steps per verb, which supplies the steps wanted every time.
-- The user's word on the sections still marked proposed. A walk-through on 2026-11-25 settled one skill, slugs, text for other readers and length; on 2026-11-26 it settled rewriting the skills and how v3 is fixed later. Still to walk through: hooks and status view, migration, the ordinary-use test, and Codex's part.
+- The user's word on the sections still marked proposed. A walk-through on 2026-11-25 settled one skill, slugs, text for other readers, and length; on 2026-11-26 it settled rewriting the skills and how v3 is fixed later. Still to walk through: hooks and status view, migration, the ordinary-use test, and Codex's part.
 - Whether a small format validator survives.
 - The untested T3 Code items above, to be covered in the pilot.
