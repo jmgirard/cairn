@@ -320,14 +320,14 @@ can resolve against the fork instead of the base repo.
      present. On approval, push to the remote that holds the PR's head,
      found by the rulebook's open-PR head rule:
      `git push <head-remote> HEAD:<headRefName>`. Post no comment or reply
-     on the PR. Then stop with the close block
+     on the PR. After the push, make step 6's handoff flaw record, with
+     `<n>` this PR's number. It covers each flaw that the idea vet found
+     in what this route's changed diff leaves as it was. A decline, a stop
+     before the push, or a push that fails records nothing, and its close
+     block names each flaw. Then stop with the close block
      of the report-and-stop above. That close block also says that the
-     reply to the maintainers is the operator's. Before that close, after
-     the push, make step 6's handoff flaw record, with `<n>` this PR's
-     number. It covers each flaw that this route's idea vet found in what
-     the diff leaves as it was. The close block shows its rows. A decline,
-     a stop before the push, or a push that fails records nothing, and its
-     close block names each flaw. On decline, push nothing,
+     reply to the maintainers is the operator's, and it shows the record's
+     rows. On decline, push nothing,
      and stop with a close block that names the unpushed commits. Every
      close block of this route carries the report-and-stop's CI line, and
      its fenced next command is `/hotfix` with the PR reference.
@@ -665,18 +665,24 @@ can resolve against the fork instead of the base repo.
    append ` — started #<n>` on disk, `<n>` the new PR's number, to the end
    of each candidate row step 1 matched (tracking-rules "Candidate started
    token"), so the cairn pane in a checkout with no active milestone hides the row while the PR is open.
-   **Handoff flaw record (M339).** Then record on disk, with no commit,
-   each flaw that step 1's idea vet found. These are the flaws in what the
+   **Handoff flaw record (M339).** When the Copilot round below is on,
+   make this record after that round. When the round is off, make it
+   here. Record on disk, with no commit, each flaw that step 1's idea vet
+   found. These are the flaws in what the
    fix's diff leaves as it was. Sweep first by the search-first
    candidate-creation rule (`tracking-rules.md`, Intake). A flaw that no
    row holds gets a new candidate row. The row names the flaw as a design
    decision for later work. Its provenance is
-   `— added YYYY-MM-DD — hotfix PR #<n> handoff`. A row
-   that already holds the flaw's subject gains the flaw and
-   `; extended YYYY-MM-DD by hotfix PR #<n> handoff` at the end of its
-   lineage. That note goes before any ` — started` token, which stays at
-   the row's end. A row that step 1 matched is never the one extended,
-   because step 7 can delete it. The flaw then gets a new row. On a standing rejection the
+   `— added YYYY-MM-DD — hotfix PR #<n> handoff`. A row that already holds
+   the flaw itself gets no edit. A row that holds only the flaw's subject
+   gains `; extended YYYY-MM-DD by hotfix PR #<n> handoff: <the flaw>` at
+   the end of its lineage. Three kinds of row are never extended, and the
+   flaw gets a new row instead. The first is a row that step 1 matched.
+   The second is a row that ends with a ` — started` token. The third is a
+   row of a finding-absorbing group (`skills/shared/records-hygiene.md`
+   §7). Step 7 or a milestone's
+   hygiene can delete the first two, and §7 bars a silent extension of
+   the third. On a standing rejection the
    flaw gets no row, and the close block names the flaw and the decision.
    The close block shows each row written or extended, verbatim. Step 7's
    guest arm judges these rows against the merged diff on the re-entry. A
@@ -729,7 +735,9 @@ can resolve against the fork instead of the base repo.
    that narrowing, never a second new row. On step 1's over-the-bar
    disposition, step 7 neither removes nor narrows a matched row. After
    those edits, step 7 adds the candidate row for each flaw that step 1's
-   idea vet found in what the fix leaves as it was. On the merged-PR
+   idea vet found in what the fix leaves as it was. In guest mode, step
+   6's handoff flaw record wrote those rows, and the guest arm below
+   judges them. On the merged-PR
    re-entry's over-the-bar disposition, step 7 also writes that route's
    candidate row in its one docs-only commit (guest mode: on disk). In
    owner mode, the close block fences `/milestone-plan` with that row's
@@ -751,10 +759,11 @@ can resolve against the fork instead of the base repo.
    (records-hygiene §1). A PR closed without a merge leaves the row.
    **Handoff flaw rows (M339).** On that same accepted re-entry, also find
    each Candidates row of `cairn/ROADMAP.md` that holds
-   `hotfix PR #<N> handoff`, `<N>` the merged PR. Judge each one against
-   the merged diff. For a row the handoff extended, judge only the part it
-   added. When the diff covers that part in full, delete it with its
-   `extended` note, or delete the whole row the handoff wrote. When the
+   `hotfix PR #<N> handoff`. `<N>` is the PR that the re-entry's argument
+   names. Judge each row against the merged diff. For a row the handoff
+   extended, judge only the flaw inside its `extended` note. When the diff
+   covers that flaw in full, delete the note, or delete the whole row the
+   handoff wrote. When the
    diff covers it in part, narrow it with the `narrowed` note above.
    Otherwise keep it. Show each deleted or narrowed row
    verbatim in chat. A flaw that the re-entry's idea vet finds and such a

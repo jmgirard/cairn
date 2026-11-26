@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M339: Write hotfix flaw rows at the guest handoff
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -53,6 +53,8 @@ A guest-mode `/hotfix` records each flaw its idea vet found in what the fix leav
 - [x] T5: README `/hotfix` row (README.md:809, "becomes a candidate row after the merge") and a CHANGELOG `## Unreleased` entry, per AC4.
 - [x] T6: Append a D-entry superseding D-225's clause "A close block that ends the run before step 7 names the flaw instead" for a guest handoff that opens its PR and for the change route's approved push, naming the parked row for the owner decline. Run the `verify` slot and the hand-run `skills/tests`.
 
+- [x] T7: Review return 1: apply the pass-1 fix-now findings listed in the Review section (extension limits, flaw text in the note, record after the Copilot round, change-route order, scope and PR number, step 7 opening, README, guard pins, D-248 heading).
+
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates. -->
 
@@ -76,6 +78,8 @@ A guest-mode `/hotfix` records each flaw its idea vet found in what the fix leav
 - 2026-11-25: claim audit: 38 claims read, 7 corrected — CHANGELOG.md, README.md, skills/hotfix/SKILL.md (re-entry keep and part-only edits in CHANGELOG and README, the matched-row exception, step 1's two guest exceptions and its step 7 sentence, the change route's vet scope and failed push, the `extended` note's removal); the re-read found all seven correct.
 - 2026-11-25: implement done; status review.
 - 2026-11-25: review return 1: diff-bug #3 / blame-history #4 (load-bearing) — a handoff can extend a row that another hotfix or a milestone started, whose step 7 or hygiene then deletes it and loses the flaw; fix with the other fix-now findings of pass 1 (Review section): no extension of a started, matched, already-holding, or §7-group row; flaw text inside the `extended` note; record after the Copilot round; change-route order, scope, and `<N>`; step 7 opening, README:809 and :1016, guard pins, D-248 heading.
+- 2026-11-25: T7 added for review return 1 (minor amendment) and done: step 6's record now follows the Copilot round, gives no edit to a row that already holds the flaw, puts the flaw inside the `extended` note, and never extends a matched, started, or §7-group row; the change route records before its "Then stop" sentence (the `test_resume_routing` pin split in two), on its changed diff; step 7 names the guest record at its opening and reads `<N>` as the PR the re-entry names; README:809's "before then" names merge and handoff; README:1016 left (owner path, ripple #2 rejected); D-248's heading names D-240 and D-108's door and its Decision states the new limits; guard test renamed and pins AC2's delete/narrow/keep, step 1's guest exception, and the README sentence. `skills/tests` OK, scripts and hooks suites OK, both validates OK. One simple-english hit left ("after that round" read as a trailing condition), kept as a wording nit.
+- 2026-11-25: implement done after return 1; status review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
@@ -117,7 +121,7 @@ Review head 14a51b55, merge base f16ca210 (= origin/main). Copilot arm: PR #354 
 - prior-review #6: step 7's guest arm has no failed-write arm — follow-up, already held by the parked row "Say what a failed step 7 commit does" (pre-existing), no new row
 - prior-review #7: the new pins lack a mutation-harness entry — reject (style: skills/tests is hand-run, D-109)
 - ripple #1: records-hygiene §7 bar — fix now (same fix as diff-bug #2)
-- ripple #2: README.md:1016-1018 says the flaw "still becomes a candidate row after the merge" — fix now
+- ripple #2: README.md:1016-1018 says the flaw "still becomes a candidate row after the merge" — reject (false: that passage is the owner-mode resumed merge, unchanged; settled at implement return 1)
 - ripple #3: step 7's opening rule states no guest exception — fix now
 - ripple #4: the parked row "Keep hotfix flaws after a declined merge" — reject (false: still accurate)
 - ripple #5: tracking-rules "Candidate started token" omits the flaw record — reject (false: incomplete, not contradicted; the token rule is unchanged)

@@ -717,10 +717,13 @@ class TestHotfixGuestChangeRoute(unittest.TestCase):
         self.assertIn(
             "On approval, push to the remote that holds the PR's head, found by "
             "the rulebook's open-PR head rule: `git push <head-remote> "
-            "HEAD:<headRefName>`. Post no comment or reply on the PR. Then stop "
-            "with the close block of "
-            "the report-and-stop above. That close block also says that the "
-            "reply to the maintainers is the operator's.",
+            "HEAD:<headRefName>`. Post no comment or reply on the PR.",
+            self.step1,
+        )
+        self.assertIn(
+            "Then stop with the close block of the report-and-stop above. That "
+            "close block also says that the reply to the maintainers is the "
+            "operator's,",
             self.step1,
         )
 
