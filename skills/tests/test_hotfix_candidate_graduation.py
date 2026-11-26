@@ -103,10 +103,26 @@ class TestHotfixCandidateGraduation(unittest.TestCase):
 
     def test_guest_arm_waits_for_the_maintainers_merge(self):
         self.assertIn(
-            "The handoff changes a matched candidate row only by its started "
-            "token. Step 7's guest arm edits it on a later `/hotfix` run with "
-            "the PR reference, after the maintainers merge.",
+            "Beyond its started token, the handoff leaves a matched candidate "
+            "row as it is. Step 7's guest arm edits it on a later `/hotfix` "
+            "run with the PR reference, after the maintainers merge.",
             self.step6,
+        )
+        # M339: the handoff records each flaw it left alone, tagged by PR.
+        for phrase in (
+            "**Handoff flaw record (M339).** Then record on disk, with no "
+            "commit, each flaw that step 1's idea vet found.",
+            "`— added YYYY-MM-DD — hotfix PR #<n> handoff`",
+            "`; extended YYYY-MM-DD by hotfix PR #<n> handoff`",
+            "A row that step 1 matched is never the one extended,",
+            "A handoff that stops before its PR opens records nothing, and "
+            "its close block names each flaw, as step 1 says.",
+        ):
+            self.assertIn(phrase, self.step6)
+        self.assertIn(
+            "Before that close, after the push, make step 6's handoff flaw "
+            "record, with `<n>` this PR's number.",
+            self.step1,
         )
         # M258: the guest handoff appends ` — started #<n>` after the create.
         self.assertIn(
@@ -115,8 +131,14 @@ class TestHotfixCandidateGraduation(unittest.TestCase):
             self.step6,
         )
         for phrase in (
-            "*Guest arm:* the handoff only appends its started token to each "
-            "matched row.",
+            "*Guest arm:* the handoff appends its started token to each "
+            "matched row and makes step 6's handoff flaw record. It edits no "
+            "other row.",
+            "each Candidates row of `cairn/ROADMAP.md` that holds `hotfix PR "
+            "#<N> handoff`, `<N>` the merged PR. Judge each one against the "
+            "merged diff.",
+            "A flaw that the re-entry's idea vet finds and such a row holds "
+            "adds no new row.",
             "When the merged-PR re-entry finds that the maintainers merged "
             "the PR, and its post-hoc verification is accepted, remove or "
             "narrow each matched row on disk with no commit, judged against "

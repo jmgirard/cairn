@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M339: Write hotfix flaw rows at the guest handoff
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** IP3   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
 - **Surface tier:** user-facing — changes what `/hotfix` writes to the ROADMAP of an adopting guest repo   <!-- owner: plan · create/amend-via-gate; user-facing | internal — <one-clause reason>; skill conduct only — no validate check parses it -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
+- **Branch/PR:** m339-guest-handoff-flaw-rows   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -46,11 +46,11 @@ A guest-mode `/hotfix` records each flaw its idea vet found in what the fix leav
 ## Tasks
 <!-- owner: plan (create) / implement (check-off, minor edits); substantive change is amend-via-gate. -->
 
-- [ ] T1: Step 6's guest handoff (`skills/hotfix/SKILL.md` ~lines 628-686): after the create and the started-token append, record each flaw per AC1 and show the rows in the close block; keep the close-block naming when no PR opens. Reword "The handoff changes a matched candidate row only by its started token" (~line 682) so a matched row can also be extended.
-- [ ] T2: Step 1's guest change route (~lines 289-324): on the approved push, record the flaws per AC1 with that PR's number, and show them in its close block.
-- [ ] T3: Step 1's idea-vet paragraph (~lines 115-133): state the guest handoff and change-route exception to "A close block that ends the run before step 7 names the flaw instead". Step 7's guest arm (~lines 719-726): replace "the handoff only appends its started token" and add AC2's judgment of the tagged rows.
-- [ ] T4: Update `skills/tests/test_hotfix_candidate_graduation.py` (the guest-arm test pins the two sentences T1 and T3 change) to pin the new sentences, including one that the tagged rows are judged at the re-entry.
-- [ ] T5: README `/hotfix` row (README.md:809, "becomes a candidate row after the merge") and a CHANGELOG `## Unreleased` entry, per AC4.
+- [x] T1: Step 6's guest handoff (`skills/hotfix/SKILL.md` ~lines 628-686): after the create and the started-token append, record each flaw per AC1 and show the rows in the close block; keep the close-block naming when no PR opens. Reword "The handoff changes a matched candidate row only by its started token" (~line 682) so a matched row can also be extended.
+- [x] T2: Step 1's guest change route (~lines 289-324): on the approved push, record the flaws per AC1 with that PR's number, and show them in its close block.
+- [x] T3: Step 1's idea-vet paragraph (~lines 115-133): state the guest handoff and change-route exception to "A close block that ends the run before step 7 names the flaw instead". Step 7's guest arm (~lines 719-726): replace "the handoff only appends its started token" and add AC2's judgment of the tagged rows.
+- [x] T4: Update `skills/tests/test_hotfix_candidate_graduation.py` (the guest-arm test pins the two sentences T1 and T3 change) to pin the new sentences, including one that the tagged rows are judged at the re-entry.
+- [x] T5: README `/hotfix` row (README.md:809, "becomes a candidate row after the merge") and a CHANGELOG `## Unreleased` entry, per AC4.
 - [ ] T6: Append a D-entry superseding D-225's clause "A close block that ends the run before step 7 names the flaw instead" for a guest handoff that opens its PR and for the change route's approved push, naming the parked row for the owner decline. Run the `verify` slot and the hand-run `skills/tests`.
 
 ## Work log
@@ -65,6 +65,11 @@ A guest-mode `/hotfix` records each flaw its idea vet found in what the fix leav
 - 2026-11-25: question set: write rows at the guest handoff — yes, recommended; owner-mode decline — left for later as a parked row, recommended.
 - 2026-11-25: plan gate chose writing at the handoff over writing at step 1's vet, because the diff can still change before the handoff (address-first fixes, the snapshot rule); falsified by a guest run that stops between the vet and the handoff and loses a flaw a user needed.
 - 2026-11-25: plan gate chose a `hotfix PR #<n> handoff` provenance tag over the ` — started #<n>` token to find these rows at the re-entry, because a started token hides the row in the cairn pane while the PR is open and these rows hold work no one has taken; falsified by a re-entry that misses a row because triage rewrote its provenance.
+- 2026-11-25: implement started on branch m339-guest-handoff-flaw-rows.
+- 2026-11-25: T1-T3 done in `skills/hotfix/SKILL.md`: step 6 gains the "Handoff flaw record" paragraph, the change route makes it after its approved push (placed after the pinned "Then stop with the close block" sentences, which `test_resume_routing` pins together), step 1's idea vet names the guest exception, and step 7's guest arm gains "Handoff flaw rows". Implementation choice: a row step 1 matched is never the one extended (the flaw gets a new row), because step 7 can delete a matched row whole; so step 6's matched-row sentence keeps its meaning, reworded to pass AC3's grep. The branch adds no simple-english lint hits to the file (207 remain from main).
+- 2026-11-25: T4 done: the guest-arm test pins the new step 6, change-route, and step 7 sentences; hand-run `skills/tests` 1031 OK.
+- 2026-11-25: T5 done: README `/hotfix` row and a CHANGELOG `## Unreleased` entry under "Changes that affect existing repos".
+- 2026-11-25: T6 in part: D-248 appended (via a shell heredoc, not the Edit tool, a slip from the rulebook's file-edit rule). Verify: scripts and hooks suites OK, both `claude plugin validate` OK, `claude plugin test .` fails 19 of 2466 `hooks/status` tests on the branch and identically with the branch edits stashed (main at f16ca210), with claude 2.1.323 and 2.1.331; the branch touches no `hooks/` file. Candidate row "Fix mod tests that fail on main" added at the high rung. AC5's narrowing to failures shared with main is with a fresh Opus re-audit; checkpoint before its result.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->

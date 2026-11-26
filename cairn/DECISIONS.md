@@ -8757,3 +8757,15 @@ context. Then this text is not doing its job, and the fix is not a longer text.
 **Door:** The rejected-push stop passes D-108's door on its retained trigger, a defect in shipped behavior: the settle could approve a commit the session did not push.
 
 **Consequences:** D-246's decision stands as corrected here.
+
+### D-248 (2026-11-25): A guest `/hotfix` records each flaw it leaves as it was at the handoff, and the merged-PR re-entry judges those rows — supersedes D-225's clause that a close block before step 7 names the flaw instead, for a guest handoff that opens its PR and for the change route's approved push; annotates D-042 (M339)
+
+**Context:** In guest mode cairn never merges, so a run ends at step 6's handoff, and step 7 runs only on a later `/hotfix` with the merged PR. Under D-225, a flaw that the idea vet found in what the fix leaves as it was had no record but the handoff's close block until then. In easystats/insight (PR 1317) two such flaws were found at a handoff and reached the ROADMAP only because the operator added them by hand.
+
+**Decision:** Once a guest handoff's `gh pr create` succeeds, and once the guest change route makes its approved push, `/hotfix` records each such flaw on disk, search-first. A new row carries the provenance `hotfix PR #<n> handoff`. An existing row that holds the flaw's subject gains `; extended YYYY-MM-DD by hotfix PR #<n> handoff` before any started token, and a row that step 1 matched is never the one extended. On a standing rejection the close block names the flaw and the decision. On an accepted merged-PR re-entry, step 7's guest arm judges each Candidates row that holds `hotfix PR #<N> handoff` against the merged diff, only the added part of an extended row, and deletes, narrows, or keeps it. Any other re-entry outcome leaves those rows. Owner mode, a guest decline, and a guest run that stops before its PR opens keep D-225's close-block record. The user chose this at the M339 question set.
+
+**Door:** D-108's door passes on its retained trigger, a defect in shipped behavior: flaws a guest hotfix found were lost from the tracking files.
+
+**Rejected:** Writing the row at step 1's vet, since the diff can still change before the handoff. Falsified by a guest run that stops between the vet and the handoff and loses a flaw a user needed. Marking the rows with the ` — started #<n>` token, since that token hides a row in the cairn pane while the PR is open, and these rows hold work no one has taken. Falsified by a re-entry that misses a row because triage rewrote its provenance. Covering the owner-mode decline too, since its row would need a default-branch commit from the hotfix branch, which D-240 rejected. Falsified by a user who reports a flaw lost that way; the parked row "Keep hotfix flaws after a declined merge" holds it.
+
+**Consequences:** D-225's residual of D-042 now covers only owner mode and the guest paths that open no PR. A guest PR that sits unmerged keeps its flaw rows on the ROADMAP, where `/cairn-triage` can see them.

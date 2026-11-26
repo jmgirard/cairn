@@ -1,5 +1,22 @@
 # Changelog
 
+## Unreleased
+
+### Changes that affect existing repos
+
+- **A guest hotfix records the problems it leaves alone at the handoff.**
+  This applies in guest mode. `/hotfix` can find a problem in code that the
+  fix does not change. Before, it wrote a candidate row for that problem
+  only after the maintainers merged the PR and you ran `/hotfix` on the
+  merged PR. Until then, only the closing message named the problem, and a
+  cleared session lost it. Now the hotfix writes the row on disk at the
+  handoff of its PR to the maintainers. A push of changes they asked for
+  writes the row too. The row names the PR, for example
+  `hotfix PR #12 handoff`. A row that already covers the problem gets a
+  note instead. When you later run `/hotfix` on the merged PR, it deletes
+  or narrows each such row against what the maintainers merged. Owner mode
+  is unchanged.
+
 ## 2.2.0 (2026-11-05)
 
 ### Changes that affect existing repos
