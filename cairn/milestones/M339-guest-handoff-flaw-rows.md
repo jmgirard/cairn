@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M339: Write hotfix flaw rows at the guest handoff
 
-- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -75,6 +75,7 @@ A guest-mode `/hotfix` records each flaw its idea vet found in what the fix leav
 - 2026-11-25: T6 done: D-248 written; verify per amended AC5 (four commands green, plugin test's 19 failures shared with the merge base); hand-run `skills/tests` OK.
 - 2026-11-25: claim audit: 38 claims read, 7 corrected — CHANGELOG.md, README.md, skills/hotfix/SKILL.md (re-entry keep and part-only edits in CHANGELOG and README, the matched-row exception, step 1's two guest exceptions and its step 7 sentence, the change route's vet scope and failed push, the `extended` note's removal); the re-read found all seven correct.
 - 2026-11-25: implement done; status review.
+- 2026-11-25: review return 1: diff-bug #3 / blame-history #4 (load-bearing) — a handoff can extend a row that another hotfix or a milestone started, whose step 7 or hygiene then deletes it and loses the flaw; fix with the other fix-now findings of pass 1 (Review section): no extension of a started, matched, already-holding, or §7-group row; flaw text inside the `extended` note; record after the Copilot round; change-route order, scope, and `<N>`; step 7 opening, README:809 and :1016, guard pins, D-248 heading.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
@@ -90,3 +91,35 @@ Review head 14a51b55, merge base f16ca210 (= origin/main). Copilot arm: PR #354 
 - AC4: README.md:809 "In guest mode, the hotfix writes that row at the handoff of its PR to the maintainers, not after their merge."; CHANGELOG.md:3-20, `## Unreleased` above `## 2.2.0` (line 22), entry under "Changes that affect existing repos" says the row is written at the handoff, where before it came only after the merge. Met.
 - AC5: on 14a51b55, `scripts/tests` OK (446, 21 skipped), `hooks/tests` OK (212), `claude plugin validate` of plugin.json and marketplace.json exit 0, `claude plugin test .` exit 1 with 19 failing of 2466, the same 19 test names (sorted diff empty) as the run with the branch edits stashed at merge base f16ca210, both under claude 2.1.323; hand-run `skills/tests` OK (1031). Met as amended.
 - Consistency gate: `cairn_validate` all checks passed; no DESIGN principle text changed, so `cairn_impact` skipped; marketplace validate shows no `plugins[N].version` warning; CHANGELOG has the entry (AC4); verify per AC5.
+- spawned: diff-bug, blame-history, prior-review, ripple
+- diff-bug #1: a row that already holds the flaw itself (the change route re-vetting its own PR) gains a redundant extension each push — fix now
+- diff-bug #2: the extension skips records-hygiene §7's bar on silently extending a finding-absorbing group's row — fix now
+- diff-bug #3: a row started by another hotfix or a milestone can be extended, and that work's step 7 or hygiene then deletes it and loses the flaw — fix now (load-bearing: the defect this milestone fixes)
+- diff-bug #4: the change route's record reads after "Then stop with the close block" — fix now (move it before, update the `test_resume_routing` pin)
+- diff-bug #5: step 6's Copilot round can push fixes after the record — fix now (record after the round)
+- diff-bug #6: the change route's "the diff" is unclear between the changed diff and the PR's whole diff — fix now
+- diff-bug #7: step 1's "a search-first absorb on another path can add to the row" pulls against "a matched row is never extended" — reject (false: the absorb sentence permits, the handoff rule declines; no contradiction)
+- diff-bug #8: an over-the-bar re-entry could write a duplicate row — reject (false: that route's row is search-first and finds the handoff row)
+- diff-bug #9: README:809 "before then" is ambiguous between handoff and merge — fix now
+- diff-bug #10: the guard pins none of AC2's delete/narrow/keep sentences, step 1's guest exception, or the new README sentence, and its test name is stale — fix now
+- diff-bug #11: the `# M339:` test comment and sentence pins — reject (style: matches the file's `# M258:` comment and the skills/tests house form, D-109)
+- diff-bug #12: D-248's heading names neither D-108's door nor D-240 — fix now
+- blame-history #1: "It edits no other row" contradicts extending rows — reject (false: the same sentence names the flaw record, whose extension is the edit)
+- blame-history #2: rows from a PR closed unmerged are never judged and point at a dead PR — reject (planned change: AC2 leaves them; the flaws stand independent of the PR, and `/cairn-triage` sees them)
+- blame-history #3: deleting "the part the handoff added" has no text boundary — fix now (the flaw goes inside the `extended` note)
+- blame-history #4: a row with a live started token can be extended — fix now (same fix as diff-bug #3)
+- blame-history #5: D-248 does not mention D-165 — reject (false: D-165's token rule is unchanged)
+- prior-review #1: on-disk writes at the handoff trip the stop guard — reject (false: guest `cairn/` is in git's exclude file, so `git status --porcelain -- cairn/` shows nothing; diff-bug (b) confirms)
+- prior-review #2: `<N>` "the merged PR" can name a re-entry's follow-up PR — fix now (name the PR the re-entry reads)
+- prior-review #3: a zero-flaw handoff has no close-block output — reject (false: "shows each row written" with none shows nothing)
+- prior-review #4: the narrowed note and the handoff tag differ — reject (planned change: different records on purpose)
+- prior-review #5: a colon-less flaw title is undefined — reject (false: tracking-rules "Candidate short title" governs every row written)
+- prior-review #6: step 7's guest arm has no failed-write arm — follow-up, already held by the parked row "Say what a failed step 7 commit does" (pre-existing), no new row
+- prior-review #7: the new pins lack a mutation-harness entry — reject (style: skills/tests is hand-run, D-109)
+- ripple #1: records-hygiene §7 bar — fix now (same fix as diff-bug #2)
+- ripple #2: README.md:1016-1018 says the flaw "still becomes a candidate row after the merge" — fix now
+- ripple #3: step 7's opening rule states no guest exception — fix now
+- ripple #4: the parked row "Keep hotfix flaws after a declined merge" — reject (false: still accurate)
+- ripple #5: tracking-rules "Candidate started token" omits the flaw record — reject (false: incomplete, not contradicted; the token rule is unchanged)
+- ripple #6: DESIGN.md:637 omits the flaw rows — reject (false: its claim is still true)
+- ripple #7: the owner resume arm's step 7 sentence — reject (false: owner mode, consistent)

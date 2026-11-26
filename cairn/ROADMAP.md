@@ -8,7 +8,7 @@ _Released 1.0.0 (2026-07-16) to 2.2.0 (2026-11-05), each tagged `v<version>`; 1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M339 | Write hotfix flaw rows at the guest handoff | review | — | normal | milestones/M339-guest-handoff-flaw-rows.md |
+| M339 | Write hotfix flaw rows at the guest handoff | in-progress | — | normal | milestones/M339-guest-handoff-flaw-rows.md |
 | M338 | Note the pushed head after a merge push | done | — | normal | milestones/archive/M338-settle-pushed-head.md |
 | M337 | Re-rate a row whose trigger fired | done | — | normal | milestones/archive/M337-rerate-fired-trigger.md |
 | M336 | Ask again before merging a red-CI fix | done | — | normal | milestones/archive/M336-reask-red-ci-fix.md |
