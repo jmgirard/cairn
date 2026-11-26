@@ -164,11 +164,25 @@ Fixing v3 without regrowth (agreed 2026-11-26):
 
 ## Hooks and status view
 
-Status: proposed.
+Status: agreed 2026-11-26.
 
-- Session start injects the home-folder path, ROADMAP and the active plan. `/cairn` also works the path out itself, so a session where the hook did not run still works.
-- GitHub branch protection replaces most guard hooks, since it covers Claude and Codex alike.
-- The pane mod becomes optional. The status view starts as text from `/cairn status`; a visual view is decided after the pilot (agreed).
+- Session start prints the home-folder path, the status script's local listing (work in flight with its phase and what blocks it, the candidate count, and the `[high]` rows), and the path of the current branch's plan. It does not inject ROADMAP or a plan's body, and it makes no GitHub call. `/cairn` also works the path out itself, so a session where the hook did not run still works. Observed 2026-11-25: v2's injection is 23.6 KB in this repo, and ROADMAP's median size across the 33 repos is 15.5 KB, with 14 over 21 KB.
+- v2 has six guard hooks. Four go with no replacement, since what they guarded is gone or is not public or hard to undo: the stop guard (plans leave git) and the commit, memory, and idea nudges.
+- The force-push guard is replaced by two GitHub rules on the default branch: no force-push and no deletion. `setup` proposes them at its existing stop and applies them on the user's yes. It never changes a guest repo's settings. No rule requires a PR, since a trivial edit, the triage commit, and a source note go straight to main. Observed 2026-11-25, 1 of the 21 own repos has rules (circumplex).
+- The merge guard goes in the user's own repos, where the approval rule is held by text: an unapproved merge there costs one revert. GitHub cannot hold it, since the agent acts as the user. No record of an agent merging without approval was found in this repo's LESSONS or DECISIONS.
+- One hook stays, for guest repos. It denies a push to the default branch, and it denies a merge unless the repo's profile says `Maintainer: yes`. It keeps no approval marker. It covers Claude only, and whether such hooks run in T3 Code is untested. Observed 2026-11-25: the user is admin on all 10 easystats repos, admins are exempt from protection on the 5 read, and the user has no push right on brms or glmmTMB.
+- The pane mod is not ported to the `v3` branch. The status view is text from `/cairn status`; a visual view, if wanted after the pilot, is built on the status script's output (agreed).
+
+## Guest repos the user maintains
+
+Status: agreed 2026-11-26. The user is the primary maintainer of easystats/datawizard and will soon be of easystats/correlation.
+
+- A guest repo is one other people share. That fact sets where cairn's files live, whose style text follows, the Copilot round, and the move to `done/`.
+- Whether the user may merge and release there is a separate fact. A guest repo the user maintains carries `Maintainer: yes` in its `PROFILE.md` in the home folder. The user sets the line by hand.
+- With the line: `review` still stops at the open PR, since others may review, and merges at the user's word with the host's merge method and message; `release` runs; `start` skips the check for a maintainer's agreement before a road plan. cairn never uses the admin override unless the user says so.
+- Without the line, cairn never merges and never releases there.
+- In every guest repo, even a trivial edit goes through a PR.
+- Observed 2026-11-26: of datawizard's last 100 merged PRs the user wrote 24 and merged 17 of those; in insight, 64 and 2. nestedtune sits under tidymodels but is one of the user's own repos: the user wrote and merged all of its last 100 PRs.
 
 ## Migration
 
@@ -205,6 +219,6 @@ What the results change (proposed):
 ## Open
 
 - The user's markup of the draft steps per verb, which supplies the steps wanted every time.
-- The user's word on the sections still marked proposed. A walk-through on 2026-11-25 settled one skill, slugs, text for other readers, and length; on 2026-11-26 it settled rewriting the skills and how v3 is fixed later. Still to walk through: hooks and status view, migration, the ordinary-use test, and Codex's part.
+- The user's word on the sections still marked proposed. A walk-through on 2026-11-25 settled one skill, slugs, text for other readers, and length; on 2026-11-26 it settled rewriting the skills and how v3 is fixed later. It also settled hooks and status view, and added the maintainer line for guest repos. Still to walk through: migration, the ordinary-use test, and Codex's part.
 - Whether a small format validator survives.
 - The untested T3 Code items above, to be covered in the pilot.
