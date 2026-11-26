@@ -56,23 +56,23 @@ Status: agreed.
 
 ## Commands
 
-Status: proposed. The user agreed there is no separate verb for small work and that status takes an id.
+Status: proposed. The user agreed there is no separate verb for small work, that status takes an id, the verb `start`, one reviewer, and Copilot handling in guest repos only.
 
 One skill, `/cairn`, takes a verb. Each verb's text is its own file, loaded when used.
 
 - `status [slug | #N]`: read-only. No argument lists road and trail work, open PRs and the candidate count, with one recommended next action. A slug reports that plan. A GitHub number is an issue or a PR; one call says which.
-- `start <idea, issue or bug>`: investigates, picks trail or road and says which, writes the plan, builds, and goes on to review. The user can overrule the size. The verb name is not confirmed; `plan` is the alternative.
+- `start <idea, issue or bug>`: investigates, picks trail or road and says which, writes the plan, builds, and goes on to review. The user can overrule the size.
 - `resume [slug]`: picks work up at the phase its plan shows. No argument means the current branch.
 - `review [slug | #N]`: one review for both sizes; also takes someone else's PR.
-- `copilot <PR>`: handles Copilot's notes. Kept standalone because the user uses it in easystats.
-- `triage`, `source add <file or URL>`, `release`, `setup`.
+- `copilot <PR>`: handles Copilot's notes, in guest repos only. Review in the user's own repos has no Copilot round; observed 2026-11-25, only this repo had it switched on.
+- `triage`, `source add <file or URL>`, `release`, `setup`. `release` stays in substance; observed 2026-11-25, 13 of 23 repos have release commits.
 
-Removed skills get no stubs. This assumes the user is the only one with cairn installed, which is not confirmed.
+Removed skills get no stubs. Whether anyone else has cairn installed is unknown (observed 2026-11-25: 3 stars, no forks, no issues or PRs from others). The session-start hook names a v2 repo and points to `/cairn setup`, which covers any other user who updates.
 
 Draft steps per verb, not yet marked up by the user:
 
 - **start**: check whether the request is trivial; investigate before asking; for a road plan, one question set with recommendations; write the plan; account for everything the user asked for; per task, test first, then code, then a commit; add the changelog entry the profile calls for; run `verify`; go to review.
-- **review**: sync with the default branch; run every check in the plan fresh; run `verify`; one independent review of the diff, by Codex when available and otherwise a fresh subagent; apply the findings rule; ask the merge question showing the merge record, each finding's outcome and the issues proposed; on approval only, push, open the PR, wait for CI, squash-merge; open the approved issues and delete the plan and branch.
+- **review**: sync with the default branch; run every check in the plan fresh; run `verify`; one independent reviewer reading the diff for bugs, Codex when available and otherwise a fresh subagent (of 63 recorded v2 findings that name their reviewer, 52 came from the diff reader); apply the findings rule; ask the merge question showing the merge record, each finding's outcome and the issues proposed; on approval only, push, open the PR, wait for CI, squash-merge; open the approved issues and delete the plan and branch.
 - **triage**: list every candidate; check each against code and git; propose promote, keep or drop per row in one table for the user; apply in one commit.
 - **setup**: detect a new repo, a v2 repo or a v3 repo with pieces missing; scaffold, migrate or repair.
 - **source add**: put the file on the shelf, write a note with citation and what was read, add the index line.
@@ -114,7 +114,7 @@ v2 required text to be complete and to fit a size, and sessions gamed the unit o
 
 - Each document is a fixed set of questions; the answers are the document.
 - Omission is allowed. The diff and PR hold the detail.
-- Where a limit is needed it counts whole items, such as acceptance criteria per plan.
+- Where a limit is needed it counts whole items. A road plan has at most 7 acceptance criteria, each naming one check; more means two plans (agreed). Seven is v2's figure: in 400 v2 plans read before archiving, the median was 6, and 27% sat at exactly 7, which suggests criteria were combined to fit.
 - The one remedy for "too long" is removing an item or splitting the work, never rewording to fit.
 - Rules describe the reader and give no example.
 
@@ -158,8 +158,5 @@ Status: proposed.
 
 ## Open
 
-- The verb `start` against `plan`.
-- Whether anyone else has cairn installed.
-- Whether `release` stays as is.
-- Three choices the session made in the draft steps: no Copilot round in the user's own repos, no priority tags on candidates, one reviewer where v2 scales to several.
-- The number for the acceptance-criteria limit.
+- How a candidate row shows that it is needed soon. The user wants that signal and file order does not give it; the Triage section's removal of priority tags is not settled.
+- The T3 Code tests above.
