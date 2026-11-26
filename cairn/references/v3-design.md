@@ -13,6 +13,7 @@ Status: agreed.
 - The user wants to keep: tracking of planned work and candidates, the review step, the reference library, and a status view.
 - The user wants to shed: documentation nobody rereads, and rule text that makes the agent over-apply principles or skip wanted steps.
 - The user may move from Claude Desktop to T3 Code, to use Claude and Codex together (Codex for review and second opinions). T3 Code runs one thread per task in its own worktree. Only the pane mod is tied to Claude Desktop.
+- The user has a work account and a personal account for Claude and wants them kept separate. cairn is primarily for personal use (stated 2026-11-26).
 - Measured in this repo, observed 2026-11-25: skills and rulebook hold about 82,000 words (rulebook 14,180); `DECISIONS.md` holds 248 entries in 595 KB; session start injects 22 KB; hooks and scripts are 6,480 lines of Python with 30,378 lines of tests; 340 milestones and 1,225 commits in 4.5 months.
 - Across the user's machine, observed 2026-11-25: 33 repos carry `cairn/` (21 tracked, 12 guest), with about 900 candidate rows. Ten of the guest repos sit under `easystats/` and the first count missed them, so figures in this note that say "of 23" cover the 21 tracked repos plus brms and glmmTMB. Those 23 hold 290 Known issues entries; the easystats repos were not counted for that.
 
@@ -205,6 +206,13 @@ Tested by the user in one thread on chromodoris, observed 2026-11-25. The thread
 - All 11 `cairn:` skills were available. Typing `/` in the composer listed the cairn skills; typing `$` listed only `simple-english` and `writing-for-people`. A `$writing-for-people` message with arguments invoked that skill.
 - Writing to `~/.cairn` raised no approval prompt in "Full access".
 - Switching to Codex inside the thread worked and carried a summary of the conversation. Codex ran in the same folder and could read `~/.cairn` and `~/.claude`. It received no `AGENTS.md` (the repo has none), no `CLAUDE.md`, none of the Claude skills and no hooks.
+
+Config folders, observed 2026-11-26. This machine has two Claude config folders, `~/.claude` and `~/.claude_personal` (an underscore, not a hyphen). The user's understanding is that T3 Code uses the first for the work account and the second for the personal one; the files do not confirm which is which, since both show a gmail.com login on a Max plan.
+
+- T3 Code uses both. The chromodoris test thread above is stored under `~/.claude/projects`, so every result above holds for `~/.claude` only. Eight other T3 Code projects sit under `~/.claude_personal/projects`, five of them worktrees under `~/.t3/worktrees/`.
+- cairn, `writing-for-people`, and the user's global `CLAUDE.md` exist only in `~/.claude`. `~/.claude_personal` has none of them.
+- v2 names `~/.claude` in 13 places outside its tests, and `scripts/cairn_cost.py` reads `~/.claude/projects`.
+- `~/.cairn` and `~/.codex` are one folder each, shared by both accounts.
 
 Still untested: a "New worktree" thread; the other permission modes; hooks other than SessionStart; how a skill named `cairn` in the plugin `cairn` is listed.
 
