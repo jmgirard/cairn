@@ -94,7 +94,15 @@ Anything else is dropped. The review decides 1, 2 and the drops; issues are list
 
 Status: agreed.
 
-Candidates are things the user or the agent proposes to build. Triage has one list and three outcomes. Priority tags, parked conditions, routing to Known issues and the lessons pass are gone. In this repo, observed 2026-11-25, 36 of 39 rows were parked and all traced to a milestone; 15 triage commits routed about 46 rows to Known issues, dropped 7 and promoted 3.
+Candidates are things the user or the agent proposes to build. Triage has one list and three outcomes. Routing to Known issues and the lessons pass are gone.
+
+Two marks, proposed after the user set the requirements for both:
+
+- `[high]`: a bug that gives wrong answers or misleads users now, or other work that should start next. The row says why. The user works these off quickly, so few exist at once: about 101 such rows have existed across 21 repos and 5 were present, observed 2026-11-25. A review finding of this kind is offered at the merge question as work to start next or as a `[high]` row.
+- `[blocked]`: work that cannot move until something outside happens. The row says what it waits for and, where there is one, names the issue, PR or release to look at. A plan in flight carries the same fact as a `Blocked on:` line.
+- A row may carry both. `[low]` and `[parked]` are gone; an unmarked row can wait.
+- Status shows at a glance what can move and what is blocked, with what each blocked item waits for. A PR waiting on someone else's review or on CI is read from GitHub. `start` and `resume` on a blocked item check whether the block has cleared and do not go on unless it has or the user says so.
+- In migration, a `[parked]` row with a real outside condition becomes `[blocked]`; the rest lose the tag or are dropped. `[low]` rows lose the tag. In this repo, observed 2026-11-25, 36 of 39 rows were parked and all traced to a milestone; 15 triage commits routed about 46 rows to Known issues, dropped 7 and promoted 3.
 
 ## Text for other readers
 
@@ -158,5 +166,5 @@ Status: proposed.
 
 ## Open
 
-- How a candidate row shows that it is needed soon. The user wants that signal and file order does not give it; the Triage section's removal of priority tags is not settled.
+- Whether the user accepts the `[high]` and `[blocked]` marks as the Triage section states them.
 - The T3 Code tests above.
