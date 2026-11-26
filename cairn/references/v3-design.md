@@ -207,12 +207,13 @@ Tested by the user in one thread on chromodoris, observed 2026-11-25. The thread
 - Writing to `~/.cairn` raised no approval prompt in "Full access".
 - Switching to Codex inside the thread worked and carried a summary of the conversation. Codex ran in the same folder and could read `~/.cairn` and `~/.claude`. It received no `AGENTS.md` (the repo has none), no `CLAUDE.md`, none of the Claude skills and no hooks.
 
-Config folders, observed 2026-11-26. This machine has two Claude config folders, `~/.claude` and `~/.claude_personal` (an underscore, not a hyphen). The user's understanding is that T3 Code uses the first for the work account and the second for the personal one; the files do not confirm which is which, since both show a gmail.com login on a Max plan.
+Config folders, observed 2026-11-26. This machine has two Claude config folders, `~/.claude` and `~/.claude_personal` (an underscore, not a hyphen). T3 Code's settings confirm the user's account of them: its HOME instance sets `homePath` to `~/.claude_personal`, and its WORK instance sets none, so it uses `~/.claude`. Its one Codex instance is also named WORK. `~/.claude.json` names a gmail.com account all the same, which fits the user's guess that the Claude desktop app writes to `~/.claude` whichever account is signed in.
 
 - T3 Code uses both. The chromodoris test thread above is stored under `~/.claude/projects`, so every result above holds for `~/.claude` only. Eight other T3 Code projects sit under `~/.claude_personal/projects`, five of them worktrees under `~/.t3/worktrees/`.
 - cairn, `writing-for-people`, and the user's global `CLAUDE.md` exist only in `~/.claude`. `~/.claude_personal` has none of them.
 - v2 names `~/.claude` in 13 places outside its tests, and `scripts/cairn_cost.py` reads `~/.claude/projects`.
 - `~/.cairn` and `~/.codex` are one folder each, shared by both accounts.
+- The Claude Code docs, read 2026-11-26 through a subagent and not tested: `CLAUDE_CONFIG_DIR` moves settings, session history, and plugins, and credentials are keyed to the folder, so two accounts can stay signed in. The desktop app has no folder setting per account and no documented second profile. It accepts the variable through a saved local environment, which applies to sessions started from it.
 
 Still untested: a "New worktree" thread; the other permission modes; hooks other than SessionStart; how a skill named `cairn` in the plugin `cairn` is listed.
 
