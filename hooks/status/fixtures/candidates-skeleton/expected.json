@@ -1,8 +1,0 @@
-{
-  "cwd": "",
-  "workable": [],
-  "rows": [],
-  "pane": [],
-  "next": {"action": "plan the next milestone", "command": "/milestone-plan", "id": null, "title": null, "waiting":[]},
-  "candidates": []
-}
