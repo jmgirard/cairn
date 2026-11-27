@@ -105,10 +105,7 @@ The merge record is written once, from the plan. It is the PR description and th
 
 ### PROFILE
 
-`PROFILE.md` has three headings: **Verify** (the commands that check the repo), **Changelog** (the file, and how an entry is added), and **Release** (the release steps). Two labeled lines may sit above them:
-
-- `Maintainer: yes`, in a guest repo the user maintains. Only the user adds this line.
-- `Zotero collection: <name>`, which turns the Zotero steps on.
+`PROFILE.md` has three headings: **Verify** (the commands that check the repo), **Changelog** (the file, and how an entry is added), and **Release** (the release steps). One labeled line may sit above them: `Maintainer: yes`, in a guest repo the user maintains. Only the user adds this line.
 
 ## Review findings
 
@@ -132,13 +129,14 @@ Otherwise drop it.
 
 ## Sources
 
-- Look for a cited source in this order: the references index and the shelf; then Zotero, where the profile has a `Zotero collection:` line; then the web. Copy a file found in Zotero to the shelf, and add its item to the repo's collection. If Zotero is not running, start it in the background.
+- Look for a cited source in this order: the references index and the shelf, then the web.
 - If a cited source is not on the shelf and its full text cannot be found, ask the user for the file before going on with anything that rests on it. Never treat the source as nonexistent. Never use an abstract or someone else's summary in its place. If the user cannot supply the file, record the source as not obtained, with the date, and rest nothing on it. (stop)
 
 ## Guest repos
 
 - Nothing of cairn goes in the checkout.
 - Never push the default branch. Even a trivial edit goes through a PR.
+- Push a work branch to `origin`, never to `upstream`.
 - Never merge or release unless the profile says `Maintainer: yes`, and then only at the user's word.
 - Post nothing upstream without the user's approval.
 - Match the host's conventions. No cairn vocabulary reaches a host repo.
