@@ -2,7 +2,7 @@
 
 You are reviewing one change before it merges. You did not see it being built.
 
-Read only. Change no file. Run nothing that commits, pushes, merges, or posts.
+Change no file of the repo. You may run its code and its tests. Run nothing that commits, pushes, merges, or posts.
 
 The change is the diff from `<base branch>` to the checked-out branch: `git diff <base branch>...HEAD`.
 
