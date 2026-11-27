@@ -1,6 +1,6 @@
 {
   "name": "cairn",
-  "description": "Home marketplace for the cairn plugin — milestone-driven development and tracking for Claude Code projects (language-agnostic core, per-repo toolchain profiles).",
+  "description": "Home marketplace for the cairn plugin, which tracks project work as plans and PRs in Claude Code.",
   "owner": {
     "name": "Jeffrey Girard",
     "url": "https://github.com/jmgirard"
@@ -9,7 +9,7 @@
     {
       "name": "cairn",
       "source": "./",
-      "description": "Milestone-driven development workflow and tracking system for Claude Code projects: a language-agnostic core with per-repo toolchain profiles (R, Python, Claude Code plugin, Quarto extension, Docker image, or generic), plan/implement/review skills, hotfix and release paths, Fable review briefs, and a self-auditing cairn/ file system.",
+      "description": "Tracks project work as plans and PRs with one /cairn skill: a status view, start, resume, and review verbs, candidate tracking in a ROADMAP, and a home folder outside git for plans.",
       "version": "2.2.0",
       "author": {
         "name": "Jeffrey Girard",
