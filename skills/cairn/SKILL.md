@@ -34,7 +34,7 @@ Trail and road work each have a plan and end in a PR. A bug gets a regression te
 ## Approval
 
 - Work happens on a branch. Nothing reaches the default branch without the user's approval at the merge question. A trivial edit is the one exception: the user's request approves it.
-- Nothing is pushed, merged, posted to GitHub, tagged, or deleted except at a step that names it.
+- Nothing is pushed, merged, posted to GitHub, tagged, or deleted except at a step that names it. No push is ever forced.
 - Ask only what the user alone can decide, in one batch.
 
 ## Where files live
