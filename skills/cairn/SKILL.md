@@ -1,7 +1,7 @@
 ---
 name: cairn
 description: Track and ship project work as plans and PRs. Use when the user asks where a project stands or what to do next, wants to start work on an idea, a GitHub issue, or a bug, wants to resume work in flight, or wants work reviewed and merged.
-argument-hint: "status [slug|#N] | start <idea, issue, or bug> | resume [slug|#N] | review [slug|#N]"
+argument-hint: "status [slug|#N] | start <idea, issue, or bug> | resume [slug|#N] | review [slug|#N] | source add <file or URL>"
 ---
 
 # cairn
@@ -16,12 +16,15 @@ This page is the Rulebook. It applies to every verb.
 | `start <idea, issue, or bug>` | Investigates, plans, builds, and goes on to review. | `verbs/start.md` |
 | `resume [slug \| #N]` | Picks work up at the phase its plan shows. | `verbs/resume.md` |
 | `review [slug \| #N]` | Checks the work, asks the merge question, and ships on approval. Also reads someone else's PR. | `verbs/review.md` |
+| `source add <file or URL>` | Puts a source on the shelf and writes its reference note. | `verbs/source-add.md` |
 
 The verb files are in this skill's folder, `${CLAUDE_SKILL_DIR}`. Read the verb's file, then follow its steps in order. A step marked (stop) waits for the user. Between stops, decide and go on. If the request names no verb, pick the one that fits and say which. With no request at all, run `status`.
 
-`triage`, `source add`, `copilot`, `release`, and `setup` are not built yet. If the user asks for one, say so.
+`triage`, `copilot`, `release`, and `setup` are not built yet. If the user asks for one, say so.
 
 The status script is `python3 "${CLAUDE_SKILL_DIR}/../../scripts/cairn_status.py"`. It prints the listing: the kind of repo, the home folder, the work in flight, and the candidates. With `plan`, `plan <slug>`, or `plan '#N'` it prints the path of one plan: the current branch's, the one whose slug starts that way, or the one with that issue or PR number.
+
+The Zotero script is `python3 "${CLAUDE_SKILL_DIR}/../../scripts/cairn_zotero.py"`. `find` looks a source up, `add` adds one with its file, and `collect` puts an existing item in a collection. `-h` after a command lists its options. It starts Zotero in the background if Zotero is not running.
 
 ## Sizes
 
@@ -105,7 +108,20 @@ The merge record is written once, from the plan. It is the PR description and th
 
 ### PROFILE
 
-`PROFILE.md` has three headings: **Verify** (the commands that check the repo), **Changelog** (the file, and how an entry is added), and **Release** (the release steps). One labeled line may sit above them: `Maintainer: yes`, in a guest repo the user maintains. Only the user adds this line.
+`PROFILE.md` has three headings: **Verify** (the commands that check the repo), **Changelog** (the file, and how an entry is added), and **Release** (the release steps). Two labeled lines may sit above them:
+
+- `Maintainer: yes`, in a guest repo the user maintains. Only the user adds this line.
+- `Zotero collection: <name>`, which turns the Zotero steps on and names the collection the repo's sources go in.
+
+### Reference note
+
+A reference note is `references/<citekey>.md`, and the source's file sits on the shelf under the same citekey. The note has two labeled lines and one heading:
+
+- `Citation:` is the full citation.
+- `Read:` is what was read and when, or `not obtained` with the date.
+- **Taken from it**: each value or claim taken from the source, with its page number.
+
+Each note has one line in `references/INDEX.md`: the note's file name and what the source is for.
 
 ## Review findings
 
@@ -129,7 +145,7 @@ Otherwise drop it.
 
 ## Sources
 
-- Look for a cited source in this order: the references index and the shelf, then the web.
+- Look for a cited source in this order: the references index and the shelf; then Zotero, where the profile has a `Zotero collection:` line; then the web. Look in Zotero with the Zotero script's `find`. Copy a file it finds to the shelf, and put its item in the repo's collection with `collect`.
 - If a cited source is not on the shelf and its full text cannot be found, ask the user for the file before going on with anything that rests on it. Never treat the source as nonexistent. Never use an abstract or someone else's summary in its place. If the user cannot supply the file, record the source as not obtained, with the date, and rest nothing on it. (stop)
 
 ## Guest repos

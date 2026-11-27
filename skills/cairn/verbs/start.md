@@ -14,7 +14,7 @@ Takes an idea, a GitHub issue, or a bug from the request to the review.
 8. Account for everything the user asked for: in this plan, in a later one, as a candidate row, or dropped at the user's word. Record each in the plan.
 9. For a bug, write the regression test first and see it fail.
 10. Work task by task: the test first, then the code, then a commit. Keep the plan's `Phase:` line current.
-11. When the work takes a value or a claim from a source, add a reference note for it. In the user's own repos, the note rides in the PR. Until `source add` is built, write the note and its index line by hand: the citation, what was read and when, and the values or claims taken, with page numbers.
+11. When the work takes a value or a claim from a source, run `source add` for it. In the user's own repos, the note rides in the PR.
 12. New user-facing functions assert what their documentation says they expect.
 13. If trail work turns out to need a design choice from the user or a second sitting, stop building and say so. Add the road sections to the plan and ask the question set. (stop)
 14. Add the changelog entry the profile calls for, in user-facing words.
