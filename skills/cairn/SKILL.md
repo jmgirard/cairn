@@ -125,7 +125,7 @@ Otherwise drop it.
 - An input check is one assertion at the entry of a user-facing function that refuses the input with a clear error. Add one when three things hold: the PR adds or changes that function; today's result for the input is a wrong answer or an unclear error; and one assertion at the entry is enough. Write it in the repo's own idiom, with one test line and one changelog line. In a guest repo, add one only where the host's nearby code already asserts its inputs.
 - Each dropped finding gets one line in the plan.
 - Issues are proposed at the merge question and opened only after the user approves them.
-- A finding never becomes a candidate row. The one exception is a `[high]` finding the user chooses to keep as a row at the merge question.
+- A finding never becomes a candidate row. The one exception is a `[high]` finding. At the merge question the user chooses a fix to start now, which gets no issue, or a row, which gets an issue and carries its number.
 
 ## Sources
 
