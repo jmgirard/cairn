@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased
+
+- **A guest repo is left clean after its PR merges.** After a guest PR
+  merges or closes, the last step of `/cairn review` (which `/cairn
+  resume` also runs) now commits the repo's home folder in `~/.cairn`,
+  switches a clean checkout back to the default branch and brings it up to
+  date, and deletes the work branch if the PR merged with that branch's
+  last commit.
+
 ## 3.0.0 (2026-11-27)
 
 Version 3.0.0 is a rewrite that removes most of v2.
