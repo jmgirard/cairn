@@ -31,7 +31,7 @@ Steps 1 to 5 are the same. The ROADMAP edits are made in the home folder. No mer
 
 6. A fresh subagent drafts the PR text to the host's conventions and in the user's voice, and a second reads it cold against the diff.
 7. Ask whether to open the PR. (stop) Show the PR text, the items of the merge question apart from the merge record, and how many of the user's PRs are open on the host.
-8. On approval only: push the branch, open the PR, and set `Phase: pr #N`. Stop at the open PR. (stop)
+8. On approval only: push the branch, open the PR, and set `Phase: pr #N`. Wait for CI. Fix a failure the PR caused and push the fix. If the fix changes what the user approved, ask before pushing it. Then stop at the open PR. (stop)
 9. Where the profile says `Maintainer: yes`, merge at the user's word, with the host's merge method and message. Never use the admin override unless the user says so.
 10. Once the PR is merged or closed, move the plan to `done/`.
 
