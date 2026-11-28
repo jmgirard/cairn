@@ -22,7 +22,7 @@ Find the plan with the status script's `plan` lookup: the current branch's with 
    - any `[high]` finding, offered as a fix to start now, with no issue, or as a row with an issue;
    - the two counts of dropped findings, edge cases and other;
    - which reviewer ran.
-9. On approval only: for each `[high]` finding kept as a row, open its issue and add the row with its `(#N)`. Push the branch and open the PR. Its title says what the work does in one line, and its description is the merge record. Set `Phase: pr #N`. Wait for CI. Squash-merge with the merge record as the commit message: `gh pr merge <N> --squash --subject "<title> (#<N>)" --body-file <file>`. If a CI fix changes what the user approved, ask again.
+9. On approval only: for each `[high]` finding kept as a row, open its issue and add the row with its `(#N)`. Push the branch and open the PR. Its title says what the work does in one line, and its description is the merge record. Set `Phase: pr #N`. Wait for CI. Squash-merge with the merge record as the commit message: `gh pr merge <N> --squash --subject "<title> (#<N>)" --body-file <file>`. If a fix after the approval, for CI or for a conflict, changes what the user approved, ask again.
 10. After the merge: open the other approved issues. Delete the plan and the branch. Where `~/.cairn` is a git repo, commit it before deleting the plan and again after, so the plan stays in its history and the folder is left clean. A fix the user chose to start now begins with `start`.
 
 ## Guest repos
