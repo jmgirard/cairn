@@ -1,1258 +1,161 @@
 # cairn
 
-*A cairn is built one stone at a time, and marks the trail for whoever
-comes next.*
+*A cairn is built one stone at a time, and marks the trail for whoever comes next.*
 
-A Claude Code plugin for milestone-driven development. It keeps a
-governed LLM Wiki for project state: the agent maintains it, you gate it.
-One canonical workflow covers planning, implementation, review, hotfixes,
-releases, and expert escalation, with all project state in plain markdown
-under `cairn/`, kept in bounds by weight caps and a self-auditing health
-check. Rigor scales to stakes: each milestone is classified user-facing or
-internal when it's planned, and the criteria audit and the review fan-out
-size themselves to that. The core is language-agnostic; each repo declares a
-toolchain profile (R, Python, Claude Code plugin, Quarto extension, Docker
-image, or generic) that supplies its language-specific commands. Work lands as small stacked
-milestones, and any session, today's or next month's, can find the path from
-the files alone.
+## What cairn is
 
-cairn grew out of maintaining many R packages with Claude Code and rebuilding
-similar-but-diverging tracking systems in each. This plugin centralizes the
-logic (skills, rules, templates) so every repo works identically; each repo
-holds only its own state.
+When Claude Code does the work in a repository, you still need to know where that work stands and why each change was made.
 
-Release history lives in [CHANGELOG.md](CHANGELOG.md); design rationale in
-`cairn/DESIGN.md` and the append-only decision log it points to.
+cairn is a Claude Code plugin that tracks project work as plans and pull requests (PRs). It is one skill, `/cairn`, that takes a verb, such as `status` or `start`. The agent does the work, and you approve every merge.
+
+It grew out of maintaining many R packages with Claude Code and rebuilding similar tracking systems in each. It is not specific to R.
+
+## What you get
+
+- A list of candidates (i.e., work that is proposed and not started).
+- A plan for each piece of work larger than a trivial edit.
+- An independent review before every merge.
+- A status view.
+- A reference library for the sources your work relies on.
+
+cairn is also short on purpose, so the agent has less to read each session and fewer rules to over-apply. Its text is about 5,700 words. The version before this one, 2.2.0, had about 82,000.
+
+## What it needs
+
+- Claude Code
+- git
+- The GitHub CLI (`gh`), signed in
+- Python 3 (the scripts use the standard library only)
+- Optional: the Codex CLI, signed in, which then acts as the independent reviewer. Without it, a fresh Claude subagent reviews.
+- Optional: Zotero 10 or later, if you want sources added to a Zotero collection.
 
 ## Install
 
-Two paths; pick one. Running both installs the plugin twice, and the
-duplicates will confuse skill routing.
+Pick one of these two ways, because using both installs the plugin twice.
 
-**Dev install (recommended):** clone and symlink into your
-skills directory. The plugin loads from your checkout, so `git pull`
-updates it with no re-install step:
+The first is to clone the repo and symlink it into your Claude Code skills folder (`~/.claude/skills` by default). The plugin loads from your checkout, so `git pull` updates it.
 
 ```bash
 git clone https://github.com/jmgirard/cairn
 ln -s /path/to/cairn ~/.claude/skills/cairn
 ```
 
-One caution: the symlink is live. Whatever branch the checkout has is what
-loads at your next session start, in every repo, enforcement hooks
-included. Keep the checkout on `main` unless you're developing cairn
-itself. For a one-off trial without installing anything, use
-`claude --plugin-dir /path/to/cairn` (that session only).
+One caution: the symlink is live. Your next session, in every repo, loads whatever branch the checkout is on. To try cairn for one session without installing:
 
-**Marketplace install:** a frozen snapshot; re-install to pick up new
-releases. In Claude Desktop: Customize → Plugins. From the CLI:
+```bash
+claude --plugin-dir /path/to/cairn
+```
+
+The second is the marketplace, which is a frozen snapshot that you reinstall to update.
 
 ```bash
 claude plugin marketplace add jmgirard/cairn
 claude plugin install cairn@cairn
 ```
 
-Either way, the install includes the guardrail hooks: the blocking ones
-(merge approval, a force-push guard on your default branch), the
-housekeeping ones (session-start tracking re-injection, the
-uncommitted-tracking stop guard),
-and the advisory nudges,
-none of which block anything
-you're doing. A nudge fires
-when an idea gets captured somewhere other than the roadmap, when
-something durable is headed for Claude's memory instead of your tracking
-files, and when a commit on your default branch reaches outside `cairn/`.
+Then, in a repo, run `/cairn setup`. In a new repo of your own, it writes `cairn/ROADMAP.md`, a profile (`cairn/PROFILE.md`) that holds your repo's test command, a references index, and a short section in `CLAUDE.md`. It also offers two GitHub rules for your default branch: no force-push and no deletion. Claude Code may list the skill as `cairn:cairn`, but typing `/cairn` works.
 
-The session-start text also has a rule for work that no rule covers, in owner
-and guest mode. If no cairn route or rule covers a task, the session-start
-text tells the session to say so before it starts. The text also tells it to
-name what it is guessing, and to look at how the repo already does that work
-or ask you. After a plugin update, this text reaches a repo at its next
-session, with no repair step. After `/clear` or compaction, Claude Code
-ignores what the hook sends, so the text is not injected again.
+The install includes two hooks. Both do nothing outside cairn repos. One prints a short status listing at session start. The other is a guard for repos you share with other people, described below.
 
-The hooks activate at the next session start and are no-ops in repos that
-aren't cairn-tracked.
+## A day with cairn
 
-Then, in your package repo, run `/cairn-init`. Fresh repos get scaffolding;
-repos with an older tracking system get an interactive, PR-based migration.
-Run `/milestone` any time you're unsure where things stand.
+`/cairn status` shows the work in flight with its phase (planning, building, in review, or waiting on its PR) and what blocks it, your open PRs, the candidates, and one recommended next action. It changes nothing.
 
-Give `/milestone` an issue number (`#12`, `12`, or `issue 12`) or an issue
-URL, and it looks into that one GitHub issue instead. It reads the issue
-and the code the issue names, then reports one verdict (`reply`, `hotfix`, or
-`milestone`) and how much maintainer input the work needs (`none`,
-`confirm`, or `decide`). One question then lets you start the work now,
-add a candidate row, leave the issue, or stop. Leave is offered only for
-noise, a duplicate, or an item cairn already covers. A reply declines a
-request only when the reason to decline is already on record. For a
-reply, cairn writes the draft to a file in the system temp directory and
-shows a `gh issue comment --body-file` command for you to run, so no shell
-quoting touches the reply. You can edit the file first. It never
-posts the reply itself. In guest mode, the commands name the upstream
-repo, and the draft uses no cairn terms.
+`/cairn start`, followed by an idea, an issue number, or a bug, investigates the code first. Then it picks a size and tells you which. There are three sizes:
 
-### The milestone band
+- A **trivial edit** does not change how the code runs (e.g., a typo or a comment). In your own repos, it is committed straight to the default branch.
+- A **trail** fits one sitting and one PR, and leaves you no design choice.
+- A **road** is everything larger. It starts with one set of questions, each with a recommendation.
 
-The plugin also ships a Claude Code mod: a band above the prompt that shows
-one row for the milestone in flight, or between milestones for the next one
-you can start, or a row to start planning when there is no such milestone. The milestone in flight is the first `in-progress` row of
-`cairn/ROADMAP.md`, else its first `review` row. While `/milestone-review`
-runs, it is the first `review` row when one exists. The row gives no sign
-of the other active milestones. The id in bold and the milestone's title
-sit at the left of the row. The flow track and the percent sit at its
-right edge. One of the band's test fixtures gives this row when M010 is
-its only active milestone, shown here with the track as `[track]`:
+You can overrule the size. For a trail or a road, cairn writes a plan, cuts a branch, and builds test-first with one commit per task. For a bug, it writes the regression test first and sees it fail. Then it goes straight to review.
+
+Review ends at the merge question, which is the one place cairn always stops. It shows you:
+
+- the merge record, which is a written account of the change;
+- the changelog entry in full;
+- other changed documentation, by file;
+- the review findings that changed something;
+- any issues it proposes to open;
+- how many findings it dropped;
+- which reviewer ran.
+
+Nothing is pushed before you approve. On your approval, it pushes, opens the PR, waits for CI, squash-merges, and deletes the plan and the branch.
+
+`/cairn resume` picks work up in a new session, at the phase its plan shows.
+
+For example, a user reports that `summarize()` drops the last group when the grouping column has missing values. You type:
 
 ```text
-M010 Nested tasks and a capital X  [track] 88%
+/cairn start summarize() drops the last group when the grouping column has NAs
 ```
 
-The track is one rounded bar of three equal parts: plan, implement, then
-review. On a milestone row, plan is full. Implement fills by the checked
-boxes of `## Tasks`, and it is full on a `review` row. Review fills by the
-checked boxes of `## Acceptance criteria`. Specks fill the track from its
-left end to the edge of the current phase's fill. They start sparse and
-gray, and they grow dense near the edge, where more of them take the
-phase's color: blue or teal for plan, orange for implement, and green for
-review (blue in the colorblind themes). A pill on that edge names the
-phase and its counts, such as `Implement 1/3` or `Review 1/2`, in the
-phase's color. A section with no boxes shows `no tasks` or `no criteria`
-in the pill. The percent of the whole flow follows the track. Each part counts
-for a third, and the percent rounds down. So it reads 100% only on a
-`review` row whose criteria are all checked, and a `review` row with no
-criteria reads 66%.
+cairn reads the code, calls it a trail, and names it `fix-na-group-drop`. It writes a test that fails, makes the fix, adds a changelog entry, and has the change reviewed. It stops and shows you the merge record. You approve, and your default branch gains one commit.
 
-In the desktop app, and on any other surface that can draw an image, the
-track is an image. Two thin marks divide the three
-parts. In the current part, a tick marks each item edge past the fill when
-the items are 6 pixels apart or more. The image cannot follow your theme's
-colors, so it draws from one fixed palette meant for a light or a dark
-background: translucent grays, and the phase colors `rgb(71,103,158)` blue,
-`rgb(152,85,57)` orange, and `rgb(68,113,81)` green. The pill's white text
-has a contrast of at least 4.5:1 on its color, the WCAG 2.2 minimum for
-text, whatever the background. In the terminal the track is a run of
-braille characters on your theme's `userMessageBackground` color. Its dots
-are the specks, a dim mark divides the parts past the fill, and the pill is
-bold text in your theme's `inverseText` color on the phase's color. There
-the phase colors are your Claude Code theme's own keys: `planMode` (teal)
-for plan, `claude` (orange) for implement, and `success` (green) for
-review. The colorblind themes draw `success` in blue, and the ANSI themes
-use your terminal's own colors.
+## The other verbs
 
-The desktop app draws the track at 7 pixels a column, up to 52 columns and
-at most 360 pixels. The terminal draws it at most 52 characters wide. In a narrower window the track gets shorter, so that the
-title keeps 10 columns, or its full width when the title is shorter. The
-track keeps at least 12 columns. When the whole pill would take more than
-a third of the track, the pill shows the counts alone, such as `1/3`, or
-`none` for a section with no boxes. The band counts one column per
-character, so a short title of wide characters, such as CJK characters or
-emoji, can get less room than it draws. A title too long for the width is
-cut at its end, and the right part stays at the right edge.
+`/cairn triage` goes over every candidate row with you. It checks each against the code: whether the work is already done, whether the thing it is about still exists, and whether it is still true. It proposes one outcome for each row in one table (promote it to urgent, keep it, or drop it) and applies your choices in one commit.
 
-A row whose `File/Archive` path names no regular file the band can read
-shows `no milestone file` in place of the track, or `no file` in a narrow
-window, in your theme's warning color. The rest of the row draws in the
-theme's gray. If another plugin draws a band in the same place, its rows
-show under cairn's.
+`/cairn source add <file or URL>` puts a source's file on the shelf (i.e., a folder outside your repo) and writes a reference note. The note has the citation, what was read and when, and the values or claims taken from the source, with page numbers. If cairn cannot get the full text, it asks you for the file. It never writes a note from an abstract. If your profile names a Zotero collection, it also adds the source there.
 
-The band draws nothing of the running cairn skill. It keeps track of the
-skill for two things: the row it shows during `/milestone-review`, and
-when a hidden band shows again (below). A cairn skill counts from its
-start, by its plain name or its `cairn:` name. It stays until Claude stops
-with no background work in flight and no one-shot wakeup pending, such as
-after the skill's closing summary. A question chip the skill asks you waits
-inside the turn, so the skill stays while you answer it. A question asked
-in plain text ends the turn. With no background work in flight, the skill
-ends with it, and otherwise your typed answer ends it. When Claude ends a turn
-to wait for background work, such as the reviewers that
-`/milestone-review` starts, the skill stays through the wait and through
-the turns that the work's notices start. A prompt you type while Claude is
-idle ends the skill. A prompt you type while Claude works keeps it, and so
-does a message from another session. An interrupt with Esc keeps it too,
-because an interrupted turn has no stop, so the skill stays until your
-next prompt or until Claude next stops with no background work in flight.
-A cairn skill that starts again, the
-same one included, or a session end, a `/clear` included, also ends it.
-A subagent that loads a cairn skill also counts, because the skill event
-does not say which agent loaded it.
+`/cairn release` checks that the tree is clean and the checks pass, asks you for the version, and consolidates the changelog. It has a fresh subagent, which has not seen the session, check that section against the code, runs your profile's release steps, and hands you a checklist. It never submits or publishes anything. It pushes and tags only when you say so.
 
-When Claude stops while a one-shot wakeup (`ScheduleWakeup`) is pending,
-the skill stays. A prompt you type that a hook blocks or drops keeps the
-skill too.
-
-The rule has three limits. A recurring scheduled task, such as a `/loop`
-with a fixed interval, does not keep the skill, so a skill that waits on
-one ends when Claude stops. Background work that the skill did not start,
-such as a server or a monitor started earlier, keeps a finished skill
-until your next prompt, because the band does not tell the skill's own
-work from other work. A one-shot wakeup that the skill did not set also
-keeps a finished skill, for the same reason. A `/loop` with no interval
-schedules one-shot wakeups, so it keeps a finished skill this way.
-
-With no milestone active, the band shows an idle row for the next
-milestone you can start, whether or not a cairn skill runs. That milestone
-is the first `planned` row whose `Depends on` milestones are all done, by
-priority and then by id, the one `cairn_next.py` recommends. When no
-milestone is workable, `cairn_next.py` recommends planning. It then names
-the first `[high]` candidate row that no counted started token hides, by
-its short title, for example `/milestone-plan Fix the pane's slow refresh`. A
-` — started M<n>` token counts while that milestone's row is `planned` or
-`blocked`, but not for a `blocked` row whose file was archived. A
-` — started #<n>` token of up to 15 digits always counts, since the
-script reads no PRs. A token hides every row with its row's short title. Rows inside an HTML
-comment do not count. A dependency
-is done when its row is `done` or its file is in
-`cairn/milestones/archive/`. In guest mode with `# Push remote: base`,
-one dependency can instead be a change that waits for the maintainers'
-review (see "A milestone can build on one that waits for review" under
-guest mode). The idle row draws the id in bold and the
-title, then a track with plan full and the pill `Planned`:
-
-```text
-M021 Waiting to start  [track]
-```
-
-After the track, an `Implement` button and a `Status` button show while no
-cairn skill runs and Claude is not working, where the row has room for
-them. After a cairn skill ends, a `Clear` button also shows before them.
-A press of `Implement` runs `/clear` and then, in the cleared
-conversation, `/cairn:milestone-implement` with the milestone's id, as if
-you typed both. It does not ask first, because the press is your consent
-to drop the conversation, as a press of `Clear` is. The second command
-starts when the session that `/clear` ends is over. Until then, a press of
-a next-step, `Status`, or `Clear` button does nothing. If the session refuses `/clear`, the
-second command does not run, and `/clear` goes after the text in the
-prompt box with a toast that says why. If the session ends for another
-reason first, such as a resume, the second command does not run, and its
-command line goes into the prompt box with a toast. If the session end
-itself fails, the same happens. The row draws no command as text, so
-while the buttons do not show, the row shows the id, the title, the track,
-and the `≡` and close buttons. In a narrow window the idle row drops its
-track, so that the title keeps room.
-
-With no active milestone and no workable planned milestone, the band shows
-the empty row: `No milestone ready` in gray, with no id and no track. A
-planned milestone that waits on a dependency, or a `blocked` one, does not
-make a milestone workable, so the empty row shows then too. The row
-carries two buttons before its `≡` and close buttons. They show while no
-cairn skill runs and Claude is not working, in a band 37 columns wide or
-more. `Plan` runs `/clear` and then `/cairn:milestone-plan` in the
-cleared conversation, as `Implement` does with its command. Its argument
-is the short title of the first `[high]` candidate row that the pane's
-Candidates list (below) shows. With no such row, `Plan` runs planning
-with no arguments.
-`Status` runs `/cairn:milestone`. A press runs the command
-as if you typed it. A second press while the first run is going does
-nothing. So does a press while `Plan` waits for its `/clear` to end the
-session. If the run is refused, the command goes after the text in the
-prompt box, and a toast says why. If the session refuses `Plan`'s
-`/clear`, `/clear` goes there and planning does not run. If the planning
-run itself is refused, `/cairn:milestone-plan` goes there. If `Plan`
-names a row, the row's title follows the command.
-
-When a cairn skill ends, a `Clear` button shows on any row that carries
-the next-step and `Status` buttons, before them. A press runs `/clear` at
-once and does not ask first. It does not check that the skill's work is
-committed. The button goes away when you send a prompt while Claude is
-idle and no hook drops it, when a cairn skill starts, or when the session
-ends. A `/clear` that the session refuses goes into the prompt box, as
-above. Where the row has no room for three buttons, it drops `Clear` first.
-
-The row ends in a close button: `×` in the terminal, and in the desktop
-app a `✕` that is dim at rest. On a row drawn from a ROADMAP, a `≡`
-button before it opens the cairn pane (below). Pressing the close button
-hides the band. Until the session ends, the band stays hidden while the
-list of active milestones stays the same: their ids, their statuses, and
-their ROADMAP order. For example, a milestone that moves from `implement`
-to `review`, or a milestone that becomes active or leaves both statuses,
-shows the band again. A cairn skill that starts or ends keeps it hidden,
-unless `/milestone-review` moves the band to another row, a `review` row
-when an `in-progress` row would show without it. A hidden idle row shows
-again when another milestone takes its place, or when no milestone is
-workable any more and the empty row takes its place. A hidden empty row
-shows again when a milestone becomes active or workable. A checked box or an edited title does not bring the band back. A
-session end shows a hidden band again, whatever its reason. In the desktop
-app, a `/clear` stops the session, and the band draws again at your next
-message. If the band finds the ROADMAP but cannot read it, or the file is
-empty, the band keeps its row. It keeps the row only when the row came from
-the same repo. The failed read alone does not hide or show it. After the
-session moves to another repo, a failed read shows no row. A working
-directory that cannot be read also shows no row. So the band never shows
-another repo's milestones. A press
-of the close button that lands as the session ends does nothing, so the
-band shows after the session end.
-
-The band finds the ROADMAP in the session's working directory or the nearest
-directory above it. On Windows, the search stops at a network share's root
-(`\\server\share`). It reads the files when the session starts and at the
-end of each turn. It also reads them when a cairn skill starts or ends,
-and after Claude edits or writes a file under a `cairn/` directory, so a
-box Claude checks moves the track inside a long turn. A box you check or a
-status you change shows after the next of these.
-Outside a cairn repo, it draws nothing. It also gives way while Claude Code shows a survey there. The band draws on
-the terminal and in the desktop app.
-
-### The cairn pane
-
-The `/cairn-pane` command opens a pane that shows more than the band. Run
-it again to close the pane, or use the pane's own close mark. The band's
-`≡` button also opens it. In the desktop app the pane docks beside the
-conversation. In the terminal it docks beside a fullscreen conversation
-of 110 columns or more, and otherwise it sits above the prompt.
-
-The pane opens with a summary card in a round border. Its first line shows
-the project's name in bold. After the name it shows the number of open
-pull requests and open issues on the base remote's repo, from every
-author. The name is the
-repo's name on a github.com base remote. With a remote on another host,
-or none, it is the name of the folder that holds the repo's `.git`
-directory. A worktree thus shows the repo's name. Before the first read
-for a repo folder, the name is that folder's own name, so a worktree
-shows its own name until the read. If `git` cannot say, the name is also
-that folder's own name. If the git dir is not a `.git` folder, as in a
-submodule or a bare repo, the same holds. A name too long
-for the pane is cut with `…`. Outside the terminal, for example in the
-desktop app, on a github.com base remote, the name is a link to the
-repo's GitHub page. The pull request count and its word open the repo's
-pull requests list, and the issue count and its word open its issues
-list. Before the first read, these items are not links. A remote on
-another host, or no remote, also gives no links. So does an owner or
-repo name with a character other than an ASCII letter, a digit, `.`,
-`_`, or `-`, a name that is `.` or `..`, and a name longer than GitHub
-allows. The terminal pane draws no links, so its row keeps room for its
-buttons. The card's second line shows the candidate rows at each
-level, with the level's mark: `[high]`, normal, `[low]`, and `[parked]`.
-It counts the rows that the Candidates list (below) would show, also
-while a milestone is active. Its third line shows the planned and blocked
-milestones. A fourth line shows the latest release, for example
-`v2.1.0 · 12 days ago · 4 done since`. The tag is the newest `v*` tag
-that `git describe` finds. The days run from that tag's commit to the
-read, and the count is the milestone files added to
-`cairn/milestones/archive/` since the tag. The PR and issue numbers come from one `gh api
-graphql` query on a github.com base remote, at the same times as the PR
-states (below). A remote on another host runs no query. Until a read
-gives numbers for the repo folder, they show `?`. A read that fails or
-runs no query keeps the last numbers for the same repo folder, and the
-card holds one folder's numbers at a time. The release line needs the three `git` calls to succeed, and
-guest mode draws none.
-
-For each `in-progress` or `review` milestone, the pane shows the id, in
-the phase's color, and the title in bold, with the band's percent for the milestone at the end of
-that line when its file reads, and the goal from the milestone file. The
-goal wraps at the pane's width. The lines of one paragraph join, and each
-list item (`- `, `* `, or `1. `) starts a new line. It lists every task
-and acceptance criterion. A checked box shows a filled circle with a
-check, an open box a dashed circle, and the first open task of an
-`in-progress` milestone, the one being worked, a circle with three dots.
-In the desktop app these marks, the candidate marks, and the PR state
-marks are small icons of one size, in fixed colors, since an image cannot
-follow the theme. The terminal draws them as `●`, `◌`, `⊙`, and the
-glyphs named below. The pane does not show the work log. Each item takes
-one line, and a long item ends in `…`. In the desktop app, holding the
-pointer over a milestone's line, a task, a criterion, or a workable,
-waiting, blocked, or hotfix line opens a card above it with the whole
-text. A candidate row opens its card from an info icon (`ⓘ`) instead.
-That card holds the row's whole text after the priority token, with any
-HTML comments left out. The row itself shows only its short title.
-When the card fits above the row, it opens there. When it fits only
-below the row, it opens below. A card too tall for either side opens
-on the side with more room and is cut to fit. When that side has fewer
-than 3 rows, no card opens. The pane only estimates the rows a card
-takes. A card can still come out a row or two shorter or longer than its
-room.
-The pointer over the row shows the icon, and on a row with a `✎`, the
-`✎` beside it. The pointer over the icon opens the card. Each
-section starts after a blank row with its name in bold.
-The Blocked, Hotfixes, and Candidates headings show their count as a
-badge right after the heading name. The badge is a gray rounded pill
-with a white number. The terminal draws the badge as the number with a
-space on each side, on the theme's gray. The Tasks and Criteria headings
-show their count at the right end with a six-cell meter, `━` for the
-checked share and `─` for the rest. The next command follows a `→`, with
-the milestone's id after it. When the next step is planning and the
-Candidates list (below) shows a row, the pane shows no Next line. Each
-candidate line with a short title carries a `✎` that plans its row. With
-no row shown, the line shows
-`/milestone-plan` alone. The pane shows no line that says no milestone is
-active. While no cairn
-skill runs or waits on its background work, a button after the command reads `Implement`, `Resume`, `Review`, or
-`Plan`, the label of the band's next-step button, and a press runs the
-command as that button does, so `Plan` and `Implement` run `/clear` first.
-A press while Claude works outside a cairn
-skill runs the command when Claude is idle. At the same times, the Next
-line carries a `Status` button after that button, which runs
-`/cairn:milestone`. The Next line has no `Clear` button. The pane's `⌂`
-button, described below, clears the conversation. Each press runs the
-command of the band's button of the same name. As with the
-next-step button, a press while Claude works outside a cairn skill runs
-when Claude is idle. In a narrow pane, the command is cut first. In
-desktop app versions before 3.6556.2, a click on the pane while it does
-not have keyboard focus only gives it focus. Then press the button again.
-The id and the meter of a
-milestone draw in its phase's color, the theme's `claude` orange for
-implement and `success` green for review. The Next line draws in the
-color of the phase that its command runs, `planMode` for planning. A
-high-priority candidate's `↑` draws in the implement color. The
-percent counts boxes as the band does, so a box inside an HTML
-comment counts there but not in the Tasks and Criteria counts, and
-the two can differ. A missing or unreadable
-milestone file shows `no milestone file`. Below the milestones, the pane
-shows the next command, the workable planned milestones, and the planned
-milestones that wait on others, as `scripts/cairn_next.py` gives them.
-When no milestone is `in-progress` or `review`, the pane also lists the
-ROADMAP's candidate rows under a Candidates heading with their count.
-Each row takes one line: `↑` for a `[high]` row, `○` for a normal one,
-`↓` for a `[low]` one, and `⧗` for a `[parked]` one, then the row's
-short title. A `[low]` row's mark and title are gray. A `[parked]` row
-waits on a promotion condition that has not held, such as "promote when a
-second repo needs it". Its title, and its mark in the terminal, draw in
-the theme's `permission` color, and the desktop draws its mark as a blue
-icon. So it differs from a `[low]` row. The `[high]` rows come first, then the normal rows,
-then the `[low]` rows, then the `[parked]` rows. Each group keeps its
-ROADMAP order, whatever order the file holds the groups in.
-A row sits on one ladder: high, normal, low, parked, Known issue, dropped.
-Whoever writes or updates a row, you or a skill, places it on a rung and
-gives the reason, and a move can go up or down any number of rungs. Only
-a parked row needs a condition, so a row with no condition is fine at
-high, normal, or low. `/cairn-triage` adds or removes `[parked]` as it re-rates a row, and a
-promote replaces it with `[high]`. When a parked row's condition has
-held, `/cairn-triage` proposes moving the row off parked to the rung it
-judges right, usually normal. It can instead propose keeping the row
-parked with a new condition, or routing or dropping the row. The held
-condition alone does not bring `[high]`. A promote does. If something
-the pass read shows that the work is wanted now, it proposes one. After
-a merge, `/milestone-review` removes `[parked]` from each parked row
-whose short title the milestone file quotes, or whose text names the
-milestone, where the merge made its
-condition hold. A row whose condition is not written down gets no
-`[parked]` token. `/milestone-review` and `/copilot-review` place each
-row they file for a review finding on a rung. If no documented or common
-use reaches the finding, the default is parked with "promote when a user
-reports it". `/milestone-review` can also propose a finding as a Known
-issues entry, which its merge question lists and the merge approval
-accepts.
-`scripts/cairn_validate.py` prints a `candidate order` WARN, with one line
-under it for each row that the file holds below a row of a lower priority.
-When `/cairn-triage`
-promotes a candidate row (marks it ready to plan), it also gives the row
-`[high]`, so a promoted row shows `↑`. Rows
-inside an HTML comment, such as the placeholders of a new ROADMAP, are not
-listed. A row's short title is its text after a leading `[high] `,
-`[low] `, or `[parked] ` token with its space, up to its first `: `, with outer spaces
-removed. A row with no `: ` is cut at its first ` — ` (space, em dash,
-space), so its date and links stay out of the title. A row with neither
-shows all its text. Open each row with a short title that says what the
-work does in one sentence with no ending period, then `: ` and the
-details, for example
-`- [high] Fix the pane's slow refresh: details — added 2026-10-15`. The
-title has at least 5 words and at most 40 characters, the room that the
-docked pane in the desktop app leaves for a candidate line. A wide
-character, such as a CJK character, counts as 2. A row written for a GitHub issue ends its title
-with the issue number in parentheses, for example
-`Fix SE of skewness calculation (#100)`. The number counts toward the 40
-characters and not toward the 5 words. An issue added to a row later goes
-in its details, and its title stays the same. Name things in
-words and put no icon, such as an emoji or `⌂`, in a short title, because
-the pane draws its own marks and buttons with such glyphs.
-`/cairn-triage` offers a new short title for a row whose title is empty,
-has fewer than 5 words, is longer than 40 characters, is the same as
-another row's, or holds an icon. It proposes to keep a row that an open
-PR's `Candidate row:` line names (below) as it is, so its title still
-matches that line. An Amend that removes such a row, changes its title,
-or makes it a merge's survivor makes each later question name its PRs.
-This lasts while that change stands. Each new title the pass proposes
-also differs from each title that an open PR's `Candidate row:` line
-names. An Amend that removes or retitles a row with a live
-` — started #<n>` token makes each later question name those PRs. A
-retitle you set at Amend lists the quoted mentions it rewrites, as a
-proposed one does. The pass does not propose a merge that changes the
-surviving row's title. If you set one at Amend, each later question says
-so. While no cairn skill
-runs or waits on its background work, each row whose short title is not
-empty carries a `✎` button at its right end. In the desktop app the
-button shows only while the pointer is over its row, beside the info
-icon that opens the row's card. The terminal draws it on each such row.
-A press runs `/clear`, and then `/cairn:milestone-plan` with that short
-title in the cleared conversation. An issue number at the end of the
-title is part of the title. So the plan can still offer a hotfix or a
-small direct edit for the row. The band has no such button. As with
-the next-step button, a press while Claude works outside a cairn skill
-runs when Claude is idle. While another button's command runs or waits
-for its `/clear`, or a `⌂` press waits for its `/clear`, a press does
-nothing.
-
-Whenever a milestone is `blocked`, the pane lists it under a Blocked
-heading with the count, after the queue and before the candidates, with
-or without an active milestone. Each line shows a state mark, the id and
-title, and then `#<n>`, the number of the first GitHub pull request URL in the
-milestone file's `Branch/PR` header, before any `companion:` entry. Before
-a read the mark is an empty circle. After a read it shows the state word's
-mark: a check for `merged` and `approved`, an alert for `changes
-requested`, three dots for `in review`, a cross for `closed`, and a dashed
-circle for `unknown`. In the terminal these are `●`, `▲`, `◐`, `✕`, and
-`◌`, and the empty circle is `○`. In
-guest mode, a milestone you handed to the maintainers is `blocked` with
-its PR in that header, so the section lists the PRs that wait on review.
-`scripts/cairn_next.py` prints the same number after each "Externally
-blocked" line, as `(PR #<n>)`.
-
-A cleanup after a merge can stop after it moves the milestone file to
-`cairn/milestones/archive/` and before it changes the ROADMAP row. The row
-then still says `blocked` and names a file that is gone. If exactly one
-archive file has the row's id and its `**Status:**` paragraph starts with
-`done`, the pane reads the PR from the first GitHub pull request URL in
-that paragraph and shows `archived` after the number, or alone when the
-paragraph has no URL. `cairn_next.py`
-prints `(PR #<n>, archived)`, or `(archived)` with no number. A merged PR
-then gets the Finish button, and an archived line gets no other button.
-In guest mode, `/milestone-review` then sets the row to `done`, runs the
-checks, and names the archive, lesson, and review-brief work it did not
-rerun and the issue comments still owed. It changes nothing in the archive
-file. In owner mode it says what it found and stops, and leaves the row
-as it is.
-
-The pane also shows each PR's state, which it reads from GitHub with one
-`gh api graphql` query for each PR. That query also gives the count
-below. It reads the states when the pane opens, by `/cairn-pane`, by the
-band's open button, or by the reopen at a session start. The reopen skips
-the read when that start already read the states. An open does not wait
-for the read. The words, counts, and merge marks appear together when the
-last GitHub call answers or times out.
-The pane also reads the states, and the tracking files, when you press
-the ↻ Button at the right end of the card's first line. The ↻ shows whenever the pane
-has a ROADMAP, and it reads `⋯` while a read runs. A press while an
-earlier ↻ press's read runs does nothing.
-While no cairn skill runs or waits on its background work, a `⌂` button
-sits just before the ↻. A press runs `/clear`, and when that `/clear` ends
-the session, the mod opens the pane again. A pane that is already shown
-stays as it is. Whether a pane behind another tab comes to the front was
-not checked. As with the next-step button, a press while Claude works
-outside a cairn skill runs when Claude is idle. A press does nothing while another
-button's command runs, while `Plan`, `Implement`, or `✎` waits for its
-`/clear`, or while an earlier `⌂` press waits for its `/clear`. A press is
-your consent to drop the conversation, as a press of the band's `Clear`
-is. When a `/clear` keeps the session's process, as a `⌂`, `Clear`,
-`Plan`, `Implement`, or `✎` press does, the pane stays open. The pane and the
-band then read the tracking files again, and so does a `/resume`. After
-either one, a placed pane reads the states again, also when it sits
-behind another tab. A pane that waits undrawn reads the states at its
-first draw. If the pane is placed while a `/clear` start lists the panes,
-the start reads the states with no further draw. A placed pane skips that read when the start's reopen
-already read the states. A pane that waits undrawn skips it when an open
-or the reopen read first. Neither reads when the start failed to list
-the pane. One start reads the states once, also when a reopen and a
-`/resume` both run in it. The pane never reads the states on a timer or
-at a turn's end, so a state can be out of date until the next open or ↻
-press. After a
-read, each line shows one word after its number, and an open PR's line
-also ends with a merge mark (see below):
-
-| Word | GitHub state | Button |
-|---|---|---|
-| `merged` | MERGED | `Finish` runs `/cairn:milestone-review <id>` |
-| `changes requested` | OPEN, review decision CHANGES_REQUESTED | `Revise` runs `/cairn:milestone-implement <id>` |
-| `closed` | CLOSED | `Check` runs `/cairn:milestone` |
-| `approved` | OPEN, review decision APPROVED | none |
-| `in review` | OPEN, any other review decision, or none | none |
-| `unknown` | the call failed, exited non-zero, or gave no known state | none |
-
-None of the `Finish`, `Revise`, or `Check` Buttons runs `/clear` first. A
-line not yet read shows no word.
-
-For a PR that GitHub reports as OPEN, the pane draws a line under the PR
-such as `3 unresolved threads`, from the same query. The count is the review threads not marked resolved,
-and a bot's threads, such as Copilot's, count too. A review or comment
-with no thread does not count, because GitHub does not link a reply to
-it, so the pane cannot tell whether you answered it. The count covers the
-newest 100 threads. With no unresolved thread there is no line.
-When the query fails, the PR's word is `unknown` and the line is left out.
-When the query answers but its thread list comes back in a shape the pane
-does not read, the count line is left out, and the PR keeps its state word,
-its merge mark, and its Button.
-
-The same query also reads `mergeable`. For a PR that GitHub reports as
-OPEN, the line ends with a mark after its word. A green merge
-symbol means GitHub reports MERGEABLE: the PR can merge. A red disc with a
-cross means GitHub reports CONFLICTING: the PR has conflicts with its base
-branch. In the terminal these are a green `✓` and a red `✗`. GitHub
-answers UNKNOWN while it computes the value, for example just after a
-push. The line then has no mark until a later read gives an answer.
-A PR that is merged or closed has no mark.
-A hotfix PR whose URL is on a host other than github.com gets no count
-line. It gets its word and its mark from one call:
-`gh pr view <url> --json state,reviewDecision,mergeable`.
-
-A `/hotfix` run has no ROADMAP row, so the pane finds its open PR on
-GitHub. The same read runs one `gh pr list --repo <url> --state open
---author @me --limit 100` call beside the blocked PRs' reads. The URL is
-the base remote's: `upstream` in guest mode when the repo has that remote,
-else `origin`. An `http` or `https` URL goes to `gh` without any user name
-or token in it. The pane lists each PR from a `hotfix-` branch under a
-Hotfixes heading with the count, after Blocked and before the
-candidates. Each line has the layout of a blocked line, with `fix` in
-place of the milestone id: the state mark, `fix`, the PR's title, and
-`#<n>`, and after a read the same word, merge mark, and count line that
-a blocked line shows. A hotfix line has no Button. A hotfix PR
-that is also a blocked milestone's PR shows only on the blocked line, and
-the count leaves it out. When the
-list call fails, the pane keeps the last list it read for the same repo.
-The call reads at most 100 of your open PRs, so with more than that, some
-hotfix PRs and some candidate-row marks (below) can be left out.
-When the base remote has no URL, or the call lists no open hotfix PR,
-there is no section.
-
-An open PR can name the candidate rows that it fixes. In owner mode,
-`/hotfix` and `/milestone-review` put one `Candidate row: <short title>`
-line in the PR body for each row that the merge removes or narrows. No
-other cairn skill writes such a line. Cairn writes none in a guest-mode
-PR, because guest mode puts no cairn terms in a PR body. In guest mode,
-the row's started token (below) does this job. The
-same `gh pr list` call reads the body of each listed PR, from any branch.
-A line counts when it opens with exactly `Candidate row: ` and the rest,
-with outer spaces removed, is a candidate row's short title, exactly. A line that you write by hand
-counts the same way. The pane leaves out of its Candidates list each
-candidate row whose short title such a line names, because that PR
-already works on it. The Candidates heading counts only the rows it
-shows, and the pane draws no heading when it hides every row. Only your
-own open PRs on the base remote count.
-
-A `Candidate row:` line inside a fenced code block does not count. A
-fence line opens with three backticks or three tildes after optional
-spaces. Such a block starts at a fence line and ends at the next fence
-line or at the end of the body.
-
-The PRs that hide rows change only when the pane reads its
-PRs: at an open, a ↻ press, or a `/clear` or `/resume` while the pane is
-open. The pane lists candidate rows only
-while no milestone is active, so while a milestone's branch is checked
-out, the row that milestone's PR names is hidden only in another checkout of
-the default branch. Without the opt-in Copilot round (below), a PR that
-`/milestone-review` or an authored `/hotfix` opens does so only after you
-approve the merge. After the merge, the row shows again at
-the pane's first successful PR read, unless another open PR also names
-the row or a counted started token (below) is on it. If `/milestone-review`'s hygiene commit or `/hotfix`'s step 7
-has not removed the row by then, the row shows with its priority mark.
-A row that they narrow also shows again after that read. A
-PR opened before these skills wrote `Candidate row:` lines has none.
-
-A candidate row can also carry a started token at its end:
-` — started M<NNN>` or ` — started #<n>`. `/milestone-plan` writes
-` — started M<NNN>` on each row that the plan absorbs, in owner and guest
-mode. In guest mode, `/hotfix` writes ` — started #<n>` on disk on each row
-it matched, after it opens the PR for the maintainers. Cairn writes no
-`Candidate row:` line in a guest-mode PR, so in guest mode the tokens are
-what usually hides a row. An `M<NNN>` token hides the row while the ROADMAP table
-holds that milestone as `planned` or `blocked`. A `#<n>` token hides the
-row while PR #n is among the open hotfix PRs of the pane's last good read.
-The row shows again when the milestone's row becomes `done` or `dropped`
-or leaves the table, or when PR #n is no longer open. In guest mode, an
-`M<NNN>` token keeps the row hidden after the maintainers merge, until
-review's hygiene sets the milestone `done`. Hygiene then removes the row,
-or narrows it and removes the token. A note after the token, such as
-`; narrowed …`, leaves it read. A token on a dropped milestone or on a PR
-closed without a merge hides nothing. `/cairn-triage` proposes removing a dead token: one whose
-milestone is `done`, `dropped`, gone from the table, or archived, or whose
-PR is merged or closed. A token on an in-progress or review milestone is
-not dead. Triage leaves a dead token whose removal changes the row's
-short title, such as one inside it, as in `Title — started M12: detail`. A retitle for an icon that replaces that title in place
-removes the token, and says so. Triage also proposes adding a missing ` — started M<NNN>` token to a
-row whose short title a planned, in-progress, blocked, or review
-milestone's file quotes in double quotes outside its Out list. Each change
-waits for your answer at its gate. A token goes at the row's end and
-opens with ` — `. So adding it leaves the row's short title the same,
-unless the row's text ends in a bare `:` or ` —`.
-
-The read needs `gh` on the session's `PATH`, signed in to GitHub. The
-pane writes nothing to GitHub, and `/milestone` still sets a milestone's
-status.
-
-The pane reads the files at the same moments as the band. Outside a cairn
-repo, with no pane open, the command opens no pane and prints `no cairn
-ROADMAP found`. A pane that is already open says the same, and the command
-closes it.
-
-A cairn pane that is shown at a `/clear` is open after it. A press of the
-pane's `⌂` or the band's Clear, `Plan`, or `Implement` Button clears without restarting Claude Code,
-and the pane stays. A typed `/clear` in the desktop app starts a new
-session at your next message, and a pane that was shown opens again then,
-in the same folder. When that next message is `/cairn-pane`, the pane
-stays open, and the next `/cairn-pane` closes it. A pane behind another pane's tab, or waiting undrawn,
-does not open again. An app quit or a closed terminal that ends the session
-with reason `other` (not checked) also brings the pane back at the next
-session in that folder. In a terminal narrower than 110 columns, that pane
-waits undrawn until you open it. This was checked live in the desktop app
-only, for a typed `/clear` and the Clear Buttons that the band and the
-pane had then. A `⌂`, `Plan`, or `Implement` press clears through the same
-call as the band's Clear Button.
-
-Mods are on by default from Claude Code 2.1.287
-([Getting started with Claude Code mods](https://claude.dev/blog/getting-started-with-claude-code-mods/)),
-so that is the version the band needs with no setup. An earlier version
-loads the band only where hooks modules are turned on.
-On an older Claude Code the rest of the plugin still works. In a headless
-(`claude -p`) run of 2.1.284, the merge guard denied a merge and the
-session-start tracking context arrived. The band did not load, and the run
-printed one line that said hooks modules were not turned on in that process.
-That line names the early-access switch, `CLAUDE_CODE_ENABLE_FUNCTION_HOOKS=1`
-in the environment.
-
-## The core loop
-
-Development is a cycle of milestones: PR-sized units of work with explicit
-acceptance criteria. One command starts a run. You answer one question set
-when the plan is made, and Claude then implements and reviews the milestone
-in the same run and stops at the merge question:
-
-```mermaid
-flowchart LR
-    idea["idea"] --> plan["/milestone-plan (question set)"]
-    plan --> implement["/milestone-implement"]
-    implement --> review["/milestone-review (merge question)"]
-    review --> merged["merged"]
-    review -->|criteria unmet| implement
-    merged -->|/clear, then the next milestone of the plan| implement
-```
-
-Before the run starts, the plan checks that the work needs a milestone. If
-a hotfix or a direct edit fits, it asks you once whether to take that route
-instead. Each skill starts the next one itself, up to the merge. A merge ends the run.
-The closing message gives `/clear` and the command that starts the next
-milestone of the same plan, so each milestone starts in a fresh context. Between the two
-questions Claude stops only for a short list of reasons: it needs your eyes
-or hands, an action the question set did not cover, a goal found wrong,
-repeated review failures, red CI it cannot fix, and a few others that
-the rulebook lists. A CI wait before a merge is not a stop: in the desktop
-app, Claude ends its turn while CI runs and picks up again by itself when
-CI finishes. Elsewhere, type the resume command that the turn ends with. A run ends the same recognizable way: a short recap, a
-status table, and the next command in a copyable block. If a run stopped,
-typing `/milestone-implement` or `/milestone-review` with the milestone id
-resumes it. A stop that finds the goal wrong names `/milestone-plan`
-instead, and the close block always names the command to type.
-
-## A worked example
-
-Say your repo is a small CLI tool and you want a `--dry-run` flag.
-
-**1. Plan it.** You say: *"plan a milestone: add a --dry-run flag to the
-sync command."* Claude reads the roadmap, decisions, and the relevant code,
-then asks one short batch of questions, each with a recommendation. It asks
-only what you alone can settle. Should `--dry-run` cover `sync` only or
-every mutating subcommand? Is printing the would-be actions enough, or must
-exit codes match a real run? You click answers (or type your own). Claude
-writes `cairn/milestones/M007-dry-run-flag.md` with the goal, in and out
-scope, verifiable acceptance criteria, and ordered tasks, registers it in
-the ROADMAP as `planned`, commits, and starts implementing.
-
-**2. Build it.** Implement cuts a branch and decides the details the plan
-left open, such as flag naming and output format, with a log line for each.
-It works the tasks in order: tests first, one checkpoint commit per task,
-each commit updating the milestone file's checkboxes alongside the code. You
-are not asked anything unless the run reaches a listed stop, such as an
-action the question set did not cover. When all tasks pass, status flips to `review` and
-review starts.
-
-**3. Ship it.** Review re-runs every check fresh, gathers evidence for each
-acceptance criterion (no evidence, no tick), and hands the diff to
-independent reviewer agents that didn't write it — a four-lens fan-out for
-anything touching executable or user-facing surface, two reviewers for
-an internal docs-only diff. One lens reads the rest of the repo for text
-the change left stale. Claude settles each finding itself: it fixes a
-real one inside the milestone's scope, sends a real one outside it to a
-ROADMAP candidate row, and rejects a false one with the reason. One
-exception: a real finding that only input outside both documented and
-common use reaches is rejected as `edge` when its effect is an error, a
-warning, or slow running. A wrong result or a failed acceptance criterion
-is never `edge`. Review also lists each test snapshot file that the
-branch changes, with what changed and whether the work needs it. A
-snapshot file is a stored expected output under a directory named
-`_snaps` (testthat) or `__snapshots__` (Jest, syrupy). A change that the
-work does not need is fixed in the code or sent to a candidate row
-before the merge question. In guest mode,
-the PR lists the `edge` findings in plain words and asks the maintainers
-whether they want them handled. It also says what changed in each
-snapshot file and why. Also in guest mode, a finding that a planned change
-takes output from users is shown to you in plain words with how often it
-happens, or the condition when it cannot count. In guest mode too, when a
-user-facing change alters what a surface draws or prints and its snapshot
-tests fail or skip on your machine at both the branch and the base, review
-renders the default case before and after and tells you what the reader
-sees, or that no one looked. The guest PR
-says what a snapshot will show only from a render of that snapshot's own
-case, and it says that the render was local. Then it
-asks *you* to merge, with the evidence and each finding's outcome in front
-of you, and opens the PR after your yes (at the start of review, in owner
-mode with the opt-in Copilot round described below).
-Nothing lands on your default branch until you say yes. After the merge,
-the milestone compresses to a short summary in the archive, the ROADMAP
-row flips to `done`, and the next session, tomorrow or next month, resumes
-from the files alone.
-
-**A run stays in one session, and the files carry it.** Each phase re-reads
-the milestone file and gathers its evidence by command, so nothing depends
-on what the session remembers. The reviewers are fresh agents that did not
-watch the code get written. If the context runs short, Claude stops at a
-task boundary with a checkpoint commit, and the typed command resumes the
-run in a fresh session. The end of a run is the natural point to `/clear`.
-
-## Which skill, when
-
-| You want to… | Do this |
-|---|---|
-| See where the project stands / what to do next | `/milestone`: status snapshot, health audit, and a suggested next action |
-| Look into one GitHub issue | `/milestone #12`, or the issue's URL: a verdict (reply, hotfix, or milestone), the maintainer input it needs, and one question to start the work, add a candidate row, leave it (with a stated reason), or stop |
-| Capture an idea for later | Just say it: "add X to the candidates" (one ROADMAP row, no ceremony) |
-| Turn an idea into a real plan and run it | `/milestone-plan <title>`: first a check that the work needs a milestone, with an offer of `/hotfix` or a direct edit when it does not; then investigation, which asks whether the requested behavior is correct by its field's standards, whether your users want it, and whether its name, function, and arguments are right (an issue's wording is not proof), and one question set, which poses each flaw with an option not to build the work (a gap, where the request is only vague, is settled without a question unless another fitting reading changes what you get), milestone file(s) with acceptance criteria, then implement and review in the same run up to the merge question |
-| Resume a run at implement | `/milestone-implement M<NNN>`: branch, tests-first tasks, checkpoint commits, then review; resumable across sessions |
-| Resume a run at review | `/milestone-review M<NNN>`: fresh evidence for every criterion, independent code review sized to what the diff touches, each finding settled by the agent, merge on your approval |
-| Get a stronger model's judgment on a hard question | `/milestone-brief M<NNN> <topic>`: writes a self-contained brief; you approve (or run) the Fable review. Its report advises by default — it only binds the milestone if you asked it to |
-| Fix a reported bug quickly | `/hotfix`, or just describe the bug: regression test, fix, PR, your approval. It asks the same three questions of the behavior the fix produces, documented behavior included. It settles a gap without a question unless another fitting reading changes what you get, and then it stops, unless its PR is already merged, so that a plan can ask you. A flaw in what the fix changes leaves a candidate row or a `/milestone-plan` next command that names it, and stops the hotfix unless its PR is already merged. A flaw in a name or behavior the fix leaves as it was does not stop the hotfix: it becomes a candidate row after the merge. In guest mode, the hotfix writes that row at the handoff of its PR to the maintainers, not after their merge. A later `/hotfix` on the merged PR compares the row with what they merged, and it removes or narrows the part that the merge fixed. If the hotfix stops before the merge, or in guest mode before the handoff, the close block names the flaw. After the merge it removes the candidate row it fixed, or narrows it to the part left. Its approval gate lists each test snapshot file the fix changes, and a change the fix does not need moves the recommendation to fixing it first. Escalates to a milestone if it's bigger than it looked |
-| Take in an outside pull request | `/hotfix` again: it adopts the contributor's PR (`gh pr checkout`), holds it to the same bar, the three questions included, and merges on your approval |
-| Work through Copilot's review on a pull request | `/copilot-review`, or `/copilot-review 12`: reads each Copilot note and the review summary. It fixes, rejects, or defers each note. Then, for each Copilot review with an open note, it drafts one PR comment that says only what the maintainers need to know, or tells you they need nothing, so it gets no comment. It shows you this first, and you can post it or resolve with no comment, type your own version, or hold it. After either, that review's threads are resolved. It replies on no thread and never thanks Copilot, and it asks you in chat about a note it cannot settle alone. It does not request a review. |
-| Fix a typo or tweak docs | Just ask: trivial edits commit directly to the default branch, no tracking (in guest mode, only `cairn/` edits, left on disk). Through `/milestone-plan`, the edit also removes the candidate row it fixes, such as a row you pressed in the cairn pane. It leaves a row that an open pull request names for that PR. If the check of the PRs fails, its option says so. A row it removes can end with an issue number, such as `(#12)`. In owner mode the edit then closes that open issue after the push, once its option names the close. It leaves a pull request's number alone. It also leaves alone an issue that a row it keeps names anywhere in its text, and an issue that an open milestone's `Resolves:` slot names. If its read of the open pull requests fails or stops at 100 PRs, it closes no issue |
-| Prune the backlog | `/cairn-triage`: one proposal per candidate row and known issue, one gate, one docs-only commit on your say-so (in guest mode, edits on disk with no commit). The pass can propose any rung for a row, up or down any number of rungs, with a reason: high, normal, low, parked with a drafted condition, a Known issues entry, or a drop, including a drop as not worth keeping. A started token or a live milestone still holds a row in place, and a row that an open PR names keeps its short title. A pass that drops a row as not worth keeping writes a decision entry that lists it. When you keep a row it proposed to move, the row gets a ` — kept YYYY-MM-DD` mark, and the pass proposes no move for it again until something dated after the mark gives a reason. Rungs and kept marks apply to candidate rows only. `/cairn-triage lessons` does the same for each lesson in `cairn/LESSONS.md`, and can drop a false or obsolete lesson or correct one. It shortens or splits each lesson over 450 bytes and proposes dropping the lowest-ranked lessons (rank is the newest milestone in a lesson's provenance, not counting `trimmed` or `corrected` marks) down to 20 |
-| Prepare a release | `/cairn-release`: follows your repo's profile (a CRAN walk, a registry walk, or a version bump and tag); you run the final submit or tag step yourself. In a quarto-extension repo it reads the `version:` line in `_extension.yml` first. A version at the tip of the default branch with no `v<version>` tag gets tagged on the commit that started it, with no bump. You confirm it first. With a changelog file, the file needs a section headed with that version. Otherwise it raises the version at release time. A merge can raise the version to one with no tag. Then the `/milestone-review` or `/hotfix` close gives you the tag and push commands for the merge commit. A GitHub repo also gets `gh release create`. cairn does not run them |
-| Articulate a repo's design & principles | `/design-interview`: a two-phase interview (facts, then principles) that fills `DESIGN.md`; best run on Fable |
-| Adopt the system in another repo | `/cairn-init`: idempotent; safe to re-run |
+`/cairn copilot <PR>` is for repos you share with other people. It handles GitHub Copilot's review notes on your PR: it fixes, rejects, or defers each one, and drafts at most one comment per review. It pushes, posts, and resolves only when you say so. It never resolves a person's thread.
 
 ## What lives where
 
-```
-your-package/
-├── CLAUDE.md                  # lean router; never holds status
-└── cairn/
-    ├── DESIGN.md              # architecture as it IS + principles
-    ├── ROADMAP.md             # milestone index — the only status authority
-    ├── DECISIONS.md           # append-only decision log
-    ├── LESSONS.md             # durable repo lessons, capped and pruned
-    ├── milestones/            # one file per milestone (+ archive/)
-    ├── reviews/               # Fable review briefs & reports (+ archive/)
-    └── references/            # source + synthesis notes; sources/ gitignored
-```
+In the table below, the first three paths are in your repo. The last two are outside the repo, in a home folder.
 
-Boundary rule:
-**Architecture → DESIGN · Status → ROADMAP · Tasks → milestone files · Decisions → DECISIONS · Lessons → LESSONS · History → archive + git log.**
+| Path | What it holds |
+| --- | --- |
+| `cairn/ROADMAP.md` | The candidates, and nothing else |
+| `cairn/PROFILE.md` | This repo's commands, in three sections: Verify (the checks to run), Changelog, and Release |
+| `cairn/references/` | An index and one note per source |
+| `~/.cairn/<owner>/<repo>/plans/` | One file per piece of work in flight, named for a slug of two to four words |
+| `~/.cairn/<owner>/<repo>/shelf/` | Source files, such as PDFs |
 
-## Keeping track of sources
+A ROADMAP row is one list item: a title, a colon, and one sentence on what the work is and why. Two marks can open a row. `[high]` marks a bug that gives users wrong answers now. `[blocked]` marks work that waits on something outside, and the row says what.
 
-When something in your repo rests on knowledge from outside it (a formula
-from a paper, a cutoff from a standard, another tool's documented behavior),
-cairn asks you to write that source down as a page under `cairn/references/`.
-Statistical work is the obvious case, but any repo that takes a fact from
-somewhere else accumulates these.
+The merge record answers five questions: what changed, why, the choices made, what was left out, and how it was checked. It is the PR description and the squash commit message. So your default branch gets one commit per piece of work, and each commit explains itself. In your own repos, the plan is deleted after the merge.
 
-- **A page is owed when you start relying on the source.** Reading something
-  in passing owes nothing. Once a value, convention, or decision in the repo
-  traces back to it, the page gets written in the same piece of work that
-  takes the dependency.
-- **A page says where it came from and whether anyone has checked it.** Each
-  one records the source it came from, when it was read, and
-  whether its extracted values have actually been re-read
-  against the original, or are still a first pass nobody has confirmed. That
-  record exists because an unchecked extraction is easy to mistake for a
-  confirmed one.
-- **Facts about the source outlive notes about your repo.** "Table 3 gives
-  0.75" stays true as long as the paper does. "We haven't pulled that one
-  yet" can stop being true the same day. The second kind gets stamped with the date
-  it was written, so a later reader doesn't inherit it as permanent.
-- **The health check tells you when a page has gone stale.** `/milestone`
-  warns about pages never checked against their source, pages last checked
-  over six months ago, and pages whose own status is too vague to tell,
-  including ones only partly verified.
-  These are warnings, never gate failures:
-  whether the evidence is good enough is your call; no script can settle it.
-- **The shelf comes before the web.** The rules tell a session to read
-  `cairn/references/INDEX.md`, the source's note, and the file in
-  `cairn/references/sources/` before it searches the web for a source. It
-  searches only for a source whose file is not there. When `cairn/references/`
-  holds pages or shelf entries, a session that starts or resumes gets a short
-  "Source shelf" notice. It gives the counts, lists up to 30 shelf entry
-  names, and repeats that rule, so it reaches plain conversation too. It is
-  not injected again after `/clear` or compaction.
+`~/.cairn` can be a private git repo that you sync yourself. cairn commits to it locally and never pushes it.
 
-Two templates ship for authoring these, one per page type; `/cairn-init` puts
-the directory in place and the shelf of original files stays out of git.
+## How review works
 
-## When your repo produces numbers
+Review reruns every check in the plan, and the commands in your profile.
 
-If nothing in your repo computes a result — a statistic, a score, a fitted
-value — skip this; the rules below never load. Where it does, cairn checks the
-number against ground truth rather than against the code that produced it. A
-test that pins today's output is a regression guard, not evidence the number
-is right.
+Then one independent reviewer, which did not see the work being built, reads the diff. Where the Codex CLI is installed and signed in, the reviewer is Codex, working in its own copy of the repo with no network access. Otherwise it is a fresh Claude subagent.
 
-- **Two independent kinds of check, not two copies of one.** Every result is
-  backed by at least two of: a published formula recomputed with deliberately
-  plain code, an independent implementation run at test time, two internal
-  routes that must agree, a reference value committed with the generator that
-  made it, or data simulated from known parameters the estimator has to
-  recover. Two of the same kind doesn't count.
-- **An interval's check is coverage.** For a confidence interval, the test is
-  that it covers the known value at its nominal rate across simulated samples,
-  not that its endpoints match a saved pair of numbers.
-- **What backs each number is written down.** Each check is recorded with its
-  kind, the test asserting it, and where it came from, so the two-kinds bar can
-  be audited later. The shape of that record is yours to pick.
+The reviewer has two jobs. One is to find bugs. The other is to check, against the code, each statement the change adds about what the code does. Those statements are in the changelog, help pages, README, comments, and error messages.
 
-These rules are the same in every language; they are not part of a toolchain
-profile.
+Findings are sorted by whether they come from ordinary use. That means a user's report, the repo's own documentation, examples, or tests, or a call in a package that depends on the repo.
 
-## What the system expects from you
+- A problem the change caused is fixed in the same PR.
+- An older problem with a failing input from ordinary use is proposed to you as an issue.
+- A problem that only shows on an input the reviewer had to make up gets an input check (i.e., one assertion that refuses the input with a clear error) or is dropped. It is never fixed by making that input work.
 
-- **Answer two questions in a run.** One question set comes when the plan
-  is made, each question with a recommendation. It also asks ahead for what
-  the run will need from you: a file, a login, a live look, or permission
-  for an outward action. It also asks about each flaw the plan found
-  with the requested behavior itself, a concern that the fitting reading
-  the agent takes cannot avoid. A gap, where the request is only vague, the
-  agent settles without a question by that reading. It asks you only
-  when another fitting reading gives you different behavior. In guest
-  mode it also asks when work needs a maintainer's decision and it finds no
-  agreement, and when no one outside the work asked for it. The merge
-  question comes at the end of review.
-  Between the question set and the merge question, expect the agent to
-  decide and log the rest. When the plan finds that a hotfix or a direct
-  edit fits, one more question about that route comes before the run.
-- **A run stops only for a listed reason.** It stops when it needs your eyes
-  or hands, for an action the question set did not cover, when the goal is
-  found wrong or a change would drop something you asked for, after repeated
-  review failures, at red CI it cannot fix, and at a few others the
-  rulebook lists. While CI runs before a merge, the session waits in the
-  background. In the desktop app it resumes by itself when CI finishes.
-  Elsewhere, type the resume command that the turn ends with. Walking away at a stop is always safe: the last checkpoint
-  commit holds the state, and typing `/milestone-implement` or
-  `/milestone-review` with the milestone id resumes the run.
-- **Merges are yours.** Nothing reaches your default branch without your
-  explicit approval at review. A guard hook mechanically blocks merges
-  that lack a recorded approval, and the approval names the one PR it
-  covers. Starting a review is not merging; you get the evidence first.
-  A fix after a failed CI run needs your approval again, whatever its size.
-  (The guard watches what Claude runs, not what you do; see *Working with
-  collaborators*.)
-- **Supply primary sources.** If a formula, cutoff, or scoring key needs a
-  paper the model can't access, it will stop and ask you for the PDF rather
-  than work from memory. Feed it the PDF.
-- **Fable uses more tokens.** Fable is no longer pay-on-demand, but a Fable
-  review typically uses more tokens than Opus, so each one asks your approval
-  with a scope estimate first. Declining is fine; the brief file remains
-  and can be run any time.
-- **Run `/milestone` when returning after time away.** It reconciles
-  tracking against git, flags stale work, and hands you the resume command.
+## Working in someone else's repo
 
-## Habits that keep it healthy
+A repo that other people share is, to cairn, a guest repo. There, nothing of cairn goes in the checkout. The ROADMAP, the profile, the references, and the plans all live in the home folder, and a finished plan is kept there.
 
-- One milestone in progress at a time. Before starting a second, finish or
-  explicitly pause the first.
-- Let milestones be small. The plan skill will propose splitting oversized
-  ones; take the split. Three small merges beat one sprawling branch.
-  When the split divides one feature or fix, the plan writes the parts as a
-  feature series: earlier parts stay out of users' reach where they can, the
-  last part adds the exports and docs, and the changelog keeps one entry for
-  the whole feature. A cut at implement or a review descope can also move
-  part of a feature to later work. The cut work becomes a candidate row
-  marked `split from M<NNN>`, and the milestone planned from that row joins
-  the cut milestone as a series.
-- Don't hand-maintain status in chat or memory: if it isn't in `cairn/`
-  files or git, it didn't happen. Hand-editing the files is fine;
-  ROADMAP.md wins any conflict.
-- Trust the archive. Done milestones compress to short summaries; the full
-  story stays in git history and the PR.
+Every change goes through a PR, a trivial one included. cairn never pushes the default branch. It never merges or releases unless the profile says `Maintainer: yes`. You add that line by hand, and even then cairn merges or releases only when you say so. It posts nothing upstream without your approval, and what it writes follows the host repo's conventions.
 
-## Working with collaborators
+The guard hook denies a push to the default branch, and denies a merge without that line.
 
-cairn is built for **one person running these skills** in a repo, whether
-you own that repo (owner mode, the default) or are contributing to someone
-else's (guest mode, below), with contributions arriving from people who
-don't. That works fine, as long as you are clear about where the guardrails
-actually reach.
+## Coming from cairn 2.x
 
-- **The guards only watch this session.** Every protection is a hook on the
-  commands Claude runs for you. If you merge a PR in the GitHub web UI, or a
-  merge queue does it, or a collaborator merges from their own machine
-  without the plugin, cairn sees none of it: the merge-approval requirement
-  and the never-force-push rule become promises rather than blocks, and the
-  post-merge bookkeeping happens late or not at all. Nothing breaks; you
-  just lose the mechanical enforcement. Run `/milestone` afterwards to reconcile.
-- **Everything else was always a promise.** Evidence before ticking a
-  criterion, tracking updates riding along with code, the review fan-out:
-  those are conduct rules Claude follows, not things a hook enforces. They
-  hold as long as the work goes through the skills.
-- **Contributions come in through you.** An outside PR or issue is an inbox
-  item, not a second tracking system: you triage it into a candidate row, a
-  hotfix, or a milestone, and your session's guards govern the merge. The
-  contributor needs no plugin, no `cairn/` knowledge, and no special branch
-  name. `/milestone`'s health audit enumerates both inboxes and proposes a
-  disposition per item; an adopted PR comes in through `/hotfix`.
-  The audit also lists pull requests merged by others since the last
-  hygiene stamp — it only reads, writing nothing to GitHub — and each one
-  becomes a triage item. In owner and guest mode it also reads each issue
-  or pull request that a candidate row links to as a GitHub URL,
-  `owner/repo#N`, or a bare `#N`, in any repo, and reports
-  the ones that others closed, merged, commented on, or reviewed since the
-  row's date or its `checked` time (a close or merge you made yourself is
-  not reported); you can update the row to carry the news, and the row's
-  new `checked` time stops the same news coming back.
-  The audit also lists each unresolved review thread that a GitHub App bot, such
-  as Copilot, opened on your open pull requests in the repo. It reads up
-  to 100 of those PRs. Each line gives the file and line, the bot's claim,
-  and whether the claim holds in the PR's code at its head commit. When
-  the code does not settle the claim, the line says so. This read also writes nothing
-  to GitHub.
-  The audit also reports how many of your open PRs in the repo count
-  against each open-PR cap: the PRs whose branch starts with `hotfix-`
-  beside the bug-fix cap, and the others beside the feature cap. It says
-  when a count is at or over its cap.
-  `/milestone-plan`'s collision check also reads both open inboxes and settles a disposition only for an item overlapping
-  the scope being planned.
-  The pull request itself is opened only after you approve at the merge
-  chip, so a `pull_request`-triggered suite first runs on the head that
-  merges. The opt-in Copilot round below is the exception: with it on, in
-  owner mode, the PR opens at the start of a milestone review, or before a
-  hotfix's approval chip. Where a PR already exists — a return from an earlier review, an
-  adopted hotfix PR — both approval gates read its conversation — review
-  threads and comments, human or bot — before the merge chip, so nothing
-  is merged past unread. A `/hotfix` rerun that resumes a merge you
-  already approved skips that read and checks that no review requests
-  changes. It also vets the fix again, so a flaw in what the fix leaves as
-  it was still becomes a candidate row after the merge. A design problem
-  that would stop a hotfix stops the resumed merge instead: the rerun
-  withdraws your approval and leaves the PR open. A rerun on a PR that
-  closed without a merge stops and points you at a fresh `/hotfix`. A
-  rerun on your own open `hotfix-` PR that no approval resumes runs the
-  full hotfix checks on it as your own fix. In guest mode, when the
-  maintainers request changes on your
-  `hotfix-` PR after its newest commit, a rerun makes the changes, runs
-  the checks again, and asks you once before it pushes to the PR's branch.
-- **Your open PRs stay under two caps.** In owner and guest mode, you keep
-  at most 3 open bug-fix PRs and at most 1 open feature PR on a repo. A PR
-  counts as a bug fix only when its branch starts with `hotfix-`, and any
-  other open PR counts as a feature. Every open PR you authored on the repo
-  counts, opened through cairn or not, so a PR you opened by hand fills the
-  feature cap. In guest mode with `# Push remote: base`, when a stacked
-  milestone opens its PR, its stack base's PR is not counted. To change a
-  cap, add `# Bug-fix PR cap: N` or `# Feature PR cap: N` near the top of
-  `cairn/PROFILE.md`, with a value from 1 to 99 and no leading zero. Before
-  an authored fix cuts its branch, `/hotfix` checks the bug-fix cap; a
-  re-land or a follow-up to a merged PR is not checked. Before a review
-  opens a new PR, `/milestone-review` checks the feature cap. At the cap
-  they push no work branch, open no PR, and stop with a
-  list of those PRs. They also stop when the list cannot be read. At either
-  stop, `/hotfix` also writes a candidate row for the bug unless one already
-  matches, and in owner mode commits it to the default branch. In owner
-  mode the review stops before the merge question, so you are never asked
-  to approve a merge it cannot open. A push to a PR that is already open
-  is never stopped. A cap line near the top whose value is not 1 to 99
-  with no leading zero is named, and that cap keeps its default.
-- **Copilot can review each PR first (opt-in).** Add the line
-  `# Copilot review: on` near the top of `cairn/PROFILE.md`. Then `/hotfix`
-  and `/milestone-review` request a GitHub Copilot review on the PR with
-  `gh pr edit <N> --add-reviewer @copilot`, only when the PR has no
-  Copilot request or review yet. In owner mode `/milestone-review` opens
-  the PR at the start of review, so Copilot works while Claude runs its
-  own checks. The PR-conversation read before the merge question then
-  handles Copilot's threads: each gets a fix, a reason it was rejected, or
-  a follow-up row. A thread Claude cannot settle without you becomes a
-  follow-up row, named at the merge question or the approval chip. Any
-  question goes to chat, never to GitHub. Claude replies on no thread.
-  Each Copilot review with an open note gets at most one PR comment, written
-  in ordinary sentences to the maintainers. It says only what they need to
-  know from the review, and someone who has not seen the session can follow
-  it on one read. It links the review and never thanks Copilot. If they need
-  nothing, there is no comment, and you see each note's outcome in chat.
-  Claude then resolves that review's open threads. A review with a finding
-  only in its summary and no comment comes up again on a later run. A
-  thread that `/milestone-review` returns to implement holds back its
-  review's comment, and its threads stay open for a later pass. A review
-  your comment already links gets no second comment, and its open threads
-  are resolved.
-  The line is your permission for these pushes and resolves, and for the
-  comments in your own repo. In guest mode Claude shows you each draft, or
-  that a review gets no comment, first, because the maintainers read it. You
-  can post it or resolve with no comment, type your own version, or hold it.
-  A hold posts nothing and leaves that review's
-  threads open, and `/copilot-review` finishes the review while the PR is
-  open.
-  `/copilot-review` runs the same read, comments, and resolves on one PR
-  without the line, and it always shows each draft, or that a review gets no
-  comment, first. It never requests
-  a review. A `pull_request`-triggered CI suite also runs on the early
-  push and the fix pushes. A hotfix opens its PR before its approval chip;
-  a decline there closes the PR and keeps the branch. In guest mode the
-  round runs after the handoff opens the PR. With the round on, the
-  session requests the review from your account, with your `gh` login,
-  when the PR has none yet. If Copilot's review is still
-  pending at the read, Claude waits up to 25 minutes, then goes on and
-  says the review is pending. If the request command exits 0 but the PR
-  shows no Copilot request or review just after it, Claude says so in one
-  line, makes no second request at that step, and does not wait there.
-  Used-up Copilot credits are one cause of a request that GitHub does not
-  record. The report at the read gives that line as the reason for a
-  missing review only when the PR still shows no Copilot request or
-  review when the read runs. A later pass that finds no Copilot request
-  or review on the PR, such as a second review pass or a `/hotfix`
-  resume, asks again. A request that GitHub did not record leaves nothing
-  for the new request to repeat. You see every Copilot thread present
-  when the read runs, just before the merge question or a hotfix's
-  approval chip; a thread posted after that read is not shown in this run. A hotfix asks for Lite and a milestone for
-  Balanced, but GitHub's API took no level for each request on 2026-10-10,
-  so GitHub's settings choose it; the report names the level from the
-  review. Adopted outside PRs, a review of an already-merged PR, and
-  milestones with companion checkouts,
-  skip the round. Without the line, cairn does not handle Copilot's
-  threads. If someone or something else already asked Copilot to review
-  the PR, the close after a hotfix or milestone merge made in that run, or
-  after a guest handoff, says so in one line and names the line to set.
-  This covers only PRs the round itself would review, and a Copilot
-  request made after that close goes unreported.
-- **Issues a milestone resolves get linked and closed.** When a plan absorbs
-  a GitHub issue, the milestone file's `Resolves:` slot names it and the
-  plan question set offers one option to assign your own GitHub account to
-  each slotted issue, with no comment posted. You are assigned only if you
-  select it, never by default. The plan first reads your access to the repo, in
-  owner and guest mode alike. If your account cannot assign there (less
-  than triage access, common on a repo you do not own), the plan offers
-  nothing and says so in one line. It does the same if the access read
-  fails. The
-  PR the review opens after your approval has a body ending with
-  `Closes #N` (or `Refs #N` for an issue only partly resolved), so GitHub
-  closes the issue at merge. After the
-  merge the review reads the state of each issue slotted `closes` and closes
-  one still open with a comment naming the merged PR. In guest mode the
-  maintainers' merge closes it through the `Closes` line, and the review
-  closes none. `/milestone`'s audit
-  reports an issue still open after its milestone is done (among the
-  roadmap's retained done rows) and offers to close it at the triage chip.
-  Without `gh`, the post-merge check and the audit name the gap and carry on.
-- **Two people both running cairn is not supported yet.** The tracking files
-  would race: milestone IDs and decision numbers are picked by reading the
-  files, so two people planning at once can pick the same one. If you need
-  this, say so; it's a tracked candidate, not a solved problem.
+Run `/cairn setup` in each repo. It shows what the migration would change, and changes it only after you say yes. Your old decisions, lessons, and milestone archive move to `cairn/archive/`, where nothing reads them. Work in flight is carried over. Setup then goes through your old Known issues (a section of `DESIGN.md` in v2) and your candidates with you in one table. `CHANGELOG.md` lists everything that was removed.
 
-### Contributing to a repo you don't own (guest mode)
+## What cairn does not do
 
-When the repo belongs to someone else, you can still run the whole
-plan/implement/review loop, with `cairn/` kept to yourself. `/cairn-init`
-asks which mode you are in (it reads your permission level on the remote to
-recommend one) and writes `# Collaboration mode: guest` into
-`cairn/PROFILE.md`. In guest mode:
+- It has no format validator. The status listing names any file it cannot read.
+- It puts no cap on open PRs or on candidates.
+- It never submits or publishes a release.
+- It posts nothing to GitHub without your word.
+- It keeps no decision log. The reasoning for a change lives in its merge record and in code comments.
+- It runs in Claude Code only. Codex is used only as a reviewer.
 
-- **`cairn/` never leaves your clone.** Init lists it in `.git/info/exclude`
-  (git's untracked ignore file that is itself never committed), and the
-  commit guard refuses a `git commit` it sees that would carry a `cairn/`
-  path (it watches the commit commands Claude runs, with the same known
-  misses as before, such as `git -C <path> commit`). Nothing else in the
-  checkout is written outside `cairn/`: no CLAUDE.md section (the session hook
-  injects the same routing text from the plugin's template instead), no
-  `.gitignore` or `.Rbuildignore` entries, no CI edits.
-- **Hygiene is written to disk, not committed.** Plan files, checkbox
-  ticks, work-log lines, decisions, lessons: all land in `cairn/` in the
-  same turn as the code change, and stay there. There are no docs-only
-  commits and no pushes to the default branch.
-- **The repo sees none of cairn's vocabulary.** Branches are named by their
-  slug alone, and commit messages and PR text carry no milestone numbers.
-- **What you write reads like the host's own.** This covers docs, code
-  comments, changelog entries, commit messages, PR text, and replies on the
-  host's issues and PRs. That text matches the host's existing text of the
-  same kind in length, tone, and level of technical detail, read from text
-  that the host's maintainers wrote. If another writing-style instruction
-  also covers that text, such as a plugin's or your own CLAUDE.md, matching
-  the host wins for that text. The other instruction then covers only what
-  matching the host leaves open. Before any of that, a maintainer who has
-  not seen the session must be able to tell on one read what the text says
-  and anything it asks.
-- **New names reuse the host's names.** A new argument, function, or file
-  name in the host's code reuses the name that the host already uses for
-  the same thing.
-- **No merge by cairn.** Review ends by handing the PR to the maintainers;
-  you never merge, and the approval marker is never written.
-- **Threads, bots, issues, and new features have set rules.** Each guest
-  session is given these instructions at its start, beside the open-PR
-  caps above. They are instructions to Claude, not a block on any command.
-  Claude never resolves a review thread that a person started. It replies
-  to no bot, except the one comment per Copilot review with a note that
-  the Copilot round or `/copilot-review` posts. It closes an issue someone
-  else opened only when a merged change clearly fixes it or its fix
-  belongs in another repo. The close carries a one-line comment naming
-  that change or repo. By default, Claude makes at most 3 such closes on
-  one repo per UTC day. A `# Issue close cap: N` line near the top of
-  `cairn/PROFILE.md` sets that limit to a value from 1 to 99 with no
-  leading zero. `# Issue close cap: off` removes the limit. Any other
-  value keeps 3, and the session start names the line. When Claude is
-  unsure, it asks you in chat and posts nothing. A close you pick at a
-  cairn choice is yours, and these limits do not cover it. Before Claude
-  plans a feature or a change of behavior, it looks for a maintainer's
-  agreement with the design in an issue, or a maintainer's request for it
-  in a review of your PR. Without either, it tells you in chat and plans
-  nothing until a maintainer agrees, unless you tell it to go on.
-  `/milestone-plan` checks this itself: it flags the work and asks you
-  whether to draft a question for the maintainers, which you post, to name
-  an agreement it missed, or not to build. A fix that restores documented
-  behavior with no design choice needs no such agreement. `/milestone-plan`
-  also asks who outside the work asked for it. Someone asked when another
-  person asks for the change, reports a problem that it fixes and that still
-  occurs, or a maintainer agrees with it. If no one asked, the plan says so
-  and says what users lose or see change, and you choose whether to do the
-  work. A fix for a wrong number, a crash, or broken documented behavior
-  needs no such asking.
-- **Branches go to your fork unless you ask for the upstream repo.** By
-  default, `/milestone-review` and `/hotfix` push the branch to your fork
-  and open the PR from it. If you can push to the upstream repo and want
-  the branch there, add the line `# Push remote: base` near the top of
-  `cairn/PROFILE.md`. You can then set another open PR's branch as a PR's
-  base, which GitHub allows only for a branch in the upstream repo. With
-  the line set, cairn reads your push permission on the upstream repo
-  before each handoff push. If it is not `true`, cairn
-  pushes nothing and says why. A branch whose PR is already open keeps
-  pushing to where that PR's head lives. Before a resync rebases a pushed
-  branch, cairn fetches it. If the remote branch has commits your copy
-  lacks, it stops and names them.
-- **A milestone can build on one that waits for review.** With
-  `# Push remote: base` set, a `planned` milestone can depend on one
-  milestone that you handed to the maintainers. That milestone is
-  `blocked`, and its file's `Branch/PR` line names its PR. The new
-  milestone counts as workable, and `/milestone-implement` cuts its branch
-  from the open PR's branch on the upstream repo. Each later resync
-  rebases only your own commits onto that branch. A rebase of the first
-  PR's branch then does not repeat its commits in yours.
-  `/milestone-review` opens your PR with the first PR's branch as its
-  base, and the PR text names the first PR. After the maintainers merge
-  the first PR, `/milestone` sends the milestone back to
-  `/milestone-implement`. It rebases your branch onto the default branch
-  and pushes it. If GitHub did not move the PR's base to the default
-  branch, it moves it. A milestone can build on only one waiting milestone.
-  cairn stops on three more cases: that milestone is itself stacked, its
-  PR comes from a fork or another repo, or its PR closed with no merge.
-  Owner mode and hotfixes do not stack.
-- **No release walk.** `/cairn-release` stops at session start and says
-  why: a release is the maintainers' act.
-- **Triage stays on disk.** `/cairn-triage` runs as usual, but it skips
-  the clean-tree, default-branch, and sync checks, and its accepted edits
-  stay in `cairn/` with no commit and no push. The hygiene stamp names the
-  evidence for each item it drops as shipped or as resting on a false
-  premise.
+## Status
 
-Because `cairn/` exists only in that clone, a fresh clone starts from
-nothing and `git clean -fdx` removes it; back it up if that matters.
-Adopting a third party's PR through `/hotfix` is not supported in guest
-mode.
+Version 3.0.0 is a rewrite of 2.x. So far, it has been used for real work in one repository.
 
-## What this system deliberately does NOT do
-
-- Auto-merge, auto-release, or auto-submit to CRAN: every irreversible step
-  is gated on you.
-- Propose, plan, or nominate a release. cairn will prepare one when you ask
-  and never brings it up on its own: no ready-to-ship suggestions, and
-  no release work queued into the roadmap unprompted. A release is ready
-  when you say it is, not when a dependency list is finished, so
-  release timing is yours to declare
-  and cairn stays quiet about it until you do. One exception applies to
-  a Quarto extension repo. There a merge you approved that raised the
-  version already reached users, so the close gives you the tag commands.
-- Track status in CLAUDE.md, chat memory, or GitHub issues: `cairn/`
-  files are the single source of truth; issues are an inbox.
-- Run Fable, or any escalation, without a per-instance yes.
-- Lock you in. Pausing costs nothing (stop any time; checkpoint commits
-  keep the branch resumable), dropping a milestone is one sentence, like
-  "drop M007", with the reason archived, and uninstalling is removing the
-  plugin or symlink: your `cairn/` files are plain markdown that stay
-  readable, and deletable, without it.
+Release history is in `CHANGELOG.md`, and the license is MIT.
