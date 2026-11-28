@@ -1,7 +1,7 @@
 ---
 name: cairn
 description: Track and ship project work as plans and PRs. Use when the user asks where a project stands or what to do next, wants to start work on an idea, a GitHub issue, or a bug, wants to resume work in flight, or wants work reviewed and merged.
-argument-hint: "status [slug|#N] | start <idea, issue, or bug> | resume [slug|#N] | review [slug|#N] | source add <file or URL> | copilot <PR> | setup"
+argument-hint: "status [slug|#N] | start <idea, issue, or bug> | resume [slug|#N] | review [slug|#N] | triage | source add <file or URL> | copilot <PR> | release | setup"
 ---
 
 # cairn
@@ -16,13 +16,13 @@ This page is the Rulebook. It applies to every verb.
 | `start <idea, issue, or bug>` | Investigates, plans, builds, and goes on to review. | `verbs/start.md` |
 | `resume [slug \| #N]` | Picks work up at the phase its plan shows. | `verbs/resume.md` |
 | `review [slug \| #N]` | Checks the work, asks the merge question, and ships on approval. Also reads someone else's PR. | `verbs/review.md` |
+| `triage` | Goes over every candidate row with the user, and leaves the ROADMAP in order. | `verbs/triage.md` |
 | `source add <file or URL>` | Puts a source on the shelf and writes its reference note. | `verbs/source-add.md` |
 | `copilot <PR>` | Handles Copilot's review notes on a PR, in a guest repo. | `verbs/copilot.md` |
+| `release` | Prepares a release. Never submits or publishes one. | `verbs/release.md` |
 | `setup` | Sets cairn up in a repo, or converts a repo from cairn v2. | `verbs/setup.md` |
 
 The verb files are in this skill's folder, `${CLAUDE_SKILL_DIR}`. Read the verb's file, then follow its steps in order. A step marked (stop) waits for the user. Between stops, decide and go on. If the request names no verb, pick the one that fits and say which. With no request at all, run `status`.
-
-`triage` and `release` are not built yet. If the user asks for one, say so.
 
 The status script is `python3 "${CLAUDE_SKILL_DIR}/../../scripts/cairn_status.py"`. It prints the listing: the kind of repo, the home folder, the work in flight, and the candidates. With `plan`, `plan <slug>`, or `plan '#N'` it prints the path of one plan: the current branch's, the one whose slug starts that way, or the one with that issue or PR number.
 
