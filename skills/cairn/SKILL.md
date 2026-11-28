@@ -1,7 +1,7 @@
 ---
 name: cairn
 description: Track and ship project work as plans and PRs. Use when the user asks where a project stands or what to do next, wants to start work on an idea, a GitHub issue, or a bug, wants to resume work in flight, or wants work reviewed and merged.
-argument-hint: "status [slug|#N] | start <idea, issue, or bug> | resume [slug|#N] | review [slug|#N] | source add <file or URL>"
+argument-hint: "status [slug|#N] | start <idea, issue, or bug> | resume [slug|#N] | review [slug|#N] | source add <file or URL> | setup"
 ---
 
 # cairn
@@ -17,14 +17,17 @@ This page is the Rulebook. It applies to every verb.
 | `resume [slug \| #N]` | Picks work up at the phase its plan shows. | `verbs/resume.md` |
 | `review [slug \| #N]` | Checks the work, asks the merge question, and ships on approval. Also reads someone else's PR. | `verbs/review.md` |
 | `source add <file or URL>` | Puts a source on the shelf and writes its reference note. | `verbs/source-add.md` |
+| `setup` | Sets cairn up in a repo, or converts a repo from cairn v2. | `verbs/setup.md` |
 
 The verb files are in this skill's folder, `${CLAUDE_SKILL_DIR}`. Read the verb's file, then follow its steps in order. A step marked (stop) waits for the user. Between stops, decide and go on. If the request names no verb, pick the one that fits and say which. With no request at all, run `status`.
 
-`triage`, `copilot`, `release`, and `setup` are not built yet. If the user asks for one, say so.
+`triage`, `copilot`, and `release` are not built yet. If the user asks for one, say so.
 
 The status script is `python3 "${CLAUDE_SKILL_DIR}/../../scripts/cairn_status.py"`. It prints the listing: the kind of repo, the home folder, the work in flight, and the candidates. With `plan`, `plan <slug>`, or `plan '#N'` it prints the path of one plan: the current branch's, the one whose slug starts that way, or the one with that issue or PR number.
 
 The Zotero script is `python3 "${CLAUDE_SKILL_DIR}/../../scripts/cairn_zotero.py"`. `find` looks a source up, `add` adds one with its file, and `collect` puts an existing item in a collection. `-h` after a command lists its options. It starts Zotero in the background if Zotero is not running.
+
+The migration script is `python3 "${CLAUDE_SKILL_DIR}/../../scripts/cairn_migrate.py"`. It converts a repo's cairn v2 files. With no flag it says what it would change, and with `--apply` it changes it.
 
 ## Sizes
 
@@ -152,7 +155,7 @@ Otherwise drop it.
 
 - Nothing of cairn goes in the checkout.
 - Never push the default branch. Even a trivial edit goes through a PR.
-- Push a work branch to `origin`, never to `upstream`.
+- Push a work branch to the host repo where the user may push there, and to the user's fork otherwise.
 - Never merge or release unless the profile says `Maintainer: yes`, and then only at the user's word.
 - Post nothing upstream without the user's approval.
 - Match the host's conventions. No cairn vocabulary reaches a host repo.

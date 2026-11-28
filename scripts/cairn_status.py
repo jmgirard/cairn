@@ -166,8 +166,11 @@ def read_plan(path):
 
     problems = []
     for label in ("Route", "Branch", "Phase"):
-        if not plan.get(label):
-            problems.append("%s: no `%s:` line with a value" % (name, label))
+        if plan.get(label):
+            continue
+        if label == "Branch" and (plan.get("Phase") or "").lower().startswith("plan"):
+            continue  # planned work that has not started has no branch yet
+        problems.append("%s: no `%s:` line with a value" % (name, label))
     route = plan.get("Route")
     if route and route.lower() not in ROUTES:
         problems.append(

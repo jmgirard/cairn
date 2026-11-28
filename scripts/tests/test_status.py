@@ -288,6 +288,16 @@ class Plans(Base):
             self.assertIn(needle, text)
         self.assertEqual(len(problems), 5)
 
+    def test_planned_work_needs_no_branch(self):
+        home = self.own()
+        text = plan_text("later-work", phase="plan").replace("Branch: later-work", "Branch:")
+        write(os.path.join(home, "plans", "later-work.md"), text)
+        plans, problems = cs.read_plans(home)
+        self.assertEqual(problems, [])
+        self.assertIsNone(plans[0]["Branch"])
+        write(os.path.join(home, "plans", "later-work.md"), text.replace("Phase: plan", "Phase: build"))
+        self.assertEqual(len(cs.read_plans(home)[1]), 1)
+
     def test_unreadable_plan_is_a_problem(self):
         home = self.own()
         path = os.path.join(home, "plans", "broken.md")
