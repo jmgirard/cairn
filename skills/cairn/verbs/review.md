@@ -33,7 +33,7 @@ Steps 1 to 5 are the same. The ROADMAP edits are made in the home folder. No mer
 7. Ask whether to open the PR. (stop) Show the PR text, the items of the merge question apart from the merge record, and how many of the user's PRs are open on the host.
 8. On approval only: push the branch, open the PR, and set `Phase: pr #N`. Wait for CI. Fix a failure the PR caused and push the fix. If the fix changes what the user approved, ask before pushing it. Then stop at the open PR. (stop)
 9. Where the profile says `Maintainer: yes`, merge at the user's word, with the host's merge method and message. Never use the admin override unless the user says so.
-10. Once the PR is merged or closed, move the plan to `done/`.
+10. Once the PR is merged or closed, move the plan to `done/`. Where `~/.cairn` is a git repo, commit the home folder to it. If the checkout is clean, switch it to the default branch, bring that up to date, and delete the work branch if the PR merged and the branch's head is the PR's head.
 
 ## Someone else's PR
 
@@ -41,4 +41,4 @@ Read it, test it, and report the findings to the user. Post nothing without the 
 
 ## Done
 
-In the user's own repos: the default branch has one squash commit for the work, with the merge record as its message; the approved issues are open; the plan and the branch are gone. In a guest repo: the PR is open and the plan says `pr #N`, or the PR is merged or closed and the plan is in `done/`.
+In the user's own repos: the default branch has one squash commit for the work, with the merge record as its message; the approved issues are open; the plan and the branch are gone. In a guest repo: the PR is open and the plan says `pr #N`, or the PR is merged or closed, the plan is in `done/`, and a clean checkout is on the default branch.

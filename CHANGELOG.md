@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased
+
+- **A guest checkout goes back to the default branch after its PR merges
+  or closes.** The last step of `/cairn review`, which `/cairn resume`
+  also runs, now commits the repo's home folder where `~/.cairn` is a git
+  repo. If the checkout is clean, it switches back to the default branch,
+  brings it up to date, and deletes the work branch if the PR merged with
+  that branch's last commit.
+
 ## 3.0.0 (2026-11-27)
 
 Version 3.0.0 is a rewrite that removes most of v2.
