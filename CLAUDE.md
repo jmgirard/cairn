@@ -11,28 +11,17 @@ prose-guards are hand-run only (M144, D-109).
 
 ## Project tracking (cairn)
 
-**Before acting on any request, classify it and route** — the tracking
-rulebook only loads once a cairn skill fires, so working in plain
-conversation silently bypasses the work tiers and the git model. Classify
-first:
+This repo uses the cairn plugin. Work goes through its `/cairn` skill:
 
-- **Trivial** (no runtime surface — typo, comment, tracking edit): commit to
-  main.
-- **Look into a GitHub issue**: invoke `/milestone` with the issue number
-  or URL.
-- **User-visible bug**: invoke `/hotfix`.
-- **New work, a design decision, or more than one sitting**: invoke
-  `/milestone-plan`. Where a hotfix or trivial route fits, it offers that
-  first. Otherwise one question set comes, and the run goes on to the merge
-  question. Typed `/milestone-implement` or `/milestone-review` resumes it.
-- **Status, "what's next", or unsure which tier**: invoke `/milestone`.
-- **Never implement code on main** outside a milestone/hotfix branch; nothing
-  reaches main without explicit user approval at the merge question, or for
-  a trivial edit the user's request or the tier chip.
+- **Any request**: `/cairn start`. It handles a trivial edit itself (no
+  runtime surface: a typo, a comment, a ROADMAP row), and it plans anything
+  else on a branch and takes it to review.
+- **Work in flight**: `/cairn resume` picks it up, and `/cairn review` ships it.
+- **Status or "what's next"**: `/cairn status`.
 
-Anything but trivial → invoke the skill *first* so the full rulebook
-(the plugin's `skills/shared/tracking-rules.md`) and its conduct load; don't
-reconstruct the rules from memory. State lives under `cairn/`: **Architecture → DESIGN ·
-Status → ROADMAP · Tasks → milestone files · Decisions → DECISIONS · Lessons
-→ LESSONS · History → archive + git**. Never record status or TODOs here; memory never holds
-project state — `cairn/` files win any conflict.
+Never build on the default branch. Nothing reaches it without the user's
+approval at the merge question, or for a trivial edit their request.
+
+Candidates are in `cairn/ROADMAP.md`, and the toolchain commands are in
+`cairn/PROFILE.md`. Plans live outside the repo, in the home folder that
+`/cairn status` prints. Never record status or TODOs in this file.
