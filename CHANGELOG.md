@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 3.0.0 (2026-11-27)
 
 Version 3.0.0 is a rewrite that removes most of v2.
 

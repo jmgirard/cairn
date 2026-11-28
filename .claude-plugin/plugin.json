@@ -1,6 +1,6 @@
 {
   "name": "cairn",
-  "version": "2.2.0",
+  "version": "3.0.0",
   "description": "Tracks project work as plans and PRs with one /cairn skill: a status view, start, resume, and review verbs, candidate tracking in a ROADMAP, and a home folder outside git for plans.",
   "author": {
     "name": "Jeffrey Girard",
