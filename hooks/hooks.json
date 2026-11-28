@@ -10,6 +10,18 @@
           }
         ]
       }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash|mcp__.*__pull_request_merge",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/guest_guard.py\" || py -3 \"${CLAUDE_PLUGIN_ROOT}/hooks/guest_guard.py\"",
+            "timeout": 15
+          }
+        ]
+      }
     ]
   }
 }
