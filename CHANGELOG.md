@@ -2,23 +2,117 @@
 
 ## Unreleased
 
+Version 3.0.0 is a rewrite that removes most of v2.
+
 ### Changes that affect existing repos
 
-- **A guest hotfix records the problems it leaves alone at the handoff.**
-  This applies in guest mode. `/hotfix` can find a problem in code that the
-  fix does not change. Before, it wrote a candidate row for that problem
-  only after the maintainers merged the PR and you ran `/hotfix` on the
-  merged PR. Until then, only the closing message named the problem, and a
-  cleared session lost it. Now the hotfix writes the row on disk at the
-  handoff of its PR to the maintainers. A push of changes they asked for
-  writes the row too. The row names the PR, for example
-  `hotfix PR #12 handoff`. A row that already names the problem is left
-  as it is. A row on the same subject gets a note instead, unless other
-  work has already taken that row. When you later
-  run `/hotfix` on the merged PR and accept its check, it compares each
-  such row with what the maintainers merged. It deletes the part that the
-  merge fixed in full, narrows the part that it fixed in part, and keeps
-  the rest. Owner mode is unchanged.
+- **Run `/cairn setup` in each v2 repo to convert it.** It shows what the
+  migration would change, and it changes that only after you say yes. v3
+  does not read v2 files. Until you convert a repo, the session-start text
+  says that the repo has v2 files and points you to `/cairn setup`.
+
+- **The migration changes these files in your own repo.** It moves
+  `DECISIONS.md`, `LESSONS.md`, `milestones/`, and `reviews/` into
+  `cairn/archive/`, where nothing reads them. It rewrites
+  `cairn/ROADMAP.md` as candidate rows only. It rewrites `cairn/PROFILE.md`
+  as three sections, Verify, Changelog, and Release, from the text of your
+  verify, consistency-gate, changelog, and release-walk sections. The
+  profile's other sections and its header lines are dropped. It swaps the
+  cairn section of `CLAUDE.md`. It moves work in flight and the source
+  shelf to the repo's home folder, `~/.cairn/<owner>/<repo>/`.
+
+- **cairn is now one skill, `/cairn`, that takes a verb.** The nine verbs
+  are `status`, `start`, `resume`, `review`, `triage`, `source add`,
+  `copilot`, `release`, and `setup`. `/milestone` became `/cairn status`.
+  Planning, implementing, and hotfixes became `/cairn start`, which
+  investigates, plans, builds, and goes on to review. `/milestone-review`
+  became `/cairn review`. `/cairn-triage`, `/cairn-release`,
+  `/copilot-review`, and `/cairn-init` became `/cairn triage`,
+  `/cairn release`, `/cairn copilot`, and `/cairn setup`. `/cairn resume`
+  picks work up where its plan says it stands. The design interview and the
+  review brief have no replacement. The eleven v2 skills are removed, and no
+  stubs are left behind: `/milestone`, `/milestone-plan`,
+  `/milestone-implement`, `/milestone-review`, `/hotfix`, `/cairn-init`,
+  `/cairn-release`, `/cairn-triage`, `/copilot-review`, `/design-interview`,
+  and `/milestone-brief`.
+
+- **Work comes in three sizes.** The words "milestone" and "hotfix" and the
+  M-numbers are gone. A trivial edit, in your own repos, is committed
+  straight to the default branch. A trail fits one sitting and one PR and
+  leaves you no design choice. A road is everything larger, and it starts
+  with one set of questions to you. Every trail and road has a plan and ends
+  in a PR. A bug gets a regression test written first at either size.
+
+- **Each repo has a home folder outside the repo.** It is
+  `~/.cairn/<owner>/<repo>/`. Plans in flight and the source shelf live
+  there. Your repo keeps `cairn/ROADMAP.md`, `cairn/PROFILE.md`, and the
+  reference notes. In your own repos, a plan is deleted after its PR merges.
+
+- **The default branch gets one squash commit for each piece of work.** Its
+  message is a merge record that answers five questions: what changed, why,
+  the choices made, what was left out, and how it was checked. Plans are
+  never committed to the repo, and a piece of work adds no tracking commits:
+  its ROADMAP edits ride in its PR.
+
+- **`cairn/ROADMAP.md` holds only candidates.** Planned and in-progress
+  work is read from plans and branches. A row has a title, a colon, and one
+  sentence. Two marks exist. `[high]` marks a bug that gives wrong answers
+  in ordinary use. `[blocked]` marks work that waits on something outside.
+  `[low]` and `[parked]` are gone, and the migration takes those tags off.
+
+- **Review has one independent reviewer, where a v2 milestone review had two
+  or four.** Where the Codex CLI is installed and signed in, the reviewer is
+  Codex run from the command line. It works in its own copy of the repo with
+  no network. Otherwise the reviewer is a fresh subagent. The reviewer also
+  reads each statement that the change adds about what the code does, and
+  checks it against the code. Those statements are in the changelog, help
+  pages, README, comments, and error messages. Review ends at the merge
+  question, where cairn stops and waits for your approval, and the question
+  says which reviewer ran.
+
+- **Review sorts findings by whether they come from ordinary use.**
+  Ordinary use means a user's report, the repo's own documentation,
+  examples, or tests, or a call in a package that depends on the repo. A
+  finding on an input the reviewer had to make up is never fixed by making
+  that input work. It gets an input check, which is one assertion that
+  refuses the input with a clear error, or it is dropped.
+
+- **A guest repo's checkout holds nothing of cairn.** A guest repo is one
+  that other people share. Its ROADMAP, profile, references, plans, and
+  finished plans are all in the home folder. There, even a trivial edit goes
+  through a PR. cairn never merges or releases there unless the profile says
+  `Maintainer: yes`. You add that line by hand, and cairn then merges or
+  releases only at your word.
+
+- **`/cairn source add` shelves a source and can add it to Zotero.** It
+  puts the source's file on the shelf and writes its reference note. If the
+  profile has a `Zotero collection:` line, it also looks the source up in
+  Zotero. If the source is absent there, it adds the source with its file.
+  This needs Zotero 10 or later with "Allow other applications on this
+  computer to communicate with Zotero" switched on. Zotero asks you to
+  allow the write.
+
+- **The plugin is smaller.** The skill text is about 5,700 words, where
+  the skills and rulebook of 2.2.0 had about 82,000. The scripts and hooks
+  are about 1,600 lines, where 2.2.0 had about 6,500.
+
+- **Session start prints a short listing, and one guard remains.** Session
+  start used to print the ROADMAP and the active plans. Now it prints the
+  home folder, work in flight, the `[high]` and `[blocked]` rows, the
+  candidate count, and the path of the current branch's plan. The one guard
+  is for guest repos. It denies a push to the default branch, and it denies
+  a merge unless the profile says `Maintainer: yes`. The stop, commit,
+  memory, idea, force-push, and merge guards are removed. In their place,
+  `/cairn setup` offers two GitHub rules on the default branch of your own
+  repos: no force-push and no deletion.
+
+- **These parts are removed.** The format validator and the health audit
+  are gone. The status listing now names any file it cannot read. The Known
+  issues section of `DESIGN.md` is gone, and `/cairn setup` goes through the
+  old entries with you once. The status band and the cairn pane in the
+  desktop app, the shipped reference profiles, and the caps on open PRs are
+  gone. The Copilot round in your own repos is gone, and `/cairn copilot` is
+  for guest repos.
 
 ## 2.2.0 (2026-11-05)
 
